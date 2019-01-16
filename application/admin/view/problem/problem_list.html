@@ -1,0 +1,76 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <div class="layui-row">
+        <a class="layui-btn layui-btn-sm" href="javascript:"
+           onclick="x_admin_show('添加题目','/admin/problem/add', 800, 530);">添加题目</a>
+    </div>
+    <table class="layui-hide" id="problem-list"></table>
+</div>
+
+<script type="text/html" id="operationTpl">
+    {{# if (d.defunct == 'N') { }}
+    <button class="layui-btn layui-btn-sm layui-btn-danger" onclick="disable_problem({{d.problem_id}});">禁用</button>
+    {{# } else { }}
+    <button class="layui-btn layui-btn-sm" onclick="enable_problem({{d.problem_id}});">启用</button>
+    {{# } }}
+    <a class="layui-btn layui-btn-sm" href="javascript:;" onclick="x_admin_show('编辑题目 - {{d.title}}','/admin/problem/edit?id={{d.problem_id}}',800,600);">编辑</a>
+    <a class="layui-btn layui-btn-sm" href="javascript:" onclick="x_admin_show('测试数据 - {{d.problem_id}} - {{d.title}}', '/admin/Problem/files?problem_id={{d.problem_id}}',700,400);">测试数据</a>
+</script>
+
+<script type="text/html" id="defunctTpl">
+    {{# if (d.defunct == 'N') { }}
+    <span style="color: green;">正常</span>
+    {{# } else { }}
+    <span style="color: red;">已禁用</span>
+    {{# } }}
+</script>
+
+<script type="text/javascript">
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //方法级渲染
+        table.render({
+            elem: '#problem-list'
+            , url: '/admin/problem/problem_list_json'
+            , cols: [[
+                {field: 'problem_id', title: 'id'}
+                , {field: 'title', title: '标题'}
+                , {field: 'defunct', width: 80, title: '状态', templet: '#defunctTpl'}
+                , {field: 'problem_id', title: '操作', templet: '#operationTpl'}
+            ]]
+            , id: 'problem_list'
+            , page: true
+        });
+    });
+
+    function enable_problem(problem_id) {
+        layer.confirm('确定启用？', function(){
+            $.post('/admin/problem/enable_problem_json',{'problem_id':problem_id},function(d){
+                layer.closeAll();
+                if ('success' == d.status) {
+                    var table = layui.table;
+                    table.reload('problem_list');
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+    }
+
+    function disable_problem(problem_id) {
+        layer.confirm('确定禁用？', function(){
+            $.post('/admin/problem/disable_problem_json',{'problem_id':problem_id},function(d){
+                layer.closeAll();
+                if ('success' == d.status) {
+                    var table = layui.table;
+                    table.reload('problem_list');
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+    }
+</script>
+{/block}

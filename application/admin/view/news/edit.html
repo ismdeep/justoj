@@ -1,0 +1,52 @@
+{extend name="base" /}
+{block name="content"}
+<!--引入layer.js文件 begin-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+
+
+<div class="x-body">
+	<form class="layui-form" id="newsEditForm">
+        <input type="text" name="news_id" id="news_id" value="{$news->news_id}" hidden>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$lang.title}</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="title" value="{$news->title}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.content}</label>
+            <div class="layui-input-block">
+                <textarea name="content" id="content" placeholder="请输入内容" class="layui-textarea">{$news->content}</textarea>
+                <script> var content = CKEDITOR.replace( 'content' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+	</form>
+</div>
+
+<script type="text/javascript">
+    $('#newsEditForm').on('submit',function(){
+        var postData = {
+            'news_id': $('#news_id').val(),
+            'title': $('#title').val(),
+            'content': content.getData()
+        };
+        $.post('/admin/news/save_json',postData,function(d){
+            if ('success' == d.status) {
+                layer.alert(d.msg,function(){
+                    parent.location.reload();
+                });
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+        return false;
+    });
+</script>
+{/block}

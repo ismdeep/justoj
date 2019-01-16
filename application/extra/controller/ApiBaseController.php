@@ -1,0 +1,20 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: ismdeep
+ * Date: 2018/5/7
+ * Time: 12:00 AM
+ */
+
+namespace app\extra\controller;
+
+
+use think\Request;
+
+class ApiBaseController extends BaseController
+{
+	public function __construct(Request $request = null)
+	{
+		parent::__construct($request);
+	}
+}

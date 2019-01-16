@@ -1,0 +1,26 @@
+<IfModule mod_rewrite.c>
+  Options +FollowSymlinks -Multiviews
+  RewriteEngine On
+
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond $1 !^(static|images|upload)
+  RewriteRule ^(.*)$ index.php/$1 [QSA,PT,L]
+</IfModule>
+
+<IfModule mod_expires.c>
+#打开缓存
+ExpiresActive On
+#默认对所有资源缓存600秒
+ExpiresDefault A600
+#png格式的资源缓存5秒
+ExpiresByType image/png A5
+#jpg格式的资源缓存50秒
+ExpiresByType image/jpg A50
+
+#好含这些后缀的资源，都缓存100秒
+<FilesMatch "\.(js|css|woff2|jpg|jpeg|png|gif|swf)$">
+ExpiresDefault A1209600
+</FilesMatch>
+
+</IfModule>

@@ -1,0 +1,163 @@
+{extend name="base" /}
+{block name="content"}
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo"><a href="javascript:">后台管理系统</a></div>
+    <div class="left_open">
+        <i title="展开左侧栏" class="iconfont">&#xe699;</i>
+    </div>
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">{$loginuser->nick}</a>
+            <dl class="layui-nav-child"> <!-- 二级菜单 -->
+                <dd><a onclick="x_admin_show('修改密码','/admin/my/change_password',600,400)">修改密码</a></dd>
+                <dd><a href="/">返回首页</a></dd>
+                <dd><a href="/logout">退出</a></dd>
+            </dl>
+        </li>
+    </ul>
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+<div class="left-nav" style="bottom: 0px">
+    <div id="side-nav">
+        <ul id="nav">
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe726;</i>
+                    <cite>用户管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/user/admin_user_list">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>管理员列表</cite>
+                        </a>
+                    </li>
+                    <li>
+                        <a _href="/admin/user/user_list">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>用户管理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe723;</i>
+                    <cite>题目管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/problem/problem_list">
+                            <i class="iconfont">&#xe723;</i>
+                            <cite>题目管理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe74e;</i>
+                    <cite>比赛/作业</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    {if $is_root}
+                    <li>
+                        <a _href="/admin/contest/contest_list">
+                            <i class="iconfont">&#xe74e;</i>
+                            <cite>比赛管理</cite>
+                        </a>
+                    </li>
+                    {/if}
+                    <li>
+                        <a _href="/admin/homework/homework_list">
+                            <i class="iconfont">&#xe74e;</i>
+                            <cite>作业管理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe74e;</i>
+                    <cite>班级管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/group/group_list">
+                            <i class="iconfont">&#xe74e;</i>
+                            <cite>班级管理</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe74e;</i>
+                    <cite>辅助工具</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/fileupload">
+                            <i class="iconfont">&#xe74e;</i>
+                            <cite>上传文件</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            {if $is_root}
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont">&#xe74e;</i>
+                    <cite>首页新闻</cite>
+                    <i class="iconfont nav_right">&#xe697;</i>
+                </a>
+                <ul class="sub-menu">
+                    <li>
+                        <a _href="/admin/news/news_list">
+                            <i class="iconfont">&#xe74e;</i>
+                            <cite>首页新闻</cite>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            {/if}
+        </ul>
+    </div>
+</div>
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content" style="bottom: 0px">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home"><i class="layui-icon">&#xe68e;</i>我的桌面</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src='/admin/index/welcome' frameborder="0" scrolling="yes" class="x-iframe"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="page-content-bg"></div>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+<!-- 底部开始 -->
+<!--<div class="footer">-->
+<!--<div class="copyright">Copyright ©2018 jiaoshitech.com All Rights Reserved</div>-->
+<!--</div>-->
+<!-- 底部结束 -->
+{/block}

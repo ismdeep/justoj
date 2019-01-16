@@ -1,0 +1,46 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" id="userFilterForm">
+            <input class="layui-input" type="text" name="keyword" id="keyword" placeholder="关键字搜索" autocomplete="off">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+        </form>
+    </div>
+    <table class="layui-hide" id="user_list"></table>
+</div>
+
+<script type="text/html" id="user_op">
+<button class="layui-btn layui-btn-sm" onclick="x_admin_show('修改密码', '/admin/user/change_password?user_id={{d.user_id}}',600,400);">修改密码</button>
+</script>
+
+<script type="text/javascript">
+    layui.use('table', function () {
+        var user_list_table = layui.table;
+        user_list_table.render({
+            elem: '#user_list'
+            , url: '/admin/user/user_list_json'
+            , page: true
+            , cols: [[
+                {field: 'user_id', title: '用户名'}
+                , {field: 'nick', title: '昵称'}
+                , {field: 'school', title: '学校'}
+                , {field: 'academy', title: '学院'}
+                , {field: 'class', title: '班级'}
+                , {field: 'phone', title: '联系电话'}
+                , {title: '操作', templet: '#user_op'}
+            ]],
+            where: {}
+            , id: 'user_list_table'
+        });
+    });
+
+    $('#userFilterForm').on('submit',function(){
+        var keyword = $('#keyword').val();
+        console.log(keyword);
+        var table = layui.table;
+        table.reload('user_list_table', {where: {'keyword': keyword}});
+        return false;
+    });
+</script>
+{/block}

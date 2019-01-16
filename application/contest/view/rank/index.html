@@ -1,0 +1,79 @@
+{extend name='contest@layout/layout' /}
+{block name='titlepart'}{$lang['rank']} - {$lang['justoj']}{/block}
+{block name='body'}
+<style media="screen">
+	.table > thead > tr > th,
+	.table > tbody > tr > th,
+	.table > tfoot > tr > th,
+	.table > thead > tr > td,
+	.table > tbody > tr > td,
+	.table > tfoot > tr > td {
+		padding: 8px;
+		line-height: 1;
+		vertical-align: top;
+		border-top: 1px solid #fff;
+		border-left: 1px solid #fff;
+	}
+</style>
+
+<?php $rank_index = 0;?>
+<div class="container">
+	<p>
+		<!--<a href="http://oldoj.ismdeep.com/contestrank.xls.php?cid={$contest->contest_id}">Download</a>-->
+		<a href="/contest/Rank/export_xls?id={$contest->contest_id}">比赛成绩</a>
+		{if $is_administrator}
+        <a href="/contest/rank/export_register_users?id={$contest->contest_id}">参赛列表</a>
+        {/if}
+	</p>
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>{$lang.rank}</th>
+			<th>{$lang.username}</th>
+			<th>{$lang.fullname}</th>
+			<th>{$lang.accepted}</th>
+			{if $contest->type == 1}<th>{$lang.mark}</th>{/if}
+			<th>{$lang.penalty}</th>
+			{volist name='contest_problems' id='contest_problem'}
+			<th><a href="/contest/Problem?id={$contest->contest_id}&pid={$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></th>
+			{/volist}
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='users' id='user'}
+		<?php $rank_index++; ?>
+		<tr>
+			<td>{$rank_index}</td>
+			<td>{$user['user_id']}</td>
+			<td>{$user['user']['realname']}</td>
+			<td>{$user['ac_cnt']}</td>
+            {if $contest->type == 1}<td>{$user['mark']}</td>{/if}
+			<td>{$user['penalty_text']}</td>
+			{volist name='contest_problems' id='contest_problem'}
+			{if $user[$contest_problem->problem_id]['first_ac']}
+				{if $user[$contest_problem->problem_id]['first_ac']['solution_id'] == $contest_problem['first_ac']['solution_id']}
+				<td style="background: #080;color: white">{$user[$contest_problem->problem_id]['first_ac']['penalty_text']}
+				{else}
+				<td style="background: #a9f5af;color: black">{$user[$contest_problem->problem_id]['first_ac']['penalty_text']}
+				{/if}
+
+				{if $user[$contest_problem->problem_id]['wa_cnt'] > 0}
+				(-{$user[$contest_problem->problem_id]['wa_cnt']})
+				{/if}
+				</td>
+
+			{else}
+				{if $user[$contest_problem->problem_id]['wa_cnt'] > 0}
+				<td style="background-color:#ff7a7a;color:black">-{$user[$contest_problem->problem_id]['wa_cnt']}</td>
+				{else}
+				<td></td>
+				{/if}
+			{/if}
+
+			{/volist}
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+</div>
+{/block}

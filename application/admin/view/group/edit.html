@@ -1,0 +1,85 @@
+{extend name="base" /}
+{block name="content"}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+<div class="x-body">
+    <form class="layui-form" id="groupEditForm">
+        <input type="text" name="group_id" id="group_id" value="{$group->id}" hidden>
+        <div class="layui-form-item">
+            <label for="group_name" class="layui-form-label">
+                <span class="x-red">*</span>班级名称
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="group_name" name="group_name" required="" lay-verify="required"
+                       autocomplete="off" class="layui-input" value="{$group->name}">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"><span class="x-red">*</span>是否公开</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type" value="0" title="公开" lay-filter="type" {if $group->type == 0} checked{/if}>
+                <input type="radio" name="type" value="1" title="私有" lay-filter="type" {if $group->type == 1} checked{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item" id="group-password-div" {if $group->type == 0} hidden{/if}>
+            <label for="group_password" class="layui-form-label">
+                <span class="x-red">*</span>密码
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="group_password" name="group_password" autocomplete="off" class="layui-input" value="{$group->password}">
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.description}</label>
+            <div class="layui-input-block">
+                <textarea name="description" id="description" class="layui-textarea">{$group->description}</textarea>
+                <script> var description = CKEDITOR.replace( 'description' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $('#groupEditForm').on('submit',function(){
+        var postData = {
+            'group_id': $('#group_id').val(),
+            'group_name': $('#group_name').val(),
+            'type': $("input[name='type']:checked").val(),
+            'group_password': $('#group_password').val(),
+            'description': description.getData()
+        };
+        console.log(postData);
+        $.post('/admin/group/save_json',postData,function(d){
+            if ('success' == d.status) {
+                layer.alert(d.msg,function(){
+                    parent.location.reload();
+                });
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+        return false;
+    });
+
+    layui.use('form', function(){
+        var form = layui.form;
+        form.on('radio(type)', function(data){
+            if (1 == data.value) {
+                $('#group-password-div').show();
+            }else{
+                $('#group-password-div').hide();
+            }
+        });
+    });
+</script>
+
+{/block}

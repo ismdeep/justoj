@@ -1,0 +1,149 @@
+{extend name="base" /}
+{block name="content"}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+<div class="x-body">
+    <form class="layui-form" id="problemEditForm">
+        <input type="text" name="problem_id" id="problem_id" value="{$problem->problem_id}" hidden>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$lang.title}</label>
+            <div class="layui-input-block">
+                <input type="text" name="title" id="title" value="{$problem->title}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">时间限制</label>
+                <div class="layui-input-inline">
+                    <input type="tel" name="time_limit" id="time_limit" value="{$problem->time_limit}" lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">S</div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">内存限制</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="memory_limit" id="memory_limit" value="{$problem->memory_limit}" lay-verify="required|number" autocomplete="off" class="layui-input">
+                </div>
+                <div class="layui-form-mid layui-word-aux">MB</div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.description}</label>
+            <div class="layui-input-block">
+                <textarea name="description" id="description" placeholder="请输入内容" class="layui-textarea">{$problem->description}</textarea>
+                <script> var description = CKEDITOR.replace( 'description' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.input}</label>
+            <div class="layui-input-block">
+                <textarea name="input" id="input" placeholder="请输入内容" class="layui-textarea">{$problem->input}</textarea>
+                <script> var input = CKEDITOR.replace( 'input' ); </script>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.output}</label>
+            <div class="layui-input-block">
+                <textarea name="output" id="output" placeholder="请输入内容" class="layui-textarea">{$problem->output}</textarea>
+                <script> var output = CKEDITOR.replace( 'output' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.sample_input}</label>
+            <div class="layui-input-block">
+                <textarea name="sample_input" id="sample_input" class="layui-textarea">{$problem->sample_input}</textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.sample_output}</label>
+            <div class="layui-input-block">
+                <textarea name="sample_output" id="sample_output" class="layui-textarea">{$problem->sample_output}</textarea>
+            </div>
+        </div>
+
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.hint}</label>
+            <div class="layui-input-block">
+                <textarea name="hint" id="hint" class="layui-textarea">{$problem->hint}</textarea>
+                <script> var hint = CKEDITOR.replace( 'hint' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$lang.source}</label>
+            <div class="layui-input-block">
+                <input type="text" name="source" id="source" value="{$problem->source}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_source}" class="layui-input">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $('#problemEditForm').on('submit',function(){
+        console.log('problemEditForm is submit.');
+        console.log($('#problemEditForm').serialize());
+        var postData = {
+            'problem_id': $('#problem_id').val(),
+            'title': $('#title').val(),
+            'time_limit': $('#time_limit').val(),
+            'memory_limit': $('#memory_limit').val(),
+            'description': description.getData(),
+            'input': input.getData(),
+            'output': output.getData(),
+            'sample_input': $('#sample_input').val(),
+            'sample_output': $('#sample_output').val(),
+            'hint': hint.getData(),
+            'source': $('#source').val()
+        };
+        $.post('/admin/problem/problem_save_json',postData,function(d){
+            if ('success' == d.status) {
+                $('#problem_id').val(d.data.problem_id);
+                layer.confirm(d.msg, {
+                    btn: ['查看题目','继续编辑','返回题目列表'] //按钮
+                }, function(){
+                    layer.closeAll();
+                    setTimeout(function(){
+                        window.open('/problem?id=' + d.data.problem_id);
+                    },100);
+                }, function(){
+                    layer.closeAll();
+                },function(){
+                    layer.closeAll();
+                    parent.location.reload();
+                });
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+        return false;
+    });
+
+
+
+    $(function(){
+        {if '' != $problem->problem_id}
+        $.post('/api/problem/details',{'problem_id': {$problem->problem_id}},function(d){
+            description.setData(d.data.description);
+            input.setData(d.data.input);
+            output.setData(d.data.output);
+            hint.setData(d.data.hint);
+        },'json');
+        {/if}
+
+    });
+</script>
+{/block}

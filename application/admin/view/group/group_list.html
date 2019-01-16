@@ -1,0 +1,53 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <div class="layui-row">
+        <a class="layui-btn layui-btn-sm" href="javascript:"
+        onclick="x_admin_show('添加班级', '/admin/group/add', 800,600)">{$lang.add_group}</a>
+    </div>
+    <table class="layui-hide" id="group-table"></table>
+</div>
+
+<script type="text/html" id="operationTpl">
+    <a href="javascript:" class="layui-btn layui-btn-sm" onclick="x_admin_show('修改班级信息 - {{d.name}}', '/admin/group/edit?id={{d.id}}',800,600);">修改</a>
+    <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_group({{d.id}}, '{{d.name}}');">删除</a>
+</script>
+
+<script type="text/javascript">
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //方法级渲染
+        table.render({
+            elem: '#group-table'
+            , url: '/admin/group/group_list_json'
+            , cols: [[
+                {field: 'id', title: 'id'}
+                , {field: 'name', title: '名称'}
+                , {field: 'type_text', title: '类型'}
+                , {field: 'password', title: '密码'}
+                , {field: 'create_time', title: '创建时间'}
+                , {field: 'contest_id', title: '操作', templet: '#operationTpl'}
+            ]]
+            , id: 'group-list'
+            , page: true
+            , limits : [10,20,50,100]
+        });
+    });
+
+    function delete_group(group_id,group_name){
+        layer.confirm('确定删除此班级？' + group_name, function(){
+            console.log(group_id);
+            $.post('/admin/group/delete_json',{'group_id':group_id},function(d){
+                layer.closeAll();
+                if ('success' == d.status) {
+                    location.reload();
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+    }
+
+</script>
+{/block}

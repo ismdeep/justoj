@@ -1,0 +1,168 @@
+{extend name="base" /}
+{block name="content"}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+<div class="x-body">
+    <div class="layui-form">
+        <input type="text" id="contest_id" value="{$contest->contest_id}" hidden>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$lang.title}</label>
+            <div class="layui-input-block">
+                <input type="text" id="title" value="{$contest->title}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开始</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="start_time" placeholder="请选择开始时间" value="{$contest->start_time}">
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">结束</label>
+                <div class="layui-input-inline">
+                    <input type="text" class="layui-input" id="end_time" placeholder="请选择结束时间" value="{$contest->end_time}">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">题目</label>
+            <div class="layui-input-block">
+                <div>
+                    <div class="layui-col-sm4">
+                        <input type="text" id="problem_ids" value="{$contest->problem_ids}" lay-verify="problem_ids" autocomplete="off" placeholder="请输入题目id，用英文逗号分隔" class="layui-input">
+                    </div>
+                    <div class="layui-col-sm2">
+                        <a class="layui-btn" href="javascript:" onclick="preview_problems()">预览</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">预览</label>
+            <div class="layui-input-block">
+                <div class="layui-col-sm6">
+                    <table id="addTable" class="layui-table">
+                        <thead>
+                        <tr>
+                            <th>{$lang.problem_id}</th>
+                            <th>{$lang.title}</th>
+                        </tr>
+                        </thead>
+                        <tbody id="problem-list">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.description}</label>
+            <div class="layui-input-block">
+                <textarea name="description" id="description" placeholder="请输入内容" class="layui-textarea">{$contest->description}</textarea>
+                <script> var description = CKEDITOR.replace( 'description' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="submit_contest();">保存</button>
+                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    var contest_id = $('#contest_id').val();
+</script>
+
+<script type="text/javascript">
+
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+
+        //日期时间选择器
+        laydate.render({
+            elem: '#start_time'
+            ,type: 'datetime'
+        });
+
+        laydate.render({
+            elem: '#end_time'
+            ,type: 'datetime'
+        });
+
+    });
+
+    /* 题目预览 */
+    function preview_problems(){
+        var data = {'problem_ids': $('#problem_ids').val()};
+        console.log(data);
+        $.post('/api/Problem/details_by_list',data,function(d){
+            if ('success' == d.status) {
+                var str = '';
+                for (var i = 0; i < d.data.length; i++) {
+                    str += '<tr>' +
+                        '<td>'+d.data[i].problem_id+'</td>' +
+                        '<td>'+d.data[i].title+'</td>' +
+                        '</tr>';
+                }
+                $('#problem-list').html(str);
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+    }
+
+    function submit_contest() {
+        var postData = {
+            'contest_id': $('#contest_id').val(),
+            'title': $('#title').val(),
+            'start_time': $('#start_time').val(),
+            'end_time': $('#end_time').val(),
+            'description': description.getData(),
+            'problem_ids': $('#problem_ids').val()
+            // 'input': input.getData(),
+            // 'output': output.getData(),
+            // 'sample_input': $('#sample_input').val(),
+            // 'sample_output': $('#sample_output').val(),
+            // 'hint': $('#hint').val(),
+            // 'source': $('#source').val()
+        };
+        console.log(postData);
+        $.post('/admin/contest/save_json',postData,function(d){
+            if ('success' == d.status) {
+                $('#contest_id').val(d.data.contest_id);
+                layer.confirm(d.msg, {
+                    btn: ['查看比赛','继续编辑','返回题目列表'] //按钮
+                }, function(){
+                    layer.closeAll();
+                    setTimeout(function(){
+                        window.open('/contest?id=' + d.data.contest_id);
+                    },100);
+                }, function(){
+                    layer.closeAll();
+                },function(){
+                    layer.closeAll();
+                    try{
+                        // 获得frame索引
+                        var index = parent.layer.getFrameIndex(window.name);
+                        //关闭当前frame
+                        parent.layer.close(index);
+                    }catch (e) {}
+                });
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+    }
+
+    $(function(){
+        console.log(contest_id);
+    });
+</script>
+{/block}

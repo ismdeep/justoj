@@ -1,0 +1,50 @@
+{extend name="base" /}
+{block name='body'}
+<div class="x-body">
+
+    <div class="layui-upload">
+
+        <div class="layui-form-item">
+            <button type="button" class="layui-btn layui-btn-normal" id="selected-file">选择文件</button>
+            <button type="button" class="layui-btn" id="btn-upload">开始上传</button>
+        </div>
+
+        <div class="layui-form-item">
+            <input class="layui-input" type="text" id="link">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+layui.use('upload', function(){
+    var $ = layui.jquery;
+    var upload = layui.upload;
+
+    //选完文件后不自动上传
+    upload.render({
+        elem: '#selected-file'
+        , before: function (obj) {
+            layer.msg('正在上传...', {
+                icon: 16
+                , shade: 0.30
+                , time : 0
+            });
+        }
+        , url: '/api/fileupload/upload'
+        , auto: false
+        , accept: 'file'
+        // ,multiple: true
+        ,bindAction: '#btn-upload'
+        ,done: function(res){
+            layer.closeAll();
+            console.log(res);
+            $('#link').val('/' + res.data);
+        }
+        ,error: function(){
+            //演示失败状态，并实现重传
+            layer.alert('文件过大，无法上传。');
+        }
+    });
+});
+</script>
+{/block}

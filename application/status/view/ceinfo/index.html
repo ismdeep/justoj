@@ -1,0 +1,8 @@
+{extend name="extra@layout/user" /}
+{block name="body"}
+<div class="container">
+	<pre>{$lang.author}: {$solution->user_id}    {$lang.language}: {$solution->language_text}    {$lang.problem_id}: {$solution->problem_id}</pre>
+	<pre>{$source_code->source}</pre>
+	<pre>{$compile_info->error}</pre>
+</div>
+{/block}

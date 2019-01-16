@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="description" content="JustOJ、江西理工大学编程俱乐部、在线编程平台、只为提高你的编程水平。">
+	<meta name="keywords" content="ACM-ICPC,Online Judge,编程,C语言,C++,Java,Python,ACMer,JustOJ">
+	<link rel="shortcut icon" href="/favicon.gif" type="image/x-icon" />
+	<title>{block name='titlepart'}{$lang['welcome_to_justoj']}{/block}</title>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
+
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+	<!--[if lt IE 9]>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.0/html5shiv.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/respond.js/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+	<!--引入layer.js文件 begin-->
+    <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+	<!--引入layer.js文件 end-->
+
+	<style>
+		.navbar {
+			border-radius: 0px;
+		}
+		pre {
+			border-radius: 0px;
+		}
+		/*.btn {*/
+			/*border-radius: 0px;*/
+		/*}*/
+
+	</style>
+</head>
+<body>
+{if true == $need_edit_profile}
+<div style="padding:6px 0;text-align:center;background:#f8eca6;color:#847108;display:none;min-width:1020px;display: block;">温馨提示：请前往 <a href="/profile/editmyprofile">完善个人信息</a> 。</div>
+{/if}
+
+{if $show_browser_banner}
+<p style="margin: 10px;font-size:16px;">
+	为了获得更好的浏览体验，我们强烈建议您升级到最新版本的IE浏览器，或者使用较新版本的
+	<a href="https://www.google.cn/chrome" target="_blank" style="font-weight:bold;">Google Chrome</a>、
+	<a href="https://www.mozilla.org/zh-CN/firefox/" target="_blank" style="font-weight:bold;">Firefox</a> 等。
+	如果您是使用的是Windows XP操作系统，我们建议您下载
+	<a href="/upload/ismdeep/20180414/Firefox-ESR-full-latest.exe">FireFox浏览器</a>。</p>
+{/if}
+
+{block name="navpart"}
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#example-navbar-collapse">
+				<span class="sr-only"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/">JustOJ</a>
+		</div>
+		<div class="collapse navbar-collapse" id="example-navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li{if $nav == 'problem'} class="active"{/if}><a href="/problems">{$lang.problem}</a></li>
+				<li{if $nav == 'status'} class="active"{/if}><a href="/status">{$lang.status}</a></li>
+				<li{if $nav == 'rank'} class="active"{/if}><a href="/rank">{$lang.rank}</a></li>
+				<li class="dropdown{if $nav == 'groups'} active{/if}">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
+						{$lang.group} <b class="caret"></b>
+					</a>
+					<ul class="dropdown-menu">
+						{if $is_administrator}
+						<li><a href="/groups/Mycreation">{$lang.my_creation}</a></li>
+						{/if}
+						<li><a href="/groups/Myjoin">{$lang.my_join}</a></li>
+						<li class="divider"></li>
+						<li><a href="/groups">{$lang.allgroup}</a></li>
+					</ul>
+				</li>
+				<li{if $nav == 'homeworks'} class="active"{/if}><a href="/homeworks">{$lang.homework}</a></li>
+				<li{if $nav == 'contests'} class="active"{/if}><a href="/contests">{$lang.contest}</a></li>
+				<li{if $nav == 'paste'} class="active"{/if}><a href="/paste">{$lang.paste_code}</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				{if isset($loginuser)}
+				{if $is_administrator}
+				<li><a class="" href="/admin"><span class="glyphicon glyphicon-cog"></span> {$lang.admin_system}</a></li>
+				{/if}
+				<li><a class="" href="/profile"><span class="glyphicon glyphicon-user"></span> {$loginuser->user_id}</a></li>
+				<li><a class="" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-out"></span> {$lang.logout}</a></li>
+				{else}
+				<li><a class="" href="/register"><span class="glyphicon glyphicon-user"></span> {$lang.register}</a></li>
+				<li><a class="" href="/login?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-in"></span> {$lang.login}</a></li>
+				{/if}
+			</ul>
+		</div>
+	</div>
+</nav>
+{/block}
+
+{block name="body"}
+<div class="container">
+</div>
+{/block}
+
+{block name="footer"}
+<div style="text-align: center;margin-top:20px;margin-bottom: 20px;">
+	<hr>
+	&copy; 2018&nbsp;&nbsp;<a href="/">JustOJ</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	<a href="javascript:;" onclick="$.get('/api/Uilanguage/set_lang?language=cn',function(d){location.reload();},'json');">中文</a>&nbsp;
+	<a href="javascript:;" onclick="$.get('/api/Uilanguage/set_lang?language=en',function(d){location.reload();},'json');">English</a>&nbsp;
+	| Any problems please contact <a href="mailto:ismdeep@qq.com">ismdeep@qq.com</a>
+	| <a href="https://justoj.readthedocs.io" target="_blank">在线说明文档</a>
+</div>
+{/block}
+
+</body>
+</html>

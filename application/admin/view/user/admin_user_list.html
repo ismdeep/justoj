@@ -1,0 +1,58 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <a class="layui-btn layui-btn-sm" href="javascript:" onclick="x_admin_show('添加管理员','/admin/user/add_admin',800,630);">添加管理员</a>
+    <table class="layui-hide" id="admin-user-list"></table>
+</div>
+
+
+
+<script type="text/html" id="admin_user_op">
+    {if $is_root}
+    <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" onclick="remove_privilege('{{d.user_id}}');">踢出</button>
+    {/if}
+</script>
+
+<script type="text/javascript">
+
+    // $('#user-search-form').on('submit',function(){
+    //     x_admin_show('选择添加至管理员','/admin/user/add_to_admin',)
+        // $.post('/admin/user/user_search_by_keyword_json',$('#user-search-form').serialize(),function(d){
+        //     console.log(d);
+        // },'json');
+        // return false;
+    // });
+
+    layui.use('table', function () {
+        var user_list_table = layui.table;
+        user_list_table.render({
+            elem: '#admin-user-list'
+            , url: '/admin/user/admin_user_list_json'
+            , cols: [[
+                {field: 'user_id', title: '用户名'}
+                , {field: 'nick', title: '昵称'}
+                , {field: 'school', title: '学校'}
+                , {field: 'academy', title: '学院'}
+                , {field: 'class', title: '班级'}
+                , {field: 'phone', title: '联系电话'}
+                , {title: '操作', templet: '#admin_user_op'}
+            ]]
+            , id: 'admin_user_list_table'
+        });
+    });
+
+    function remove_privilege(user_id) {
+        layer.confirm('是否移除 ' + user_id + ' 的管理员权限？',function(){
+            $.post('/admin/user/remove_admin_privilege_json',{'user_id':user_id},function(d){
+                layer.closeAll();
+                if ('success' == d.status) {
+                    var table = layui.table;
+                    table.reload('admin_user_list_table');
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+    }
+</script>
+{/block}

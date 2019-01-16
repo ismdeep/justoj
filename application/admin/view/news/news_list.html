@@ -1,0 +1,106 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <div class="layui-row">
+        <a class="layui-btn layui-btn-sm" href="javascript:"
+           onclick="x_admin_show('添加新闻', '/admin/news/add', 800,600)">{$lang.add_news}</a>
+    </div>
+    <br>
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" id="newsSearchForm">
+            <input type="text" name="news_keyword" id="news_keyword" placeholder="关键字" autocomplete="off" class="layui-input">
+            <div class="layui-input-inline">
+                <select name="status" id="status" lay-filter="status">
+                    <option value="">状态</option>
+                    <option value="N">正常</option>
+                    <option value="Y">已禁用</option>
+                </select>
+            </div>
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+        </form>
+    </div>
+    <table class="layui-hide" id="news-list"></table>
+</div>
+
+<script type="text/html" id="operationTpl">
+    <button class="layui-btn layui-btn-sm" onclick="x_admin_show('新闻预览','/admin/news/preview?news_id={{d.news_id}}',800,600);">预览</button>
+    <button class="layui-btn layui-btn-sm" onclick="x_admin_show('编辑新闻 - {{d.title}}','/admin/news/edit?news_id={{d.news_id}}',800,600);">编辑</button>
+    <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_news({{d.news_id}});">删除</a>
+</script>
+
+<script type="text/html" id="defunctTpl">
+    <input type="checkbox" lay-skin="switch" lay-text="开|关" id="{{d.news_id}}" lay-filter="switchTest" {{# if ('N' == d.defunct) { }}checked{{# } }}>
+</script>
+
+
+<script type="text/javascript">
+    layui.use(['form', 'layedit', 'laydate', 'table'], function () {
+        var news_list_table = layui.table;
+
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+
+        news_list_table.render({
+            elem: '#news-list'
+            , url: '/admin/news/news_list_json'
+            , cols: [[
+                {field: 'news_id', title: 'ID'}
+                , {field: 'title', title: '标题'}
+                , {field: 'defunct_text', title: '状态', width: '8%', templet: '#defunctTpl'}
+                , {field: 'time', width: '13%', title: '创建时间'}
+                , {title: '操作', templet: '#operationTpl'}
+            ]]
+            , id: 'news_list_table'
+            , page: true
+            , loading: true
+        });
+
+
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            layer.msg('正在操作', {
+                icon: 16
+                , shade: 0.01
+            });
+            let news_id = data.elem.id;
+            console.log(news_id);
+            let defunct = this.checked ? 'N' : 'Y';
+            $.post('/admin/news/change_defunct_json',{'news_id': news_id, 'defunct': defunct}, function(d){
+                if ('success' == d.status) {
+                    setTimeout(function(){
+                        layer.closeAll();
+                        table.reload('news_list_table');
+                    }, 300);
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+
+    });
+
+    $('#newsSearchForm').on('submit',function(){
+        var layer = layui.table;
+        layer.reload('news_list_table', {where: {'news_keyword':$('#news_keyword').val(), 'defunct': $('#status').val()}, page: {curr: 1}})
+        return false;
+    });
+
+    function delete_news(news_id) {
+        layer.confirm('确认删除？',function(){
+            layer.closeAll();
+            $.post('/admin/news/delete_json',{'news_id': news_id},function(d){
+                if ('success' == d.status) {
+                    var layer = layui.table;
+                    layer.reload('news_list_table', {where: {'news_keyword':$('#news_keyword').val(), 'defunct': $('#status').val()}})
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+    }
+
+</script>
+{/block}

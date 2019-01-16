@@ -1,0 +1,53 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" id="user-search-form">
+            <input class="layui-input" type="text" name="keyword" id="keyword" placeholder="关键字" autocomplete="off">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+        </form>
+    </div>
+    <table class="layui-hide" id="user-list"></table>
+</div>
+
+<script type="text/html" id="user_op">
+<button class="layui-btn layui-btn-sm" onclick="add_to_admin('{{d.user_id}}');">添加至管理员</button>
+</script>
+
+<script type="text/javascript">
+    layui.use('table', function () {
+        var user_list_table = layui.table;
+        user_list_table.render({
+            elem: '#user-list'
+            , url: '/admin/user/user_search_by_keyword_json'
+            , cols: [[
+                {field: 'user_id', title: '用户名'}
+                , {field: 'nick', title: '昵称'}
+                , {field: 'class', title: '班级'}
+                , {title: '操作', width: 130, templet: '#user_op'}
+            ]]
+            , page: true
+            , id: 'user_list_table'
+        });
+    });
+
+    $('#user-search-form').on('submit',function(){
+        var table = layui.table;
+        table.reload('user_list_table',{page: {curr: 1},where: {'keyword': $('#keyword').val()}})
+        return false;
+    });
+
+    function add_to_admin(user_id) {
+        layer.confirm('确定添加 ' + user_id + ' 至管理员？',function(){
+            layer.closeAll();
+            $.post('/admin/user/add_admin_privilege',{'user_id': user_id},function(d){
+                if ('success' == d.status) {
+                    parent.location.reload();
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+    }
+</script>
+{/block}

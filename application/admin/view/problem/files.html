@@ -1,0 +1,124 @@
+{extend name="base" /}
+
+{block name='navpart'}{/block}
+
+{block name='content'}
+<div class="x-body">
+
+	<div class="layui-form-item">
+		<a class="layui-btn" onclick="x_admin_show('上传文件 - {$problem->problem_id} - {$problem->title}', '/admin/problem/add_files?problem_id={$problem->problem_id}')"> <i class="layui-icon">&#xe67c;</i> {$lang.upload}</a>
+		<a class="layui-btn layui-btn-danger" onclick="delete_selected()"><i class="layui-icon"></i> {$lang.delete}</a>
+		<a class="layui-btn" href="/admin/Problem/download_files?problem_id={$problem->problem_id}"> <i class="layui-icon">&#xe601;</i> 打包下载</a>
+	</div>
+
+	<table class="layui-table">
+		<thead>
+		<tr>
+			<th><input type="checkbox" name="checkall" id="checkall"></th>
+			<th>{$lang.file_name}</th>
+			<th>{$lang.file_size}</th>
+			<th>MD5</th>
+			<th>{$lang.operation}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='files' id='file'}
+		<tr>
+			<td><input type="checkbox" name="check1" value="{$file.name}"></td>
+			<td>{$file.name}</td>
+			<td>{$file.size} B</td>
+			<td style="font-family: 'Courier','Courier New'">{$file.md5}</td>
+			<td>
+				<a class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_file('{$file.name}')"><i class="layui-icon"></i> {$lang.delete}</a>
+				<a class="layui-btn layui-btn-sm" href="/admin/problem/download_single_file?problem_id={$problem->problem_id}&file_name={$file.name}"> <i class="layui-icon">&#xe601;</i> {$lang['download']}</a>
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+</div>
+
+
+<!--文件上传模态框 begin-->
+<!--<div class="modal fade" id="fileUploadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">-->
+	<!--<div class="modal-dialog">-->
+		<!--<div class="modal-content">-->
+			<!--<div class="modal-header">-->
+				<!--<button type="button" class="close" data-dismiss="modal"-->
+						<!--aria-hidden="true">×-->
+				<!--</button>-->
+				<!--<h4 class="modal-title" id="myModalLabel">-->
+					<!--上传文件-->
+				<!--</h4>-->
+			<!--</div>-->
+			<!--<form action="/admin/Problem/upload_files" enctype="multipart/form-data" method="post">-->
+				<!--<div class="modal-body">-->
+					<!--<input type="text" name="problem_id" value="{$problem->problem_id}" hidden>-->
+					<!--<input type="file" name="data_files[]" multiple/>-->
+				<!--</div>-->
+				<!--<div class="modal-footer">-->
+					<!--<button type="button" class="btn btn-default"-->
+							<!--data-dismiss="modal">关闭-->
+					<!--</button>-->
+					<!--<button type="submit" class="btn btn-primary">-->
+						<!--{$lang.upload}-->
+					<!--</button>-->
+				<!--</div>-->
+			<!--</form>-->
+		<!--</div>&lt;!&ndash; /.modal-content &ndash;&gt;-->
+	<!--</div>&lt;!&ndash; /.modal-dialog &ndash;&gt;-->
+<!--</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+<!--文件上传模态框 end-->
+
+
+<script type="text/javascript">
+    $('#checkall').click(function(){
+        if (this.checked) {
+            $("input[name='check1']:checkbox").attr('checked',true);
+        }else{
+            $("input[name='check1']:checkbox").attr('checked',false);
+        }
+    });
+
+    /**
+     * 删除选中的文件
+     */
+    function delete_selected(){
+        var file_names = new Array();
+        $('input[name="check1"]:checked').each(function(){
+            file_names.push($(this).val());
+        });
+        layer.confirm("{$lang.are_you_sure_to_delete_the_selected_files}",function(){
+            $.post('/api/Problem/delete_files',{'problem_id': {$problem->problem_id},'file_names': file_names},function(d){
+                if ('success' == d.status) {
+                    location.reload();
+                }else{
+                    layer.alert(d.msg,function(){
+                        location.reload();
+                    });
+                }
+            },'json');
+        });
+    }
+
+    /**
+     * 删除某个文件
+     */
+    function delete_file(file_name) {
+        var file_names = new Array();
+        file_names.push(file_name);
+        layer.confirm("{$lang.are_you_sure_to_delete_the_selected_files}",function(){
+            $.post('/api/Problem/delete_files',{'problem_id': {$problem->problem_id},'file_names': file_names},function(d){
+                if ('success' == d.status) {
+                    location.reload();
+                }else{
+                    layer.alert(d.msg,function(){
+                        location.reload();
+                    });
+                }
+            },'json');
+        });
+    }
+
+</script>
+{/block}

@@ -1,0 +1,99 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <div class="layui-row">
+        <a class="layui-btn layui-btn-sm" href="javascript:"
+           onclick="x_admin_show('添加作业','/admin/contest/add');">添加作业</a>
+    </div>
+    <table class="layui-hide" id="homework-list"></table>
+</div>
+
+<!--页面模板 begin-->
+<script type="text/html" id="operationTpl">
+    <a href="javascript:" onclick="x_admin_show('编辑 - {{d.title}}', '/admin/contest/edit?contest_id={{d.contest_id}}');">编辑</a>
+    {if $is_root}
+    <a href="javascript:" onclick="set_as_contest({{d.contest_id}});">切换为比赛</a>
+    {/if}
+</script>
+
+<script type="text/html" id="defunctTpl">
+    <input type="checkbox" lay-skin="switch" lay-text="开|关" id="{{d.contest_id}}" lay-filter="switchTest" {{# if ('N' == d.defunct) { }}checked{{# } }}>
+</script>
+
+<script type="text/html" id="privateTpl">
+{{# if (0 == d.private) { }}
+<span style="color: green">Public</span>
+{{# } else { }}
+<span style="color: red">Private</span>
+{{# } }}
+</script>
+<!--页面模板 end-->
+
+<script type="text/javascript">
+    var table;
+    layui.use(['form', 'layedit', 'laydate', 'table'], function () {
+        table = layui.table;
+
+        var form = layui.form
+            ,layer = layui.layer
+            ,layedit = layui.layedit
+            ,laydate = layui.laydate;
+
+        //方法级渲染
+        table.render({
+            elem: '#homework-list'
+            , url: '/admin/homework/homework_list_json'
+            , cols: [[
+                {field: 'contest_id', title: 'id'}
+                , {field: 'title', title: '标题'}
+                , {field: 'private', title: '权限', templet: '#privateTpl'}
+                , {field: 'defunct', title: '状态', templet: '#defunctTpl'}
+                , {field: 'contest_id', title: '操作', templet: '#operationTpl'}
+            ]]
+            , id: 'homework_list'
+            , page: true
+        });
+
+
+        //监听指定开关
+        form.on('switch(switchTest)', function(data){
+            layer.msg('正在操作', {
+                icon: 16
+                , shade: 0.01
+            });
+            let contest_id = data.elem.id;
+            console.log(contest_id);
+            let defunct = this.checked ? 'N' : 'Y';
+            $.post('/admin/contest/change_defunct_json',{'contest_id': contest_id, 'defunct': defunct}, function(d){
+                if ('success' == d.status) {
+                    setTimeout(function(){
+                        layer.closeAll();
+                        table.reload('homework_list');
+                    }, 300);
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+
+    });
+
+    function set_as_contest(contest_id) {
+        layer.msg('正在操作', {
+            icon: 16
+            , shade: 0.01
+        });
+        $.post('/admin/contest/set_contest_type_json', {'contest_id': contest_id, 'type': 0}, function(d){
+            console.log(d);
+            if ('success' == d.status) {
+                setTimeout(function(){
+                    layer.closeAll();
+                    table.reload('homework_list');
+                }, 300);
+            }else{
+                layer.alert(d.msg);
+            }
+        }, 'json');
+    }
+</script>
+{/block}
