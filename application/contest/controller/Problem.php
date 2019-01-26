@@ -87,8 +87,8 @@ class Problem extends ContestBaseController
 					->find()) {
 					$problem->ac = true;
 				}else{
-					if(SolutionModel::
-					where("contest_id", $problem->contest_id)
+					if((new SolutionModel())
+                        ->where("contest_id", $problem->contest_id)
 						->where('user_id', $this->loginuser->user_id)
 						->where('problem_id', $problem->problem_id)
 						->where('in_date','>', $this->contest->start_time)
@@ -100,8 +100,23 @@ class Problem extends ContestBaseController
 			}
 		}
 
+        $allowed_langs = [];
+        $allowed_langs_all = $this->allowed_langs();
+		if ('*' == $this->contest->langmask) {
+		    $allowed_langs = $allowed_langs_all;
+        }else{
+		    $allowed_lang_ids = explode(',', $this->contest->langmask);
+		    foreach ($allowed_lang_ids as $allowed_lang_id) {
+                foreach ($allowed_langs_all as $item) {
+                    if (intval($item['id']) == intval($allowed_lang_id)) {
+                        $allowed_langs[] = $item;
+                    }
+                }
+            }
+        }
+
 		$this->assign('contest_problems', $contest_problems);
-        $this->assign('allowed_langs', $this->allowed_langs());
+        $this->assign('allowed_langs', $allowed_langs);
 		return view();
 	}
 }

@@ -28,6 +28,24 @@
         </div>
 
         <div class="layui-form-item">
+            <label class="layui-form-label">编程语言</label>
+            <div class="layui-input-block">
+                <input type="radio" name="langmask_flag" lay-filter="langmask_flag" value="*"   title="所有" {if '*' == $contest->langmask}checked=""{/if}>
+                <input type="radio" name="langmask_flag" lay-filter="langmask_flag" value="cus" title="勾选" {if '*' != $contest->langmask}checked=""{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane="" id="lang-list-div" {if '*' == $contest->langmask}hidden{/if}>
+            <label class="layui-form-label">语言列表</label>
+            <div class="layui-input-block">
+                {volist name="allowed_langs_all" id="plang"}
+                <input type="checkbox" name="allowed_langs" value="{$plang['id']}" lay-skin="primary" title="{$plang['name']}" {if $plang["allowed"] == true}checked=""{/if}>
+                {/volist}
+            </div>
+        </div>
+
+
+        <div class="layui-form-item">
             <label class="layui-form-label">题目</label>
             <div class="layui-input-block">
                 <div>
@@ -82,8 +100,9 @@
 
 <script type="text/javascript">
 
-    layui.use('laydate', function() {
+    layui.use(['laydate', 'form'], function() {
         var laydate = layui.laydate;
+        var form = layui.form;
 
         //日期时间选择器
         laydate.render({
@@ -96,6 +115,13 @@
             ,type: 'datetime'
         });
 
+        form.on('radio(langmask_flag)', function(data){
+            if ('*' == data.value) {
+                $('#lang-list-div').hide();
+            }else{
+                $('#lang-list-div').show();
+            }
+        });
     });
 
     /* 题目预览 */
@@ -119,21 +145,27 @@
     }
 
     function submit_contest() {
+        var allowed_lang_ids = '';
+        var checks = document.getElementsByName("allowed_langs");
+        for (var i = 0; i < checks.length; i++) {
+            if (checks[i].checked) {
+                if ('' != allowed_lang_ids) {
+                    allowed_lang_ids += ',';
+                }
+                allowed_lang_ids += checks[i].value;
+            }
+        }
+
         var postData = {
-            'contest_id': $('#contest_id').val(),
-            'title': $('#title').val(),
-            'start_time': $('#start_time').val(),
-            'end_time': $('#end_time').val(),
-            'description': description.getData(),
-            'problem_ids': $('#problem_ids').val()
-            // 'input': input.getData(),
-            // 'output': output.getData(),
-            // 'sample_input': $('#sample_input').val(),
-            // 'sample_output': $('#sample_output').val(),
-            // 'hint': $('#hint').val(),
-            // 'source': $('#source').val()
+            'contest_id'   : $('#contest_id').val(),
+            'title'        : $('#title').val(),
+            'start_time'   : $('#start_time').val(),
+            'end_time'     : $('#end_time').val(),
+            'description'  : description.getData(),
+            'problem_ids'  : $('#problem_ids').val(),
+            'langmask_flag': $('input:radio[name=langmask_flag]:checked').val(),
+            'allowed_langs': allowed_lang_ids
         };
-        console.log(postData);
         $.post('/admin/contest/save_json',postData,function(d){
             if ('success' == d.status) {
                 $('#contest_id').val(d.data.contest_id);
@@ -161,8 +193,5 @@
         },'json');
     }
 
-    $(function(){
-        console.log(contest_id);
-    });
 </script>
 {/block}

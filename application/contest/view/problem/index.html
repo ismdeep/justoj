@@ -113,7 +113,7 @@
 						<div class="row">
 							<label for="submit-source" class="col-md-2 col-form-label" style="text-align: right">{$lang.source_code}:</label>
 							<div class="col-md-10">
-								<textarea class="form-control" style="font-family: Consolas,Courier,monospace;" name="source" id="submit-source" rows="15" placeholder="At least 50 characters"></textarea>
+								<textarea onclick="$('#submit-alert').hide();" class="form-control" style="font-family: Consolas,Courier,monospace;" name="source" id="submit-source" rows="15" placeholder="At least 50 characters"></textarea>
 							</div>
 						</div>
 					</div>
@@ -270,7 +270,10 @@
                 $('#solution-pending-spin').show();
                 // 监控题目状态
                 status_monitor(d.data.solution_id);
-            }
+            }else{
+            	$('#submit-alert').html(d.msg);
+            	$('#submit-alert').show();
+			}
         },'json');
     }
 

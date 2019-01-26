@@ -66,6 +66,14 @@ class Contest extends AdminBaseController
         $contest->start_time = '';
         $contest->end_time = '';
         $contest->problem_ids = '';
+        $contest->langmask = '*';
+
+        $allowed_langs_all = $this->allowed_langs();
+        for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
+            $allowed_langs_all[$i]['allowed'] = true;
+        }
+        $this->assign('allowed_langs_all', $allowed_langs_all);
+
         $this->assign('contest', $contest);
         return view('edit');
     }
@@ -81,16 +89,35 @@ class Contest extends AdminBaseController
     {
         intercept('' == $contest_id, 'contest_id参数不可为空。');
         $contest = (new ContestModel())->where('contest_id', $contest_id)->find();
-
         $contest_problems = (new ContestProblemModel())->where('contest_id', $contest_id)->order('num', 'asc')->select();
-
         $problem_ids_arr = [];
         foreach ($contest_problems as $p) $problem_ids_arr[] = $p->problem_id;
-
         $problem_ids = implode(',', $problem_ids_arr);
-
         $contest->problem_ids = $problem_ids;
 
+        /**
+         * 获取运行使用的语言列表
+         */
+        $allowed_langs_all = $this->allowed_langs();
+        $allowed_lang_ids = explode(',', $contest->langmask);
+        for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
+            $allowed_langs_all[$i]['allowed'] = false;
+        }
+        if ('*' == $contest->langmask) {
+            for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
+                $allowed_langs_all[$i]['allowed'] = true;
+            }
+        }
+
+        foreach ($allowed_lang_ids as $allowed_lang_id) {
+            for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
+                if (intval($allowed_lang_id) == intval($allowed_langs_all[$i]['id'])) {
+                    $allowed_langs_all[$i]['allowed'] = true;
+                }
+            }
+        }
+
+        $this->assign('allowed_langs_all', $allowed_langs_all);
         $this->assign('contest', $contest);
         return view();
     }
@@ -102,6 +129,8 @@ class Contest extends AdminBaseController
      * @param string $title
      * @param string $start_time
      * @param string $end_time
+     * @param string $langmask_flag
+     * @param string $allowed_langs
      * @param string $description
      * @param string $problem_ids
      * @param int $private
@@ -109,7 +138,18 @@ class Contest extends AdminBaseController
      * @return \think\response\View
      * @throws \think\exception\DbException
      */
-    public function save_json($contest_id = '', $title = '', $start_time = '', $end_time = '', $description = '', $problem_ids = '', $private = 0, $password = '')
+    public function save_json(
+        $contest_id = '',
+        $title = '',
+        $start_time = '',
+        $end_time = '',
+        $langmask_flag = '',
+        $allowed_langs = '',
+        $description = '',
+        $problem_ids = '',
+        $private = 0,
+        $password = ''
+    )
     {
 
         intercept_json('' == $title, '请输入标题');
@@ -133,7 +173,7 @@ class Contest extends AdminBaseController
         // 判断contest_id是否存在
         $contest = null;
         if ('' == $contest_id) {
-            $contest = new ContestModel();
+            $contest = new ContestModel(); // 创建比赛
             $contest->defunct = 'N';
             $contest->type = 1;
         }else{
@@ -147,7 +187,9 @@ class Contest extends AdminBaseController
             (new ContestProblemModel())->where('contest_id', $contest_id)->delete();
         }
 
-        // 创建比赛
+        /**
+         * 写入信息
+         */
         $contest->title = $title;
         $contest->start_time = $start_time;
         $contest->end_time = $end_time;
@@ -157,6 +199,14 @@ class Contest extends AdminBaseController
             $contest->password = $password;
         }else{
             $contest->password = '';
+        }
+        /**
+         * 写入编程语言信息
+         */
+        if ('*' == $langmask_flag) {
+            $contest->langmask = '*';
+        }else{
+            $contest->langmask = $allowed_langs;
         }
         $contest->save();
 

@@ -86,7 +86,8 @@ class Solution extends ApiBaseController
 
         $this->need_login('json');
         intercept_json('' == $contest_id, 'contest_id不可为空');
-        intercept_json(null == (new ContestModel())->where('contest_id', $contest_id)->find(), '比赛不存在');
+        $contest = (new ContestModel())->where('contest_id', $contest_id)->find();
+        intercept_json(null == $contest, '比赛不存在');
         intercept_json('' == $problem_num, 'problem_num不可为空');
         intercept_json('' == $language, 'language不可为空');
         intercept_json('' == $code, 'code不可为空');
@@ -99,6 +100,24 @@ class Solution extends ApiBaseController
                     'in_date' => ['>', date('Y-m-d H:i:s', time() - 3)]
                 ]
             )->find(), '提交过于频繁');
+
+        $allowed_langs_all = $this->allowed_langs();
+        $language_valid = false;
+        if ('*' == $contest->langmask) {
+            $language_valid = true;
+        }else{
+            $lang_ids = explode(',', $contest->langmask);
+            foreach ($lang_ids as $lang_id) {
+                if ($language == intval($lang_id)) {
+                    $language_valid = true;
+                }
+            }
+        }
+
+        intercept_json(!$language_valid, '当前比赛/作业禁用此语言。');
+
+
+
 
         $solution = new SolutionModel();
 		$solution->result = 14;
