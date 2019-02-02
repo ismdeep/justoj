@@ -106,7 +106,7 @@
 						<i class="fa fa-close"></i>
 					</a>
 				</button>
-				<h5 class="modal-title" id="solutionModalLabel"><a target="_blank">#<span id="solution_id"></span></a>
+				<h5 class="modal-title" id="solutionModalLabel"><a id="solution-link" href="javascript:" target="_blank">#<span id="solution_id"></span></a>
 				</h5>
 			</div>
 			<div class="modal-body">
@@ -154,6 +154,7 @@
         $.get('/api/Solution/details?id=' + id, function (d) {
 			console.log(d);
             $('#solution_id').html(id);
+            $('#solution-link').attr('href', '/status/solution/show/solution_id/' + id);
             $('#solution_id_2').html(id);
             $('#solution-result').html(d.data.result_text);
             $('#solution-code-length').html(d.data.code_length + ' B');

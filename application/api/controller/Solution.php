@@ -178,8 +178,7 @@ class Solution extends ApiBaseController
 		$solution->fk();
 		$solution->result_text = $this->lang[$solution->result_code];
 		$solution->source_code = SourceCodeModel::get(['solution_id' => $solution->solution_id]);
-		$solution->source_code->source = str_replace('<', '&lt;', $solution->source_code->source);
-		$solution->source_code->source = str_replace('>', '&gt;', $solution->source_code->source);
+		$solution->source_code->source = htmlspecialchars($solution->source_code->source);
 
 		// 如果编译错误则带上编译错误信息
 		if (11 == $solution->result) {
