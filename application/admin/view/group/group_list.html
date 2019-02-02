@@ -3,13 +3,13 @@
 <div class="x-body">
     <div class="layui-row">
         <a class="layui-btn layui-btn-sm" href="javascript:"
-        onclick="x_admin_show('添加班级', '/admin/group/add', 800,600)">{$lang.add_group}</a>
+        onclick="x_admin_show('添加班级', '/admin/group/add');">{$lang.add_group}</a>
     </div>
     <table class="layui-hide" id="group-table"></table>
 </div>
 
 <script type="text/html" id="operationTpl">
-    <a href="javascript:" class="layui-btn layui-btn-sm" onclick="x_admin_show('修改班级信息 - {{d.name}}', '/admin/group/edit?id={{d.id}}',800,600);">修改</a>
+    <a href="javascript:" class="layui-btn layui-btn-sm" onclick="x_admin_show('修改班级信息 - {{d.name}}', '/admin/group/edit?id={{d.id}}');">修改</a>
     <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_group({{d.id}}, '{{d.name}}');">删除</a>
 </script>
 

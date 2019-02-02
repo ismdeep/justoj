@@ -27,6 +27,12 @@ class Solution extends UserBaseController
         intercept('' == $solution_id, 'invalid');
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, 'invalid');
+
+        // 检查是否有访问权限
+        if (!($this->is_administrator || ($this->loginuser && $solution->user_id == $this->loginuser->user_id))) {
+            return $this->lang['do_not_have_privilege'];
+        }
+
         $solution->fk();
         $solution->result_text = $this->lang[$solution->result_code];
         $source_code = (new SourceCodeModel())->where('solution_id', $solution_id)->find();
