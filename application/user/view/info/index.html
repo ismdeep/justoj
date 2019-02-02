@@ -27,22 +27,6 @@
                 <td>提交</td>
                 <td align="center"><a href="/status?username={$user->user_id}">{$submit_count}</a></td>
             </tr>
-            <tr>
-                <td>School:</td>
-                <td align="center">{$user->school}</td>
-            </tr>
-            <tr>
-                <td>学院:</td>
-                <td align="center">{$user->academy}</td>
-            </tr>
-            <tr>
-                <td>班级:</td>
-                <td align="center">{$user->class}</td>
-            </tr>
-            <tr>
-                <td>Email:</td>
-                <td align="center">{if $is_login}{$user->email}{else}******{/if}</td>
-            </tr>
             </tbody>
         </table>
     </div>
