@@ -10,6 +10,15 @@ $code_arr = array(
 );
 ?>
 <div class="container">
+	<form class="form-horizontal" action="{$target}" method="get">
+		<div class="col-sm-5" style="padding-left: 0px">
+			<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="关键字: 标题">
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn-success"> <span class="glyphicon glyphicon-search"></span> 搜索</button>
+		</div>
+	</form>
+
 	<table class="table table-hover">
 		<thead>
 		<tr>

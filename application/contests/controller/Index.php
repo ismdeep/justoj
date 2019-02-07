@@ -22,15 +22,27 @@ class Index extends UserBaseController
 		$this->assign('nav', 'contests');
 	}
 
-	public function index()
+	public function index($keyword = '')
 	{
+        $like_str = '%%';
+	    if ('' != $keyword) {
+	        $l = explode(' ', $keyword);
+            $like_str = '%';
+	        foreach ($l as $item) {
+	            $like_str .= "{$item}%";
+            }
+        }
+
+
 		$order_str = "start_time < '".date('Y-m-d H:i:s')."',end_time > '".date('Y-m-d H:i:s')."' desc, start_time desc";
 		$contests = ContestModel::where('type', 0)
 			->where('defunct','N')
+            ->where('title', 'like', $like_str)
 			->orderRaw($order_str)
 			->paginate(10);
+		if ('' != $keyword) $contests->appends('keyword', $keyword);
 		$this->assign('title_val', $this->lang['contest']);
 		$this->assign('contests', $contests);
-		return view();
+		return view('contests@index/index', ['keyword' => $keyword, 'target' => '/contests']);
 	}
 }
