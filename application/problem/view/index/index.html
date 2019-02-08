@@ -338,8 +338,9 @@ function language_change(){
 function rejudge_problem(problem_id) {
     layer.confirm('{$lang.are_you_sure_to_rejudge_this_problem}',function(){
         $.get('/api/Solution/rejudge_problem?problem_id='+problem_id,function(d){
+			layer.closeAll();
             if ('success' == d.status) {
-                layer.alert('Rejudging');
+                window.open('/status/rejudge/problem/id/' + problem_id);
 			}else{
                 layer.alert(d.msg);
 			}
