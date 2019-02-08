@@ -208,7 +208,7 @@ class Solution extends ApiBaseController
 			return json(['status' => 'error', 'msg' => 'Problem is still rejudging.']);
 		}
 
-		Db::query("update solution set result=1 where problem_id=".$problem_id);
+		Db::query("update solution set result=1 where problem_id=".$problem_id . " and contest_id is null");
 		return json(['status' => 'success', 'msg' => 'rejudge success']);
 	}
 }
