@@ -21,7 +21,6 @@
         setInterval(function(){
             console.log(id);
             $.post('/status/rejudge/problem_json', {'id': id}, function(d){
-                console.log(d.retdata);
                 $('#rejudge-progress-bar').attr('style', 'width: ' + d.retdata.percent_text);
                 $('#rejudge-progress-bar').html(d.retdata.done_cnt + ' / ' + d.retdata.total_cnt);
             }, 'json');
