@@ -186,7 +186,7 @@
 						</thead>
 						<tbody>
 						<tr>
-							<td><span id="solution_id_2"></span></td>
+							<td><a target="_blank" id="solution_id_2"></a></td>
 							<td><span id="solution-result"></span><span id="solution-pending-spin">&nbsp;<i class="fa fa-refresh fa-spin"></i></span></td>
 							<td id="solution-code-length"></td>
 							<td id="solution-memory"></td>
@@ -304,6 +304,7 @@ function submit_code(){
             $('#solution_id').html(d.data.solution_id);
 			$('#solution-link').attr('href', '/status/solution/show/solution_id/' + d.data.solution_id);
             $('#solution_id_2').html(d.data.solution_id);
+			$('#solution_id_2').attr('href', '/status/solution/show/solution_id/' + d.data.solution_id);
             $('#solution-code-length').html(d.data.code_length+' B');
             $('#solution-memory').html('--');
             $('#solution-exe-time').html('--');
