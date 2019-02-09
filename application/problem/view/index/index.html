@@ -302,7 +302,7 @@ function submit_code(){
         if ('success' == d.status) {
             console.log(d);
             $('#solution_id').html(d.data.solution_id);
-			$('#solution-link').attr('href', '/status/solution/show/solution_id/' + id);
+			$('#solution-link').attr('href', '/status/solution/show/solution_id/' + d.data.solution_id);
             $('#solution_id_2').html(d.data.solution_id);
             $('#solution-code-length').html(d.data.code_length+' B');
             $('#solution-memory').html('--');
