@@ -67,7 +67,13 @@
 		$solution->result_text = $lang[$solution->result_code];
 		?>
 		<tr>
-			<td width="10%">{$solution->solution_id}</td>
+			<td width="10%">
+				{if $is_administrator || ($loginuser && $solution->user_id == $loginuser->user_id)}
+				<a target="_blank" href="/status/solution/show/solution_id/{$solution->solution_id}">{$solution->solution_id}</a>
+				{else}
+				{$solution->solution_id}
+				{/if}
+			</td>
 			<td width="10%"><a href="/user/info?user={$solution->user_id}">{$solution->user_id}</a></td>
 			<td width="10%"><a href="/problem?id={$solution->problem_id}">{$solution->problem_id}</a></td>
 			{if $solution->result_code == 'result_code_ce'}
