@@ -6,9 +6,8 @@
 <div class="container">
     <form id="pasteForm">
         <div class="form-group">
-            <label class="col-sm-1">{$lang.language}</label>
-            <div class="col-sm-3">
-                <select name="lang">
+            <div style="width: 300px">
+                <select class="form-control" name="lang">
                     {foreach $allowed_langs as $key=>$name}
                     <option value="{$key}">{$name}</option>
                     {/foreach}
@@ -16,7 +15,7 @@
             </div>
         </div>
 
-        <p><textarea style="font-family:Courier New;width:100%" name="code" rows="25" cols="100"></textarea></p>
+        <p><textarea style="font-family:Courier New;width:100%" name="code" rows="20" cols="100"></textarea></p>
         <p><button type="submit" class="btn btn-success">Paste</button></p>
     </form>
 </div>

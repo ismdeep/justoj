@@ -42,7 +42,7 @@ class GroupBaseController extends UserBaseController
 		$group_join = GroupJoinModel::get(['user_id' => $this->loginuser->user_id, 'group_id' => $request->get('id')]);
 		if ($group_join && $group_join->status == 1) $this->have_permission = true;
 
-		if (!$this->have_permission) $this->redirect('/group/Join?id='.$request->get('id'));
+		if (!$this->have_permission) $this->redirect('/group/join?id='.$request->get('id'));
 
     }
 }
