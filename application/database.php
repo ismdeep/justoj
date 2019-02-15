@@ -25,7 +25,10 @@ return [
     // 连接dsn
     'dsn'             => '',
     // 数据库连接参数
-    'params'          => [],
+    'params'          => [
+        \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8',
+        \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
+    ],
     // 数据库编码默认采用utf8
     'charset'         => 'utf8',
     // 数据库表前缀

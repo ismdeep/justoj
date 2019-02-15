@@ -20,7 +20,8 @@
 	<![endif]-->
 
 	<!--引入layer.js文件 begin-->
-    <script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>
+    <!--<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>-->
+	<script src="https://cdn.jsdelivr.net/gh/bootcdn/BootCDN/ajax/libs/layer/2.3/layer.js"></script>
 	<!--引入layer.js文件 end-->
 
 	<style>
@@ -74,9 +75,9 @@
 					</a>
 					<ul class="dropdown-menu">
 						{if $is_administrator}
-						<li><a href="/groups/Mycreation">{$lang.my_creation}</a></li>
+						<li><a href="/groups/mycreation">{$lang.my_creation}</a></li>
 						{/if}
-						<li><a href="/groups/Myjoin">{$lang.my_join}</a></li>
+						<li><a href="/groups/myjoin">{$lang.my_join}</a></li>
 						<li class="divider"></li>
 						<li><a href="/groups">{$lang.allgroup}</a></li>
 					</ul>

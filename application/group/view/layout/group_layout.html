@@ -14,9 +14,9 @@
 		</div>
 		<div class="collapse navbar-collapse" id="example-navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li{if 'notifications' == $nav} class="active"{/if}><a href="/group/Notifications?id={$group->id}">{$lang.notifications}</a></li>
-				<li{if 'members' == $nav} class="active"{/if}><a href="/group/Members?id={$group->id}">{$lang.members}</a></li>
-				<li{if 'tasks' == $nav} class="active"{/if}><a href="/group/Tasks?id={$group->id}">{$lang.tasks}</a></li>
+				<li{if 'notifications' == $nav} class="active"{/if}><a href="/group/notifications?id={$group->id}">{$lang.notifications}</a></li>
+				<li{if 'members' == $nav} class="active"{/if}><a href="/group/members?id={$group->id}">{$lang.members}</a></li>
+				<li{if 'tasks' == $nav} class="active"{/if}><a href="/group/tasks?id={$group->id}">{$lang.tasks}</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a class="" href="/"><span class="glyphicon glyphicon-home"></span> {$lang.back_to_home}</a></li>
