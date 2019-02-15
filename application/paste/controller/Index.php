@@ -14,6 +14,14 @@ use app\extra\controller\BaseController;
 
 class Index extends BaseController
 {
+    /**
+     * Paste
+     * @param string $id
+     * @return \think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function index($id = '')
     {
         $this->assign('nav', 'paste');
