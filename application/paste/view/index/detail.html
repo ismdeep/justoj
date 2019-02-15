@@ -1,7 +1,7 @@
 {extend name="extra@layout/common" /}
 {block name="body"}
 <div class="container">
-    <pre>作者: {$paste->user_id}    语言: {$paste->lang_text}</pre>
+    <pre>{$lang.author}: {$paste->user_id}    {$lang.language}: {$paste->lang_text}</pre>
     <pre id="solution-source-code" style="padding: 0px;tab-size: 4"><code class="{$paste->lang}">{$paste->code}</code></pre>
 </div>
 
