@@ -114,10 +114,10 @@ return [
     ],
     [
         'id'      => 12,
-        'code'    => 'Scheme',
-        'name'    => 'Guile',
+        'code'    => 'Lisp(Scheme)',
+        'name'    => 'Lisp(Scheme)',
         'version' => 'guile 2.0.9',
-        'allowed' => false
+        'allowed' => true
     ],
     [
         'id'      => 15,

@@ -9,7 +9,6 @@
 namespace app\extra\controller;
 
 
-use app\api\model\LanguageDictionaryModel;
 use app\api\model\UiLanuageModel;
 use app\api\model\UserModel;
 use think\Config;
@@ -87,7 +86,7 @@ class BaseController extends Controller
 
         // 设置用户UI语言
         $dicts = Config::get('lang_dict');
-        $this->show_ui_lang = 'cn'; // 默认语言
+        $this->show_ui_lang = 'en'; // 默认语言
         if (!$this->loginuser) {
             if (Session::get('ui_language')) $this->show_ui_lang = Session::get('ui_language');
         } else {
@@ -95,7 +94,7 @@ class BaseController extends Controller
             if (!$ui_language_obj) {
                 $ui_language_obj = new UiLanuageModel();
                 $ui_language_obj->user_id = $this->loginuser->user_id;
-                $ui_language_obj->language = 'cn';
+                $ui_language_obj->language = 'en';
                 $ui_language_obj->save();
             }
             $this->show_ui_lang = $ui_language_obj->language;

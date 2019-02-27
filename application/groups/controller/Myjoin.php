@@ -23,7 +23,7 @@ class Myjoin extends UserBaseController
 
 	public function index ()
 	{
-		if (!$this->loginuser) $this->redirect('/login?redirect=%2Fgroups%2FMyjoin');
+		if (!$this->loginuser) $this->redirect('/login?redirect=%2Fgroups%2Fmyjoin');
 		$group_joins = GroupJoinModel::where('user_id', $this->loginuser->user_id)->order('id','desc')->paginate(10);
 		$this->assign('group_joins', $group_joins);
 		return view();
