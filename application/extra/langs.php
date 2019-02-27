@@ -117,7 +117,7 @@ return [
         'code'    => 'Scheme',
         'name'    => 'Guile',
         'version' => 'guile 2.0.9',
-        'allowed' => false
+        'allowed' => true
     ],
     [
         'id'      => 15,
