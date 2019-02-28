@@ -87,7 +87,7 @@ class BaseController extends Controller
 
         // 设置用户UI语言
         $dicts = Config::get('lang_dict');
-        $this->show_ui_lang = 'cn'; // 默认语言
+        $this->show_ui_lang = 'en'; // 默认语言
         if (!$this->loginuser) {
             if (Session::get('ui_language')) $this->show_ui_lang = Session::get('ui_language');
         } else {
