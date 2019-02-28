@@ -95,7 +95,7 @@ class BaseController extends Controller
             if (!$ui_language_obj) {
                 $ui_language_obj = new UiLanuageModel();
                 $ui_language_obj->user_id = $this->loginuser->user_id;
-                $ui_language_obj->language = 'cn';
+                $ui_language_obj->language = 'en';
                 $ui_language_obj->save();
             }
             $this->show_ui_lang = $ui_language_obj->language;
