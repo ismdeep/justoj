@@ -9,7 +9,6 @@
 namespace app\extra\controller;
 
 
-use app\api\model\LanguageDictionaryModel;
 use app\api\model\UiLanuageModel;
 use app\api\model\UserModel;
 use think\Config;
