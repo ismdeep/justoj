@@ -17,6 +17,7 @@ use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
 use app\extra\controller\ApiBaseController;
 use think\Db;
+use think\Exception;
 
 class Solution extends ApiBaseController
 {
@@ -30,7 +31,6 @@ class Solution extends ApiBaseController
      */
 	public function submit_problem_code($problem_id='', $language='', $code='')
 	{
-
 	    $this->need_login('json');
 	    intercept_json('' == $problem_id, 'problem_id不可为空');
         intercept_json('' == $language, 'language不可为空');
@@ -194,21 +194,34 @@ class Solution extends ApiBaseController
 		return json(['status' => 'success', 'data' => $solution]);
 	}
 
-	/**
-	 * 重判题目
-	 */
+    /**
+     * 重判题目
+     * @param $problem_id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
 	public function rejudge_problem($problem_id)
 	{
 		if (!$this->is_root) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 
-		$problem = ProblemModel::get(['problem_id' => $problem_id]);
+		$problem = (new ProblemModel())->find(['problem_id' => $problem_id]);
 		if (!$problem) return json(['status' => 'error', 'msg' => $this->lang['no_such_problem']]);
 		// 查看是否有题目还在判题中
-		if (Db::query("select count(solution_id) as cnt from solution where problem_id=".$problem_id." and result=1")[0]['cnt'] > 0) {
+
+        $cnt = (new SolutionModel())
+            ->where('problem_id', intval($problem_id))
+            ->where('result', 1)
+            ->count();
+		if ($cnt > 0) {
 			return json(['status' => 'error', 'msg' => 'Problem is still rejudging.']);
 		}
 
-		Db::query("update solution set result=1 where problem_id=".$problem_id . " and contest_id is null");
-		return json(['status' => 'success', 'msg' => 'rejudge success']);
+        SolutionModel::update(
+            ['result' => 1],
+            ['problem_id' => intval($problem_id), 'contest_id' => null], 'result');
+
+		return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
 	}
 }
