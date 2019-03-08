@@ -339,14 +339,21 @@ function language_change(){
 // 重判题目
 function rejudge_problem(problem_id) {
     layer.confirm('{$lang.are_you_sure_to_rejudge_this_problem}',function(){
-        $.get('/api/Solution/rejudge_problem?problem_id='+problem_id,function(d){
-			layer.closeAll();
-            if ('success' == d.status) {
-                window.open('/status/rejudge/problem/id/' + problem_id);
-			}else{
-                layer.alert(d.msg);
-			}
-		},'json');
+		layer.closeAll();
+		layer.msg('正在操作....', {
+			icon: 16
+			,shade: 0.01
+		});
+        setTimeout(function(){
+			$.get('/api/Solution/rejudge_problem?problem_id='+problem_id,function(d){
+				layer.closeAll();
+				if ('success' == d.status) {
+					window.open('/status/rejudge/problem/id/' + problem_id);
+				}else{
+					layer.alert(d.msg);
+				}
+			},'json');
+		}, 300);
 	});
 }
 
