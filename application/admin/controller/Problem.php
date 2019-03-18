@@ -129,7 +129,7 @@ class Problem extends AdminBaseController
 		$fp=fopen("/opt/upload/cache/data_zip/".$cache_id."/".$problem_id.".zip",'r');//只读方式打开
 		while(!feof($fp)&&($filesize-$count>0)){
 			$data=fread($fp,$buffer);
-			$count+=$data;//计数
+//			$count+=$data;//计数
 			echo $data;//传数据给浏览器端
 		}
 		fclose($fp);
