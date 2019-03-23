@@ -1,0 +1,93 @@
+{extend name="extra@themes/mincss/layout/user" /}
+{block name='titlepart'}{$lang['status']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+
+    <form class="" action="/status" method="get">
+        <p>
+            <span>{$lang.run_id}：</span><input type="text" name="run_id" value="{$run_id}">&nbsp;&nbsp;
+            <span>{$lang.username}：</span><input type="text" name="username" value="{$username}">&nbsp;&nbsp;
+            <span>{$lang.problem_id}：</span><input type="text" name="problem_id" value="{$problem_id}">&nbsp;&nbsp;
+            <select class="form-control" style="border-radius: 0px" name="result">
+                <option value="" {if $result==""}selected{/if}>{$lang.all_result}</option>
+                <option value="4" {if $result=="4"}selected{/if}>{$lang.result_code_ac}</option>
+                <option value="0" {if $result=="0"}selected{/if}>{$lang.result_code_pending}</option>
+                <option value="1" {if $result=="1"}selected{/if}>{$lang.result_code_rejuding}</option>
+                <option value="2" {if $result=="2"}selected{/if}>{$lang.result_code_compiling}</option>
+                <option value="3" {if $result=="3"}selected{/if}>{$lang.result_code_running}</option>
+                <option value="5" {if $result=="5"}selected{/if}>{$lang.result_code_pe}</option>
+                <option value="6" {if $result=="6"}selected{/if}>{$lang.result_code_wa}</option>
+                <option value="7" {if $result=="7"}selected{/if}>{$lang.result_code_tle}</option>
+                <option value="8" {if $result=="8"}selected{/if}>{$lang.result_code_mle}</option>
+                <option value="9" {if $result=="9"}selected{/if}>{$lang.result_code_ole}</option>
+                <option value="10" {if $result=="10"}selected{/if}>{$lang.result_code_re}</option>
+                <option value="11" {if $result=="11"}selected{/if}>{$lang.result_code_ce}</option>
+            </select>
+            &nbsp;&nbsp;
+            <select class="form-control" style="border-radius: 0px" name="language">
+                <option value="" {if $language==""}selected{/if}>{$lang.all_language}</option>
+                {volist name='allowed_langs' id='allowed_lang'}
+                <option value="{$allowed_lang.id}" {if $language !='' && $language == $allowed_lang.id}selected{/if}>{$allowed_lang.name}</option>
+                {/volist}
+            </select>
+            &nbsp;&nbsp;
+            <button type="submit">{$lang.submit}</button>
+        </p>
+    </form>
+    <br>
+    <hr>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th width="5%">{$lang.run_id}</th>
+            <th width="10%">{$lang.username}</th>
+            <th width="5%">{$lang.problem}</th>
+            <th width="15%">{$lang.result}</th>
+            <th width="10%">{$lang.memory}</th>
+            <th width="10%">{$lang.exe_time}</th>
+            <th width="10%">{$lang.language}</th>
+            <th width="10%">{$lang.code_length}</th>
+            <th width="20%">{$lang.submit_time}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name='solutions' id='solution'}
+        <?php
+		$solution->fk();
+        $solution->result_text = $lang[$solution->result_code];
+        ?>
+        <tr>
+            <td width="10%">
+                {if $is_administrator || ($loginuser && $solution->user_id == $loginuser->user_id)}
+                <a target="_blank" href="/status/solution/show/solution_id/{$solution->solution_id}">{$solution->solution_id}</a>
+                {else}
+                {$solution->solution_id}
+                {/if}
+            </td>
+            <td width="10%"><a href="/user/info?user={$solution->user_id}">{$solution->user_id}</a></td>
+            <td width="10%"><a href="/problem?id={$solution->problem_id}">{$solution->problem_id}</a></td>
+            {if $solution->result_code == 'result_code_ce'}
+            <td width="10%"><a href="/status/ceinfo?id={$solution->solution_id}" target="_blank">{$solution->result_text}</a>
+            </td>
+            {else}
+            <td width="10%" style="color: {$solution_result_color[$solution->result_code]}">{$solution->result_text}
+            </td>
+            {/if}
+            <td width="10%">{$solution->memory} B</td>
+            <td width="10%">{$solution->time} ms</td>
+            <td width="10%">
+                {if $is_administrator || ($loginuser && $solution->user_id == $loginuser->user_id)}
+                <a target="_blank" href="/status/solution/show/solution_id/{$solution->solution_id}" >{$solution->language_text}</a>
+                {else}
+                {$solution->language_text}
+                {/if}
+            </td>
+            <td width="10%">{$solution->code_length} B</td>
+            <td width="20%">{$solution->in_date}</td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {$solutions->render()}
+</div>
+{/block}

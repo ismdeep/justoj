@@ -27,7 +27,7 @@ class Index extends BaseController
         $this->assign('nav', 'paste');
         if ('' == $id) {
             $this->assign('allowed_langs', paste_allowed_langs());
-            return view('index');
+            return view($this->theme_root . '/paste');
         }
 
         $paste = (new PasteModel())->where('id', $id)->find();
@@ -37,6 +37,6 @@ class Index extends BaseController
         $paste->lang_text = paste_allowed_langs()[$paste->lang];
 
         $this->assign('paste', $paste);
-        return view('detail');
+        return view($this->theme_root . '/paste-detail');
     }
 }

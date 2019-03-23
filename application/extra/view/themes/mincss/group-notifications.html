@@ -1,0 +1,48 @@
+{extend name="extra@themes/mincss/layout-group/group-layout" /}
+{block name='titlepart'}{$lang.notifications} - {$group->name}{/block}
+{block name='body'}
+<div class="container">
+	{if $group->ownner_id == $loginuser->user_id}
+	<p>
+		<button class="btn btn-sm btn-a" onclick="alert('暂未提供当前浏览器下发布公告的功能。');">{$lang.add_notification}</button>
+	</p>
+	{/if}
+
+	{volist name='notifications' id='notification'}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			{$notification->title}
+			{if $group->ownner_id == $loginuser->user_id}
+			<a href="javascript:;" class="glyphicon glyphicon-remove" onclick="remove_notification({$notification->id}, '{$notification->title}');">删除</a>
+			{/if}
+		</div>
+		<div class="panel-body">
+			{$notification->msg}
+		</div>
+	</div>
+	{/volist}
+	{if sizeof($notifications) <= 0}
+	---- 暂无公告 ----
+	{/if}
+</div>
+
+
+
+<script type="text/javascript">
+/**
+ * 删除班级公告
+ * @param notification_id
+ */
+function remove_notification(notification_id, title) {
+    if(confirm('确定删除此公告信息？<br>标题：' + title)){
+		$.post('/api/Group/remove_notification', {'notification_id': notification_id}, function(d){
+			if ('success' == d.status) {
+				location.reload();
+			}else{
+				layer.alert(d.msg);
+			}
+		}, 'json');
+	}
+}
+</script>
+{/block}

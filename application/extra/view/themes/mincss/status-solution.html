@@ -1,0 +1,51 @@
+{extend name="extra@themes/mincss/layout/user" /}
+{block name='navpart'}{/block}
+{block name='titlepart'}{$lang['status']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+    <div id="info-panel">
+        <table class="table table-reflow">
+            <thead>
+            <tr>
+                <th>{$lang.run_id}</th>
+                <th>{$lang.status}</th>
+                <th>{$lang.code_length}</th>
+                <th>{$lang.memory}</th>
+                <th>{$lang.exe_time}</th>
+                <th>{$lang.language}</th>
+                <th>{$lang.submit_time}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><span id="solution_id_2">{$solution->solution_id}</span></td>
+                <td><span id="solution-result">{$solution->result_text}</span></td>
+                <td id="solution-code-length">{$solution->code_length}</td>
+                <td id="solution-memory">{$solution->memory}</td>
+                <td id="solution-exe-time">{$solution->time}</td>
+                <td id="solution-code-language">{$solution->language_text}</td>
+                <td id="solution-submittime">{$solution->in_date}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="code-panel">
+        <pre id="solution-source-code" style="padding: 0px;tab-size: 4"><code class="c">{$source_code->source}</code></pre>
+    </div>
+    <div id="compile-info-panel" hidden>
+        <pre id="solution-compile-error" style="padding: 0px;tab-size: 4"></pre>
+    </div>
+    <div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
+</div>
+
+<link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+
+<script type="text/javascript">
+    $('pre code').each(function(i, block) {
+        hljs.highlightBlock(block);
+    });
+</script>
+
+{/block}

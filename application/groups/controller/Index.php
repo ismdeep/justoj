@@ -42,8 +42,8 @@ class Index extends UserBaseController
         	foreach ($groups as $group) $group->loginuser_group_join = null;
 		}
         $groups->appends('keyword', $keyword);
-        $this->assign('keyword', ($keyword));
+        $this->assign('keyword', htmlspecialchars($keyword));
         $this->assign('groups', $groups);
-        return view();
+        return view($this->theme_root . '/groups');
     }
 }

@@ -1,0 +1,259 @@
+{extend name="extra@themes/bootstrap/layout-group/group-layout" /}
+{block name='titlepart'}{$lang.tasks} - {$group->name}{/block}
+{block name='body'}
+<script src="/static/laydate/laydate.js"></script>
+
+
+<div class="container">
+	{if $group->ownner_id == $loginuser->user_id}
+	<button class="btn btn-success" type="button" onclick="open_add_task();">{$lang.add_homework}</button>
+	{/if}
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>{$lang.title}</th>
+			<th>{$lang.status}</th>
+			<th></th>
+			<th>{$lang.operation}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='tasks' id='task'}
+		<tr>
+			<td><a href="/contest?id={$task->contest_id}" target="_blank">{$task->contest->title}</a></td>
+			<td>
+				<div class="progress">
+					{if $task->contest->loginuser_ac_cnt == $task->contest->problem_cnt}
+					<div class="progress-bar progress-bar-success"
+						 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
+					</div>
+					{else}
+					<div class="progress-bar progress-bar-warning"
+						 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
+					</div>
+					{/if}
+				</div>
+			</td>
+			<td>
+				{$task->contest->loginuser_ac_cnt} / {$task->contest->problem_cnt}
+			</td>
+			<td>
+				<a href="/contest/Rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+</div>
+
+
+<!--添加作业之模态框 begin-->
+<div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+				<h4 class="modal-title" id="editContestModalLabel">{$lang.add_homework}</h4>
+			</div>
+			<div class="modal-body">
+				<div data-spy="scroll" data-target="#navbar-edit-contest" data-offset="0"
+					 class="scrollspy-edit-contest">
+					<div class="card-block">
+						<div class="form-group row">
+							<label for="contest-title" class="col-xs-2 col-form-label">{$lang.title}</label>
+							<div class="col-xs-10">
+								<input class="form-control" type="text" id="contest-title" placeholder="eg: 信息安全111班-数据结构-栈">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="contest-begin-time" class="col-xs-2 col-form-label">{$lang.start_time}</label>
+							<div class="col-xs-10">
+								<input class="form-control" type="text" id="contest-begin-time"
+									   placeholder="请选择开始时间">
+							</div>
+						</div>
+
+						<div class="form-group row">
+							<label for="contest-end-time" class="col-xs-2 col-form-label">{$lang.end_time}</label>
+							<div class="col-xs-10">
+								<input class="form-control" type="text" id="contest-end-time"
+									   placeholder="请选择结束时间">
+							</div>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="contest-description-edit" class="col-xs-2 col-form-label">{$lang.description}</label>
+						<div class="col-xs-10">
+							<textarea class="form-control" name="description" id="contest-description-edit" rows="5"
+									  data-original-title="" title=""></textarea>
+						</div>
+					</div>
+
+					<div class="form-group row">
+						<label for="contest-description-edit" class="col-xs-2 col-form-label">{$lang.problem}</label>
+						<div class="col-xs-7">
+							<input class="form-control" type="text" id="problem-ids"
+								   placeholder="eg: 1000,1001">
+						</div>
+						<div class="col-xs-3">
+							<a class="btn btn-success" href="javascript:;" onclick="preview_problems()">{$lang.preview_problems}</a>
+						</div>
+					</div>
+				</div>
+				<h4 id="panel-problems"></h4>
+				<div class="card-block" id="card-problems">
+					<div class="alert alert-warning" id="info-problem-set-fixed" hidden>
+						You can't change problem set after contest starts.
+					</div>
+
+					<table id="addTable" class="sorted_table table table-hover">
+						<thead>
+						<tr>
+							<th>{$lang.problem_id}</th>
+							<th>{$lang.title}</th>
+						</tr>
+						</thead>
+						<tbody id="task-list">
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+			<div class="modal-footer">
+				<div class="alert alert-danger" role="alert" id="edit-alert" style="display: none"></div>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary" id="btn-confirm" onclick="add_task()">Confirm</button>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<!--添加作业之模态框 end-->
+
+<script type="text/javascript">
+
+	function getNowFormatDate2(val) {
+		var date = new Date();
+		date = new Date(date.getTime() + val + 10 * 60 * 1000);
+		var seperator1 = "-";
+		var seperator2 = ":";
+		var month = date.getMonth() + 1;
+		var strDate = date.getDate();
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " ";
+		if (hour < 10) currentdate += '0';
+		currentdate += hour + seperator2;
+		if (minute < 10) currentdate += '00' + seperator2;
+		else currentdate += parseInt(minute/10) + '0' + seperator2;
+		// if (second < 10) currentdate += '0';
+		currentdate += '00';
+		//+ date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
+		return currentdate;
+	}
+
+	function open_add_task(){
+		$('#contest-title').val('');
+		$('#contest-description-edit').val('');
+		$('#problem-ids').val('');
+		$('#contest-begin-time').val('');
+		$('#contest-end-time').val('');
+		layer.confirm('是否通过其他作业复试作业列表？', function(){
+			layer.closeAll();
+			//prompt层
+			layer.prompt({title: '输入作业/比赛编号', formType: 3}, function(contest_id, index){
+				layer.close(index);
+				console.log(contest_id);
+				$.post('/api/contest/base_info', {'contest_id': contest_id},function(d){
+					if('success' == d.status) {
+						$('#contest-title').val(d.data.title);
+						$('#contest-description-edit').val(d.data.description);
+						$('#problem-ids').val(d.data.problem_ids);
+						$('#contest-begin-time').val(getNowFormatDate2(0));
+						$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
+						$('#addTaskModal').modal('show');
+					}else{
+						layer.alert(d.msg);
+					}
+				},'json');
+
+			});
+		}, function(){
+			layer.closeAll();
+			$('#contest-begin-time').val(getNowFormatDate2(0));
+			$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
+			$('#addTaskModal').modal('show');
+		});
+		// $('#addTaskModal').modal('show');
+	}
+
+	/* 题目预览 */
+	function preview_problems(){
+        var data = {'problem_ids': $('#problem-ids').val()};
+        console.log(data);
+	    $.post('/api/Problem/details_by_list',data,function(d){
+	        if ('success' == d.status) {
+	            var str = '';
+	            for (var i = 0; i < d.data.length; i++) {
+	                str += '<tr>' +
+                        '<td>'+d.data[i].problem_id+'</td>' +
+                        '<td>'+d.data[i].title+'</td>' +
+                        '</tr>';
+				}
+				$('#task-list').html(str);
+			}else{
+	            layer.alert(d.msg);
+			}
+		},'json');
+	}
+
+    /**
+	 * 添加比赛
+     */
+    function add_task(){
+        var data = {
+            'group_id': {$group->id},
+			'title': $('#contest-title').val(),
+			'begin_time' : $('#contest-begin-time').val(),
+			'end_time': $('#contest-end-time').val(),
+			'description': $('#contest-description-edit').val(),
+			'problem_ids': $('#problem-ids').val()
+		};
+        $.post('/api/Group/add_task', data, function(d){
+            console.log(d);
+            if ('success' == d.status) {
+                layer.alert(d.msg, function(){
+                    location.reload();
+				});
+			}else{
+                layer.alert(d.msg);
+			}
+		}, 'json')
+	}
+
+    $(function () {
+        // $('#addTaskModal').modal('show');
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#contest-begin-time', type: 'datetime'
+        });
+        laydate.render({
+            elem: '#contest-end-time', type: 'datetime'
+        });
+    });
+</script>
+
+{/block}

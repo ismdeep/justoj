@@ -39,7 +39,7 @@ class Tasks extends GroupBaseController
 			$task->contest->loginuser_ac_cnt = Db::query("select count(DISTINCT problem_id) as cnt from solution where contest_id=".$task->contest_id." and user_id='".$this->loginuser->user_id."' and result=4")[0]['cnt'];
 		}
 		$this->assign('tasks', $tasks);
-		return view();
+		return view($this->theme_root . '/group-tasks');
 	}
 
 	/**

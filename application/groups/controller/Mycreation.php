@@ -26,6 +26,6 @@ class Mycreation extends UserBaseController
 		if (!$this->is_administrator) $this->redirect('/login?redirect=%2Fgroups%2FMycreation');
 		$groups = GroupModel::where('ownner_id', $this->loginuser->user_id)->order('id', 'asc')->paginate(10);
 		$this->assign('groups', $groups);
-		return view();
+		return view($this->theme_root . '/groups-my-creation');
 	}
 }

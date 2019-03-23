@@ -1,0 +1,112 @@
+{extend name="extra@themes/bootstrap/layout-group/group-layout" /}
+{block name='titlepart'}{$lang.members} - {$group->name}{/block}
+{block name='body'}
+<?php $status_arr = array('未处理','已通过','已踢出'); ?>
+<div class="container">
+	<table class="table table-hover" width="95%">
+		<thead>
+		<tr>
+			<th>{$lang.username}</th>
+			<th>{$lang.nickname}</th>
+			<th>{$lang.status}</th>
+			{if $is_group_manager}
+			<th>{$lang.download}</th>
+			<th>{$lang.operation}</th>
+			{/if}
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='members' id='member'}
+		<tr>
+			<td><a href="/user/Info?user={$member->user_id}" target="_blank">{$member->user_id}</a></td>
+			<td>{$member->nickname}</td>
+			<td>
+				{if 0 == $member->status}
+				<span class="label label-info">{$status_arr[$member->status]}</span>
+				{/if}
+
+				{if 1 == $member->status}
+				<span class="label label-success">{$status_arr[$member->status]}</span>
+				{/if}
+
+				{if 2 == $member->status}
+				<span class="label label-danger">{$status_arr[$member->status]}</span>
+				{/if}
+
+			</td>
+			{if $is_group_manager}
+			<td>
+				<a href="javascript:;" onclick="layer.alert('暂不可用');">{$lang.download}</a>
+			</td>
+			<td>
+				{if $member->status == 0}
+				<!--未处理-->
+				<button class="btn btn-sm btn-success" onclick="group_join_pass('{$member->id}')">{$lang.pass}</button>
+				<button class="btn btn-sm btn-danger" onclick="group_join_reject('{$member->id}')">{$lang.reject}</button>
+				{/if}
+
+				{if $member->status == 1}
+				<!--通过-->
+				<!--<button class="btn btn-sm btn-danger" onclick="group_join_reject('{$member->id}')">{$lang.reject}</button>-->
+				{/if}
+
+				{if $member->status == 2}
+				<!--拒绝-->
+				<!--<button class="btn btn-sm btn-success" onclick="group_join_pass('{$member->id}')">{$lang.pass}</button>-->
+				{/if}
+
+				<button class="btn btn-sm btn-danger" onclick="group_join_delete('{$member->id}','{$member->user_id}','{$member->nickname}')">{$lang.delete}</button>
+			</td>
+			{/if}
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+</div>
+
+<script type="text/javascript">
+function group_join_pass(group_join_id){
+    var data = {
+        'group_join_id': group_join_id,
+		'status': 1
+	};
+    layer.confirm('{$lang.are_you_sure_to_pass_the_group_join}', function(){
+		$.post('/api/Group/group_join_status_change',data,function(d){
+		    if ('success' == d.status) location.reload();
+		    else layer.alert(d.msg);
+		},'json');
+	});
+}
+
+function group_join_reject(group_join_id){
+    var data = {
+        'group_join_id': group_join_id,
+        'status': 2
+    };
+    layer.confirm('{$lang.are_you_sure_to_reject_the_group_join}', function(){
+        $.post('/api/Group/group_join_status_change',data,function(d){
+            if ('success' == d.status) location.reload();
+            else layer.alert(d.msg);
+        },'json');
+    });
+}
+
+
+/**
+ * 删除加入班级之记录
+ * @param group_join_id
+ */
+	function group_join_delete(group_join_id, user_id, nickname) {
+    layer.confirm('确定删除此加入记录？({$lang.username}: '+user_id+', {$lang.nickname}: '+nickname+')', function(){
+        $.post('/api/Group/remove_group_join', {'group_join_id': group_join_id}, function(d){
+            if ('success' == d.status) {
+                location.reload();
+			}else{
+                layer.alert(d.msg);
+			}
+		}, 'json');
+	});
+}
+
+</script>
+{/block}

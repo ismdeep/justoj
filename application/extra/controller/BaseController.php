@@ -28,6 +28,8 @@ class BaseController extends Controller
 
     public $show_browser_banner;
 
+    public $theme_root = 'extra@themes/bootstrap';
+
 
     /**
      * 获取可以使用的语言列表
@@ -55,10 +57,23 @@ class BaseController extends Controller
     {
         parent::__construct($request);
 
+        $this->theme_root = 'extra@themes/bootstrap';
+
+
+        $this->assign('theme_root', $this->theme_root);
+
         // 判断User-Agent
         $this->show_browser_banner = false;
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        if (strpos($user_agent, "MSIE 8") || strpos($user_agent, "MSIE 7") || strpos($user_agent, "MSIE 6") || strpos($user_agent, "MSIE 5")) {
+        if (
+            strpos($user_agent, "QIHOO")
+            || strpos($user_agent, "MSIE 10")
+            || strpos($user_agent, "MSIE 9")
+            || strpos($user_agent, "MSIE 8")
+            || strpos($user_agent, "MSIE 7")
+            || strpos($user_agent, "MSIE 6")
+            || strpos($user_agent, "MSIE 5")
+        ) {
             $this->show_browser_banner = true;
         }
         $this->assign('show_browser_banner', $this->show_browser_banner);
@@ -86,7 +101,7 @@ class BaseController extends Controller
 
         // 设置用户UI语言
         $dicts = Config::get('lang_dict');
-        $this->show_ui_lang = 'en'; // 默认语言
+        $this->show_ui_lang = 'cn'; // 默认语言
         if (!$this->loginuser) {
             if (Session::get('ui_language')) $this->show_ui_lang = Session::get('ui_language');
         } else {
@@ -132,6 +147,11 @@ class BaseController extends Controller
         if ($this->loginuser && UserModel::need_complete_info((new UserModel())->where(['user_id' => $this->loginuser->user_id])->find())) {
             $this->assign('need_edit_profile', true);
         }
+
+        if ($this->show_browser_banner) {
+            $this->theme_root = 'extra@themes/mincss';
+        }
+
     }
 
     public function need_root($type = 'json')

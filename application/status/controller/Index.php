@@ -32,17 +32,17 @@ class Index extends UserBaseController
      */
     public function index ($run_id='', $username='', $problem_id='', $result='', $language='')
     {
-    	$this->assign('run_id', $run_id);
-    	$this->assign('username', $username);
-    	$this->assign('problem_id', $problem_id);
-    	$this->assign('result', $result);
-    	$this->assign('language', $language);
+    	$this->assign('run_id', htmlspecialchars($run_id));
+    	$this->assign('username', htmlspecialchars($username));
+    	$this->assign('problem_id', htmlspecialchars($problem_id));
+    	$this->assign('result', htmlspecialchars($result));
+    	$this->assign('language', intval($language));
     	$this->assign('allowed_langs', $this->allowed_langs());
     	if ('' != $run_id) {
     		$solutions = (new SolutionModel)->where('solution_id', $run_id)->paginate(10);
     		$solutions->appends('run_id', $run_id);
 			$this->assign('solutions', $solutions);
-			return view();
+			return view($this->theme_root . '/status');
 		}
 
 		$where = (new SolutionModel());
@@ -68,6 +68,6 @@ class Index extends UserBaseController
 		$solutions->appends('result', $result);
 		$solutions->appends('language', $language);
         $this->assign('solutions', $solutions);
-        return view();
+        return view($this->theme_root . '/status');
     }
 }

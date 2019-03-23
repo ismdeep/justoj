@@ -1,0 +1,33 @@
+{extend name="extra@themes/mincss/layout-contest/contest-layout" /}
+{block name='titlepart'}{$contest->title} - 江西理工大学编程俱乐部{/block}
+{block name='body'}
+<div class="container">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>{$lang.status}</th>
+			<th>{$lang.problem_id}</th>
+			<th>{$lang.title}</th>
+			<th>{$lang.source}</th>
+			<th>{$lang.accepted}</th>
+			<th>{$lang.submit}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='contest_problems' id='contest_problem'}
+		<tr>
+			<td>
+				{if $contest_problem->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+				{if $contest_problem->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+			</td>
+			<td><a href="/contest/Problem?id={$contest->contest_id}&pid={$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></td>
+			<td><a href="/contest/Problem?id={$contest->contest_id}&pid={$contest_problem->num}">{$contest_problem->problem->title}</a></td>
+			<td>{$contest_problem->problem->source}</td>
+			<td>{$contest_problem->problem->ac_cnt}</td>
+			<td>{$contest_problem->problem->submit_cnt}</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+</div>
+{/block}

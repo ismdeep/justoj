@@ -75,6 +75,6 @@ class Index extends ContestBaseController
 		$this->assign('user_count', $user_count);
 		$this->assign('enroll_count', (new ContestEnrollModel())->where(['contest_id' => $this->contest_id])->count());
 		$this->assign('contest_problems', $contest_problems);
-		return view();
+		return view($this->theme_root . '/contest');
 	}
 }

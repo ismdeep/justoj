@@ -1,0 +1,50 @@
+{extend name="extra@themes/mincss/layout/user" /}
+{block name='titlepart'}{$lang['personal_information']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+	<div>
+		<h3>{$lang.personal_information}</h3>
+		<div>
+			<div>
+				<p>
+					<span class="addon">{$lang.username}</span><input type="text" class="smooth" value="{$user->user_id}" placeholder="{$lang.please_input_password}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">{$lang.nickname}</span><input type="text" class="smooth" name="nickname" value="{$user->nick}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">{$lang.fullname}</span><input type="text" class="smooth" name="fullname" value="{$user->realname}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">{$lang.school}</span><input type="text" class="smooth" name="school" value="{$user->school}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">{$lang.academy}</span><input type="text" class="smooth" name="academy" value="{$user->academy}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">{$lang.class}</span><input type="text" class="smooth" name="class" value="{$user->class}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">Email</span><input type="text" class="smooth" name="email" value="{$user->email}" disabled readonly>
+				</p>
+
+				<p>
+					<span class="addon">{$lang.phone}</span><input type="text" class="smooth" name="phone" value="{$user->phone}" disabled readonly>
+				</p>
+
+				<p>
+					<a href="/profile/Editmyprofile" class="btn btn-sm btn-a">{$lang.edit}</a>
+					<a href="/profile/Changepassword" class="btn btn-sm btn-a">{$lang.change_password}</a>
+				</p>
+			</div>
+		</div>
+	</div>
+
+</div>
+{/block}

@@ -24,6 +24,6 @@ class Changepassword extends UserBaseController
 
 	public function index()
 	{
-		return view();
+		return view($this->theme_root . '/change-password');
 	}
 }

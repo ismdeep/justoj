@@ -1,0 +1,12 @@
+{extend name="extra@themes/mincss/layout/common" /}
+{block name="navpart"}
+<nav class="nav" tabindex="-1" onclick="this.focus()">
+	<div class="container">
+		<a class="pagename current" href="/contest?id={$contest->contest_id}">{$contest->title}</a>
+		<a {if 'rank'==$nav} class="current"{/if} href="/contest/rank?id={$contest->contest_id}"">{$lang.rank}</a>
+		<a {if 'status'==$nav} class="current"{/if} href="/contest/status?id={$contest->contest_id}"">{$lang.status}</a>
+		<a class="" href="/">{$lang.back_to_home}</a>
+	</div>
+</nav>
+<hr>
+{/block}

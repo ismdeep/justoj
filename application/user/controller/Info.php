@@ -17,9 +17,10 @@ use app\extra\controller\BaseController;
 class Info extends BaseController
 {
     /**
-     *
+     * 用户信息(Public)
      * @param $user
      * @return \think\response\View
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -40,6 +41,6 @@ class Info extends BaseController
             ->where('user_id', $user->user_id)
             ->whereNull('contest_id')
             ->count();
-        return view('index', ['user' => $user, 'rank' => $rank, 'ac_list' => $ac_list, 'submit_count' => $submit_count]);
+        return view($this->theme_root . '/user-info', ['user' => $user, 'rank' => $rank, 'ac_list' => $ac_list, 'submit_count' => $submit_count]);
     }
 }
