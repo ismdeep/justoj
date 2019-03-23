@@ -19,7 +19,12 @@ class Index extends UserBaseController
 		if (!$this->loginuser) {
 			$this->redirect('/login?redirect=%2Fprofile');
 		}
-        $this->assign('user', UserModel::get(['user_id' => $this->loginuser->user_id]));
+        $user = UserModel::get(['user_id' => $this->loginuser->user_id]);
+        $user->school = htmlspecialchars($user->school);
+		$user->academy = htmlspecialchars($user->academy);
+		$user->class = htmlspecialchars($user->class);
+        $user->phone = htmlspecialchars($user->phone);
+        $this->assign('user', $user);
 		return view();
 	}
 }
