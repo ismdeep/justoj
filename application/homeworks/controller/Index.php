@@ -41,6 +41,6 @@ class Index extends UserBaseController
         if ('' != $keyword) $contests->appends('keyword', $keyword);
 		$this->assign('contests', $contests);
 		$this->assign('title_val', $this->lang['homework']);
-		return view('contests@index/index', ['keyword' => $keyword, 'target' => '/homeworks']);
+		return view('contests@index/index', ['keyword' => htmlspecialchars($keyword), 'target' => '/homeworks']);
 	}
 }
