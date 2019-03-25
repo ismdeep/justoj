@@ -1,0 +1,131 @@
+{extend name="extra@themes/mincss/layout-group/group-layout" /}
+{block name='titlepart'}{$lang.notifications} - {$group->name}{/block}
+{block name='body'}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+
+<div class="container">
+	{if $group->ownner_id == $loginuser->user_id}
+	<p>
+		<button class="btn btn-success" onclick="$('#notification-id').val('');$('#addNotificationModal').modal('show');">{$lang.add_notification}</button>
+	</p>
+	{/if}
+
+	{volist name='notifications' id='notification'}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			{$notification->title}
+			{if $group->ownner_id == $loginuser->user_id}
+			<a href="javascript:;" class="glyphicon glyphicon-edit" onclick="edit_notification({$notification->id});">修改</a>
+			<a href="javascript:;" class="glyphicon glyphicon-remove" onclick="remove_notification({$notification->id}, '{$notification->title}');">删除</a>
+			{/if}
+		</div>
+		<div class="panel-body">
+			{$notification->msg}
+		</div>
+	</div>
+	{/volist}
+	{if sizeof($notifications) <= 0}
+	---- 暂无公告 ----
+	{/if}
+</div>
+
+
+<!--添加班级公告之模态框 begin-->
+<div class="modal fade" id="addNotificationModal" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">
+					<span>×</span>
+				</button>
+				<h4 class="modal-title" id="loginModalLabel">{$lang.add_notification}</h4>
+			</div>
+			<div class="modal-body">
+				<form id="login-form">
+					<div class="form-group" hidden>
+						<label for="notification-id" class="form-control-label">notification id</label>
+						<input type="text" class="form-control" id="notification-id">
+					</div>
+					<div class="form-group">
+						<label for="notification-title" class="form-control-label">{$lang.title}:</label>
+						<input type="text" class="form-control" id="notification-title" placeholder="{$lang.title}">
+					</div>
+					<div class="form-group">
+						<label for="notification_msg" class="form-control-label">{$lang.content}:</label>
+						<textarea id="notification_msg" class="form-control" rows="10"></textarea>
+						<script> CKEDITOR.replace( 'notification_msg' ); </script>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<div class="alert alert-danger" role="alert" id="login-alert" style="display: none;"></div>
+				<button type="button" class="btn btn-secondary" data-dismiss="modal">{$lang.cancel}</button>
+				<button type="button" class="btn btn-primary" id="btn-login" onclick="save_notification()">{$lang.submit}</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--添加班级公告之模态框 end-->
+
+<script type="text/javascript">
+$(function(){
+    // $('#addNotificationModal').modal('show');
+});
+
+function save_notification(){
+    var data = {
+        'group_id': {$group->id},
+        'notification_id': $('#notification-id').val(),
+		'title': $('#notification-title').val(),
+		'content':  CKEDITOR.instances.notification_msg.getData()
+	};
+
+    $.post('/api/Group/save_notification', data, function(d) {
+        console.log(d);
+        if ('success' == d.status) {
+            location.reload();
+		}else{
+            layer.alert(d.msg);
+		}
+	}, 'json');
+}
+
+/**
+ * 编辑班级公告
+ * @param notification_id
+ */
+function edit_notification(notification_id) {
+    console.log('test');
+    $.get('/api/Group/notification_details', {'notification_id': notification_id}, function(d) {
+        console.log(d);
+        if ('success' == d.status) {
+            $('#notification-id').val( d.data.id );
+            $('#notification-title').val( d.data.title );
+            // $('#notification_msg').val( d.data.msg );
+            CKEDITOR.instances.notification_msg.setData(d.data.msg);
+            $('#addNotificationModal').modal('show');
+		}else{
+            layer.alert(d.msg);
+		}
+	}, 'json');
+}
+
+/**
+ * 删除班级公告
+ * @param notification_id
+ */
+function remove_notification(notification_id, title) {
+    layer.confirm('确定删除此公告信息？<br>标题：' + title,function(){
+        $.post('/api/Group/remove_notification', {'notification_id': notification_id}, function(d){
+            if ('success' == d.status) {
+                location.reload();
+			}else{
+                layer.alert(d.msg);
+			}
+		}, 'json');
+	});
+}
+
+
+</script>
+{/block}

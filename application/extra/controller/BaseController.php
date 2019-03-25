@@ -28,7 +28,6 @@ class BaseController extends Controller
 
     public $show_browser_banner;
 
-    public $theme = 'bootstrap';
     public $theme_root = 'extra@themes/bootstrap';
 
 
@@ -59,9 +58,11 @@ class BaseController extends Controller
         parent::__construct($request);
 
         $this->theme_root = 'extra@themes/bootstrap';
-        $this->theme = 'bootstrap';
+        if ($request->get('theme') == 'mincss') {
+            $this->theme_root = 'extra@themes/mincss';
+        }
+
         $this->assign('theme_root', $this->theme_root);
-        $this->assign('theme', $this->theme);
 
         // 判断User-Agent
         $this->show_browser_banner = false;

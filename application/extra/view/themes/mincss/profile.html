@@ -1,0 +1,78 @@
+{extend name="extra@themes/mincss/layout/user" /}
+{block name='titlepart'}{$lang['personal_information']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+	<div class="panel panel-primary" style="width: 573px;margin: auto;">
+		<div class="panel-heading">
+			<h3 class="panel-title">{$lang.personal_information}</h3>
+		</div>
+		<div class="panel-body">
+			<div class="form-horizontal" id="resetPasswordForm">
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.username}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" value="{$user->user_id}" placeholder="{$lang.please_input_password}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.nickname}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="nickname" value="{$user->nick}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.fullname}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="fullname" value="{$user->realname}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.school}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="school" value="{$user->school}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.academy}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="academy" value="{$user->academy}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.class}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="class" value="{$user->class}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">Email</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="email" value="{$user->email}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<label class="col-sm-4 control-label">{$lang.phone}</label>
+					<div class="col-sm-8">
+						<input type="text" class="form-control" name="phone" value="{$user->phone}" disabled readonly>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<div class="col-sm-8 col-sm-offset-4">
+						<a href="/profile/Editmyprofile" class="btn btn-success">{$lang.edit}</a>
+						<a href="/profile/Changepassword" class="btn btn-default">{$lang.change_password}</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+{/block}
