@@ -1,27 +1,28 @@
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <title>Your Page Title</title>
-
-    <link href="/static/mincss/entireframework.min.css" rel="stylesheet" type="text/css">
-</head>
-<body>
-<nav class="nav" tabindex="-1" onclick="this.focus()">
-    <div class="container">
-        <a class="pagename current" href="#">Your Site Name</a>
-        <a href="#">One</a>
-        <a href="#">Two</a>
-        <a href="#">Three</a>
-    </div>
-</nav>
-<button class="btn-close btn btn-sm">×</button>
+{extend name="extra@themes/mincss/layout/user" /}
+{block name="body"}
 <div class="container">
-    <h1>Example</h1>
-    <p>You can view the source of this page and copy it to get a quick start on a project with Min!</p>
+<?php $hr_flag = false;?>
+{volist name="newss" id="news"}
+<?php $news->fk(); ?>
+
+{if $hr_flag}<hr>{/if}<?php $hr_flag = true;?>
+
+<div>
+    <h3>{$news->title}</h3>
+    <p>{$news->content}</p>
+    <!--<p>{$news->user->nick}({$news->user_id})</p>-->
 </div>
-</body>
-</html>
+
+{/volist}
+
+<!--<hr>-->
+
+<!--Choose the fastest JustOJ entrance for you:-->
+<!--<div>-->
+<!--<a href="http://oj.jxust.edu.cn">http://oj.jxust.edu.cn</a>-->
+<!--</div>-->
+<!--<div>-->
+<!--<a href="https://oj.ismdeep.com">https://oj.ismdeep.com</a>-->
+<!--</div>-->
+</div>
+{/block}
