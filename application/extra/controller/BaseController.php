@@ -140,9 +140,10 @@ class BaseController extends Controller
             $this->assign('need_edit_profile', true);
         }
 
-//        if ($this->is_administrator) {
-//            $this->theme_root = 'extra@themes/mincss';
-//        }
+        if ($this->is_administrator) {
+            $this->theme_root = 'extra@themes/mincss';
+        }
+        $this->theme_root = 'extra@themes/mincss';
     }
 
     public function need_root($type = 'json')
