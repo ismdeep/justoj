@@ -143,7 +143,6 @@ class BaseController extends Controller
         if ($this->is_administrator) {
             $this->theme_root = 'extra@themes/mincss';
         }
-        $this->theme_root = 'extra@themes/mincss';
     }
 
     public function need_root($type = 'json')
