@@ -140,7 +140,7 @@ class BaseController extends Controller
             $this->assign('need_edit_profile', true);
         }
 
-        if ($this->is_administrator) {
+        if ($this->is_root) {
             $this->theme_root = 'extra@themes/mincss';
         }
     }
