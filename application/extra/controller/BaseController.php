@@ -58,9 +58,7 @@ class BaseController extends Controller
         parent::__construct($request);
 
         $this->theme_root = 'extra@themes/bootstrap';
-        if ($request->get('theme') == 'mincss') {
-            $this->theme_root = 'extra@themes/mincss';
-        }
+
 
         $this->assign('theme_root', $this->theme_root);
 
@@ -140,6 +138,11 @@ class BaseController extends Controller
         $this->assign('need_edit_profile', false);
         if ($this->loginuser && UserModel::need_complete_info((new UserModel())->where(['user_id' => $this->loginuser->user_id])->find())) {
             $this->assign('need_edit_profile', true);
+        }
+
+
+        if ($this->is_administrator) {
+            $this->theme_root = 'extra@themes/mincss';
         }
     }
 
