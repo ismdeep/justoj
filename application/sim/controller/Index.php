@@ -46,6 +46,6 @@ class Index extends BaseController
 
         $this->assign('title', "sim - {$id}");
         $this->assign('sim', $sim);
-        return view('index');
+        return view($this->theme_root . '/sim');
     }
 }

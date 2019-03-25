@@ -28,6 +28,9 @@ class BaseController extends Controller
 
     public $show_browser_banner;
 
+    public $theme = 'bootstrap';
+    public $theme_root = 'extra@themes/bootstrap';
+
 
     /**
      * 获取可以使用的语言列表
@@ -54,6 +57,11 @@ class BaseController extends Controller
     public function __construct(Request $request = null)
     {
         parent::__construct($request);
+
+        $this->theme_root = 'extra@themes/bootstrap';
+        $this->theme = 'bootstrap';
+        $this->assign('theme_root', $this->theme_root);
+        $this->assign('theme', $this->theme);
 
         // 判断User-Agent
         $this->show_browser_banner = false;

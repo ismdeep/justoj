@@ -12,6 +12,6 @@ class Index extends UserBaseController
     {
         // 获取新闻列表
         $this->assign('newss', NewsModel::where('defunct','N')->order('time', 'desc')->select());
-        return view();
+        return view($this->theme_root . '/index');
     }
 }

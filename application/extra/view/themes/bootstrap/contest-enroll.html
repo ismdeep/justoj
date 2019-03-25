@@ -1,0 +1,57 @@
+{extend name="extra@themes/bootstrap/layout/common" /}
+{block name="body"}
+<div class="container">
+    <div class="page-header">
+        <h1>{$contest->title}
+            <small>正在注册</small>
+        </h1>
+    </div>
+    <p>
+        请先阅读比赛声明。
+    </p>
+    <div class="panel panel-default">
+        <div class="panel-heading">比赛声明</div>
+        <div class="panel-body">
+            <p>请所有参赛选手报名之前务必认真、仔细阅读《江西理工大学第八届C语言程序设计竞赛参赛规程》，在您提交报名信息后即被默认为您已阅读、理解并同意遵守《江西理工大学第八届C语言程序设计竞赛参赛规程》的一切内容并签署及提交参赛声明。</p>
+            <p>作为参赛选手，我本人做出以下声明：</p>
+            <p>1、谨此声明本人自愿参加江西理工大学第八届C语言程序设计竞赛及一切相关活动；</p>
+            <p>2、本人全面理解并同意遵守组委会及协助部门所制定的各项规定及采取的措施；</p>
+            <p>3、本人身心健康，适合参加此赛事，已为参赛做好充分准备；</p>
+            <p>4、本人全面理解参加比赛可能出现的风险，且已准备必要的防范措施；</p>
+            <p>5、本人愿意承担比赛期间发生的自身意外风险责任。本人同意对于非组委会原因造成的伤害、死亡或者其他任何形式的损失不索求任何形式的赔偿；</p>
+            <p>6、本人授权组委会方及其指定媒体无偿使用本人的肖像、姓名、声音和其它个人资料用于赛事的组识和推广之用；</p>
+            <p>7、本人承诺以自己的名义报名并参加比赛，决不将报名后获得的资格以任何方式转让他人；</p>
+            <p>8、本人同意向主办方提供有效身份证件和资料用于核实本人的身份，并同意承担因身份证件和资料不实所产生的全部责任；</p>
+            <p>9、本人在比赛期间不会做出拷贝代码，上网搜资料等做弊行为，本人保证比赛期间所有题目由本人独立完成。</p>
+            <p>10、本人在比赛期间遵守学校的考试规章制度，若有违背，愿意接受学校的相关纪律处理。</p>
+        </div>
+    </div>
+
+    {if $need_complete_info}
+    <div style="text-align: center">
+        请 <a href="/profile/editmyprofile" target="_blank">前往完善个人信息</a> 后再进行报名。
+    </div>
+    {/if}
+
+    <div style="text-align: center">
+        <input type="text" name="contest_id" id="contest_id" value="{$contest_id}" hidden>
+        <button class="btn btn-primary" {if $need_complete_info}disabled{/if} onclick="do_contest_enroll({$contest_id})">
+            同意并注册比赛
+        </button>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function do_contest_enroll(contest_id) {
+        $.post('/contest/enroll/do_contest_enroll_post',{'contest_id': contest_id},function(d){
+            if ('success' == d.status) {
+                layer.alert(d.msg,function(){
+                    location.href = "/contest?id={$contest_id}";
+                });
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+    }
+</script>
+{/block}

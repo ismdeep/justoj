@@ -1,0 +1,35 @@
+{extend name="extra@themes/bootstrap/layout/user" /}
+{block name="navpart"}{/block}
+{block name='titlepart'}{$lang['status']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+    <br>
+    <div class="row">
+        <span>ProblemID: {$id}</span>
+    </div>
+    <br>
+    <div class="row">
+        <div class="span4">
+            <div class="progress">
+                <div class="progress-bar" id="rejudge-progress-bar" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">var id = {$id};</script>
+
+<script type="text/javascript">
+    $(function(){
+        setInterval(function(){
+            console.log(id);
+            $.post('/status/rejudge/problem_json', {'id': id}, function(d){
+                $('#rejudge-progress-bar').attr('style', 'width: ' + d.retdata.percent_text);
+                $('#rejudge-progress-bar').html(d.retdata.done_cnt + ' / ' + d.retdata.total_cnt);
+            }, 'json');
+            // console.log(new Date());
+        }, 300);
+    });
+</script>
+{/block}
+{block name="footer"}{/block}

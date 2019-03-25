@@ -15,7 +15,7 @@ use app\extra\controller\BaseController;
 class Rejudge extends BaseController
 {
     public function problem($id = '') {
-        return view('problem', ['id' => $id]);
+        return view($this->theme_root.'/status-rejudge', ['id' => $id]);
     }
 
     public function problem_json($id = '') {

@@ -1,0 +1,28 @@
+{extend name="extra@themes/bootstrap/layout/user" /}
+{block name='titlepart'}{$lang['my_creation']} :: Welcome to JustOJ{/block}
+{block name="body"}
+<div class="container">
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th width="40%">{$lang.name}</th>
+			<th width="35%">{$lang.teacher}</th>
+			<th width="10%">{$lang.operation}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='groups' id='group'}
+		<?php $group->fk(); ?>
+		<tr>
+			<td><a href="/group?id={$group->id}">{if 1 == $group->type}<span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;{/if}{$group->name}</a></td>
+			<td>{$group->ownner_id}({$group->teacher->nick})</td>
+			<td>
+				<a href="/group?id={$group->id}">{$lang.enter}</a>
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$groups->render()}
+</div>
+{/block}

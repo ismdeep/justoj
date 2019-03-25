@@ -124,7 +124,7 @@ class Rank extends ContestBaseController
 		}
 
 		$this->assign('users', $users);
-		return view();
+		return view($this->theme_root . '/contest-rank');
 	}
 
 

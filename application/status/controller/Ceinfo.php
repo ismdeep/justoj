@@ -29,18 +29,17 @@ class Ceinfo extends UserBaseController
         $this->assign('solution', $solution);
 
         $source_code = SourceCodeModel::get(['solution_id' => $id]);
-        $source_code->source = str_replace('<','&lt;', $source_code->source);
-        $source_code->source = str_replace('>','&gt;', $source_code->source);
+        $source_code->source = str_replace('<', '&lt;', $source_code->source);
+        $source_code->source = str_replace('>', '&gt;', $source_code->source);
         $this->assign('source_code', $source_code);
 
         $compile_info = CompileInfoModel::get(['solution_id' => $id]);
         intercept(null == $compile_info, '没有编译信息');
-		if ($compile_info) {
-			$compile_info->error = str_replace('<','&lt;', $compile_info->error);
-			$compile_info->error = str_replace('>','&gt;', $compile_info->error);
-			$this->assign('compile_info', $compile_info);
-		}
-        return view();
-
+        if ($compile_info) {
+            $compile_info->error = str_replace('<', '&lt;', $compile_info->error);
+            $compile_info->error = str_replace('>', '&gt;', $compile_info->error);
+            $this->assign('compile_info', $compile_info);
+        }
+        return view($this->theme_root . '/status-ceinfo');
     }
 }

@@ -32,14 +32,22 @@ class Index extends UserBaseController
         $this->assign('page_cnt', $this->page_cnt);
     }
 
+    /**
+     * @param string $keyword
+     * @param int $page
+     * @return \think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
     public function index($keyword='', $page = 1)
     {
         $page = intval($page);
         $this->assign('page', $page);
-        $this->assign('keyword', $keyword);
+        $this->assign('keyword', htmlspecialchars($keyword));
 
         if ('' != $keyword) {
-            $problems = ProblemModel::where('title','like','%'.$keyword.'%')->whereOr('source','like','%'.$keyword.'%')->order('problem_id', 'asc')->paginate(100);
+            $problems = (new ProblemModel())->where('title','like','%'.$keyword.'%')->whereOr('source','like','%'.$keyword.'%')->order('problem_id', 'asc')->paginate(100);
             foreach ($problems as $problem) {
 				$problem->solve_status = 0; // 无状态
 				if ($this->loginuser){
@@ -55,7 +63,7 @@ class Index extends UserBaseController
 			}
             $problems->appends('keyword', $keyword);
             $this->assign('problems', $problems);
-            return view();
+            return view($this->theme_root . '/problems');
         }
 
         $problems = (new ProblemModel)
@@ -80,6 +88,6 @@ class Index extends UserBaseController
 			}
 		}
         $this->assign('problems', $problems);
-        return view();
+        return view($this->theme_root . '/problems');
     }
 }

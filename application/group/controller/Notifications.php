@@ -29,6 +29,6 @@ class Notifications extends GroupBaseController
 		// 获取当前班级之公告
 		$notifications = GroupAnnounceModel::all(['group_id' => $this->group->id]);
 		$this->assign('notifications', $notifications);
-		return view();
+		return view($this->theme_root . '/group-notifications');
 	}
 }

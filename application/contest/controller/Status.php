@@ -127,6 +127,6 @@ class Status extends ContestBaseController
         $solutions->appends('language', $language);
 
         $this->assign('solutions', $solutions);
-        return view();
+        return view($this->theme_root . '/contest-status');
     }
 }

@@ -32,6 +32,6 @@ class Index extends UserBaseController
         $users = (new \app\api\model\UserModel)->order('solved', 'desc')->paginate(100);
         $this->assign('users', $users);
         $this->assign('cur_rank', 1 + ( ($users->currentPage() - 1) * 100));
-        return view();
+        return view($this->theme_root . '/rank');
     }
 }

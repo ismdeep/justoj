@@ -17,6 +17,6 @@ class Index extends UserBaseController
     public function index ($redirect='/')
     {
     	$this->assign('redirect', $redirect);
-        return view();
+        return view($this->theme_root . '/login');
     }
 }

@@ -1,0 +1,58 @@
+{extend name="extra@themes/bootstrap/layout/user" /}
+{block name='titlepart'}{$lang['problem']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+	<form class="form-horizontal" action="/problems" method="get">
+		<div class="col-sm-5" style="padding-left: 0px">
+			<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.keyword}: {$lang.title},{$lang.source}">
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn-success">{$lang.submit}</button>
+		</div>
+	</form>
+	<br><br>
+
+    <ul class="pagination">
+        {for start="1" end="$page_cnt+1"}
+        <li{if $page == $i} class="active"{/if}><a href="/problems?page={$i}">{$i}</a></li>
+        {/for}
+    </ul>
+
+
+	<table class="table table-hover">
+		<thead>
+		<tr >
+			<th></th>
+			<th>{$lang.problem_id}</th>
+			<th>{$lang.title}</th>
+			<th>{$lang.source}</th>
+			<th>{$lang.accepted}</th>
+			<th>{$lang.submit}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='problems' id='problem'}
+		{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $is_administrator)}
+		<tr>
+			<td>
+				{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+				{if 2 == $problem->solve_status}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+			</td>
+			<td><a href="/problem?id={$problem->problem_id}">{$problem->problem_id}</a></td>
+			<td><a href="/problem?id={$problem->problem_id}">{$problem->title}</a></td>
+			<td>{$problem->source}</td>
+			<td>{$problem->solved}</td>
+			<td>{$problem->submit}</td>
+		</tr>
+		{/if}
+		{/volist}
+		</tbody>
+	</table>
+
+    <ul class="pagination">
+        {for start="1" end="$page_cnt+1"}
+        <li{if $page == $i} class="active"{/if}><a href="/problems?page={$i}">{$i}</a></li>
+        {/for}
+    </ul>
+</div>
+{/block}

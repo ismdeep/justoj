@@ -68,6 +68,6 @@ class Index extends UserBaseController
 		$solutions->appends('result', $result);
 		$solutions->appends('language', $language);
         $this->assign('solutions', $solutions);
-        return view();
+        return view($this->theme_root . '/status');
     }
 }

@@ -15,6 +15,6 @@ class Langs extends BaseController
 {
     public function index()
     {
-        return view('justoj-language-usage-demo');
+        return view($this->theme_root . '/status-langs');
     }
 }

@@ -32,6 +32,6 @@ class Members extends GroupBaseController
 			$member->nickname = UserModel::get(['user_id' => $member->user_id])->nick;
 		}
 		$this->assign('members', $members);
-		return view();
+		return view($this->theme_root . '/group-members');
 	}
 }

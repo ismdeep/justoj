@@ -44,6 +44,6 @@ class Index extends UserBaseController
         $groups->appends('keyword', $keyword);
         $this->assign('keyword', ($keyword));
         $this->assign('groups', $groups);
-        return view();
+        return view($this->theme_root . '/groups');
     }
 }

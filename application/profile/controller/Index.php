@@ -25,6 +25,6 @@ class Index extends UserBaseController
 		$user->class = htmlspecialchars($user->class);
         $user->phone = htmlspecialchars($user->phone);
         $this->assign('user', $user);
-		return view();
+		return view($this->theme_root . '/profile');
 	}
 }

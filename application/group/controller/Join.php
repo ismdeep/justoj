@@ -43,6 +43,6 @@ class Join extends UserBaseController
 		// 如果此班级为public，则询问学生是否加入。(type: 0public 1private)
 		// 如果此班级为private但是没有密码，则询问学生是否加入，点击加入后告知学生需要等待管理员审核。
 		// 如果此班级为private且有密码，则询问学生加入密码，密码正确则直接加入此班级。
-		return view('index');
+		return view($this->theme_root . '/group-join');
 	}
 }
