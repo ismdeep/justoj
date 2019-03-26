@@ -32,9 +32,9 @@ class Solution extends ApiBaseController
 	public function submit_problem_code($problem_id='', $language='', $code='')
 	{
 	    $this->need_login('json');
-	    intercept_json('' == $problem_id, 'problem_id不可为空');
-        intercept_json('' == $language, 'language不可为空');
-        intercept_json('' == $code, 'code不可为空');
+	    intercept_json('' == $problem_id, 'problem_id cannot be empty');
+        intercept_json('' == $language, 'language cannot be empty');
+        intercept_json('' == $code, 'source code cannot be empty.');
         intercept_json(null == (new ProblemModel())->where('problem_id', $problem_id)->find(), '题目不存在');
         intercept_json(null != (new SolutionModel())->where(
             [
@@ -198,6 +198,7 @@ class Solution extends ApiBaseController
      * 重判题目
      * @param $problem_id
      * @return \think\response\Json
+     * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException

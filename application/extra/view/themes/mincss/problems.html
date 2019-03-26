@@ -32,8 +32,8 @@
 		{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $is_administrator)}
 		<tr>
 			<td>
-				{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
-				{if 2 == $problem->solve_status}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+				{if 1 == $problem->solve_status}<span style="color: red"><i class="ico">☒</i></span>{/if}
+				{if 2 == $problem->solve_status}<span style="color: green"><i class="ico">☑</i></span>{/if}
 			</td>
 			<td><a href="/problem?id={$problem->problem_id}">{$problem->problem_id}</a></td>
 			<td><a href="/problem?id={$problem->problem_id}">{$problem->title}</a></td>
