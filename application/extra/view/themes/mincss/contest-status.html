@@ -3,8 +3,8 @@
 {block name='body'}
 <div class="container">
 	<form action="/contest/status" method="get">
-		<div style="visibility: hidden;"><input type="text" name="id" value="{$contest->contest_id}"></div>
 		<p>
+			<input type="text" name="id" value="{$contest->contest_id}" style="visibility: hidden;">
 			<span>{$lang.run_id}：</span><input class="" type="text" name="run_id" value="{$run_id}">&nbsp;&nbsp;
 			<span>{$lang.username}：</span><input class="" type="text" name="username" value="{$username}">&nbsp;&nbsp;
 			<select name="problem_id" value="{$problem_id}">
