@@ -124,12 +124,12 @@
 	}
 
 	function submit_code(){
+		return false;
 		var codeData = {
 			'problem_id': problem_id,
 			'language': $('#submit-language').val(),
 			'code': $('#submit-source').val()
 		};
-		console.log(codeData);
 		$.post('/api/solution/submit_problem_code',codeData,function(d){
 			if ('success' == d.status) {
 				console.log(d);
@@ -142,10 +142,6 @@
 		},'json');
 		return false;
 	}
-
-	$(function(){
-		console.log(getNowFormatDate());
-	});
 </script>
 
 {/block}
