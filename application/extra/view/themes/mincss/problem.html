@@ -5,10 +5,10 @@
 <div class="container">
 	<h2 align="center">
 		{if $problem->ac}
-		<span class="glyphicon glyphicon-ok" style="color: green"></span>
+		<span style="color: green">√</span>
 		{/if}
 		{if $problem->pending}
-		<span class="glyphicon glyphicon-hand-right" style="color: red"></span>
+		<span style="color: red">--</span>
 		{/if}
 		{$problem->problem_id}: {$problem->title}
 	</h2>
@@ -19,7 +19,9 @@
 				<span>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
 				<span>{$lang.accepted}: </span><a href="/status?problem_id={$problem->problem_id}&result=4" target="_blank">{$problem->solved}</a> &nbsp;&nbsp;&nbsp;&nbsp;
 				<span>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}" target="_blank">{$problem->submit}</a> &nbsp;&nbsp;&nbsp;&nbsp;
+				{if isset($loginuser)}
 				<a href="/status?username={$loginuser->user_id}&problem_id={$problem->problem_id}" target="_blank">{$lang.my_status}</a>
+				{/if}
 			</div>
 		</div>
 	</div>
@@ -42,6 +44,108 @@
 		<p><a href='/problems?keyword={$problem->source}'>{$problem->source}</a></p>
 	</div>
 	<br>
+	<form method="post" onsubmit="return submit_code();">
+		<p><span>{$lang.language}：</span><select name="language" id="submit-language">{volist name="allowed_langs" id="item"}<option value="{$item.id}">{$item.name} ({$item.version})</option>{/volist}</select></p>
+		<p><textarea class="form-control" style="font-family: Consolas,Courier,monospace;width: 60%" name="source" id="submit-source" rows="15"></textarea></p>
+		<p><button type="submit">{$lang.submit}</button>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red" id="error-info"></span><span id="judge-info"></span></p>
+	</form>
 </div>
 <!--题目内容显示页面 end-->
+
+<script type="text/javascript">
+	var problem_id = {$problem->problem_id};
+</script>
+
+<script type="text/javascript">
+
+	var solution_result_color = {
+		'result_code_pending': 'black',
+		'result_code_rejuding': 'black',
+		'result_code_compiling': 'black',
+		'result_code_running': 'black',
+		'result_code_ac': 'green',
+		'result_code_pe': 'black',
+		'result_code_wa': 'red',
+		'result_code_tle': 'red',
+		'result_code_mle': 'red',
+		'result_code_ole': 'red',
+		'result_code_re': 'red',
+		'result_code_ce': 'red',
+		'result_code_co': 'black',
+		'result_code_tr': 'black',
+		'result_code_so': 'black'
+	};
+
+
+	function getNowFormatDate() {
+		var date = new Date();
+		var seperator1 = "-";
+		var seperator2 = ":";
+		var month = date.getMonth() + 1;
+		var strDate = date.getDate();
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " ";
+		if (hour < 10) currentdate += '0';
+		currentdate += hour + seperator2;
+		if (minute < 10) currentdate += '0';
+		currentdate += minute + seperator2;
+		if (second < 10) currentdate += '0';
+		currentdate += second;
+		//+ date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
+		return currentdate;
+	}
+
+	function status_monitor(solution_id){
+		$.get('/api/solution/status?solution_id='+solution_id,function(d){
+			console.log(d);
+			if (d.data.result < 4) {
+				$('#judge-info').html(d.data.result_text);
+				setTimeout(status_monitor(solution_id),300);
+			}else{
+				$('#judge-info').html(d.data.result_text);
+				$('#judge-info').css('color', solution_result_color[d.data.result_code]);
+				/* 如果是编译错误还要显示编译错误信息 */
+				// if ('11' == d.data.result) {
+				// 	$('#solution-compile-error').html(d.data.compile_info.error);
+				// 	$('#compile-info-panel').show();
+				// }
+			}
+		},'json');
+	}
+
+	function submit_code(){
+		var codeData = {
+			'problem_id': problem_id,
+			'language': $('#submit-language').val(),
+			'code': $('#submit-source').val()
+		};
+		console.log(codeData);
+		$.post('/api/solution/submit_problem_code',codeData,function(d){
+			if ('success' == d.status) {
+				console.log(d);
+				// 监控题目状态
+				status_monitor(d.data.solution_id);
+				$('#error-info').html('');
+			}else{
+				$('#error-info').html(d.msg + " @ " + getNowFormatDate());
+			}
+		},'json');
+		return false;
+	}
+
+	$(function(){
+		console.log(getNowFormatDate());
+	});
+</script>
+
 {/block}
