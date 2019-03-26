@@ -130,9 +130,9 @@
 			'code': $('#submit-source').val()
 		};
 		$.post('/api/solution/submit_problem_code',codeData,function(d){
-			if ('success' == d.status) {
+			alert(JSON.stringify(d));
+			if ('success' === d.status) {
 				// 监控题目状态
-				alert(JSON.stringify(d));
 				// status_monitor(d.data.solution_id);
 				$('#error-info').html('');
 			}else{
