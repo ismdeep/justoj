@@ -163,15 +163,15 @@ input[type=text] {
 .nav,
 .nav .current,
 .nav a:hover {
-    background: #000;
-    color: #fff
+    /*background: #000;*/
+    /*color: #fff*/
 }
 .nav {
     height: 24px;
     padding: 11px 0 15px
 }
 .nav a {
-    color: #aaa;
+    color: black;
     padding-right: 1em;
     position: relative;
     top: -1px

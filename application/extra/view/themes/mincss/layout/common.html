@@ -34,56 +34,7 @@
 
 	</div>
 </nav>
-
-<!--<nav class="navbar navbar-default" role="navigation">-->
-	<!--<div class="container-fluid">-->
-		<!--<div class="navbar-header">-->
-			<!--<button type="button" class="navbar-toggle" data-toggle="collapse"-->
-					<!--data-target="#example-navbar-collapse">-->
-				<!--<span class="sr-only"></span>-->
-				<!--<span class="icon-bar"></span>-->
-				<!--<span class="icon-bar"></span>-->
-				<!--<span class="icon-bar"></span>-->
-			<!--</button>-->
-			<!--<a class="navbar-brand" href="/">JustOJ</a>-->
-		<!--</div>-->
-		<!--<div class="collapse navbar-collapse" id="example-navbar-collapse">-->
-			<!--<ul class="nav navbar-nav">-->
-				<!--<li{if $nav == 'problem'} class="active"{/if}><a href="/problems">{$lang.problem}</a></li>-->
-				<!--<li{if $nav == 'status'} class="active"{/if}><a href="/status">{$lang.status}</a></li>-->
-				<!--<li{if $nav == 'rank'} class="active"{/if}><a href="/rank">{$lang.rank}</a></li>-->
-				<!--<li class="dropdown{if $nav == 'groups'} active{/if}">-->
-					<!--<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">-->
-						<!--{$lang.group} <b class="caret"></b>-->
-					<!--</a>-->
-					<!--<ul class="dropdown-menu">-->
-						<!--{if $is_administrator}-->
-						<!--<li><a href="/groups/mycreation">{$lang.my_creation}</a></li>-->
-						<!--{/if}-->
-						<!--<li><a href="/groups/myjoin">{$lang.my_join}</a></li>-->
-						<!--<li class="divider"></li>-->
-						<!--<li><a href="/groups">{$lang.allgroup}</a></li>-->
-					<!--</ul>-->
-				<!--</li>-->
-				<!--<li{if $nav == 'homeworks'} class="active"{/if}><a href="/homeworks">{$lang.homework}</a></li>-->
-				<!--<li{if $nav == 'contests'} class="active"{/if}><a href="/contests">{$lang.contest}</a></li>-->
-				<!--<li{if $nav == 'paste'} class="active"{/if}><a href="/paste">{$lang.paste_code}</a></li>-->
-			<!--</ul>-->
-			<!--<ul class="nav navbar-nav navbar-right">-->
-				<!--{if isset($loginuser)}-->
-				<!--{if $is_administrator}-->
-				<!--<li><a class="" href="/admin"><span class="glyphicon glyphicon-cog"></span> {$lang.admin_system}</a></li>-->
-				<!--{/if}-->
-				<!--<li><a class="" href="/profile"><span class="glyphicon glyphicon-user"></span> {$loginuser->user_id}</a></li>-->
-				<!--<li><a class="" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-out"></span> {$lang.logout}</a></li>-->
-				<!--{else}-->
-				<!--<li><a class="" href="/register"><span class="glyphicon glyphicon-user"></span> {$lang.register}</a></li>-->
-				<!--<li><a class="" href="/login?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-in"></span> {$lang.login}</a></li>-->
-				<!--{/if}-->
-			<!--</ul>-->
-		<!--</div>-->
-	<!--</div>-->
-<!--</nav>-->
+<hr>
 {/block}
 
 {block name="body"}
@@ -98,7 +49,6 @@
 	<a href="javascript:;" onclick="$.get('/api/Uilanguage/set_lang?language=cn',function(d){location.reload();},'json');">中文</a>&nbsp;
 	<a href="javascript:;" onclick="$.get('/api/Uilanguage/set_lang?language=en',function(d){location.reload();},'json');">English</a>&nbsp;
 	| <a href="https://wiki.ismdeep.com/index.php?title=%E6%B1%9F%E8%A5%BF%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6ACM-ICPC" target="_blank">JxustACM</a>
-	<!--| <a href="mailto:ismdeep@qq.com">ismdeep@qq.com</a>-->
 	| <a href="https://justoj.readthedocs.io" target="_blank">Docs</a>
 </div>
 {/block}
