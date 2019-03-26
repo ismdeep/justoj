@@ -196,11 +196,11 @@
 			'code': $('#submit-source').val()
 		};
 		$.post('/api/solution/submit_problem_code',codeData,function(d){
-			alert(JSON.stringify(d));
-			if ('success' === d.status) {
+			// alert(JSON.stringify(d));
+			if ('success' == d.status) {
+				$('#error-info').html('');
 				// 监控题目状态
 				status_monitor(d.data.solution_id);
-				$('#error-info').html('');
 			}else{
 				$('#error-info').html(d.msg + " @ " + getNowFormatDate());
 			}
