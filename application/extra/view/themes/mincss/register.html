@@ -45,9 +45,7 @@
             if ('success' == d.status) {
                 localStorage.setItem('username', postData.username);
                 localStorage.setItem('password', postData.password);
-                setTimeout(function(){
-                    location.href = '/login';
-                }, 300);
+                window.location.href = '/login';
             }else{
                 $('#error-info').html(d.msg);
             }

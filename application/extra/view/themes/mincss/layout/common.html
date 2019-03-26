@@ -22,9 +22,6 @@
 		<a {if $nav == 'contests'}class="current"{/if} href="/contests">{$lang.contest}</a>
 		<a {if $nav == 'paste'} class="current"{/if} href="/paste">{$lang.paste_code}</a>
 		{if isset($loginuser)}
-		{if $is_administrator}
-		<a class="" href="/admin">{$lang.admin_system}</a>
-		{/if}
 		<a class="" href="/profile">{$loginuser->user_id}</a>
 		<a class="" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>">{$lang.logout}</a>
 		{else}

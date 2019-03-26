@@ -40,9 +40,7 @@
             if ('success' == d.status) {
                 localStorage.setItem('username', loginData.username);
                 localStorage.setItem('password', loginData.password);
-                setTimeout(function(){
-                    location.href = '{$redirect}';
-                },100);
+                window.location.href = '{$redirect}';
             }else{
                 $('#error-info').html(d.msg);
             }
