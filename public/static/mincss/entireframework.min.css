@@ -1,7 +1,7 @@
 /* Copyright 2014 Owen Versteeg; MIT licensed */
 body,
 textarea,
-input,
+/*input,*/
 select {
     background: 0;
     border-radius: 0;
@@ -136,24 +136,25 @@ h2 {
 .btn-sm,
 .nav,
 textarea,
-input,
+/*input,*/
 select {
     outline: 0;
     font-size: 14px
 }
 textarea,
-input,
+/*input,*/
 select {
     padding: 8px;
     border: 1px solid #ccc
 }
 textarea:focus,
-input:focus,
+/*input:focus,*/
 select:focus {
     border-color: #5ab
 }
 textarea,
-input[type=text] {
+/*input[type=text]*/
+{
     -webkit-appearance: none;
     width: 13em
 }

@@ -3,8 +3,10 @@
 {block name="body"}
 <div class="container">
 	<form class="form-horizontal" action="/problems" method="get">
-		<p><input class="smooth" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.keyword}: {$lang.title},{$lang.source}">
-			<button class="btn btn-sm">{$lang.submit}</button></p>
+		<p>
+			<span>{$lang.search}: </span><input type="text" name="keyword" value="{$keyword}">
+			<button>{$lang.submit}</button>
+		</p>
 	</form>
 	<br><br>
 
