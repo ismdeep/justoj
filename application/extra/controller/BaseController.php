@@ -65,7 +65,15 @@ class BaseController extends Controller
         // 判断User-Agent
         $this->show_browser_banner = false;
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
-        if (strpos($user_agent, "MSIE 8") || strpos($user_agent, "MSIE 7") || strpos($user_agent, "MSIE 6") || strpos($user_agent, "MSIE 5")) {
+        if (
+            strpos($user_agent, "QIHOO")
+            || strpos($user_agent, "MSIE 10")
+            || strpos($user_agent, "MSIE 9")
+            || strpos($user_agent, "MSIE 8")
+            || strpos($user_agent, "MSIE 7")
+            || strpos($user_agent, "MSIE 6")
+            || strpos($user_agent, "MSIE 5")
+        ) {
             $this->show_browser_banner = true;
         }
         $this->assign('show_browser_banner', $this->show_browser_banner);
