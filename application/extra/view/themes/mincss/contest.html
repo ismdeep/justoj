@@ -46,8 +46,8 @@
 		{volist name='contest_problems' id='contest_problem'}
 		<tr>
 			<td>
-				{if $contest_problem->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
-				{if $contest_problem->pending}<span clascontests="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+				{if $contest_problem->ac}<span style="color: green">√</span>{/if}
+				{if $contest_problem->pending}<span style="color: red">--</span>{/if}
 			</td>
 			<td><a href="/contest/problem?id={$contest->contest_id}&pid={$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></td>
 			<td><a href="/contest/problem?id={$contest->contest_id}&pid={$contest_problem->num}">{$contest_problem->problem->title}</a></td>
