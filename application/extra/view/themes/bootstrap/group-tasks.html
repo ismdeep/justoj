@@ -6,7 +6,7 @@
 
 <div class="container">
 	{if $group->ownner_id == $loginuser->user_id}
-	<button class="btn btn-success" type="button" onclick="$('#addTaskModal').modal('show');">{$lang.add_homework}</button>
+	<button class="btn btn-success" type="button" onclick="open_add_task();">{$lang.add_homework}</button>
 	{/if}
 	<table class="table table-hover">
 		<thead>
@@ -134,8 +134,34 @@
 </div>
 <!--添加作业之模态框 end-->
 
-
 <script type="text/javascript">
+
+	function open_add_task(){
+		layer.confirm('是否通过其他作业复试作业列表？', function(){
+			layer.closeAll();
+			//prompt层
+			layer.prompt({title: '输入作业/比赛编号', formType: 3}, function(contest_id, index){
+				layer.close(index);
+				console.log(contest_id);
+				$.post('/api/contest/base_info', {'contest_id': contest_id},function(d){
+					if('success' == d.status) {
+						$('#contest-title').val(d.data.title);
+						$('#contest-description-edit').val(d.data.description);
+						$('#problem-ids').val(d.data.problem_ids);
+						$('#addTaskModal').modal('show');
+					}else{
+						layer.alert(d.msg);
+					}
+				},'json');
+
+			});
+		}, function(){
+			layer.closeAll();
+			$('#addTaskModal').modal('show');
+		});
+		// $('#addTaskModal').modal('show');
+	}
+
 	/* 题目预览 */
 	function preview_problems(){
         var data = {'problem_ids': $('#problem-ids').val()};
