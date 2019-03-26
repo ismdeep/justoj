@@ -6,7 +6,7 @@
 	<meta name="keywords" content="ACM-ICPC,Online Judge,编程,C语言,C++,Java,Python,ACMer,JustOJ">
 	<title>{block name='titlepart'}{$lang['welcome_to_justoj']}{/block}</title>
 	<link href="/static/mincss/entireframework.min.css" rel="stylesheet" type="text/css">
-	<script src="//cdn.bootcss.com/jquery/1.12.4/jquery.min.js"></script>
+	<script src="/static/jquery/1.12.4/jquery.min.js"></script>
 </head>
 <body>
 
@@ -21,6 +21,17 @@
 		<a {if $nav == 'homeworks'}class="current"{/if} href="/homeworks">{$lang.homework}</a>
 		<a {if $nav == 'contests'}class="current"{/if} href="/contests">{$lang.contest}</a>
 		<a {if $nav == 'paste'} class="current"{/if} href="/paste">{$lang.paste_code}</a>
+		{if isset($loginuser)}
+		{if $is_administrator}
+		<a class="" href="/admin">{$lang.admin_system}</a>
+		{/if}
+		<a class="" href="/profile">{$loginuser->user_id}</a>
+		<a class="" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>">{$lang.logout}</a>
+		{else}
+		<a class="" href="/register">{$lang.register}</a>
+		<a class="" href="/login?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>">{$lang.login}</a>
+		{/if}
+
 	</div>
 </nav>
 

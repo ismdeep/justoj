@@ -4,44 +4,56 @@
     <meta charset="UTF-8">
     <title>{$lang['register']} - {$lang['justoj']}</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
-
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
-    <link rel="stylesheet" href="/static/css/font.css">
-    <link rel="stylesheet" href="/static/css/xadmin.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/static/js/xadmin.js"></script>
-
-    <link rel="stylesheet" href="/static/YiUI/Yi.css">
-    <script type="text/javascript" src="/static/YiUI/Yi.js"></script>
-
+    <link href="/static/mincss/entireframework.min.css" rel="stylesheet" type="text/css">
+    <script src="/static/jquery/1.12.4/jquery.min.js"></script>
 </head>
-<body class="login-bg">
+<body>
 
-<div class="login layui-anim">
-    <div class="message">{$lang['user_register']}</div>
-    <div id="darkbannerwrap"></div>
+<div class="container">
 
-    <form method="post" class="layui-form" >
-        <input name="username" id="username" placeholder="{$lang.username}"  type="text" lay-verify="required" class="layui-input" >
-        <hr class="hr15">
-        <input name="password" id="password" lay-verify="required" placeholder="{$lang.password}"  type="password" class="layui-input">
-        <hr class="hr15">
-        <input name="password" id="password-again" lay-verify="required" placeholder="{$lang.password_again}"  type="password" class="layui-input">
-        <hr class="hr15">
-        <input value="{$lang.register}" lay-submit lay-filter="register" style="width:100%;" type="submit">
+    <form method="post" class="layui-form" onsubmit="return do_register();">
+        <p>
+            <span class="addon">{$lang.username}</span><input class="smooth" name="username" id="username" placeholder="{$lang.username}"  type="text" >
+        </p>
+        <p>
+            <span class="addon">{$lang.password}</span><input class="smooth" name="password" id="password" placeholder="{$lang.password}"  type="password">
+        </p>
+        <p>
+            <span class="addon">{$lang.password_again}</span><input class="smooth" name="password" id="password-again" placeholder="{$lang.password_again}"  type="password">
+        </p>
+        <p>
+            <button class="btn btn-sm btn-a" type="submit">{$lang.register}</button>
+            <span style="color: red" id="error-info"></span>
+        </p>
         <hr class="hr20" >
-        <p style="text-align: right">
+        <p>
             <a style="color: blue" href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a style="color: blue" href="/login">{$lang.login}</a>
         </p>
     </form>
 </div>
 
-<script>
+<script type="text/javascript">
+    function do_register() {
+        console.log("test");
+        var postData = {
+            'username': $('#username').val(),
+            'password': $('#password').val(),
+            'password_again': $('#password-again').val()
+        };
+        $.post('/api/User/register',postData,function(d){
+            if ('success' == d.status) {
+                localStorage.setItem('username', postData.username);
+                localStorage.setItem('password', postData.password);
+                setTimeout(function(){
+                    location.href = '/login';
+                }, 300);
+            }else{
+                $('#error-info').html(d.msg);
+            }
+        });
+        return false;
+    }
     $(function  () {
         layui.use('form', function(){
             var form = layui.form;
@@ -51,23 +63,7 @@
                     ,shade: 0.01
                 });
                 setTimeout(function(){
-                    var postData = {
-                        'username': $('#username').val(),
-                        'password': $('#password').val(),
-                        'password_again': $('#password-again').val()
-                    };
-                    $.post('/api/User/register',postData,function(d){
-                        layer.closeAll();
-                        if ('success' == d.status) {
-                            localStorage.setItem('username', postData.username);
-                            localStorage.setItem('password', postData.password);
-                            layer.alert(d.msg, {icon: 1},function(){
-                                location.href = '/login';
-                            });
-                        }else{
-                            layer.msg(d.msg, {icon: 2});
-                        }
-                    });
+
                 },300);
                 return false;
             });
