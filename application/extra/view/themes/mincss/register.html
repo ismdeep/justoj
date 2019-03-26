@@ -43,8 +43,6 @@
         };
         $.post('/api/user/register',postData,function(d){
             if ('success' == d.status) {
-                localStorage.setItem('username', postData.username);
-                localStorage.setItem('password', postData.password);
                 $('#error-info').html('注册成功');
                 window.location.href = '/login';
             }else{
