@@ -8,7 +8,7 @@
 	.table > thead > tr > td,
 	.table > tbody > tr > td,
 	.table > tfoot > tr > td {
-		padding: 8px;
+		padding: 4px;
 		line-height: 1;
 		vertical-align: top;
 		border-top: 1px solid #fff;
@@ -19,13 +19,12 @@
 <?php $rank_index = 0;?>
 <div class="container">
 	<p>
-		<!--<a href="http://oldoj.ismdeep.com/contestrank.xls.php?cid={$contest->contest_id}">Download</a>-->
-		<a href="/contest/Rank/export_xls?id={$contest->contest_id}">比赛成绩</a>
+		<a target="_blank" href="/contest/Rank/export_xls?id={$contest->contest_id}">比赛成绩</a>
 		{if $is_administrator}
-        <a href="/contest/rank/export_register_users?id={$contest->contest_id}">参赛列表</a>
+        <a target="_blank" href="/contest/rank/export_register_users?id={$contest->contest_id}">参赛列表</a>
         {/if}
 	</p>
-	<table class="table table-hover">
+	<table class="table">
 		<thead>
 		<tr>
 			<th>{$lang.rank}</th>

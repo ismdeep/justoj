@@ -41,8 +41,8 @@
 			<td>
 				{if $member->status == 0}
 				<!--未处理-->
-				<button class="btn btn-sm btn-success" onclick="group_join_pass('{$member->id}')">{$lang.pass}</button>
-				<button class="btn btn-sm btn-danger" onclick="group_join_reject('{$member->id}')">{$lang.reject}</button>
+				<button class="btn btn-sm btn-b" onclick="group_join_pass('{$member->id}')">{$lang.pass}</button>
+				<button class="btn btn-sm btn-c" onclick="group_join_reject('{$member->id}')">{$lang.reject}</button>
 				{/if}
 
 				{if $member->status == 1}
@@ -55,7 +55,7 @@
 				<!--<button class="btn btn-sm btn-success" onclick="group_join_pass('{$member->id}')">{$lang.pass}</button>-->
 				{/if}
 
-				<button class="btn btn-sm btn-danger" onclick="group_join_delete('{$member->id}','{$member->user_id}','{$member->nickname}')">{$lang.delete}</button>
+				<button class="btn btn-sm btn-c" onclick="group_join_delete('{$member->id}','{$member->user_id}','{$member->nickname}')">{$lang.delete}</button>
 			</td>
 			{/if}
 		</tr>
@@ -70,12 +70,12 @@ function group_join_pass(group_join_id){
         'group_join_id': group_join_id,
 		'status': 1
 	};
-    layer.confirm('{$lang.are_you_sure_to_pass_the_group_join}', function(){
+    if(confirm('{$lang.are_you_sure_to_pass_the_group_join}')){
 		$.post('/api/Group/group_join_status_change',data,function(d){
-		    if ('success' == d.status) location.reload();
-		    else layer.alert(d.msg);
+			if ('success' == d.status) location.reload();
+			else alert(d.msg);
 		},'json');
-	});
+	}
 }
 
 function group_join_reject(group_join_id){
@@ -83,12 +83,12 @@ function group_join_reject(group_join_id){
         'group_join_id': group_join_id,
         'status': 2
     };
-    layer.confirm('{$lang.are_you_sure_to_reject_the_group_join}', function(){
-        $.post('/api/Group/group_join_status_change',data,function(d){
-            if ('success' == d.status) location.reload();
-            else layer.alert(d.msg);
-        },'json');
-    });
+    if(confirm('{$lang.are_you_sure_to_reject_the_group_join}')){
+		$.post('/api/Group/group_join_status_change',data,function(d){
+			if ('success' == d.status) location.reload();
+			else alert(d.msg);
+		},'json');
+	}
 }
 
 
@@ -97,15 +97,15 @@ function group_join_reject(group_join_id){
  * @param group_join_id
  */
 	function group_join_delete(group_join_id, user_id, nickname) {
-    layer.confirm('确定删除此加入记录？({$lang.username}: '+user_id+', {$lang.nickname}: '+nickname+')', function(){
-        $.post('/api/Group/remove_group_join', {'group_join_id': group_join_id}, function(d){
-            if ('success' == d.status) {
-                location.reload();
+    if (confirm('确定删除此加入记录？({$lang.username}: '+user_id+', {$lang.nickname}: '+nickname+')')) {
+		$.post('/api/Group/remove_group_join', {'group_join_id': group_join_id}, function(d){
+			if ('success' == d.status) {
+				location.reload();
 			}else{
-                layer.alert(d.msg);
+				alert(d.msg);
 			}
 		}, 'json');
-	});
+	}
 }
 
 </script>

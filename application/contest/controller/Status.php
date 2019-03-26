@@ -52,9 +52,21 @@ class Status extends ContestBaseController
             $run_id = intval($run_id);
         }
 
-        $this->assign('run_id', $run_id);
-        $this->assign('username', $username);
-        $this->assign('problem_id', $problem_id);
+        if (!is_numeric($result)) {
+            $result = '';
+        }else{
+            $result = intval($result);
+        }
+
+        if (!is_numeric($language)) {
+            $language = '';
+        }else{
+            $language = intval($language);
+        }
+
+        $this->assign('run_id', htmlspecialchars($run_id));
+        $this->assign('username', htmlspecialchars($username));
+        $this->assign('problem_id', htmlspecialchars($problem_id));
         $this->assign('result', $result);
         $this->assign('language', $language);
 
@@ -84,9 +96,19 @@ class Status extends ContestBaseController
                 ->where('solution_id', $run_id)
                 ->where('contest_id', $this->contest_id)
                 ->paginate(10);
+            foreach ($solutions as $solution) {
+                $solution->sim = (new SimModel())->where('s_id', $solution->solution_id)->find();
+                if (null != $solution->sim) {
+                    if (
+                        (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
+                        == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
+                        $solution->sim = null;
+                    }
+                }
+            }
             $solutions->appends('run_id', $run_id);
             $this->assign('solutions', $solutions);
-            return view();
+            return view($this->theme_root . '/contest-status');
         }
         // 获取所有题目列表
 
