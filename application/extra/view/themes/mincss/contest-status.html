@@ -2,18 +2,17 @@
 {block name='titlepart'}{$lang['status']} - {$lang['justoj']}{/block}
 {block name='body'}
 <div class="container">
-	<form class="form-horizontal" action="/contest/Status" method="get">
-		<div style="visibility: hidden;"><input hidden type="text" name="id" value="{$contest->contest_id}"></div>
+	<form action="/contest/status" method="get">
+		<div style="visibility: hidden;"><input type="text" name="id" value="{$contest->contest_id}"></div>
 		<p>
-			<span class="addon">{$lang.run_id}</span><input class="" type="text" name="run_id" value="{$run_id}">
-			<span class="addon">{$lang.username}</span><input class="" type="text" name="username" value="{$username}">
-
-			<select class="smooth" name="problem_id" value="{$problem_id}">
+			<span>{$lang.run_id}：</span><input class="" type="text" name="run_id" value="{$run_id}">&nbsp;&nbsp;
+			<span>{$lang.username}：</span><input class="" type="text" name="username" value="{$username}">&nbsp;&nbsp;
+			<select name="problem_id" value="{$problem_id}">
 				<option value="" {if $result==""}selected{/if}>{$lang.all_problem}</option>
 				{volist name='contest_problems' id='contest_problem'}
 				<option value="{$contest_problem->num}"{if '' != $problem_id && $problem_id == $contest_problem->num} selected{/if}>{$alphabet[$contest_problem->num]}:{$contest_problem->problem->title}</option>
 				{/volist}
-			</select>
+			</select>&nbsp;&nbsp;
 
 			<select name="result">
 				<option value="" {if $result==""}selected{/if}>{$lang.all_result}</option>
@@ -30,20 +29,20 @@
 				<option value="10" {if $result=="10"}selected{/if}>{$lang.result_code_re}</option>
 				<option value="11" {if $result=="11"}selected{/if}>{$lang.result_code_ce}</option>
 			</select>
-
+			&nbsp;&nbsp;
 			<select name="language">
 				<option value="" {if $language==""}selected{/if}>{$lang.all_language}</option>
 				{volist name='allowed_langs' id='allowed_lang'}
 				<option value="{$allowed_lang.id}" {if $language != '' && $language == $allowed_lang.id}selected{/if}>{$allowed_lang.name}</option>
 				{/volist}
 			</select>
-
-			<button class="btn btn-sm btn-a">{$lang.submit}</button>
+			&nbsp;&nbsp;
+			<button type="submit">{$lang.submit}</button>
 		</p>
 	</form>
 	<br>
 	<hr>
-	<table class="table table-hover">
+	<table class="table">
 		<thead>
 		<tr>
 			<th width="5%">{$lang.run_id}</th>
