@@ -75,7 +75,8 @@ form > * {
 }
 .btn-sm {
     border-radius: 4px;
-    padding: 8px 14px 9px
+    /*padding: 8px 14px 9px;*/
+    padding: 10px 14px 11px;
 }
 .row {
     margin: 1% 0;
@@ -165,6 +166,7 @@ input[type=text] {
 .nav a:hover {
     /*background: #000;*/
     /*color: gray;*/
+    /*text-decoration: black;*/
 }
 .nav {
     height: 24px;
