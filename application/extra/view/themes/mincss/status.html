@@ -5,9 +5,9 @@
 
     <form class="" action="/status" method="get">
         <p>
-            <span class="addon">{$lang.run_id}</span><input class="smooth" type="text" name="run_id" value="{$run_id}" placeholder="{$lang.run_id}">
-            <span class="addon">{$lang.username}</span><input class="smooth" type="text" name="username" value="{$username}" placeholder="{$lang.username}">
-            <span class="addon">{$lang.problem_id}</span><input class="smooth" type="text" name="problem_id" value="{$problem_id}" placeholder="{$lang.problem_id}">
+            <span>{$lang.run_id}</span><input type="text" name="run_id" value="{$run_id}">&nbsp;&nbsp;
+            <span>{$lang.username}</span><input type="text" name="username" value="{$username}">&nbsp;&nbsp;
+            <span>{$lang.problem_id}</span><input type="text" name="problem_id" value="{$problem_id}">&nbsp;&nbsp;
             <select class="form-control" style="border-radius: 0px" name="result">
                 <option value="" {if $result==""}selected{/if}>{$lang.all_result}</option>
                 <option value="4" {if $result=="4"}selected{/if}>{$lang.result_code_ac}</option>
@@ -23,7 +23,7 @@
                 <option value="10" {if $result=="10"}selected{/if}>{$lang.result_code_re}</option>
                 <option value="11" {if $result=="11"}selected{/if}>{$lang.result_code_ce}</option>
             </select>
-
+            &nbsp;&nbsp;
             <select class="form-control" style="border-radius: 0px" name="language">
                 <option value="" {if $language==""}selected{/if}>{$lang.all_language}</option>
                 {volist name='allowed_langs' id='allowed_lang'}
@@ -31,7 +31,7 @@
                 /if}>{$allowed_lang.name}</option>
                 {/volist}
             </select>
-
+            &nbsp;&nbsp;
             <button type="submit">{$lang.submit}</button>
         </p>
     </form>
