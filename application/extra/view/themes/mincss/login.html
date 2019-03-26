@@ -40,6 +40,7 @@
             if ('success' == d.status) {
                 localStorage.setItem('username', loginData.username);
                 localStorage.setItem('password', loginData.password);
+                $('#error-info').html('登录成功');
                 window.location.href = '{$redirect}';
             }else{
                 $('#error-info').html(d.msg);
