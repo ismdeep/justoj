@@ -12,20 +12,20 @@
 <div class="container">
     <form method="post" class="layui-form" id="login-form" onsubmit="return do_login();">
         <p>
-            <span class="addon">{$lang.username}</span><input name="username" id="username" placeholder="{$lang.username}"  type="text" lay-verify="required" class="smooth" >
+            <span>{$lang.username}：</span><input name="username" id="username" type="text">
         </p>
         <p>
-            <span class="addon">{$lang.password}</span><input name="password" id="password" lay-verify="required" placeholder="{$lang.password}"  type="password" class="smooth">
+            <span>{$lang.password}：</span><input name="password" id="password" type="password">
         </p>
         <p>
-            <button class="btn btn-a btn-sm" type="submit">{$lang.login}</button>
+            <button type="submit">{$lang.login}</button>
             <span style="color: red" id="error-info"></span>
         </p>
-        <hr class="hr20" >
+        <hr class="hr20">
         <p>
-            <a style="color: blue" href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a style="color: blue" href="/register">{$lang.register}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a style="color: blue" href="javascript:" onclick="forgot_password();">{$lang.forgot_password}?</a>
+            <a href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/register">{$lang.register}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:" onclick="forgot_password();">{$lang.forgot_password}?</a>
         </p>
     </form>
 </div>

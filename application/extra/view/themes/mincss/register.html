@@ -13,22 +13,22 @@
 
     <form method="post" class="layui-form" onsubmit="return do_register();">
         <p>
-            <span class="addon">{$lang.username}</span><input class="smooth" name="username" id="username" placeholder="{$lang.username}"  type="text" >
+            <span>{$lang.username}</span><input name="username" id="username" type="text" >
         </p>
         <p>
-            <span class="addon">{$lang.password}</span><input class="smooth" name="password" id="password" placeholder="{$lang.password}"  type="password">
+            <span>{$lang.password}</span><input name="password" id="password" type="password">
         </p>
         <p>
-            <span class="addon">{$lang.password_again}</span><input class="smooth" name="password" id="password-again" placeholder="{$lang.password_again}"  type="password">
+            <span>{$lang.password_again}</span><input name="password" id="password-again" type="password">
         </p>
         <p>
-            <button class="btn btn-sm btn-a" type="submit">{$lang.register}</button>
+            <button type="submit">{$lang.register}</button>
             <span style="color: red" id="error-info"></span>
         </p>
-        <hr class="hr20" >
+        <hr>
         <p>
-            <a style="color: blue" href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a style="color: blue" href="/login">{$lang.login}</a>
+            <a href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="/login">{$lang.login}</a>
         </p>
     </form>
 </div>
@@ -41,7 +41,7 @@
             'password': $('#password').val(),
             'password_again': $('#password-again').val()
         };
-        $.post('/api/User/register',postData,function(d){
+        $.post('/api/user/register',postData,function(d){
             if ('success' == d.status) {
                 localStorage.setItem('username', postData.username);
                 localStorage.setItem('password', postData.password);
