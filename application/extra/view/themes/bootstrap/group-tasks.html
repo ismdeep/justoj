@@ -136,7 +136,41 @@
 
 <script type="text/javascript">
 
+	function getNowFormatDate2(val) {
+		var date = new Date();
+		date = new Date(date.getTime() + val + 10 * 60 * 1000);
+		var seperator1 = "-";
+		var seperator2 = ":";
+		var month = date.getMonth() + 1;
+		var strDate = date.getDate();
+		if (month >= 1 && month <= 9) {
+			month = "0" + month;
+		}
+		if (strDate >= 0 && strDate <= 9) {
+			strDate = "0" + strDate;
+		}
+
+		var hour = date.getHours();
+		var minute = date.getMinutes();
+		var second = date.getSeconds();
+
+		var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " ";
+		if (hour < 10) currentdate += '0';
+		currentdate += hour + seperator2;
+		if (minute < 10) currentdate += '00' + seperator2;
+		else currentdate += parseInt(minute/10) + '0' + seperator2;
+		// if (second < 10) currentdate += '0';
+		currentdate += '00';
+		//+ date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
+		return currentdate;
+	}
+
 	function open_add_task(){
+		$('#contest-title').val('');
+		$('#contest-description-edit').val('');
+		$('#problem-ids').val('');
+		$('#contest-begin-time').val('');
+		$('#contest-end-time').val('');
 		layer.confirm('是否通过其他作业复试作业列表？', function(){
 			layer.closeAll();
 			//prompt层
@@ -148,6 +182,8 @@
 						$('#contest-title').val(d.data.title);
 						$('#contest-description-edit').val(d.data.description);
 						$('#problem-ids').val(d.data.problem_ids);
+						$('#contest-begin-time').val(getNowFormatDate2(0));
+						$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
 						$('#addTaskModal').modal('show');
 					}else{
 						layer.alert(d.msg);
@@ -157,6 +193,8 @@
 			});
 		}, function(){
 			layer.closeAll();
+			$('#contest-begin-time').val(getNowFormatDate2(0));
+			$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
 			$('#addTaskModal').modal('show');
 		});
 		// $('#addTaskModal').modal('show');

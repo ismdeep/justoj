@@ -68,8 +68,12 @@ class Contest extends ApiBaseController
      */
     public function base_info($contest_id = '') {
 	    intercept_json('' == $contest_id, 'contest_id cannot be empty');
+	    if (strpos($contest_id, '/contest?id=')) {
+	        $contest_id = substr($contest_id, strpos($contest_id, '/contest?id=') + 12);
+        }
+        $contest_id = intval($contest_id);
         $contest = (new ContestModel())->where(['contest_id' => $contest_id])->find();
-        intercept_json(null == $contest, 'contest not found');
+        intercept_json(null == $contest, '请输入正确的比赛/作业首页地址或ID。如：https://oj.ismdeep.com/contest?id=1001 或 1001');
         $contest_problems = (new ContestProblemModel())->where('contest_id', $contest_id)->select();
         $problem_ids = [];
         foreach ($contest_problems as $contest_problem) {
