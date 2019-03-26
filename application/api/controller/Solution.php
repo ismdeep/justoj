@@ -85,12 +85,12 @@ class Solution extends ApiBaseController
 	{
 
         $this->need_login('json');
-        intercept_json('' == $contest_id, 'contest_id不可为空');
+        intercept_json('' == $contest_id, 'contest_id cannot be empty');
         $contest = (new ContestModel())->where('contest_id', $contest_id)->find();
         intercept_json(null == $contest, '比赛不存在');
-        intercept_json('' == $problem_num, 'problem_num不可为空');
-        intercept_json('' == $language, 'language不可为空');
-        intercept_json('' == $code, 'code不可为空');
+        intercept_json('' == $problem_num, 'problem_num cannot be empty');
+        intercept_json('' == $language, 'language cannot be empty');
+        intercept_json('' == $code, 'code cannot be empty');
         $contest_problem = ContestProblemModel::get(['contest_id' => $contest_id, 'num' => $problem_num]);
         intercept_json(null == $contest_problem, '题目不存在');
         intercept_json(null == (new ProblemModel())->where('problem_id', $contest_problem->problem_id)->find(), '题目不存在');
