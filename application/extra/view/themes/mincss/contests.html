@@ -12,7 +12,7 @@ $code_arr = array(
 <div class="container">
 	<form class="form-horizontal" action="{$target}" method="get">
 		<p>
-			<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.keyword}: {$lang.title}">
+			<span class="addon">{$lang.keyword}: {$lang.title}</span><input class="smooth" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}">
 			<button class="btn btn-sm"> <span class="glyphicon glyphicon-search"></span> {$lang.search}</button>
 		</p>
 	</form>
