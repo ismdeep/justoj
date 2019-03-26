@@ -172,6 +172,7 @@
 	}
 
 	function status_monitor(solution_id){
+		alert(solution_id);
 		$.get('/api/solution/status?solution_id='+solution_id,function(d){
 			console.log(d);
 			if (d.data.result < 4) {
