@@ -3,7 +3,7 @@
 {block name='body'}
 <div class="container">
 	<form class="form-horizontal" action="/contest/Status" method="get">
-		<div hidden><input hidden type="text" name="id" value="{$contest->contest_id}"></div>
+		<div style="visibility: hidden;"><input hidden type="text" name="id" value="{$contest->contest_id}"></div>
 		<p>
 			<span class="addon">{$lang.run_id}</span><input class="" type="text" name="run_id" value="{$run_id}">
 			<span class="addon">{$lang.username}</span><input class="" type="text" name="username" value="{$username}">
