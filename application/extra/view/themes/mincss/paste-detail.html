@@ -4,15 +4,4 @@
     <pre>{$lang.author}: {$paste->user_id}    {$lang.language}: {$paste->lang_text}</pre>
     <pre id="solution-source-code" style="padding: 0px;tab-size: 4"><code class="{$paste->lang}">{$paste->code}</code></pre>
 </div>
-
-<script type="text/javascript">
-    $(function(){
-        $('pre code').each(function(i, block) {
-            hljs.highlightBlock(block);
-        });
-    });
-</script>
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
 {/block}
