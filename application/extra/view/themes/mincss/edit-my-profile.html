@@ -49,11 +49,10 @@
 <script type="text/javascript">
     function save_profile(){
         $.post('/api/user/modify_profile', $('#editProfileForm').serialize(), function(d){
-            console.log(d);
             if ('success' == d.status) {
-                location.href = '/profile';
+                window.location.href = '/profile';
             }else{
-                layer.alert(d.msg);
+                alert(d.msg);
             }
         });
         return false;
