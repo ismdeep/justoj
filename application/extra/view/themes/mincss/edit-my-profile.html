@@ -4,7 +4,7 @@
 <div class="container">
 	<div>
         <h3>{$lang.personal_information}</h3>
-        <form id="editProfileForm">
+        <form id="editProfileForm" action="post" onsubmit="return save_profile();">
             <p>
                 <span>{$lang.username}：</span><input type="text" value="{$user->user_id}" placeholder="{$lang.please_input_password}" disabled readonly>
             </p>
@@ -47,18 +47,17 @@
 </div>
 
 <script type="text/javascript">
-$('#editProfileForm').on('submit',function(){
-    console.log( $('#editProfileForm').serialize() );
-    $.post('/api/User/modify_profile', $('#editProfileForm').serialize(), function(d){
-        console.log(d);
-        if ('success' == d.status) {
-            location.href = '/profile';
-        }else{
-            layer.alert(d.msg);
-        }
-    });
-    return false;
-});
+    function save_profile(){
+        $.post('/api/user/modify_profile', $('#editProfileForm').serialize(), function(d){
+            console.log(d);
+            if ('success' == d.status) {
+                location.href = '/profile';
+            }else{
+                layer.alert(d.msg);
+            }
+        });
+        return false;
+    }
 </script>
 
 {/block}
