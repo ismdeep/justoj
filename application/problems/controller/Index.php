@@ -12,9 +12,6 @@ namespace app\problems\controller;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\extra\controller\UserBaseController;
-use think\Controller;
-use think\Db;
-use think\Exception;
 use think\Request;
 
 class Index extends UserBaseController
