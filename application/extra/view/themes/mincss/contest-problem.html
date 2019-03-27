@@ -63,8 +63,8 @@
 
 	<form method="post" onsubmit="return submit_code();">
 		<p><span>{$lang.language}：</span><select name="language" id="submit-language">{volist name="allowed_langs" id="item"}<option value="{$item.id}">{$item.name} ({$item.version})</option>{/volist}</select></p>
-		<p><textarea class="form-control" style="font-family: Consolas,Courier,monospace;width: 60%" name="source" id="submit-source" rows="15"></textarea></p>
-		<p><button type="submit">{$lang.submit}</button>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red" id="error-info"></span><span id="judge-info"></span></p>
+		<p><textarea style="font-family: Consolas,Courier,monospace;width: 60%" name="source" id="submit-source" rows="15" oninput="source_code_changed();"></textarea></p>
+		<p><button id="submit-code" type="submit">{$lang.submit}</button>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: red" id="error-info"></span><span id="judge-info"></span></p>
 	</form>
 </div>
 
@@ -137,6 +137,8 @@
 	}
 
 	function submit_code(){
+		$('#submit-code').attr("disabled",true);
+		$('#judge-info').html('已提交');
 		var codeData = {
 			'contest_id': {$contest->contest_id},
 			'problem_num': {$contest_problem->num},
@@ -154,6 +156,10 @@
 			}
 		},'json');
 		return false;
+	}
+
+	function source_code_changed(){
+		$('#submit-code').removeAttr("disabled");
 	}
 </script>
 {/block}
