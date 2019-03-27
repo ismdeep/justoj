@@ -1,6 +1,13 @@
 {extend name="extra@themes/mincss/layout-contest/contest-layout" /}
 {block name='titlepart'}{$alphabet[$contest_problem->num]}:{$problem->title} - {$contest->title} - 江西理工大学编程俱乐部{/block}
 {block name="body"}
+<script type="text/x-mathjax-config">
+		MathJax.Hub.Config({
+			tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
+			"HTML-CSS": {linebreaks: {automatic: true}}
+		});
+</script>
+<script src="//cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <div class="container">
 	<ul class="pagination">
 		{volist name='contest_problems' id='p'}

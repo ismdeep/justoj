@@ -1,8 +1,5 @@
 {extend name="extra@themes/bootstrap/layout/user" /}
-
 {block name='titlepart'}{$problem->problem_id} - {$problem->title} - {$lang['justoj']}{/block}
-
-
 {block name="body"}
 <script type="text/x-mathjax-config">
 		MathJax.Hub.Config({
@@ -10,8 +7,7 @@
 			"HTML-CSS": {linebreaks: {automatic: true}}
 		});
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-
+<script src="//cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 <!--题目内容显示页面 begin-->
 <div class="container">
 	<h2 align="center">

@@ -36,7 +36,7 @@ class Index extends UserBaseController
     	$this->assign('username', htmlspecialchars($username));
     	$this->assign('problem_id', htmlspecialchars($problem_id));
     	$this->assign('result', htmlspecialchars($result));
-    	$this->assign('language', htmlspecialchars($language));
+    	$this->assign('language', intval($language));
     	$this->assign('allowed_langs', $this->allowed_langs());
     	if ('' != $run_id) {
     		$solutions = (new SolutionModel)->where('solution_id', $run_id)->paginate(10);

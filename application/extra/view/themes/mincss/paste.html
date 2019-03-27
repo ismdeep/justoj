@@ -6,8 +6,7 @@
 <div class="container">
     <form id="pasteForm">
         <div style="width: 300px">
-            <span>{$lang.language}: </span>
-            <select name="lang">
+            <span>{$lang.language}: </span><select name="lang">
                 {foreach $allowed_langs as $key=>$name}
                 <option value="{$key}">{$name}</option>
                 {/foreach}
