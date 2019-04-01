@@ -57,8 +57,8 @@ class BaseController extends Controller
     {
         parent::__construct($request);
 
-//        $this->theme_root = 'extra@themes/bootstrap';
-        $this->theme_root = 'extra@themes/mincss';
+        $this->theme_root = 'extra@themes/bootstrap';
+//        $this->theme_root = 'extra@themes/mincss';
 
 
         $this->assign('theme_root', $this->theme_root);
