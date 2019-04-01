@@ -77,10 +77,6 @@
 		{if $loginuser}
 		<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 		{/if}
-
-		{if $is_root}
-		<button class="btn btn-danger" onclick="layer.alert('暂未开放')">{$lang.rejudge}</button>
-		{/if}
 		<!--功能按钮组 end-->
 	</div>
 </div>
