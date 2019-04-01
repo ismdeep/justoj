@@ -78,7 +78,7 @@
 			{if $solution->result_code == 'result_code_ce'}
 			<td width="10%"><a href="/status/ceinfo?id={$solution->solution_id}" target="_blank">{$solution->result_text}</a></td>
 			{else}
-			<td width="10%" style="color: {$solution_result_color[$solution->result_code]}">{$solution->result_text} {if $solution->sim != null}
+			<td width="10%" class="{$solution->result_code}">{$solution->result_text} {if $solution->sim != null}
 				<a href="/sim?id={$solution->sim->s_id}" target="_blank">{$solution->sim->sim}</a> {/if} </td>
 			{/if}
 			<td width="10%">{$solution->memory} B</td>

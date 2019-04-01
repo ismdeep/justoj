@@ -57,7 +57,8 @@ class BaseController extends Controller
     {
         parent::__construct($request);
 
-        $this->theme_root = 'extra@themes/bootstrap';
+//        $this->theme_root = 'extra@themes/bootstrap';
+        $this->theme_root = 'extra@themes/mincss';
 
 
         $this->assign('theme_root', $this->theme_root);
@@ -122,26 +123,6 @@ class BaseController extends Controller
 
         // 初始化nav变量控制导航栏class="active"
         $this->assign('nav', 'home');
-
-        // 初始化solution_result_code
-        $solution_result_color = array(
-            'result_code_pending' => 'black',
-            'result_code_rejuding' => 'black',
-            'result_code_compiling' => 'black',
-            'result_code_running' => 'black',
-            'result_code_ac' => 'green',
-            'result_code_pe' => 'black',
-            'result_code_wa' => 'red',
-            'result_code_tle' => 'red',
-            'result_code_mle' => 'red',
-            'result_code_ole' => 'red',
-            'result_code_re' => 'red',
-            'result_code_ce' => 'red',
-            'result_code_co' => 'black',
-            'result_code_tr' => 'black',
-            'result_code_so' => 'black'
-        );
-        $this->assign('solution_result_color', $solution_result_color);
 
         $this->assign('need_edit_profile', false);
         if ($this->loginuser && UserModel::need_complete_info((new UserModel())->where(['user_id' => $this->loginuser->user_id])->find())) {
