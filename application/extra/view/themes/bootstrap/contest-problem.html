@@ -1,6 +1,23 @@
 {extend name="extra@themes/bootstrap/layout-contest/contest-layout" /}
 {block name='titlepart'}{$alphabet[$contest_problem->num]}:{$problem->title} - {$contest->title} - 江西理工大学编程俱乐部{/block}
 {block name="body"}
+<style>
+	.result_code_pending{color: black;}
+	.result_code_rejuding {color: black;}
+	.result_code_compiling {color: black;}
+	.result_code_running {color: black;}
+	.result_code_ac {color: green;}
+	.result_code_pe {color: black;}
+	.result_code_wa {color: red;}
+	.result_code_tle {color: red;}
+	.result_code_mle {color: red;}
+	.result_code_ole {color: red;}
+	.result_code_re {color: red;}
+	.result_code_ce {color: red;}
+	.result_code_co {color: black;}
+	.result_code_tr {color: black;}
+	.result_code_so {color: black;}
+</style>
 <script type="text/x-mathjax-config">
 		MathJax.Hub.Config({
 			tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
@@ -241,10 +258,10 @@
         $.get('/api/Solution/status?solution_id='+solution_id,function(d){
             console.log(d);
             if (d.data.result < 4) {
-                $('#solution-result').html(d.data.result_text);
+                $('#solution-result').html('<span class="'+d.data.result_code+'">'+d.data.result_text+'</span>');
                 setTimeout(status_monitor(solution_id),100);
             }else{
-                $('#solution-result').html(d.data.result_text);
+				$('#solution-result').html('<span class="'+d.data.result_code+'">'+d.data.result_text+'</span>');
                 $('#solution-pending-spin').hide();
             }
         },'json');
