@@ -45,7 +45,7 @@
 		{/if}
 
 		{if $is_root}
-		<button class="btn btn-danger" onclick="layer.alert('暂未开放')">{$lang.rejudge}</button>
+		<button class="btn btn-danger" onclick="rejudge_problem({$contest_problem->contest_id},{$contest_problem->num});">{$lang.rejudge}</button>
 		{/if}
 		<!--功能按钮组 end-->
 	</div>
@@ -283,6 +283,22 @@
         console.log(lang_val);
         localStorage.setItem("lang_val", lang_val);
     }
+
+    function rejudge_problem(contest_id, pid) {
+    	// layer.alert(contest_id + ' ' + pid);
+		layer.confirm('确定重判此题目？', function(){
+			// layer.alert(contest_id + ' ' + pid);
+			$.post('/api/solution/rejudge_contest_problem', {'contest_id': contest_id, 'pid': pid}, function(d){
+				if ('success' == d.status) {
+					window.location.href = '/contest/Status?id='+contest_id+'&problem_id='+pid;
+				}else{
+					layer.alert(d.msg,function(){
+						window.location.href = '/contest/Status?id='+contest_id+'&problem_id='+pid;
+					});
+				}
+			}, 'json');
+		})
+	}
 
     $(function(){
         // 自动初始化语言
