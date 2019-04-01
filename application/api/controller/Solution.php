@@ -210,7 +210,6 @@ class Solution extends ApiBaseController
 		$problem = (new ProblemModel())->find(['problem_id' => $problem_id]);
 		if (!$problem) return json(['status' => 'error', 'msg' => $this->lang['no_such_problem']]);
 		// 查看是否有题目还在判题中
-
         $cnt = (new SolutionModel())
             ->where('problem_id', intval($problem_id))
             ->where('result', 1)
@@ -225,4 +224,45 @@ class Solution extends ApiBaseController
 
 		return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
 	}
+
+    /**
+     * 重判比赛题目
+     * @param string $contest_id
+     * @param string $pid
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws Exception
+     */
+    public function rejudge_contest_problem($contest_id='', $pid='')
+    {
+        intercept_json(!$this->is_root, $this->lang['do_not_have_privilege']);
+        intercept_json('' == $contest_id, 'contest_id cannot be empty.');
+        intercept_json('' == $pid, 'pid cannot be empty.');
+        $contest_id = intval($contest_id);
+        $pid = intval($pid);
+        $contest_problem = (new ContestProblemModel())
+            ->where('contest_id', $contest_id)
+            ->where('num', $pid)
+            ->find();
+        intercept_json(null == $contest_problem, 'contest problem does not exists.');
+        $problem_id = $contest_problem->problem_id;
+        $problem = (new ProblemModel())->find(['problem_id' => $problem_id]);
+        intercept_json(null == $problem, $this->lang['no_such_problem']);
+
+        // 查看是否有题目还在判题中
+//        $cnt = (new SolutionModel())
+//            ->where('problem_id', $problem_id)
+//            ->where('result', 1)
+//            ->whereNotNull('contest_id')
+//            ->count();
+//        intercept_json($cnt > 0, 'Problem is still rejudging.');
+
+        SolutionModel::where('problem_id', $problem_id)->whereNotNull('contest_id')->update(
+            ['result' => 1],
+            [], 'result');
+
+        return json(['status' => 'success', 'msg' => 'rejudge success']);
+    }
 }

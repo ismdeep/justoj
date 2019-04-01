@@ -7,7 +7,7 @@
 		<thead>
 		<tr>
 			<th>{$lang.username}</th>
-			<th>{$lang.nickname}</th>
+			<th>{$lang.fullname}</th>
 			<th>{$lang.status}</th>
 			{if $is_group_manager}
 			<th>{$lang.download}</th>
@@ -19,7 +19,7 @@
 		{volist name='members' id='member'}
 		<tr>
 			<td><a href="/user/Info?user={$member->user_id}" target="_blank">{$member->user_id}</a></td>
-			<td>{$member->nickname}</td>
+			<td>{$member->realname}</td>
 			<td>
 				{if 0 == $member->status}
 				<span class="label label-info">{$status_arr[$member->status]}</span>

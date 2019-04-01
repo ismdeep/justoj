@@ -70,7 +70,7 @@
             <td width="10%"><a href="/status/ceinfo?id={$solution->solution_id}" target="_blank">{$solution->result_text}</a>
             </td>
             {else}
-            <td width="10%" style="color: {$solution_result_color[$solution->result_code]}">{$solution->result_text}
+            <td width="10%" class="{$solution->result_code}">{$solution->result_text}
             </td>
             {/if}
             <td width="10%">{$solution->memory} B</td>
