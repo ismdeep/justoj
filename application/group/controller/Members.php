@@ -29,7 +29,7 @@ class Members extends GroupBaseController
 	{
 		$members = GroupJoinModel::all(['group_id' => $this->group->id]);
 		foreach ($members as $member) {
-			$member->nickname = UserModel::get(['user_id' => $member->user_id])->nick;
+			$member->realname = UserModel::get(['user_id' => $member->user_id])->realname;
 		}
 		$this->assign('members', $members);
 		return view($this->theme_root . '/group-members');
