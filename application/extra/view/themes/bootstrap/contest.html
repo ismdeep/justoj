@@ -23,8 +23,7 @@
 			{$lang.current_time}: <span style="color: #1E9FFF" id="current-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;
 			{if !$contest_started}{$lang.start_countdown}: <span id="remain-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
 			{$lang.status}: {if $contest_started}
-			{if $contest_ended}<span style="color: red">Ended</span>{else}<span style="color: green">Running</span>{/if}
-
+				{if $contest_ended}<span style="color: red">Ended</span>{else}<span style="color: green">Running</span>{/if}
 			{else}<span style="color: red">Pending</span>{/if}
 			{if $is_contest_manager}&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit?contest_id={$contest->contest_id}" target="_blank">{$lang.edit}</a>{/if}
 		</div>
