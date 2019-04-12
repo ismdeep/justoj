@@ -58,6 +58,9 @@ class ContestBaseController extends UserBaseController
         if ($this->is_login && PrivilegeModel::get(['user_id' => $this->loginuser->user_id, 'rightstr' => 'm' . $this->contest_id])) {
             $this->is_contest_manager = true;
         }
+        if ($this->is_root) {
+            $this->is_contest_manager = true;
+        }
         $this->assign('is_contest_manager', $this->is_contest_manager);
 
         /************ 访问权限拦截 begin ************/

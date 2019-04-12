@@ -184,4 +184,5 @@ return [
     ,'forgot_password' => ['en' => 'Forgot Password', 'cn' => '忘记密码']
     ,'you_are_the_manager_of_this_group' => ['en' => 'Your are the manager of this group', 'cn' => '你是此班级的管理员']
     ,'you_have_request_join_the_group_already' => ['en' => 'You have request join the group already', 'cn' => '你已申请过加入此班级']
+    ,'will_only_show_in_contest' => ['en' => 'Attention: This will only show in contest rank list.', 'cn' => '注：只会出现在比赛列表中']
 ];
