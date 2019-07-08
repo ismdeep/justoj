@@ -59,6 +59,13 @@ class BaseController extends Controller
 
         $this->theme_root = 'extra@themes/bootstrap';
 //        $this->theme_root = 'extra@themes/mincss';
+        if (session('theme_root')) {
+            $this->theme_root = session('theme_root');
+        }
+
+        if ($this->theme_root != 'extra@themes/bootstrap' && $this->theme_root != 'extra@themes/mincss') {
+            $this->theme_root = 'extra@themes/bootstrap';
+        }
 
 
         $this->assign('theme_root', $this->theme_root);
