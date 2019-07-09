@@ -59,13 +59,12 @@
 			<div class="form-signin">
 				<h4 class="form-signin-heading" align="center">{$group->name}</h4>
 				<p>Are you sure to join this group?</p>
-				{if $group->type == 1 && $group->password != ''}
 				<p>
-					<input type="text" class="form-control" id="group-password" placeholder="Please input group password." required=""/>
-				</p>
+				{if $group->type == 1 && $group->password != ''}
+					<input type="text" id="group-password" placeholder="Please input group password." required=""/>
 				{/if}
-				<button class="btn btn-lg btn-primary btn-block" type="button" onclick="join()">{$lang.submit}</button>
-				<br>
+				<button type="button" onclick="join()">{$lang.submit}</button>
+				</p>
 				<a href="/">{$lang.back_to_home}</a>
 			</div>
 		</div>
