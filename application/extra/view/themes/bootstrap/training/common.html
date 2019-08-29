@@ -1,0 +1,27 @@
+{extend name="extra@themes/bootstrap/layout/common" /}
+{block name="navpart"}
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#example-navbar-collapse">
+                <span class="sr-only"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/training">训练场</a>
+        </div>
+        <div class="collapse navbar-collapse" id="example-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li><a href="">1</a></li>
+                <li><a href="">2</a></li>
+                <li><a href="">3</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a class="" href="/"><span class="glyphicon glyphicon-home"></span> {$lang.back_to_home}</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+{/block}

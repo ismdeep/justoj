@@ -16,6 +16,6 @@ class Index extends UserBaseController
 
     public function index()
     {
-        return view($this->theme_root . '/training');
+        return view($this->theme_root . '/training/index');
     }
 }
