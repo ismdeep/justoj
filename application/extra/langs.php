@@ -26,14 +26,14 @@ return [
         'code'    => 'c',
         'name'    => 'Clang',
         'version' => 'clang 3.4',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 14,
         'code'    => 'clang++',
         'name'    => 'Clang++',
         'version' => 'clang++ 3.4',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 3,
@@ -54,21 +54,21 @@ return [
         'code'    => 'py3',
         'name'    => 'Python3',
         'version' => 'python 3.6.6',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 2,
         'code'    => 'pas',
         'name'    => 'Pascal',
         'version' => 'fpc 2.6.2',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 4,
         'code'    => 'ruby',
         'name'    => 'Ruby',
         'version' => 'ruby 1.9.3p484',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 5,
@@ -82,21 +82,21 @@ return [
         'code'    => 'php',
         'name'    => 'PHP',
         'version' => 'php 5.5.9',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 8,
         'code'    => 'perl',
         'name'    => 'Perl',
         'version' => 'perl v5.18.2',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 9,
         'code'    => 'mono',
         'name'    => 'C#',
         'version' => 'Mono 3.2.8',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 10,
@@ -117,14 +117,14 @@ return [
         'code'    => 'Lisp(Scheme)',
         'name'    => 'Lisp(Scheme)',
         'version' => 'guile 2.0.9',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 15,
         'code'    => 'lua',
         'name'    => 'Lua',
         'version' => 'Lua 5.2.3',
-        'allowed' => true
+        'allowed' => false
     ],
     [
         'id'      => 16,
@@ -138,6 +138,6 @@ return [
         'code'    => 'go',
         'name'    => 'Go',
         'version' => 'go 1.2.1',
-        'allowed' => true
+        'allowed' => false
     ]
 ];
