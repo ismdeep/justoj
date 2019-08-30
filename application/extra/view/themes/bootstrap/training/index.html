@@ -14,43 +14,23 @@
                         <thead>
                         <tr >
                             <th></th>
-                            <th>问题编号</th>
-                            <th>标题</th>
-                            <th>来源</th>
+                            <th>问题</th>
                             <th>答案正确</th>
                             <th>提交</th>
                         </tr>
                         </thead>
                         <tbody>
+                        {volist name="training_problems" id="training_problem"}
                         <tr>
-                            <td>
-                            </td>
-                            <td><a href="/training/problem?id=1000">1000</a></td>
-                            <td><a href="/training/problem?id=1000">Problem A+B (I)</a></td>
-                            <td>ismdeep</td>
-                            <td>1167</td>
-                            <td>1727</td>
+                            <td>{if $training_problem->ac == true}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}</td>
+                            <td><a href="/training/problem?id={$training_problem->id}">{$training_problem->problem->title}</a></td>
+                            <td>{$training_problem->ac_cnt}</td>
+                            <td>{$training_problem->submit_cnt}</td>
                         </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td><a href="/problem?id=1001">1001</a></td>
-                            <td><a href="/problem?id=1001">Problem A+B (II)</a></td>
-                            <td>ismdeep</td>
-                            <td>551</td>
-                            <td>698</td>
-                        </tr>
-                        <tr>
-                            <td>
-                            </td>
-                            <td><a href="/problem?id=1002">1002</a></td>
-                            <td><a href="/problem?id=1002">ACM ICPC WORLD FINAL</a></td>
-                            <td>jxust_acm</td>
-                            <td>257</td>
-                            <td>533</td>
-                        </tr>
+                        {/volist}
                         </tbody>
                     </table>
+                    {$training_problems->render()}
                 </div>
             </div>
         </div>
@@ -64,6 +44,9 @@
                     </h3>
                 </div>
                 <div class="panel-body">
+                    {if $week_rank_empty == true}
+                    <p>尚无信息</p>
+                    {else}
                     <table class="table">
                         <thead>
                         <tr>
@@ -72,21 +55,15 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {volist name="week_rank" id="user"}
                         <tr>
-                            <td>ismdeep</td>
-                            <td>20</td>
+                            <td>{$user['user_id']}</td>
+                            <td>{$user['cnt']}</td>
                         </tr>
-                        <tr>
-                            <td>ismdeep</td>
-                            <td>20</td>
-                        </tr>
-                        <tr>
-                            <td>ismdeep</td>
-                            <td>20</td>
-                        </tr>
-                        
+                        {/volist}
                         </tbody>
                     </table>
+                    {/if}
                 </div>
             </div>
 <!--            本周排行列表 end-->
@@ -99,9 +76,11 @@
                     </h3>
                 </div>
                 <div class="panel-body">
-                    <p>姓名：江木</p>
-                    <p>本周刷题： 9</p>
-                    <p>上周刷题： 10</p>
+                    <p>账号：{$user_info->user_id}</p>
+                    <p>姓名：{$user_info->realname}</p>
+                    <p>昵称：{$user_info->nick}</p>
+                    <p>本周刷题： {$current_week_ac_cnt}</p>
+<!--                    <p>上周刷题： </p>-->
                 </div>
             </div>
 <!--            我的信息 end-->
