@@ -10,9 +10,11 @@ namespace app\admin\controller;
 
 
 use app\api\model\ProblemModel;
+use app\api\model\TrainingProblemModel;
 use app\extra\controller\AdminBaseController;
 use app\extra\util\PasswordUtil;
 use think\Exception;
+use think\response\Json;
 
 class Problem extends AdminBaseController
 {
@@ -28,6 +30,10 @@ class Problem extends AdminBaseController
         $limit = max(1, intval($limit));
         $problems = (new ProblemModel())->order('problem_id', 'asc')->limit(($page - 1) * $limit, $limit)->select();
         $count = (new ProblemModel())->count();
+        foreach ($problems as $problem)
+        {
+            $problem->in_training_problem = (new TrainingProblemModel())->where('problem_id', $problem->problem_id)->find() == null ? false : true;
+        }
         return json([
             'code' => 0,
             'count' => $count,
@@ -216,7 +222,7 @@ class Problem extends AdminBaseController
      * @param string $sample_output
      * @param string $hint
      * @param string $source
-     * @return \think\response\Json
+     * @return Json
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -361,6 +367,7 @@ class Problem extends AdminBaseController
     /**
      * 题目添加数据
      * @param string $problem_id
+     * @return Json
      */
     public function upload_files($problem_id = ''){
         intercept('' == $problem_id, 'problem_id不可为空');
@@ -386,5 +393,17 @@ class Problem extends AdminBaseController
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         $this->assign('problem', $problem);
         return view('add_files');
+    }
+
+    public function add_to_training_json($problem_id = '')
+    {
+        intercept_json('' == $problem_id, 'problem_id不可为空');
+        intercept_json((new TrainingProblemModel())->where('problem_id', $problem_id)->find() != null, '题目已经加入训练场');
+        $training_problem = new TrainingProblemModel();
+        $training_problem->problem_id = $problem_id;
+        $training_problem->save();
+        return json([
+            'status' => 'success'
+        ]);
     }
 }

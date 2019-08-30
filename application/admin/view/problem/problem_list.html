@@ -18,6 +18,16 @@
     <a class="layui-btn layui-btn-sm" href="javascript:" onclick="x_admin_show('测试数据 - {{d.problem_id}} - {{d.title}}', '/admin/Problem/files?problem_id={{d.problem_id}}',700,400);">测试数据</a>
 </script>
 
+<script type="text/html" id="addToTrainingTpl">
+    {{# if (d.in_training_problem == false) { }}
+    <button class="layui-btn layui-btn-sm layui-btn" onclick="add_to_training({{d.problem_id}});">添加</button>
+    {{# } }}
+</script>
+
+<script type="text/html" id="problemIdTpl">
+    <a href="/problem?id={{d.problem_id}}" target="_blank" style="color: blue">{{d.problem_id}}</a>
+</script>
+
 <script type="text/html" id="defunctTpl">
     {{# if (d.defunct == 'N') { }}
     <span style="color: green;">正常</span>
@@ -35,10 +45,11 @@
             elem: '#problem-list'
             , url: '/admin/problem/problem_list_json'
             , cols: [[
-                {field: 'problem_id', title: 'id'}
+                {field: 'problem_id', title: 'id', templet: '#problemIdTpl'}
                 , {field: 'title', title: '标题'}
                 , {field: 'defunct', width: 80, title: '状态', templet: '#defunctTpl'}
                 , {field: 'problem_id', title: '操作', templet: '#operationTpl'}
+                , {field: 'problem_id', title: '训练场', templet: '#addToTrainingTpl'}
             ]]
             , id: 'problem_list'
             , page: true
@@ -70,6 +81,20 @@
                     layer.alert(d.msg);
                 }
             },'json');
+        });
+    }
+    
+    function add_to_training(problem_id) {
+        layer.confirm('确定加入训练场？', function(){
+            $.post('/admin/problem/add_to_training_json', {'problem_id': problem_id}, function (d) {
+                layer.closeAll();
+                if ('success' == d.status) {
+                    var table = layui.table;
+                    table.reload('problem_list');
+                } else {
+                    layer.alert(d.msg);
+                }
+            }, 'json')
         });
     }
 </script>

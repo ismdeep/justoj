@@ -17,7 +17,7 @@
 			<th><input type="checkbox" name="checkall" id="checkall"></th>
 			<th>{$lang.file_name}</th>
 			<th>{$lang.file_size}</th>
-			<th>MD5</th>
+<!--			<th>MD5</th>-->
 			<th>{$lang.operation}</th>
 		</tr>
 		</thead>
@@ -27,7 +27,7 @@
 			<td><input type="checkbox" name="check1" value="{$file.name}"></td>
 			<td>{$file.name}</td>
 			<td>{$file.size} B</td>
-			<td style="font-family: 'Courier','Courier New'">{$file.md5}</td>
+<!--			<td style="font-family: 'Courier','Courier New'">{$file.md5}</td>-->
 			<td>
 				<a class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_file('{$file.name}')"><i class="layui-icon"></i> {$lang.delete}</a>
 				<a class="layui-btn layui-btn-sm" href="/admin/problem/download_single_file?problem_id={$problem->problem_id}&file_name={$file.name}"> <i class="layui-icon">&#xe601;</i> {$lang['download']}</a>
