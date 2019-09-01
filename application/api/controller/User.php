@@ -51,6 +51,7 @@ class User extends ApiBaseController
 		$user = new UserModel();
 		$user->user_id = $username;
 		$user->defunct = 'N';
+		$user->realname = $username;
 		$user->password = $password;
 		$user->reg_time = date('Y-m-d H:i:s', time());
 		$user->save();
