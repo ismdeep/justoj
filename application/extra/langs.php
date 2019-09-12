@@ -53,8 +53,8 @@ return [
         'id'      => 18,
         'code'    => 'py3',
         'name'    => 'Python3',
-        'version' => 'python 3.6.6',
-        'allowed' => false
+        'version' => 'python 3.7.4',
+        'allowed' => true
     ],
     [
         'id'      => 2,
