@@ -74,7 +74,7 @@ return [
         'id'      => 5,
         'code'    => 'bash',
         'name'    => 'Bash',
-        'version' => 'GUN bash 4.3.11',
+        'version' => 'GUN bash',
         'allowed' => true
     ],
     [
