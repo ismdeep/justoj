@@ -46,7 +46,7 @@ return [
         'id'      => 6,
         'code'    => 'py2',
         'name'    => 'Python2',
-        'version' => 'python 2.7.6',
+        'version' => 'python 2.7.16',
         'allowed' => true
     ],
     [
