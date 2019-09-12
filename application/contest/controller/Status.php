@@ -98,13 +98,13 @@ class Status extends ContestBaseController
                 ->paginate(10);
             foreach ($solutions as $solution) {
                 $solution->sim = (new SimModel())->where('s_id', $solution->solution_id)->find();
-                if (null != $solution->sim) {
-                    if (
-                        (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
-                        == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
-                        $solution->sim = null;
-                    }
-                }
+//                if (null != $solution->sim) {
+//                    if (
+//                        (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
+//                        == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
+//                        $solution->sim = null;
+//                    }
+//                }
             }
             $solutions->appends('run_id', $run_id);
             $this->assign('solutions', $solutions);
@@ -132,13 +132,13 @@ class Status extends ContestBaseController
 
         foreach ($solutions as $solution) {
             $solution->sim = (new SimModel())->where('s_id', $solution->solution_id)->find();
-            if (null != $solution->sim) {
-                if (
-                    (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
-                    == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
-                    $solution->sim = null;
-                }
-            }
+//            if (null != $solution->sim) {
+//                if (
+//                    (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
+//                    == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
+//                    $solution->sim = null;
+//                }
+//            }
         }
 
         $solutions->appends('id', $this->contest->contest_id);

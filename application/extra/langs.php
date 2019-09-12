@@ -46,15 +46,15 @@ return [
         'id'      => 6,
         'code'    => 'py2',
         'name'    => 'Python2',
-        'version' => 'python 2.7.6',
+        'version' => 'python 2.7.16',
         'allowed' => true
     ],
     [
         'id'      => 18,
         'code'    => 'py3',
         'name'    => 'Python3',
-        'version' => 'python 3.6.6',
-        'allowed' => false
+        'version' => 'python 3.7.4',
+        'allowed' => true
     ],
     [
         'id'      => 2,
@@ -74,7 +74,7 @@ return [
         'id'      => 5,
         'code'    => 'bash',
         'name'    => 'Bash',
-        'version' => 'GUN bash 4.3.11',
+        'version' => 'GUN bash',
         'allowed' => true
     ],
     [
