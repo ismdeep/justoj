@@ -134,7 +134,7 @@
 	|
 	{include file="extra@common_html/language_selector"}
 	|
-	<a href="mailto:ismdeep@protonmail.com">ismdeep@protonmail.com</a>
+	<a id="email-address-a" href="javascript:">**********************</a>
 	|
 	<a href="https://wiki.ismdeep.com/index.php?title=%E6%B1%9F%E8%A5%BF%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6ACM-ICPC" target="_blank">JxustACM</a>
 	|
@@ -144,8 +144,25 @@
 
 
 <script type="text/javascript">
+
+	function genEmailAddress () {
+		const str1 = "ail.c";
+		const str2 = "is";
+		const str3 = "ot";
+		const str4 = "mde";
+		const str5 = "om";
+		const str6 = "@pr";
+		const str7 = "onm";
+		const str8 = "ep";
+		return str2 + str4 + str8 + str6 + str3 + str7 + str1 + str5;
+	}
+
 	$(function(){
+		genEmailAddress();
 		console.log(localStorage.getItem('tip-already-know'));
+
+		$('#email-address-a').html(genEmailAddress()).attr('href', 'mailto:' + genEmailAddress());
+
 		if (localStorage.getItem('tip-already-know') == null) {
 			layer.open({
 				type: 1
@@ -158,14 +175,13 @@
 				,btn: ['我知道了，不再提示。', '关闭']
 				,btnAlign: 'c'
 				,moveType: 1 //拖拽模式，0或者1
-				,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站发现任何问题或提出任何建议都可直接发送邮件至 ismdeep@protonmail.com ，此邮件地址也会出现在网站底部。谢谢。</div>'
+				,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站时发现任何问题或想提出任何建议都可直接发送邮件至 ' + genEmailAddress() + ' ，此邮件地址也会出现在网站底部。谢谢。</div>'
 				, yes: function() {
 					localStorage.setItem('tip-already-know', true);
 					layer.closeAll();
 				}
 			});
 		}
-
 	});
 </script>
 
