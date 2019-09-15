@@ -134,11 +134,40 @@
 	|
 	{include file="extra@common_html/language_selector"}
 	|
+	<a href="mailto:ismdeep@protonmail.com">ismdeep@protonmail.com</a>
+	|
 	<a href="https://wiki.ismdeep.com/index.php?title=%E6%B1%9F%E8%A5%BF%E7%90%86%E5%B7%A5%E5%A4%A7%E5%AD%A6ACM-ICPC" target="_blank">JxustACM</a>
 	|
 	<a href="https://justoj.readthedocs.io" target="_blank">Docs</a>
 </div>
 {/block}
+
+
+<script type="text/javascript">
+	$(function(){
+		console.log(localStorage.getItem('tip-already-know'));
+		if (localStorage.getItem('tip-already-know') == null) {
+			layer.open({
+				type: 1
+				,title: false //不显示标题栏
+				,closeBtn: false
+				,area: '300px;'
+				,shade: 0.8
+				,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+				,resize: false
+				,btn: ['我知道了，不再提示。', '关闭']
+				,btnAlign: 'c'
+				,moveType: 1 //拖拽模式，0或者1
+				,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站发现任何问题或提出任何建议都可直接发送邮件至 ismdeep@protonmail.com ，此邮件地址也会出现在网站底部。谢谢。</div>'
+				, yes: function() {
+					localStorage.setItem('tip-already-know', true);
+					layer.closeAll();
+				}
+			});
+		}
+
+	});
+</script>
 
 </body>
 </html>
