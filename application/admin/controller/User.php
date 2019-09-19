@@ -13,6 +13,11 @@ use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
 use app\extra\util\PasswordUtil;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\Exception;
+use think\exception\DbException;
+use think\response\Json;
 
 class User extends AdminBaseController
 {
@@ -28,10 +33,11 @@ class User extends AdminBaseController
      * @param int $page
      * @param int $limit
      * @param string $keyword
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function user_list_json($page = 1, $limit = 10, $keyword = '')
     {
@@ -46,6 +52,10 @@ class User extends AdminBaseController
         }
 
         $users = $where->limit(($page - 1) * $limit, $limit)->select();
+        foreach($users as $user)
+        {
+            $user->school = htmlspecialchars($user->school);
+        }
         $count = $where->count();
 
         return json([
@@ -64,10 +74,10 @@ class User extends AdminBaseController
     }
 
     /**
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function admin_user_list_json()
     {
@@ -96,10 +106,10 @@ class User extends AdminBaseController
      * @param string $keyword
      * @param int $page
      * @param int $limit
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function user_search_by_keyword_json($keyword = '', $page = 1, $limit = 10)
     {
@@ -116,10 +126,10 @@ class User extends AdminBaseController
 
     /**
      * @param string $user_id
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function add_admin_privilege($user_id = '')
     {
@@ -142,7 +152,7 @@ class User extends AdminBaseController
 
     /**
      * @param string $user_id
-     * @return \think\response\Json
+     * @return Json
      */
     public function remove_admin_privilege_json($user_id = '')
     {
@@ -161,9 +171,9 @@ class User extends AdminBaseController
     /**
      * @param string $user_id
      * @return \think\response\View
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function change_password($user_id='')
     {
@@ -178,10 +188,10 @@ class User extends AdminBaseController
      * @param string $user_id
      * @param string $newpassword
      * @param string $newpassword2
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function change_password_json($user_id='',$newpassword='',$newpassword2='')
     {
