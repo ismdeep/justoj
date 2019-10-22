@@ -53,7 +53,7 @@ class Enroll extends BaseController
             $this->redirect("/contest?id={$contest_id}");
         }
 
-        return view();
+        return view($this->theme_root . '/contest-enroll');
     }
 
     /**
