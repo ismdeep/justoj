@@ -22,6 +22,7 @@ return [
     ,'author' => ['en' => 'Author', 'cn' => '作者']
     ,'available' => ['en' => 'Available', 'cn' => '可用']
     ,'home' => ['en' => 'Home', 'cn' => '主页']
+    ,'eg' => ['en' => 'E.g', 'cn' => '例如']
     ,'back_to_home' => ['en' => 'Go Home', 'cn' => '返回主页']
     ,'can_not_be_null' => ['en' => 'can not be empty', 'cn' => '不可为空']
     ,'cancel' => ['en' => 'Cancel', 'cn' => '取消']
