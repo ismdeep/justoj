@@ -2,8 +2,15 @@
 {block name="content"}
 <div class="x-body">
     <div class="layui-row">
-        <a class="layui-btn layui-btn-sm" href="javascript:"
-           onclick="x_admin_show('添加题目','/admin/problem/add', 800, 530);">添加题目</a>
+
+
+        <form class="layui-form layui-col-md12 x-so" id="problemFilterForm">
+            <a class="layui-btn" href="javascript:"
+               onclick="x_admin_show('添加题目','/admin/problem/add', 800, 530);">添加题目</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input class="layui-input" type="text" name="keyword" id="keyword" placeholder="关键字搜索" autocomplete="off">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+        </form>
     </div>
     <table class="layui-hide" id="problem-list"></table>
 </div>
@@ -97,5 +104,13 @@
             }, 'json')
         });
     }
+
+    $('#problemFilterForm').on('submit',function(){
+        var keyword = $('#keyword').val();
+        console.log(keyword);
+        var table = layui.table;
+        table.reload('problem_list', {where: {'keyword': keyword}});
+        return false;
+    });
 </script>
 {/block}

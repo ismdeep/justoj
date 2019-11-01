@@ -24,11 +24,29 @@ class Problem extends AdminBaseController
         return view();
     }
 
-    public function problem_list_json($page = 1, $limit = 10)
+    /**
+     * @param int $page
+     * @param int $limit
+     * @param string $keyword
+     * @return Json
+     * @throws Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function problem_list_json($page = 1, $limit = 10, $keyword = '')
     {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
-        $problems = (new ProblemModel())->order('problem_id', 'asc')->limit(($page - 1) * $limit, $limit)->select();
+        $problems = (new ProblemModel());
+        if ('' != $keyword) {
+            if ('' != $keyword) {
+                $problems = $problems
+                    ->where(['problem_id' => $keyword])
+                    ->whereOr(['title' => ['like', "%{$keyword}%"]]);
+            }
+        }
+        $problems = $problems->order('problem_id', 'asc')->limit(($page - 1) * $limit, $limit)->select();
         $count = (new ProblemModel())->count();
         foreach ($problems as $problem)
         {
