@@ -1,0 +1,64 @@
+{extend name="base" /}
+{block name="content"}
+<body class="x-body">
+<table class="layui-hide" id="tourist-list"></table>
+</body>
+
+<script type="text/javascript">
+    function add_tourist(user_id) {
+        layer.confirm('是否设置' + user_id + '为旅游队？', function () {
+            $.post('/admin/contest/add_tourist_json', {'contest_id': '{$contest_id}','user_id': user_id}, function (d) {
+                location.reload();
+            }, 'json');
+        })
+    }
+
+    function remove_tourist(user_id) {
+        layer.confirm('是否取消' + user_id + '的旅游队设置？', function () {
+            $.post('/admin/contest/remove_tourist_json', {'contest_id': '{$contest_id}','user_id': user_id}, function (d) {
+                location.reload();
+            }, 'json');
+        });
+
+    }
+</script>
+
+<script type="text/html" id="operationTpl">
+    {{# if (true == d.is_tourist) { }}
+    <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-primary" onclick="remove_tourist('{{d.user_id}}');">取消</a>
+    {{# } else { }}
+    <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-danger" onclick="add_tourist('{{d.user_id}}');">设置</a>
+    {{# } }}
+</script>
+
+<script type="text/javascript">
+    var table;
+    layui.use(['form', 'layedit', 'laydate', 'table'], function () {
+        table = layui.table;
+
+        var form = layui.form
+            , layer = layui.layer
+            , layedit = layui.layedit
+            , laydate = layui.laydate;
+
+        //方法级渲染
+        table.render({
+            elem: '#tourist-list'
+            , url: '/admin/contest/tourist_list_json'
+            , cols: [[
+                {field: 'user_id', title: '用户名'}
+                , {field: 'nick', title: '昵称'}
+                , {field: 'realname', title: '姓名'}
+                , {field: 'school', title: '学校'}
+                , {field: 'class', title: '班级'}
+                , {field: 'id', title: '操作', templet: '#operationTpl'}
+            ]]
+            , id: 'tourist_list'
+            , page: true
+            , where: {
+                "contest_id": {$contest_id}
+            }
+        });
+    });
+</script>
+{/block}

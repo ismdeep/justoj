@@ -26,6 +26,7 @@
 				{if $contest_ended}<span style="color: red">Ended</span>{else}<span style="color: green">Running</span>{/if}
 			{else}<span style="color: red">Pending</span>{/if}
 			{if $is_contest_manager}&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit?contest_id={$contest->contest_id}" target="_blank">{$lang.edit}</a>{/if}
+			{if $is_contest_manager}&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit_tourist?contest_id={$contest->contest_id}" target="_blank">旅游队设置</a>{/if}
 		</div>
 	</div>
 

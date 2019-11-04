@@ -11,8 +11,11 @@ namespace app\admin\controller;
 
 use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
+use app\api\model\ContestTouristModel;
 use app\api\model\ProblemModel;
+use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
+use think\Db;
 
 class Contest extends AdminBaseController
 {
@@ -237,4 +240,85 @@ class Contest extends AdminBaseController
         return json(['status' => 'success', 'msg' => '操作成功']);
     }
 
+
+    /**
+     * @param string $contest_id
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
+    public function tourist_list_json($contest_id = '')
+    {
+        if ('' == $contest_id) {
+            return json([
+                'code' => 1
+            ]);
+        }
+
+        $contest_tourists = ContestTouristModel::all(['contest_id' => $contest_id]);
+
+        $users_tmp = Db::query("select DISTINCT user_id from solution where contest_id=".$contest_id);
+        $users = [];
+        foreach ($users_tmp as $user_id) {
+            $users []= UserModel::get(['user_id' => $user_id['user_id']]);
+        }
+        foreach ($users as $user) {
+            $user->is_tourist = false;
+            foreach ($contest_tourists as $contest_tourist) {
+                if ($contest_tourist->user_id == $user->user_id) {
+                    $user->is_tourist = true;
+                }
+            }
+        }
+        return json([
+            'code' => 0,
+            'data' => $users,
+            'count' => 1000
+        ]);
+    }
+
+    public function edit_tourist($contest_id = '')
+    {
+        intercept('' == $contest_id, 'Invalid');
+
+        $this->assign('contest_id', $contest_id);
+        return view('edit_tourist');
+    }
+
+    /**
+     * @param string $contest_id
+     * @param string $user_id
+     * @return \think\response\Json
+     */
+    public function add_tourist_json($contest_id = '', $user_id = '')
+    {
+        intercept_json('' == $contest_id, 'error');
+        intercept_json('' == $user_id, 'error');
+        $tourist = new ContestTouristModel();
+        $tourist->contest_id = $contest_id;
+        $tourist->user_id = $user_id;
+        $tourist->save();
+        return json([
+            'code' => 0
+        ]);
+    }
+
+
+    /**
+     * @param string $contest_id
+     * @param string $user_id
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
+    public function remove_tourist_json($contest_id = '', $user_id = '')
+    {
+        intercept_json('' == $contest_id, 'error');
+        intercept_json('' == $user_id, 'error');
+        $tourists = ContestTouristModel::all(['contest_id' => $contest_id, 'user_id' => $user_id]);
+        foreach ($tourists as $tourist) {
+            $tourist->delete();
+        }
+        return json([
+            'code' => 0
+        ]);
+    }
 }

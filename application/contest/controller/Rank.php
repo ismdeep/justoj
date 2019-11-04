@@ -10,6 +10,7 @@ namespace app\contest\controller;
 
 
 use app\api\model\ContestProblemModel;
+use app\api\model\ContestTouristModel;
 use app\api\model\GroupModel;
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
@@ -47,6 +48,9 @@ class Rank extends ContestBaseController
      */
     public function index()
 	{
+	    // 获取本场比赛旅游队列表
+        $tourist_user_ids = ContestTouristModel::tourists_in_contest($this->contest->contest_id);
+
 		// 获取当前已有提交的所有用户名$users
 		$users = [];
         $users_tmp = Db::query("select DISTINCT user_id from solution where contest_id=".$this->contest->contest_id);
@@ -104,7 +108,11 @@ class Rank extends ContestBaseController
 			}
 			$user['penalty_text'] = PenaltyUtil::penalty_int_2_text($user['penalty']);
             $user['mark'] = intval($user['mark'] / sizeof($contest_problems));
-			$users[] = $user;
+
+            // 处理是否是旅游队
+            $user['is_tourist'] = in_array($user['user_id'], $tourist_user_ids );
+
+            $users[] = $user;
 		}
 
 		for ($i = 0; $i < sizeof($users) - 1; ++$i) {
@@ -122,6 +130,8 @@ class Rank extends ContestBaseController
 				}
 			}
 		}
+
+//		return json(['users' => $users]);
 
 		$this->assign('users', $users);
 		return view($this->theme_root . '/contest-rank');
