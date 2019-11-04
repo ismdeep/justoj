@@ -23,6 +23,8 @@
 		<a href="/contest/Rank/export_xls?id={$contest->contest_id}">比赛成绩</a>
 		{if $is_administrator}
         <a href="/contest/rank/export_register_users?id={$contest->contest_id}">参赛列表</a>
+		&nbsp;&nbsp;&nbsp;&nbsp;
+		<a href="javascript:" onclick="show_tourist_btns();">设置</a>
         {/if}
 	</p>
 	<table class="table table-hover">
@@ -41,11 +43,13 @@
 		</thead>
 		<tbody>
 		{volist name='users' id='user'}
+		{if false == $user['is_tourist']}
 		<?php $rank_index++; ?>
+		{/if}
 		<tr>
-			<td>{$rank_index}</td>
+			<td>{if false == $user['is_tourist']}{$rank_index}{else}*{/if}</td>
 			<td>{$user['user_id']}</td>
-			<td>{$user['user']['realname']}</td>
+			<td>{$user['user']['realname']}<a href="javascript:" class="tourist-btns-class" hidden onclick="add_tourist('{$user[\'user_id\']}');">设置</a></td>
 			<td>{$user['ac_cnt']}</td>
             {if $contest->type == 1}<td>{$user['mark']}</td>{/if}
 			<td>{$user['penalty_text']}</td>
@@ -76,4 +80,18 @@
 		</tbody>
 	</table>
 </div>
+
+<script type="text/javascript">
+	function show_tourist_btns() {
+		$('.tourist-btns-class').show();
+	}
+
+	function add_tourist(user_id) {
+		layer.confirm('是否设置' + user_id + '为旅游队？', function () {
+			$.post('/admin/contest/add_tourist_json', {'contest_id': '{$contest->contest_id}','user_id': user_id}, function (d) {
+				location.reload();
+			}, 'json');
+		})
+	}
+</script>
 {/block}
