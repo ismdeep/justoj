@@ -9,6 +9,7 @@
 namespace app\contests\controller;
 
 
+use app\api\model\ContestEnrollModel;
 use app\api\model\ContestModel;
 use app\extra\controller\UserBaseController;
 use think\Db;
@@ -41,6 +42,17 @@ class Index extends UserBaseController
 			->orderRaw($order_str)
 			->paginate(10);
 		if ('' != $keyword) $contests->appends('keyword', $keyword);
+
+		foreach($contests as $contest) {
+		    $contest->is_enroll = false;
+		    if ($contest->is_need_enroll && $this->loginuser) {
+		        $contest_enroll = ContestEnrollModel::get(['user_id' => $this->loginuser->user_id, 'contest_id' => $contest->contest_id]);
+		        if ($contest_enroll) {
+		            $contest->is_enroll = true;
+                }
+            }
+        }
+
 		$this->assign('title_val', $this->lang['contest']);
 		$this->assign('contests', $contests);
 		return view( $this->theme_root . '/contests', ['keyword' => htmlspecialchars($keyword), 'target' => '/contests']);
