@@ -37,7 +37,10 @@ $code_arr = array(
 				{if $contest->private == 1}
 				<span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;
 				{/if}
-				{$contest->title}</a></td>
+				{$contest->title}</a>
+
+				{if $contest->is_need_enroll && $contest->is_enroll}<span class="label label-success">已报名</span>{/if}
+			</td>
 			<td>
 				<span style="color: {$code_arr[$contest->status_code]}">{$lang[$contest->status_code]}
 					{if $contest->status_code == 'contest_code_pending'}
