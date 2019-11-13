@@ -94,41 +94,48 @@
 
 <script type="text/javascript">
     $('#problemEditForm').on('submit',function(){
-        console.log('problemEditForm is submit.');
-        console.log($('#problemEditForm').serialize());
-        var postData = {
-            'problem_id': $('#problem_id').val(),
-            'title': $('#title').val(),
-            'time_limit': $('#time_limit').val(),
-            'memory_limit': $('#memory_limit').val(),
-            'description': description.getData(),
-            'input': input.getData(),
-            'output': output.getData(),
-            'sample_input': $('#sample_input').val(),
-            'sample_output': $('#sample_output').val(),
-            'hint': hint.getData(),
-            'source': $('#source').val()
-        };
-        $.post('/admin/problem/problem_save_json',postData,function(d){
-            if ('success' == d.status) {
-                $('#problem_id').val(d.data.problem_id);
-                layer.confirm(d.msg, {
-                    btn: ['查看题目','继续编辑','返回题目列表'] //按钮
-                }, function(){
+        layer.msg('正在提交...', {
+            icon: 16
+            ,shade: 0.01
+        });
+        setTimeout(function () {
+            console.log('problemEditForm is submit.');
+            console.log($('#problemEditForm').serialize());
+            var postData = {
+                'problem_id': $('#problem_id').val(),
+                'title': $('#title').val(),
+                'time_limit': $('#time_limit').val(),
+                'memory_limit': $('#memory_limit').val(),
+                'description': description.getData(),
+                'input': input.getData(),
+                'output': output.getData(),
+                'sample_input': $('#sample_input').val(),
+                'sample_output': $('#sample_output').val(),
+                'hint': hint.getData(),
+                'source': $('#source').val()
+            };
+            $.post('/admin/problem/problem_save_json',postData,function(d){
+                if ('success' == d.status) {
+                    $('#problem_id').val(d.data.problem_id);
                     layer.closeAll();
-                    setTimeout(function(){
-                        window.open('/problem?id=' + d.data.problem_id);
-                    },100);
-                }, function(){
-                    layer.closeAll();
-                },function(){
-                    layer.closeAll();
-                    parent.location.reload();
-                });
-            }else{
-                layer.alert(d.msg);
-            }
-        },'json');
+                    layer.confirm(d.msg, {
+                        btn: ['查看题目','继续编辑','返回题目列表'] //按钮
+                    }, function(){
+                        layer.closeAll();
+                        setTimeout(function(){
+                            window.open('/problem?id=' + d.data.problem_id);
+                        },100);
+                    }, function(){
+                        layer.closeAll();
+                    },function(){
+                        layer.closeAll();
+                        parent.location.reload();
+                    });
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        }, 100);
         return false;
     });
 
