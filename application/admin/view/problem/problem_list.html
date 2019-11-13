@@ -52,9 +52,11 @@
             elem: '#problem-list'
             , url: '/admin/problem/problem_list_json'
             , cols: [[
-                {field: 'problem_id', title: 'id', templet: '#problemIdTpl'}
+                  {field: 'problem_id', title: 'id', templet: '#problemIdTpl'}
                 , {field: 'title', title: '标题'}
-                , {field: 'defunct', width: 80, title: '状态', templet: '#defunctTpl'}
+                , {field: 'source', title: '来源'}
+                , {field: 'create_time', title: '创建时间'}
+                , {field: 'defunct',  title: '状态', templet: '#defunctTpl'}
                 , {field: 'problem_id', title: '操作', templet: '#operationTpl'}
                 , {field: 'problem_id', title: '训练场', templet: '#addToTrainingTpl'}
             ]]
@@ -62,6 +64,7 @@
             , page: true
         });
     });
+
 
     function enable_problem(problem_id) {
         layer.confirm('确定启用？', function(){
