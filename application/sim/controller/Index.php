@@ -29,7 +29,6 @@ class Index extends BaseController
     public function index($id = '')
     {
 //        intercept(!$this->is_administrator, $this->lang['do_not_have_privilege']);
-
         intercept('' == $id, 'null');
         $sim = (new SimModel())->where('s_id', $id)->find();
         $sim->s_src = (new SourceCodeModel())->where('solution_id', $sim->s_id)->find();
