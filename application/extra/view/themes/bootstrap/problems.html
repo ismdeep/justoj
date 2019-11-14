@@ -2,57 +2,98 @@
 {block name='titlepart'}{$lang['problem']} - {$lang['justoj']}{/block}
 {block name="body"}
 <div class="container">
-	<form class="form-horizontal" action="/problems" method="get">
-		<div class="col-sm-5" style="padding-left: 0px">
-			<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.keyword}: {$lang.title},{$lang.source}">
+	<div class="row">
+		<div class="col-md-8">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form class="form-horizontal" action="/problems" method="get">
+						<div class="col-sm-5" style="padding-left: 0px">
+							<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.keyword}: {$lang.title},{$lang.source}">
+						</div>
+						<div class="col-sm-2">
+							<button class="btn btn-success">{$lang.submit}</button>
+						</div>
+					</form>
+					<br><br>
+
+					<ul class="pagination">
+						{for start="1" end="$page_cnt+1"}
+						<li{if $page == $i} class="active"{/if}><a href="/problems?page={$i}">{$i}</a></li>
+						{/for}
+					</ul>
+
+
+					<table class="table table-hover">
+						<thead>
+						<tr >
+							<th></th>
+							<th>{$lang.problem_id}</th>
+							<th>{$lang.title}</th>
+							<th>{$lang.source}</th>
+							<th>{$lang.accepted}</th>
+							<th>{$lang.submit}</th>
+						</tr>
+						</thead>
+						<tbody>
+						{volist name='problems' id='problem'}
+						{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $is_administrator)}
+						<tr>
+							<td>
+								{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+								{if 2 == $problem->solve_status}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+							</td>
+							<td><a href="/problem?id={$problem->problem_id}">{$problem->problem_id}</a></td>
+							<td><a href="/problem?id={$problem->problem_id}">{$problem->title}</a></td>
+							<td>{$problem->source}</td>
+							<td>{$problem->solved}</td>
+							<td>{$problem->submit}</td>
+						</tr>
+						{/if}
+						{/volist}
+						</tbody>
+					</table>
+
+					<ul class="pagination">
+						{for start="1" end="$page_cnt+1"}
+						<li{if $page == $i} class="active"{/if}><a href="/problems?page={$i}">{$i}</a></li>
+						{/for}
+					</ul>
+				</div>
+			</div>
 		</div>
-		<div class="col-sm-2">
-			<button class="btn btn-success">{$lang.submit}</button>
+		<div class="col-md-4">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						近期未解决问题
+					</h3>
+				</div>
+				<div class="panel-body">
+					{if $is_login}
+					<table class="table">
+						<thead>
+						<tr>
+							<th>ID</th>
+							<th>Status</th>
+<!--							<th>Date</th>-->
+						</tr>
+						</thead>
+						<tbody>
+						{volist name="unsolved_solutions" id="unsolved_solution"}
+						<tr>
+							<td><a href="/problem?id={$unsolved_solution.problem_id}">{$unsolved_solution.problem_id}</a></td>
+							<td style="color: red">{$unsolved_solution.result_text}</td>
+<!--							<td>2019-09-12 12:18:09</td>-->
+						</tr>
+						{/volist}
+						</tbody>
+					</table>
+					{else}
+					尚未登陆
+					{/if}
+				</div>
+			</div>
 		</div>
-	</form>
-	<br><br>
-
-    <ul class="pagination">
-        {for start="1" end="$page_cnt+1"}
-        <li{if $page == $i} class="active"{/if}><a href="/problems?page={$i}">{$i}</a></li>
-        {/for}
-    </ul>
-
-
-	<table class="table table-hover">
-		<thead>
-		<tr >
-			<th></th>
-			<th>{$lang.problem_id}</th>
-			<th>{$lang.title}</th>
-			<th>{$lang.source}</th>
-			<th>{$lang.accepted}</th>
-			<th>{$lang.submit}</th>
-		</tr>
-		</thead>
-		<tbody>
-		{volist name='problems' id='problem'}
-		{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $is_administrator)}
-		<tr>
-			<td>
-				{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
-				{if 2 == $problem->solve_status}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
-			</td>
-			<td><a href="/problem?id={$problem->problem_id}">{$problem->problem_id}</a></td>
-			<td><a href="/problem?id={$problem->problem_id}">{$problem->title}</a></td>
-			<td>{$problem->source}</td>
-			<td>{$problem->solved}</td>
-			<td>{$problem->submit}</td>
-		</tr>
-		{/if}
-		{/volist}
-		</tbody>
-	</table>
-
-    <ul class="pagination">
-        {for start="1" end="$page_cnt+1"}
-        <li{if $page == $i} class="active"{/if}><a href="/problems?page={$i}">{$i}</a></li>
-        {/for}
-    </ul>
+	</div>
 </div>
 {/block}

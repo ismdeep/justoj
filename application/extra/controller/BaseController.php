@@ -59,13 +59,13 @@ class BaseController extends Controller
 
         $this->theme_root = 'extra@themes/bootstrap';
 //        $this->theme_root = 'extra@themes/mincss';
-        if (session('theme_root')) {
-            $this->theme_root = session('theme_root');
-        }
+//        if (session('theme_root')) {
+//            $this->theme_root = session('theme_root');
+//        }
 
-        if ($this->theme_root != 'extra@themes/bootstrap' && $this->theme_root != 'extra@themes/mincss') {
-            $this->theme_root = 'extra@themes/bootstrap';
-        }
+//        if ($this->theme_root != 'extra@themes/bootstrap' && $this->theme_root != 'extra@themes/mincss') {
+//            $this->theme_root = 'extra@themes/bootstrap';
+//        }
 
 
         $this->assign('theme_root', $this->theme_root);
@@ -136,9 +136,9 @@ class BaseController extends Controller
             $this->assign('need_edit_profile', true);
         }
 
-        if ($this->show_browser_banner) {
-            $this->theme_root = 'extra@themes/mincss';
-        }
+//        if ($this->show_browser_banner) {
+//            $this->theme_root = 'extra@themes/mincss';
+//        }
 
     }
 
