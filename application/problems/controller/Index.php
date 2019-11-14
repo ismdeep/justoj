@@ -88,28 +88,30 @@ class Index extends UserBaseController
 
 
         /***************** 获取当前用户未完成题目列表 >>>> ******************/
-         $solved_problems = (new SolutionModel())
-            ->where('user_id', $this->loginuser->user_id)
-            ->whereNull('contest_id')
-            ->where('result', 4)
-            ->distinct('problem_id')
-            ->field('problem_id')
-            ->select();
-        $solved_problem_ids = [];
-        foreach ($solved_problems as $solved_problem) {
-            $solved_problem_ids []= $solved_problem->problem_id;
+        if ($this->loginuser) {
+            $solved_problems = (new SolutionModel())
+                ->where('user_id', $this->loginuser->user_id)
+                ->whereNull('contest_id')
+                ->where('result', 4)
+                ->distinct('problem_id')
+                ->field('problem_id')
+                ->select();
+            $solved_problem_ids = [];
+            foreach ($solved_problems as $solved_problem) {
+                $solved_problem_ids []= $solved_problem->problem_id;
+            }
+            $unsolved_solutions = (new SolutionModel())
+                ->where('user_id', $this->loginuser->user_id)
+                ->where('result', '<>', 4)
+                ->whereNull('contest_id')
+                ->whereNotIn('problem_id', $solved_problem_ids)
+                ->select();
+            foreach ($unsolved_solutions as $unsolved_solution) {
+                $unsolved_solution->fk();
+                $unsolved_solution->result_text = $this->lang[$unsolved_solution->result_code];
+            }
+            $this->assign('unsolved_solutions', $unsolved_solutions);
         }
-        $unsolved_solutions = (new SolutionModel())
-            ->where('user_id', $this->loginuser->user_id)
-            ->where('result', '<>', 4)
-            ->whereNull('contest_id')
-            ->whereNotIn('problem_id', $solved_problem_ids)
-            ->select();
-        foreach ($unsolved_solutions as $unsolved_solution) {
-            $unsolved_solution->fk();
-            $unsolved_solution->result_text = $this->lang[$unsolved_solution->result_code];
-        }
-        $this->assign('unsolved_solutions', $unsolved_solutions);
         /***************** <<<< 获取当前用户未完成题目列表 ******************/
 
         $this->assign('problems', $problems);
