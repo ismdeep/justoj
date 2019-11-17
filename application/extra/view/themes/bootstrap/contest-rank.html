@@ -32,6 +32,7 @@
 			<th>{$lang.rank}</th>
 			<th>{$lang.username}</th>
 			<th>{$lang.fullname}</th>
+			<th>{$lang.class}</th>
 			<th>{$lang.accepted}</th>
 			{if $contest->type == 1}<th>{$lang.mark}</th>{/if}
 			<th>{$lang.penalty}</th>
@@ -49,6 +50,7 @@
 			<td>{if false == $user['is_tourist']}{$rank_index}{else}*{/if}</td>
 			<td>{$user['user_id']}</td>
 			<td>{$user['user']['realname']}<a href="javascript:" class="tourist-btns-class" hidden onclick="add_tourist('{$user[\'user_id\']}');">设置</a></td>
+			<td>{$user['user']['class']}</td>
 			<td>{$user['ac_cnt']}</td>
             {if $contest->type == 1}<td>{$user['mark']}</td>{/if}
 			<td>{$user['penalty_text']}</td>
