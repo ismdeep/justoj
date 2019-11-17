@@ -7,7 +7,8 @@
             <p>solution_id = {$sim->s_id}</p>
             {if $is_administrator}<p>UserId：{$sim->s_solution->user->user_id}</p>{/if}
             <p>班级：{$sim->s_solution->user->class}</p>
-            {if $is_administrator}<p>姓名：{$sim->s_solution->user->nick}</p>{/if}
+            {if $is_administrator}<p>昵称：{$sim->s_solution->user->nick}</p>{/if}
+            {if $is_administrator}<p>姓名：{$sim->s_solution->user->realname}</p>{/if}
             <p>比赛：{$sim->s_solution->contest->title | default=''}</p>
             {if $is_administrator}<pre class="layui-code">{$sim->s_src->source}</pre>{/if}
         </div>
@@ -18,7 +19,8 @@
             <p>sim_solution_id = {$sim->sim_s_id}</p>
             {if $is_administrator}<p>UserId：{$sim->sim_s_solution->user->user_id}</p>{/if}
             <p>班级：{$sim->sim_s_solution->user->class}</p>
-            {if $is_administrator}<p>姓名：{$sim->sim_s_solution->user->nick}</p>{/if}
+            {if $is_administrator}<p>昵称：{$sim->sim_s_solution->user->nick}</p>{/if}
+            {if $is_administrator}<p>姓名：{$sim->sim_s_solution->user->realname}</p>{/if}
             <p>比赛：{$sim->sim_s_solution->contest->title | default=''}</p>
             {if $is_administrator}<pre class="layui-code">{$sim->sim_s_src->source}</pre>{/if}
         </div>
