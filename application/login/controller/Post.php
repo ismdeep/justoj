@@ -17,6 +17,13 @@ use think\Session;
 
 class Post extends UserBaseController
 {
+    /**
+     *
+     * @param $username
+     * @param $password
+     * @param string $redirect
+     * @throws \think\exception\DbException
+     */
     public function index ($username, $password, $redirect = '/')
     {
         $user = UserModel::get(['user_id' => $username]);
