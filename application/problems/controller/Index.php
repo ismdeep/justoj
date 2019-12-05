@@ -61,6 +61,7 @@ class Index extends UserBaseController
                 ->where('result', '<>', 4)
                 ->whereNull('contest_id')
                 ->whereNotIn('problem_id', $solved_problem_ids)
+                ->order('create_time', 'desc')
                 ->select();
             foreach ($unsolved_solutions as $unsolved_solution) {
                 $unsolved_solution->fk();
