@@ -67,52 +67,28 @@
 						</thead>
 						<tbody>
 						<tr>
-							<td>Pending</td>
+							<td>等待判题</td>
 							<td id="pending_cnt"></td>
 						</tr>
 						<tr>
-							<td>Rejudge</td>
+							<td>等待重判</td>
 							<td id="rejudging_cnt"></td>
 						</tr>
 						<tr>
-							<td>Compiling</td>
+							<td>正在编译</td>
 							<td id="compiling_cnt"></td>
 						</tr>
 						<tr>
-							<td>Running</td>
+							<td>正在运行</td>
 							<td id="running_cnt"></td>
 						</tr>
 						<tr>
-							<td>AC</td>
+							<td>答案正确</td>
 							<td id="ac_cnt"></td>
 						</tr>
 						<tr>
-							<td>PE</td>
-							<td id="pe_cnt"></td>
-						</tr>
-						<tr>
-							<td>WA</td>
-							<td id="wa_cnt"></td>
-						</tr>
-						<tr>
-							<td>TLE</td>
-							<td id="tle_cnt"></td>
-						</tr>
-						<tr>
-							<td>MLE</td>
-							<td id="mle_cnt"></td>
-						</tr>
-						<tr>
-							<td>OLE</td>
-							<td id="ole_cnt"></td>
-						</tr>
-						<tr>
-							<td>RE</td>
-							<td id="re_cnt"></td>
-						</tr>
-						<tr>
-							<td>CE</td>
-							<td id="ce_cnt"></td>
+							<td>未通过</td>
+							<td id="not_ac_cnt"></td>
 						</tr>
 						</tbody>
 					</table>
@@ -131,13 +107,7 @@
 			$('#compiling_cnt').html(d.compiling_cnt);
 			$('#running_cnt').html(d.running_cnt);
 			$('#ac_cnt').html(d.ac_cnt);
-			$('#pe_cnt').html(d.pe_cnt);
-			$('#wa_cnt').html(d.wa_cnt);
-			$('#tle_cnt').html(d.tle_cnt);
-			$('#mle_cnt').html(d.mle_cnt);
-			$('#ole_cnt').html(d.ole_cnt);
-			$('#re_cnt').html(d.re_cnt);
-			$('#ce_cnt').html(d.ce_cnt);
+			$('#not_ac_cnt').html(d.pe_cnt + d.wa_cnt + d.tle_cnt + d.mle_cnt + d.ole_cnt + d.re_cnt + d.ce_cnt);
 		}, 'json');
 	}
 	$(function(){
