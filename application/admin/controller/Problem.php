@@ -297,14 +297,15 @@ class Problem extends AdminBaseController
                 mkdir('/home/judge/data/'.$problem->problem_id);
             }catch (Exception $e){}
 
-            try{
-                $sample_input_file = fopen(config('data_dir') . '/'.$problem->problem_id.'/sample.in','w') or die("Unable to open file");
-                $sample_output_file = fopen(config('data_dir') . '/'.$problem->problem_id.'/sample.out','w') or die("Unable to open file");
-                fwrite($sample_input_file, $sample_input);
-                fclose($sample_input_file);
-                fwrite($sample_output_file, $sample_output);
-                fclose($sample_output_file);
-            }catch (Exception $e){}
+            /* 取消将样例数据写入测试数据目录 */
+//            try{
+//                $sample_input_file = fopen(config('data_dir') . '/'.$problem->problem_id.'/sample.in','w') or die("Unable to open file");
+//                $sample_output_file = fopen(config('data_dir') . '/'.$problem->problem_id.'/sample.out','w') or die("Unable to open file");
+//                fwrite($sample_input_file, $sample_input);
+//                fclose($sample_input_file);
+//                fwrite($sample_output_file, $sample_output);
+//                fclose($sample_output_file);
+//            }catch (Exception $e){}
         }
 
         return json([
