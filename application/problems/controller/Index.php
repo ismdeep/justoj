@@ -98,7 +98,7 @@ class Index extends UserBaseController
 
         foreach ($problems as $problem){
             $problem->solved = $problem->accepted;
-            $problem->fk();
+//            $problem->fk();
 
             // 获取当前登录用户的解题情况
 			$problem->solve_status = 0; // 无状态

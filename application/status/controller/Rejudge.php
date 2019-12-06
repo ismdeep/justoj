@@ -22,12 +22,12 @@ class Rejudge extends BaseController
 
         $total_cnt = (new SolutionModel())
             ->where('problem_id', $id)
-            ->where('contest_id', null)
+//            ->where('contest_id', null)
             ->count();
 
         $done_cnt = (new SolutionModel())
             ->where('problem_id', $id)
-            ->where('contest_id', null)
+//            ->where('contest_id', null)
             ->where('result', '>=', 4)
             ->count();
 
