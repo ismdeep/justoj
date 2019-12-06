@@ -254,7 +254,7 @@
             'code': $('#submit-source').val()
         };
         $.post('/api/Solution/submit_contest_problem_code',codeData,function(d){
-            if ('success' == d.status) {
+            if ('success' === d.status) {
                 $('#solution_id').html(d.data.solution_id);
                 $('#solution_id_2').html(d.data.solution_id);
                 $('#solution-code-length').html(d.data.code_length+' B');
@@ -285,7 +285,7 @@
 		layer.confirm('确定重判此题目？', function(){
 			// layer.alert(contest_id + ' ' + pid);
 			$.post('/api/solution/rejudge_contest_problem', {'contest_id': contest_id, 'pid': pid}, function(d){
-				if ('success' == d.status) {
+				if ('success' === d.status) {
 					window.location.href = '/contest/Status?id='+contest_id+'&problem_id='+pid;
 				}else{
 					layer.alert(d.msg,function(){
