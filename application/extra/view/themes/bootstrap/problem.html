@@ -325,7 +325,15 @@ function rejudge_problem(problem_id) {
 			$.get('/api/Solution/rejudge_problem?problem_id='+problem_id,function(d){
 				layer.closeAll();
 				if ('success' == d.status) {
-					window.open('/status/rejudge/problem/id/' + problem_id);
+					layer.open({
+						title: '正在重判...',
+						type: 2,
+						area: ['600px', '400px'],
+						fixed: false, //不固定
+						maxmin: true,
+						content: '/status/rejudge/problem/id/' + problem_id
+					});
+					// window.open('/status/rejudge/problem/id/' + problem_id);
 				}else{
 					layer.alert(d.msg);
 				}
