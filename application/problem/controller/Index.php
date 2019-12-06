@@ -51,7 +51,7 @@ class Index extends UserBaseController
 			}
 		}
 
-        $problem->fk();
+//        $problem->fk();
         $this->assign('problem', $problem);
         $this->assign('allowed_langs', $this->allowed_langs());
         return view($this->theme_root . '/problem');

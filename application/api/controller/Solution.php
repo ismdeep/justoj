@@ -220,7 +220,7 @@ class Solution extends ApiBaseController
 
         SolutionModel::update(
             ['result' => 1],
-            ['problem_id' => intval($problem_id), 'contest_id' => null], 'result');
+            ['problem_id' => intval($problem_id)], 'result');
 
 		return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
 	}
