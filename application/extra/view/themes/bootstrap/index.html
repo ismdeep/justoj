@@ -71,24 +71,16 @@
 							<td id="pending_cnt"></td>
 						</tr>
 						<tr>
-							<td>等待重判</td>
-							<td id="rejudging_cnt"></td>
-						</tr>
-						<tr>
-							<td>正在编译</td>
-							<td id="compiling_cnt"></td>
-						</tr>
-						<tr>
 							<td>正在运行</td>
 							<td id="running_cnt"></td>
 						</tr>
 						<tr>
 							<td>答案正确</td>
-							<td id="ac_cnt"></td>
+							<td id="ac_cnt" style="color: green"></td>
 						</tr>
 						<tr>
 							<td>未通过</td>
-							<td id="not_ac_cnt"></td>
+							<td id="not_ac_cnt" style="color: red"></td>
 						</tr>
 						</tbody>
 					</table>
@@ -102,10 +94,8 @@
 	function fetch_data() {
 		$.get('/api/info/solution_statistics', function(d){
 			console.log(d);
-			$('#pending_cnt').html(d.pending_cnt);
-			$('#rejudging_cnt').html(d.rejudging_cnt);
-			$('#compiling_cnt').html(d.compiling_cnt);
-			$('#running_cnt').html(d.running_cnt);
+			$('#pending_cnt').html(d.pending_cnt + d.rejudging_cnt);
+			$('#running_cnt').html(d.running_cnt + d.compiling_cnt);
 			$('#ac_cnt').html(d.ac_cnt);
 			$('#not_ac_cnt').html(d.pe_cnt + d.wa_cnt + d.tle_cnt + d.mle_cnt + d.ole_cnt + d.re_cnt + d.ce_cnt);
 		}, 'json');
