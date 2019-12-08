@@ -155,7 +155,7 @@
 <!--提交代码所用之模态框 end-->
 
 <!--测试结果之模态框 begin-->
-<div class="modal fade" id="solutionModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal fade" id="solutionModal" tabindex="3" role="dialog" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -193,13 +193,13 @@
 						</tbody>
 					</table>
 				</div>
-				<div id="code-panel">
-					<pre id="solution-source-code" style="padding: 0px;tab-size: 4"></pre>
-				</div>
-				<div id="compile-info-panel" hidden>
-					<pre id="solution-compile-error"></pre>
-				</div>
-				<div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
+<!--				<div id="code-panel">-->
+<!--					<pre id="solution-source-code" style="padding: 0px;tab-size: 4"></pre>-->
+<!--				</div>-->
+<!--				<div id="compile-info-panel" hidden>-->
+<!--					<pre id="solution-compile-error"></pre>-->
+<!--				</div>-->
+<!--				<div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>-->
 			</div>
 		</div>
 	</div>
@@ -251,6 +251,7 @@ function status_monitor(solution_id){
 			$('#solution-result').html('<span class="'+d.data.result_code+'">'+d.data.result_text+'</span>');
             setTimeout(status_monitor(solution_id),300);
 		}else{
+        	console.log(d.data.result_code);
             $('#solution-result').html('<span class="'+d.data.result_code+'">' + d.data.result_text + '</span>');
             // $('#solution-result').css('color', solution_result_color[d.data.result_code]);
             $('#solution-memory').html(d.data.memory+' B');
@@ -258,6 +259,9 @@ function status_monitor(solution_id){
             /* 如果是编译错误还要显示编译错误信息 */
 			if ('11' == d.data.result) {
 			    $('#solution-compile-error').html(d.data.compile_info.error);
+			    $('#solution-result').html(
+						'<span class="'+d.data.result_code+'"><a href="/status/ceinfo?id='+solution_id+'" target="_blank">'+d.data.result_text+'</a></span>'
+				);
 			    $('#compile-info-panel').show();
 			}
             $('#solution-pending-spin').hide();
@@ -285,13 +289,13 @@ function submit_code(){
             $('#solution-code-length').html(d.data.code_length+' B');
             $('#solution-memory').html('--');
             $('#solution-exe-time').html('--');
-            $('#solution-code-language').html(d.data.language_text);
+            $('#solution-code-language').html('<a href="/status/solution/show/solution_id/'+d.data.solution_id+'" target="_blank">'+d.data.language_text+'</a>');
             $('#solution-submittime').html(d.data.in_date);
             $('#solution-result').html('{$lang.contest_code_pending}');
             $('#solution-result').css('color', 'black');
             $('#solution-source-code').html('<code class="'+d.data.language_text+'">'+d.data.source_code.source+'</code>');
-            $('#submitModal').modal('hide');
-            $('#solutionModal').modal('show');
+			$('#solutionModal').modal('show');
+			$('#submitModal').modal('hide');
 
             $('pre code').each(function(i, block) {
                 hljs.highlightBlock(block);
@@ -351,6 +355,7 @@ $(function(){
     }
     document.getElementById('submit-language').value = lang_val;
 });
+
 </script>
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-light.min.css" rel="stylesheet">
