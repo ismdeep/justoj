@@ -8,10 +8,6 @@
             <span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;
             {/if}
             {$contest->title}
-			{if 1 == $contest->is_need_enroll}
-			<small>报名人数：{$enroll_count}</small>
-			{/if}
-            <small>参与人数：{$user_count}</small>
         </h2>
 		<p>{$contest->description}</p>
 	</div>
