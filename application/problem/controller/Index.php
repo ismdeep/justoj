@@ -10,6 +10,7 @@ namespace app\problem\controller;
 
 
 use app\api\model\ProblemModel;
+use app\api\model\ProblemTagDictModel;
 use app\api\model\SolutionModel;
 use app\extra\controller\UserBaseController;
 use think\Controller;
@@ -29,6 +30,24 @@ class Index extends UserBaseController
         	// TODO 后期加入无访问权限操作
 			$this->redirect('/problems');
 		}
+
+        /* 题目标签映射 >>>> */
+        $problem_tag_dicts = (new ProblemTagDictModel())->select();
+        $problem_tag_dict_map = [];
+        foreach ($problem_tag_dicts as $problem_tag_dict) {
+            $problem_tag_dict_map[$problem_tag_dict->tag_id] = $problem_tag_dict->tag_name;
+        }
+        $this->assign('problem_tag_dict_map', $problem_tag_dict_map);
+        /* <<<< 题目标签映射 */
+
+        /* 对题目标签进行渲染 >>>> */
+        $tag_list = explode(',', $problem->tags);
+        $problem->tag_list = $tag_list;
+        if (null == $problem->tags || "" == $problem->tags) {
+            $problem->tag_list = [];
+        }
+        /* <<<< 对题目标签进行渲染 */
+
 		// 如果当前用户登录了，判断AC状态
 		$problem->ac = false;
 		$problem->pending = false;
