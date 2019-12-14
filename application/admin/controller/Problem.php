@@ -10,6 +10,8 @@ namespace app\admin\controller;
 
 
 use app\api\model\ProblemModel;
+use app\api\model\ProblemTagDictModel;
+use app\api\model\ProblemTagModel;
 use app\api\model\TrainingProblemModel;
 use app\extra\controller\AdminBaseController;
 use app\extra\util\PasswordUtil;
@@ -48,8 +50,7 @@ class Problem extends AdminBaseController
         }
         $problems = $problems->order('problem_id', 'asc')->limit(($page - 1) * $limit, $limit)->select();
         $count = (new ProblemModel())->count();
-        foreach ($problems as $problem)
-        {
+        foreach ($problems as $problem) {
             $problem->in_training_problem = (new TrainingProblemModel())->where('problem_id', $problem->problem_id)->find() == null ? false : true;
         }
         return json([
@@ -59,37 +60,37 @@ class Problem extends AdminBaseController
         ]);
     }
 
-	/**
-	 * 文件管理器
-	 */
-	public function files($problem_id)
-	{
-		// 获取problem
-		$problem = ProblemModel::get(['problem_id' => $problem_id]);
+    /**
+     * 文件管理器
+     */
+    public function files($problem_id)
+    {
+        // 获取problem
+        $problem = ProblemModel::get(['problem_id' => $problem_id]);
 
-		// 获取文件列表
-		$file_names = array();
-		$dh = opendir(config('data_dir') . '/'.$problem_id);
-		while (($file = readdir($dh)) != false) {
-			if ('.' != $file && '..' != $file && !is_dir(config('data_dir') . '/'.$problem_id.'/'.$file)) {
-				array_push($file_names, $file);
-			}
-		}
-		sort($file_names);
-		$files = array();
-		foreach ($file_names as $file_name) {
-			array_push($files, array(
-				'name' => $file_name,
-				'size' => filesize(config('data_dir') . '/'.$problem_id.'/'.$file_name),
-				'md5' => md5_file(config('data_dir') . '/'.$problem_id.'/'.$file_name)));
-		}
+        // 获取文件列表
+        $file_names = array();
+        $dh = opendir(config('data_dir') . '/' . $problem_id);
+        while (($file = readdir($dh)) != false) {
+            if ('.' != $file && '..' != $file && !is_dir(config('data_dir') . '/' . $problem_id . '/' . $file)) {
+                array_push($file_names, $file);
+            }
+        }
+        sort($file_names);
+        $files = array();
+        foreach ($file_names as $file_name) {
+            array_push($files, array(
+                'name' => $file_name,
+                'size' => filesize(config('data_dir') . '/' . $problem_id . '/' . $file_name),
+                'md5' => md5_file(config('data_dir') . '/' . $problem_id . '/' . $file_name)));
+        }
 
-		$this->assign('problem', $problem);
-		$this->assign('files', $files);
-		return view();
-	}
+        $this->assign('problem', $problem);
+        $this->assign('files', $files);
+        return view();
+    }
 
-    public function enable_problem_json($problem_id='')
+    public function enable_problem_json($problem_id = '')
     {
         intercept_json('' == $problem_id, 'contest_id参数错误');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
@@ -102,7 +103,7 @@ class Problem extends AdminBaseController
         ]);
     }
 
-    public function disable_problem_json($problem_id='')
+    public function disable_problem_json($problem_id = '')
     {
         intercept_json('' == $problem_id, 'contest_id参数错误');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
@@ -115,49 +116,49 @@ class Problem extends AdminBaseController
         ]);
     }
 
-	/**
-	 * 打包下载文件
-	 */
-	public function download_files($problem_id)
+    /**
+     * 打包下载文件
+     */
+    public function download_files($problem_id)
     {
-		// 获取文件列表
-		$file_names = array();
-		$dh = opendir(config('data_dir') . '/'.$problem_id);
-		while (($file = readdir($dh)) != false) {
-			if ('.' != $file && '..' != $file && !is_dir(config('data_dir') . '/'.$problem_id.'/'.$file)) {
-				array_push($file_names, $file);
-			}
-		}
+        // 获取文件列表
+        $file_names = array();
+        $dh = opendir(config('data_dir') . '/' . $problem_id);
+        while (($file = readdir($dh)) != false) {
+            if ('.' != $file && '..' != $file && !is_dir(config('data_dir') . '/' . $problem_id . '/' . $file)) {
+                array_push($file_names, $file);
+            }
+        }
 
-		$cache_id = PasswordUtil::random_string("0123456789abcdef", 32);
-		mkdir('/opt/upload/cache/data_zip/'. $cache_id);
-		$zip = new \ZipArchive();
-		$zip->open("/opt/upload/cache/data_zip/".$cache_id."/".$problem_id.".zip", \ZIPARCHIVE::CREATE);
-		foreach ($file_names as $file_name) {
-			$zip->addFile(config('data_dir') . "/".$problem_id."/".$file_name, $problem_id."/".basename($file_name));
-		}
-		$zip->close();
-		header('Content-Type: application/octet-stream');
-		header('Accept-Ranges: bytes');
-		header('Accept-Length: '.filesize("/opt/upload/cache/data_zip/".$cache_id."/".$problem_id.".zip"));
-		header('Content-Disposition: attachment; filename='.$problem_id.'.zip');
-		ob_clean();
-		flush();
+        $cache_id = PasswordUtil::random_string("0123456789abcdef", 32);
+        mkdir('/opt/upload/cache/data_zip/' . $cache_id);
+        $zip = new \ZipArchive();
+        $zip->open("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip", \ZIPARCHIVE::CREATE);
+        foreach ($file_names as $file_name) {
+            $zip->addFile(config('data_dir') . "/" . $problem_id . "/" . $file_name, $problem_id . "/" . basename($file_name));
+        }
+        $zip->close();
+        header('Content-Type: application/octet-stream');
+        header('Accept-Ranges: bytes');
+        header('Accept-Length: ' . filesize("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip"));
+        header('Content-Disposition: attachment; filename=' . $problem_id . '.zip');
+        ob_clean();
+        flush();
 
 
-		$filesize = filesize("/opt/upload/cache/data_zip/".$cache_id."/".$problem_id.".zip");
-		//设置分流
-		$buffer=1024;
-		//来个文件字节计数器
-		$count=0;
-		$fp=fopen("/opt/upload/cache/data_zip/".$cache_id."/".$problem_id.".zip",'r');//只读方式打开
-		while(!feof($fp)&&($filesize-$count>0)){
-			$data=fread($fp,$buffer);
+        $filesize = filesize("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip");
+        //设置分流
+        $buffer = 1024;
+        //来个文件字节计数器
+        $count = 0;
+        $fp = fopen("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip", 'r');//只读方式打开
+        while (!feof($fp) && ($filesize - $count > 0)) {
+            $data = fread($fp, $buffer);
 //			$count+=$data;//计数
-			echo $data;//传数据给浏览器端
-		}
-		fclose($fp);
-	}
+            echo $data;//传数据给浏览器端
+        }
+        fclose($fp);
+    }
 
     /**
      * 下载单个文件
@@ -165,25 +166,26 @@ class Problem extends AdminBaseController
      * @param null $problem_id
      * @param string $file_name
      */
-    public function download_single_file($problem_id = null, $file_name = '') {
+    public function download_single_file($problem_id = null, $file_name = '')
+    {
         $file_path = config('data_dir') . "/{$problem_id}/{$file_name}";
         intercept(file_exists($file_path) == false, '文件不存在');
 
         $file = fopen($file_path, 'r');
         header('Content-Type: application/octet-stream');
         header('Accept-Ranges: bytes');
-        header('Accept-Length: '. filesize($file_path));
-        header ( "Content-Disposition: attachment; filename=" . $file_name );
+        header('Accept-Length: ' . filesize($file_path));
+        header("Content-Disposition: attachment; filename=" . $file_name);
         echo fread($file, filesize($file_path));
         fclose($file);
         exit();
     }
 
 
-	/**
+    /**
      * 添加问题
      */
-	public function add()
+    public function add()
     {
         $problem = new ProblemModel();
         $problem->problem_id = '';
@@ -199,7 +201,7 @@ class Problem extends AdminBaseController
         $problem->source = '';
 
 
-    	$this->assign('problem', $problem);
+        $this->assign('problem', $problem);
         return view('edit');
     }
 
@@ -209,16 +211,16 @@ class Problem extends AdminBaseController
      * @return \think\response\View
      * @throws \think\exception\DbException
      */
-	public function edit($id='')
-	{
-	    intercept('' == $id, 'id参数不可为空');
-		$problem = ProblemModel::get(['problem_id' => $id]);
-		intercept(null == $problem, '题目不存在');
-		$this->assign('problem', $problem);
-		return view('edit');
-	}
+    public function edit($id = '')
+    {
+        intercept('' == $id, 'id参数不可为空');
+        $problem = ProblemModel::get(['problem_id' => $id]);
+        intercept(null == $problem, '题目不存在');
+        $this->assign('problem', $problem);
+        return view('edit');
+    }
 
-    public function edit2($id='')
+    public function edit2($id = '')
     {
         intercept('' == $id, 'id参数不可为空');
         $problem = ProblemModel::get(['problem_id' => $id]);
@@ -246,16 +248,16 @@ class Problem extends AdminBaseController
      * @throws \think\exception\DbException
      */
     public function problem_save_json(
-        $problem_id='',
-        $title='',
-        $time_limit=1,
-        $memory_limit=128,
-        $description='',
-        $input='',
-        $output='',
-        $sample_input='',
-        $sample_output='',
-        $hint='',
+        $problem_id = '',
+        $title = '',
+        $time_limit = 1,
+        $memory_limit = 128,
+        $description = '',
+        $input = '',
+        $output = '',
+        $sample_input = '',
+        $sample_output = '',
+        $hint = '',
         $source = ''
     )
     {
@@ -273,7 +275,7 @@ class Problem extends AdminBaseController
             $problem->submit = 0;
             $problem->solved = 0;
             $problem->owner_id = $this->loginuser->user_id;
-        }else{
+        } else {
             $problem_id = intval($problem_id);
             $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
             intercept_json(null == $problem, '题目不存在');
@@ -293,9 +295,10 @@ class Problem extends AdminBaseController
 
         if ($create_folder_flag) {
             // 新建题目目录并写入样例数据
-            try{
-                mkdir('/home/judge/data/'.$problem->problem_id);
-            }catch (Exception $e){}
+            try {
+                mkdir('/home/judge/data/' . $problem->problem_id);
+            } catch (Exception $e) {
+            }
 
             /* 取消将样例数据写入测试数据目录 */
 //            try{
@@ -318,81 +321,85 @@ class Problem extends AdminBaseController
 
 
     /**
-	 * add edit页面均提交到此处进行保存
-	 */
-	public function save($problem_id='',$title='',$time_limit='',$memory_limit='',$description='',$input='',$output='',$sample_input='',$sample_output='',$hint='',$source='',$spj=0)
-	{
-		$problem = null;
-		if ('' == $problem_id) {
-			// 新建一个题目
-			$problem = new ProblemModel();
-			$problem->title = $title;
-			$problem->description = $description;
-			$problem->input = $input;
-			$problem->output = $output;
-			$problem->sample_input = $sample_input;
-			$problem->sample_output = $sample_output;
-			$problem->hint = $hint;
-			$problem->source = $source;
-			$problem->time_limit = $time_limit;
-			$problem->memory_limit = $memory_limit;
-			$problem->owner_id = $this->loginuser->user_id;
-			$problem->spj = $spj;
-			$problem->save();
-		}else{
-			// 修改一个题目
-			$problem = ProblemModel::get(['problem_id' => $problem_id]);
-			$problem->title = $title;
-			$problem->description = $description;
-			$problem->input = $input;
-			$problem->output = $output;
-			$problem->sample_input = $sample_input;
-			$problem->sample_output = $sample_output;
-			$problem->hint = $hint;
-			$problem->source = $source;
-			$problem->time_limit = $time_limit;
-			$problem->memory_limit = $memory_limit;
-			$problem->owner_id = $this->loginuser->user_id;
-			$problem->spj = $spj;
-			$problem->save();
-		}
+     * add edit页面均提交到此处进行保存
+     */
+    public function save($problem_id = '', $title = '', $time_limit = '', $memory_limit = '', $description = '', $input = '', $output = '', $sample_input = '', $sample_output = '', $hint = '', $source = '', $spj = 0)
+    {
+        $problem = null;
+        if ('' == $problem_id) {
+            // 新建一个题目
+            $problem = new ProblemModel();
+            $problem->title = $title;
+            $problem->description = $description;
+            $problem->input = $input;
+            $problem->output = $output;
+            $problem->sample_input = $sample_input;
+            $problem->sample_output = $sample_output;
+            $problem->hint = $hint;
+            $problem->source = $source;
+            $problem->time_limit = $time_limit;
+            $problem->memory_limit = $memory_limit;
+            $problem->owner_id = $this->loginuser->user_id;
+            $problem->spj = $spj;
+            $problem->save();
+        } else {
+            // 修改一个题目
+            $problem = ProblemModel::get(['problem_id' => $problem_id]);
+            $problem->title = $title;
+            $problem->description = $description;
+            $problem->input = $input;
+            $problem->output = $output;
+            $problem->sample_input = $sample_input;
+            $problem->sample_output = $sample_output;
+            $problem->hint = $hint;
+            $problem->source = $source;
+            $problem->time_limit = $time_limit;
+            $problem->memory_limit = $memory_limit;
+            $problem->owner_id = $this->loginuser->user_id;
+            $problem->spj = $spj;
+            $problem->save();
+        }
 
-		// 新建题目目录并写入样例数据
-		try{
-			mkdir(config('data_dir') . '/'.$problem->problem_id);
-		}catch (Exception $e){}
+        // 新建题目目录并写入样例数据
+        try {
+            mkdir(config('data_dir') . '/' . $problem->problem_id);
+        } catch (Exception $e) {
+        }
 
-		try{
-			$sample_input_file = fopen(config('data_dir') . '/'.$problem->problem_id.'/sample.in','w') or die("Unable to open file");
-			$sample_output_file = fopen(config('data_dir') . '/'.$problem->problem_id.'/sample.out','w') or die("Unable to open file");
-			fwrite($sample_input_file, $sample_input);
-			fclose($sample_input_file);
-			fwrite($sample_output_file, $sample_output);
-			fclose($sample_output_file);
-		}catch (Exception $e){}
+        try {
+            $sample_input_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/sample.in', 'w') or die("Unable to open file");
+            $sample_output_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/sample.out', 'w') or die("Unable to open file");
+            fwrite($sample_input_file, $sample_input);
+            fclose($sample_input_file);
+            fwrite($sample_output_file, $sample_output);
+            fclose($sample_output_file);
+        } catch (Exception $e) {
+        }
 
-		return $this->redirect('/admin/Problem/save_success?id='.$problem->problem_id);
-	}
+        return $this->redirect('/admin/Problem/save_success?id=' . $problem->problem_id);
+    }
 
-	/**
-	 * 题目添加或修改成功跳到成功页面
-	 */
-	public function save_success ($id) {
-		$problem = ProblemModel::get(['problem_id' => $id]);
-		$this->assign('problem', $problem);
-		return view();
-	}
+    /**
+     * 题目添加或修改成功跳到成功页面
+     */
+    public function save_success($id)
+    {
+        $problem = ProblemModel::get(['problem_id' => $id]);
+        $this->assign('problem', $problem);
+        return view();
+    }
 
     /**
      * 题目添加数据
      * @param string $problem_id
      * @return Json
      */
-    public function upload_files($problem_id = ''){
+    public function upload_files($problem_id = '')
+    {
         intercept('' == $problem_id, 'problem_id不可为空');
-		$file = request()->file('file');
-		// 移动到框架应用根目录/uploads/ 目录下
-        $info = $file->move( config('data_dir') . '/'.$problem_id,false,true);
+        $file = request()->file('file');
+        // 移动到框架应用根目录/uploads/ 目录下
+        $info = $file->move(config('data_dir') . '/' . $problem_id, false, true);
         try {
             return json([
                 'status' => 'success',
@@ -404,9 +411,9 @@ class Problem extends AdminBaseController
                 'msg' => '上传失败'
             ]);
         }
-	}
+    }
 
-	public function add_files($problem_id = '')
+    public function add_files($problem_id = '')
     {
         intercept('' == $problem_id, 'problem_id不可为空');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
@@ -423,6 +430,78 @@ class Problem extends AdminBaseController
         $training_problem->save();
         return json([
             'status' => 'success'
+        ]);
+    }
+
+    /**
+     * 设置题目标签
+     * @param string $problem_id
+     * @return Json|\think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function set_tag($problem_id = '')
+    {
+        intercept('' == $problem_id, 'ERROR on ARGS');
+        $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
+        intercept(null == $problem, "Not found this problem. [problem_id:$problem_id]");
+
+        /* 题目标签列表 >>>> */
+        $problem_tags = (new ProblemTagDictModel())->order('tag_id', 'asc')->select();
+        $this->assign('problem_tags', $problem_tags);
+        /* <<<< 题目标签列表 */
+
+        /* 对标签列表进行处理 >>>> */
+        foreach ($problem_tags as $problem_tag) {
+            $problem_tag->selected = false;
+            if ((new ProblemTagModel())->where('problem_id', $problem_id)->where('tag_id', $problem_tag->tag_id)->find()) {
+                $problem_tag->selected = true;
+            }
+        }
+        /* <<<< 对标签列表进行处理 */
+
+        $this->assign('problem', $problem);
+        return view('set_tag');
+    }
+
+    /***
+     * 设置题目标签API
+     * @param string $problem_id
+     * @param string $tags
+     * @return Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     * @throws Exception
+     */
+    public function set_tag_json($problem_id = '', $tags = '')
+    {
+        intercept_json('' == $problem_id, 'ERROR');
+        $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
+        intercept_json(null == $problem, "Not found this problem. [problem_id:$problem_id]");
+
+        $tag_list = explode(',', $tags);
+        if ($tags == '') {
+            $tag_list = [];
+        }
+
+        $problem->tags = $tags;
+        $problem->save();
+
+        (new ProblemTagModel())->where('problem_id', $problem_id)->delete();
+
+        foreach ($tag_list as $tag) {
+            $problem_tag = new ProblemTagModel();
+            $problem_tag->problem_id = $problem_id;
+            $problem_tag->tag_id = $tag;
+            $problem_tag->save();
+            ProblemTagDictModel::update_cnt($tag);
+        }
+
+        return json([
+            'status' => 'success',
+            'tag_list' => $tag_list
         ]);
     }
 }

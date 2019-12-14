@@ -1,0 +1,51 @@
+{extend name="base" /}
+{block name="content"}
+<div class="x-body">
+    <form class="layui-form" id="set-tag-form">
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$lang['tag']}</label>
+            <div class="layui-input-block">
+                {volist name="problem_tags" id="problem_tag"}
+                <input type="checkbox" name="tag" value="{$problem_tag->tag_id}" title="{$problem_tag->tag_name}" {if
+                       $problem_tag->selected} checked="" {/if} >
+                {/volist}
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn layui-btn-primary">{$lang['save']}</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    var problem_id = "{$problem->problem_id}";
+</script>
+
+<script type="text/javascript">
+    $('#set-tag-form').on('submit', function () {
+        layer.msg('正在提交...', {
+            icon: 16
+            , shade: 0.01
+        });
+        var arr = new Array();
+        $("input:checkbox[name='tag']:checked").each(function(i){
+            arr[i] = $(this).val();
+        });
+        var str = arr.join(",");//将数组合并成字符串
+        let postData = {
+            'problem_id': problem_id,
+            'tags': str
+        };
+        console.log(postData);
+        $.post('/admin/problem/set_tag_json', postData, function (d) {
+            layer.closeAll();
+            layer.alert('设置成功', function(){
+                parent.location.reload();
+            });
+        }, 'json');
+        return false;
+    });
+</script>
+{/block}

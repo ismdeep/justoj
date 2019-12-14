@@ -167,6 +167,7 @@ return [
     ,'submit' => ['en' => 'Submit', 'cn' => '提交']
     ,'submit_code' => ['en' => 'Submit Code', 'cn' => '提交代码']
     ,'submit_time' => ['en' => 'Submit Time', 'cn' => '提交时间']
+    ,'tag' => ['en' => 'Tag', 'cn' => '标签']
     ,'tasks' => ['en' => 'Tasks', 'cn' => '作业']
     ,'teacher' => ['en' => 'Teacher', 'cn' => '老师']
     ,'test_data' => ['en' => 'Test Data', 'cn' => '测试数据']

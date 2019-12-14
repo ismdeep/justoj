@@ -10,6 +10,7 @@ namespace app\problems\controller;
 
 
 use app\api\model\ProblemModel;
+use app\api\model\ProblemTagDictModel;
 use app\api\model\SolutionModel;
 use app\extra\controller\UserBaseController;
 use think\Request;
@@ -24,20 +25,21 @@ class Index extends UserBaseController
         parent::__construct($request);
         $this->assign('nav', 'problem');
         // 获取总页数
-        $this->max_p = (new ProblemModel)->order('problem_id','desc')->limit(1)->select()[0];
+        $this->max_p = (new ProblemModel)->order('problem_id', 'desc')->limit(1)->select()[0];
         $this->page_cnt = ceil(($this->max_p->problem_id - 1000 + 1) / 100.0);
         $this->assign('page_cnt', $this->page_cnt);
     }
 
     /**
      * @param string $keyword
+     * @param string $tag
      * @param int $page
      * @return \think\response\View
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($keyword='', $page = 1)
+    public function index($keyword = '', $tag = '', $page = 1)
     {
         $page = intval($page);
         $this->assign('page', $page);
@@ -54,7 +56,7 @@ class Index extends UserBaseController
                 ->select();
             $solved_problem_ids = [];
             foreach ($solved_problems as $solved_problem) {
-                $solved_problem_ids []= $solved_problem->problem_id;
+                $solved_problem_ids [] = $solved_problem->problem_id;
             }
             $unsolved_solutions = (new SolutionModel())
                 ->where('user_id', $this->loginuser->user_id)
@@ -71,48 +73,69 @@ class Index extends UserBaseController
         }
         /***************** <<<< 获取当前用户未完成题目列表 ******************/
 
+
+        /* 题目标签列表 >>>> */
+        $problem_tags = (new ProblemTagDictModel())->order('cnt', 'desc')->select();
+        $this->assign('problem_tags', $problem_tags);
+        /* <<<< 题目标签列表 */
+
+
+        $problems = (new ProblemModel());
+
         if ('' != $keyword) {
-            $problems = (new ProblemModel())->where('title','like','%'.$keyword.'%')->whereOr('source','like','%'.$keyword.'%')->order('problem_id', 'asc')->paginate(100);
-            foreach ($problems as $problem) {
-				$problem->solve_status = 0; // 无状态
-				if ($this->loginuser){
-					// 判断是否有提交
-					if (SolutionModel::get(['user_id' => $this->loginuser->user_id,'problem_id' => $problem->problem_id,'contest_id' => null])){
-						$problem->solve_status = 1; // 有提交
-					}
-					// 判断是否有AC题目
-					if (SolutionModel::get(['user_id' => $this->loginuser->user_id,'problem_id' => $problem->problem_id,'contest_id' => null,'result' => 4])){
-						$problem->solve_status = 2; // 已通过
-					}
-				}
-			}
-            $problems->appends('keyword', $keyword);
-            $this->assign('problems', $problems);
-            return view($this->theme_root . '/problems');
+            $problems = $problems
+                ->where('title', 'like', '%' . $keyword . '%');
+//                ->whereOr('source', 'like', '%' . $keyword . '%');
         }
 
-        $problems = (new ProblemModel)
-            ->where('problem_id', '>=', ($page + 9) * 100)
-            ->where('problem_id', '<', ($page + 10) * 100)
-            ->select();
+        if ('' != $tag) {
+            $problems = $problems
+                ->where('tags', 'like', "%$tag%");
+        }
 
-        foreach ($problems as $problem){
+        $problems = $problems->order('problem_id', 'asc');
+        $problems = $problems->paginate(100);
+
+        if ('' != $keyword) {
+            $problems->appends('keyword', $keyword);
+        }
+        if ('' != $tag) {
+            $problems->appends('tag', $tag);
+        }
+
+        /* 题目标签映射 >>>> */
+        $problem_tag_dicts = (new ProblemTagDictModel())->select();
+        $problem_tag_dict_map = [];
+        foreach ($problem_tag_dicts as $problem_tag_dict) {
+            $problem_tag_dict_map[$problem_tag_dict->tag_id] = $problem_tag_dict->tag_name;
+        }
+        $this->assign('problem_tag_dict_map', $problem_tag_dict_map);
+        /* <<<< 题目标签映射 */
+
+        foreach ($problems as $problem) {
             $problem->solved = $problem->accepted;
-//            $problem->fk();
+
+            /* 对题目标签进行渲染 >>>> */
+            $tag_list = explode(',', $problem->tags);
+            $problem->tag_list = $tag_list;
+            if (null == $problem->tags || "" == $problem->tags) {
+                $problem->tag_list = [];
+            }
+            /* <<<< 对题目标签进行渲染 */
 
             // 获取当前登录用户的解题情况
-			$problem->solve_status = 0; // 无状态
-			if ($this->loginuser){
-				// 判断是否有提交
-				if (SolutionModel::get(['user_id' => $this->loginuser->user_id,'problem_id' => $problem->problem_id,'contest_id' => null])){
-					$problem->solve_status = 1; // 有提交
-				}
-				// 判断是否有AC题目
-				if (SolutionModel::get(['user_id' => $this->loginuser->user_id,'problem_id' => $problem->problem_id,'contest_id' => null,'result' => 4])){
-					$problem->solve_status = 2; // 已通过
-				}
-			}
-		}
+            $problem->solve_status = 0; // 无状态
+            if ($this->loginuser) {
+                // 判断是否有提交
+                if (SolutionModel::get(['user_id' => $this->loginuser->user_id, 'problem_id' => $problem->problem_id, 'contest_id' => null])) {
+                    $problem->solve_status = 1; // 有提交
+                }
+                // 判断是否有AC题目
+                if (SolutionModel::get(['user_id' => $this->loginuser->user_id, 'problem_id' => $problem->problem_id, 'contest_id' => null, 'result' => 4])) {
+                    $problem->solve_status = 2; // 已通过
+                }
+            }
+        }
 
         $this->assign('problems', $problems);
         $this->assign('is_login', $this->is_login);

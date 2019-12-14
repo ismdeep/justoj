@@ -30,19 +30,7 @@
 		</div>
 
 		<!--功能按钮组 begin-->
-		<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
-		{if $loginuser}
-		<a href="/status?username={$loginuser->user_id}&problem_id={$problem->problem_id}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
-		{/if}
-
-		{if $is_administrator}
-		<a href="/admin/problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
-		<a href="/admin/problem/files?problem_id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.test_data}</a>
-		{/if}
-
-		{if $is_root}
-		<button class="btn btn-danger" onclick="rejudge_problem({$problem->problem_id})">{$lang.rejudge}</button>
-		{/if}
+		{include file="extra@common_html/problem_btns"}
 		<!--功能按钮组 end-->
 	</div>
 	<h3>{$lang.problem_description}</h3>
@@ -63,17 +51,14 @@
 	<div class=content>
 		<p><a href='/problems?keyword={$problem->source}'>{$problem->source}</a></p>
 	</div>
+	<h3>{$lang.tag}</h3>
+	<div class=content>
+		{volist name="problem->tag_list" id="tag"}<a href="/problems?tag={$tag}">#{$problem_tag_dict_map[$tag]}</a>&nbsp;&nbsp;{/volist}
+	</div>
 	<br>
 	<div align="center">
 		<!--功能按钮组 begin-->
-		<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
-		{if $loginuser}
-		<a href="/status?username={$loginuser->user_id}&problem_id={$problem->problem_id}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
-		{/if}
-
-		{if $is_root}
-		<button class="btn btn-danger">{$lang.rejudge}</button>
-		{/if}
+		{include file="extra@common_html/problem_btns"}
 		<!--功能按钮组 end-->
 	</div>
 </div>
@@ -355,6 +340,17 @@ $(function(){
     }
     document.getElementById('submit-language').value = lang_val;
 });
+
+function show_set_tag(problem_id) {
+	layer.open({
+		title: '选择题目标签',
+		type: 2,
+		area: ['600px', '400px'],
+		fixed: false, //不固定
+		maxmin: true,
+		content: '/admin/problem/set_tag?problem_id=' + problem_id
+	});
+}
 
 </script>
 
