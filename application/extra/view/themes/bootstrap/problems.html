@@ -40,7 +40,7 @@
 							<td><a href="/problem?id={$problem->problem_id}">{$problem->title}</a></td>
 							<td>
 								<?php $flag = false;?>
-								{volist name="problem->tag_list" id="tag"}{if $flag},{/if}<a href="/problems?tag={$tag}">{$problem_tag_dict_map[$tag]}</a><?php $flag = true;?>{/volist}
+								{volist name="problem->tag_list" id="tag"}{if $flag}&nbsp;{/if}<span class="label label-primary"><a href="/problems?tag={$tag}" style="color: white;text-decoration-line: none">{$problem_tag_dict_map[$tag]}</a></span><?php $flag = true;?>{/volist}
 							</td>
 							<td>{$problem->solved}</td>
 							<td>{$problem->submit}</td>
@@ -65,7 +65,7 @@
 				</div>
 				<div class="panel-body">
 					{volist name="problem_tags" id="problem_tag"}
-					<a href="/problems?tag={$problem_tag->tag_id}">{$problem_tag->tag_name}({$problem_tag->cnt})</a> &nbsp;
+					<a href="/problems?tag={$problem_tag->tag_id}" style="text-decoration-line: none">{$problem_tag->tag_name}({$problem_tag->cnt})</a> &nbsp;
 					{/volist}
 				</div>
 			</div>
@@ -80,22 +80,9 @@
 				</div>
 				<div class="panel-body">
 					{if $is_login}
-					<table class="table">
-						<thead>
-						<tr>
-							<th>ID</th>
-							<th>Status</th>
-						</tr>
-						</thead>
-						<tbody>
-						{volist name="unsolved_solutions" id="unsolved_solution"}
-						<tr>
-							<td><a href="/problem?id={$unsolved_solution.problem_id}">{$unsolved_solution.problem_id}</a></td>
-							<td style="color: red">{$unsolved_solution.result_text}</td>
-						</tr>
-						{/volist}
-						</tbody>
-					</table>
+					{volist name="unsolved_solutions" id="unsolved_solution"}
+					<a href="/problem?id={$unsolved_solution.problem_id}">{$unsolved_solution.problem_id}</a>
+					{/volist}
 					{else}
 					尚未登陆
 					{/if}
