@@ -60,6 +60,7 @@ class JudgeSolutionApi extends AdminBaseController
         $solution->memory = $memory;
         $solution->time = $time;
         $solution->save();
+        echo "1\n";
     }
 
     /**
@@ -146,5 +147,6 @@ class JudgeSolutionApi extends AdminBaseController
         $compile_info->solution_id = $solution_id;
         $compile_info->error       = $ceinfo;
         $compile_info->save();
+        echo "1\n";
     }
 }
