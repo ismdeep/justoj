@@ -11,6 +11,18 @@ namespace app\api\model;
 
 use think\Model;
 
+/**
+ * Class SolutionModel
+ * @property string source
+ * @property int result
+ * @property int memory
+ * @property int time
+ * @property int problem_id
+ * @property string user_id
+ * @property int language
+ * @property string contest_id
+ * @package app\api\model
+ */
 class SolutionModel extends Model
 {
     protected $table = 'solution';
