@@ -11,14 +11,14 @@ return [
         'id'      => 0,
         'code'    => 'c',
         'name'    => 'C',
-        'version' => 'gcc 4.8.4',
+        'version' => 'gcc 7.4.0',
         'allowed' => true
     ],
     [
         'id'      => 1,
         'code'    => 'c++',
         'name'    => 'C++',
-        'version' => 'g++ 4.8.4',
+        'version' => 'g++ 7.4.0',
         'allowed' => true
     ],
     [
@@ -39,7 +39,7 @@ return [
         'id'      => 3,
         'code'    => 'java',
         'name'    => 'Java',
-        'version' => 'java 1.7.0_121',
+        'version' => 'java 11.0.4',
         'allowed' => true
     ],
     [
@@ -53,7 +53,7 @@ return [
         'id'      => 18,
         'code'    => 'py3',
         'name'    => 'Python3',
-        'version' => 'python 3.7.4',
+        'version' => 'python 3.8.0',
         'allowed' => true
     ],
     [
@@ -116,8 +116,8 @@ return [
         'id'      => 12,
         'code'    => 'Lisp(Scheme)',
         'name'    => 'Lisp(Scheme)',
-        'version' => 'guile 2.0.9',
-        'allowed' => false
+        'version' => 'guile 2.2.3',
+        'allowed' => true
     ],
     [
         'id'      => 15,

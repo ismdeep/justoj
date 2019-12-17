@@ -23,12 +23,6 @@
     <a class="layui-btn layui-btn-sm" href="javascript:" onclick="x_admin_show('测试数据 - {{d.problem_id}} - {{d.title}}', '/admin/Problem/files?problem_id={{d.problem_id}}',700,400);">测试数据</a>
 </script>
 
-<script type="text/html" id="addToTrainingTpl">
-    {{# if (d.in_training_problem == false) { }}
-    <button class="layui-btn layui-btn-sm layui-btn" onclick="add_to_training({{d.problem_id}});">添加</button>
-    {{# } }}
-</script>
-
 <script type="text/html" id="problemIdTpl">
     <a href="/problem?id={{d.problem_id}}" target="_blank" style="color: blue">{{d.problem_id}}</a>
 </script>
@@ -52,11 +46,8 @@
             , cols: [[
                   {field: 'problem_id', title: 'id', templet: '#problemIdTpl'}
                 , {field: 'title', title: '标题'}
-                , {field: 'source', title: '来源'}
-                , {field: 'create_time', title: '创建时间'}
                 , {field: 'defunct',  title: '状态', templet: '#defunctTpl'}
                 , {field: 'problem_id', title: '操作', templet: '#operationTpl'}
-                , {field: 'problem_id', title: '训练场', templet: '#addToTrainingTpl'}
             ]]
             , id: 'problem_list'
             , page: true
@@ -68,7 +59,7 @@
         layer.confirm('确定启用？', function(){
             $.post('/admin/problem/enable_problem_json',{'problem_id':problem_id},function(d){
                 layer.closeAll();
-                if ('success' == d.status) {
+                if ('success' === d.status) {
                     var table = layui.table;
                     table.reload('problem_list');
                 }else{

@@ -11,6 +11,14 @@ namespace app\api\model;
 
 use think\Model;
 
+/**
+ * Class CompileInfoModel
+ *
+ * @property string error
+ * @property int solution_id
+ *
+ * @package app\api\model
+ */
 class CompileInfoModel extends Model
 {
     protected $table = 'compileinfo';
