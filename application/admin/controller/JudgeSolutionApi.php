@@ -30,6 +30,7 @@ class JudgeSolutionApi extends AdminBaseController
         $solutions = (new SolutionModel())
             ->where('result', 'in', [0, 1])
             ->where('language', 'in', $oj_lang_list)
+            ->order('solution_id', 'desc')
             ->limit($max_running)
             ->select();
         foreach ($solutions as $solution) {
