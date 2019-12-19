@@ -241,4 +241,5 @@ return [
     ],
 //    'data_dir' => '/home/judge/data',
     'data_dir' => '/home/judge/data',
+    'secure_code' => '12341234LinuxMakefile'
 ];
