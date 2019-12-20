@@ -291,6 +291,7 @@ class Problem extends AdminBaseController
         $problem->sample_output = $sample_output;
         $problem->hint = $hint;
         $problem->source = $source;
+        $problem->tags = '';
         $problem->save();
 
         if ($create_folder_flag) {
