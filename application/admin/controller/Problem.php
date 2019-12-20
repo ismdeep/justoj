@@ -274,6 +274,7 @@ class Problem extends AdminBaseController
             $problem->accepted = 0;
             $problem->submit = 0;
             $problem->solved = 0;
+            $problem->tags = '';
             $problem->owner_id = $this->loginuser->user_id;
         } else {
             $problem_id = intval($problem_id);
@@ -291,7 +292,7 @@ class Problem extends AdminBaseController
         $problem->sample_output = $sample_output;
         $problem->hint = $hint;
         $problem->source = $source;
-        $problem->tags = '';
+//        $problem->tags = '';
         $problem->save();
 
         if ($create_folder_flag) {
