@@ -12,6 +12,34 @@ namespace app\api\model;
 use think\Db;
 use think\Model;
 
+
+/**
+ * Class ProblemModel
+ *
+ * @property int problem_id
+ * @property string title
+ * @property string description
+ * @property string input
+ * @property string output
+ * @property string sample_input
+ * @property string sample_output
+ * @property int spj
+ * @property string hint
+ * @property string source
+ * @property \DateTime in_date
+ * @property int time_limit
+ * @property int memory_limit
+ * @property string defunct
+ * @property int accepted
+ * @property int submit
+ * @property int solved
+ * @property string owner_id
+ * @property string tags
+ * @property \DateTime create_time
+ * @property \DateTime update_time
+ *
+ * @package app\api\model
+ */
 class ProblemModel extends Model
 {
     protected $table = 'problem';

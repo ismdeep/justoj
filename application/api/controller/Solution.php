@@ -213,6 +213,7 @@ class Solution extends ApiBaseController
         $cnt = (new SolutionModel())
             ->where('problem_id', intval($problem_id))
             ->where('result', 1)
+            ->where('contest_id', null)
             ->count();
 		if ($cnt > 0) {
 			return json(['status' => 'error', 'msg' => 'Problem is still rejudging.']);
@@ -220,7 +221,7 @@ class Solution extends ApiBaseController
 
         SolutionModel::update(
             ['result' => 1],
-            ['problem_id' => intval($problem_id)], 'result');
+            ['problem_id' => intval($problem_id), 'contest_id' => null], 'result');
 
 		return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
 	}

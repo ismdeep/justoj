@@ -18,16 +18,23 @@ class Rejudge extends BaseController
         return view($this->theme_root.'/status-rejudge', ['id' => $id]);
     }
 
+    /**
+     * Rejudge status
+     *
+     * @param string $id
+     * @return \think\response\Json
+     * @throws \think\Exception
+     */
     public function problem_json($id = '') {
 
         $total_cnt = (new SolutionModel())
             ->where('problem_id', $id)
-//            ->where('contest_id', null)
+            ->where('contest_id', null)
             ->count();
 
         $done_cnt = (new SolutionModel())
             ->where('problem_id', $id)
-//            ->where('contest_id', null)
+            ->where('contest_id', null)
             ->where('result', '>=', 4)
             ->count();
 
