@@ -46,6 +46,9 @@ class Index extends UserBaseController
         $this->assign('keyword', htmlspecialchars($keyword));
 
         /***************** 获取当前用户未完成题目列表 >>>> ******************/
+        $solved_problem_ids = [];
+        $unsolved_problem_ids = [];
+
         if ($this->loginuser) {
             $solved_problems = (new SolutionModel())
                 ->where('user_id', $this->loginuser->user_id)
@@ -54,25 +57,26 @@ class Index extends UserBaseController
                 ->distinct('problem_id')
                 ->field('problem_id')
                 ->select();
-            $solved_problem_ids = [];
             foreach ($solved_problems as $solved_problem) {
                 $solved_problem_ids [] = $solved_problem->problem_id;
             }
-            $unsolved_solutions = (new SolutionModel())
-                ->where('user_id', $this->loginuser->user_id)
-                ->where('result', '<>', 4)
-                ->whereNull('contest_id')
-                ->whereNotIn('problem_id', $solved_problem_ids)
-                ->order('create_time', 'desc')
-                ->select();
-            foreach ($unsolved_solutions as $unsolved_solution) {
-                $unsolved_solution->fk();
-                $unsolved_solution->result_text = $this->lang[$unsolved_solution->result_code];
-            }
-            $this->assign('unsolved_solutions', $unsolved_solutions);
-        }
-        /***************** <<<< 获取当前用户未完成题目列表 ******************/
 
+            $submit_problems = (new SolutionModel())
+                ->where('user_id', $this->loginuser->user_id)
+                ->where('contest_id', null)
+                ->distinct('problem_id')
+                ->field('problem_id')
+                ->select();
+            foreach ($submit_problems as $submit_problem) {
+                if (!in_array($submit_problem->problem_id, $solved_problem_ids)) {
+                    $unsolved_problem_ids []= $submit_problem->problem_id;
+                }
+            }
+
+            $this->assign('unsolved_problem_ids', $unsolved_problem_ids);
+        }
+
+        /***************** <<<< 获取当前用户未完成题目列表 ******************/
 
         /* 题目标签列表 >>>> */
         $problem_tags = (new ProblemTagDictModel())->order('cnt', 'desc')->select();
@@ -85,7 +89,6 @@ class Index extends UserBaseController
         if ('' != $keyword) {
             $problems = $problems
                 ->where('title', 'like', '%' . $keyword . '%');
-//                ->whereOr('source', 'like', '%' . $keyword . '%');
         }
 
         if ('' != $tag) {
@@ -112,6 +115,7 @@ class Index extends UserBaseController
         $this->assign('problem_tag_dict_map', $problem_tag_dict_map);
         /* <<<< 题目标签映射 */
 
+
         foreach ($problems as $problem) {
             $problem->solved = $problem->accepted;
 
@@ -127,11 +131,11 @@ class Index extends UserBaseController
             $problem->solve_status = 0; // 无状态
             if ($this->loginuser) {
                 // 判断是否有提交
-                if (SolutionModel::get(['user_id' => $this->loginuser->user_id, 'problem_id' => $problem->problem_id, 'contest_id' => null])) {
+                if (in_array($problem->problem_id, $unsolved_problem_ids)) {
                     $problem->solve_status = 1; // 有提交
                 }
                 // 判断是否有AC题目
-                if (SolutionModel::get(['user_id' => $this->loginuser->user_id, 'problem_id' => $problem->problem_id, 'contest_id' => null, 'result' => 4])) {
+                if (in_array($problem->problem_id, $solved_problem_ids)) {
                     $problem->solve_status = 2; // 已通过
                 }
             }

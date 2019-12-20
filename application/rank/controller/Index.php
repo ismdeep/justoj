@@ -8,7 +8,6 @@
 
 namespace app\rank\controller;
 
-
 use app\api\model\UserModel;
 use app\extra\controller\UserBaseController;
 use think\Request;
@@ -29,7 +28,7 @@ class Index extends UserBaseController
      */
     public function index()
     {
-        $users = (new \app\api\model\UserModel)->order('solved', 'desc')->paginate(100);
+        $users = (new UserModel)->order('solved', 'desc')->paginate(100);
         $this->assign('users', $users);
         $this->assign('cur_rank', 1 + ( ($users->currentPage() - 1) * 100));
         return view($this->theme_root . '/rank');
