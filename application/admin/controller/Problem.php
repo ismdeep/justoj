@@ -131,27 +131,27 @@ class Problem extends AdminBaseController
         }
 
         $cache_id = PasswordUtil::random_string("0123456789abcdef", 32);
-        mkdir('/opt/upload/cache/data_zip/' . $cache_id);
+        mkdir('/opt/justoj-data-cache/' . $cache_id);
         $zip = new \ZipArchive();
-        $zip->open("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip", \ZIPARCHIVE::CREATE);
+        $zip->open("/opt/justoj-data-cache/" . $cache_id . "/" . $problem_id . ".zip", \ZIPARCHIVE::CREATE);
         foreach ($file_names as $file_name) {
             $zip->addFile(config('data_dir') . "/" . $problem_id . "/" . $file_name, $problem_id . "/" . basename($file_name));
         }
         $zip->close();
         header('Content-Type: application/octet-stream');
         header('Accept-Ranges: bytes');
-        header('Accept-Length: ' . filesize("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip"));
+        header('Accept-Length: ' . filesize("/opt/justoj-data-cache/" . $cache_id . "/" . $problem_id . ".zip"));
         header('Content-Disposition: attachment; filename=' . $problem_id . '.zip');
         ob_clean();
         flush();
 
 
-        $filesize = filesize("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip");
+        $filesize = filesize("/opt/justoj-data-cache/" . $cache_id . "/" . $problem_id . ".zip");
         //设置分流
         $buffer = 1024;
         //来个文件字节计数器
         $count = 0;
-        $fp = fopen("/opt/upload/cache/data_zip/" . $cache_id . "/" . $problem_id . ".zip", 'r');//只读方式打开
+        $fp = fopen("/opt/justoj-data-cache/" . $cache_id . "/" . $problem_id . ".zip", 'r');//只读方式打开
         while (!feof($fp) && ($filesize - $count > 0)) {
             $data = fread($fp, $buffer);
 //			$count+=$data;//计数

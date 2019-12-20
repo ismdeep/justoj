@@ -78,8 +78,8 @@
 				</div>
 				<div class="panel-body">
 					{if $is_login}
-					{volist name="unsolved_solutions" id="unsolved_solution"}
-					<a href="/problem?id={$unsolved_solution.problem_id}">{$unsolved_solution.problem_id}</a>
+					{volist name="unsolved_problem_ids" id="unsolved_problem_id"}
+					<a href="/problem?id={$unsolved_problem_id}">{$unsolved_problem_id}</a>
 					{/volist}
 					{else}
 					尚未登陆
