@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hack</title>
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=1.0"/>
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
+    <link rel="stylesheet" href="/static/xadmin/css/font.css">
+    <link rel="stylesheet" href="/static/xadmin/css/xadmin.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="/static/xadmin/lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="/static/xadmin/js/xadmin.js"></script>
+</head>
+<body>
+
+<div class="x-body">
+    <div class="layui-row">
+        <form class="layui-form layui-col-md12 x-so" id="userFilterForm">
+            <input class="layui-input" type="text" name="keyword" id="keyword" placeholder="关键字搜索" autocomplete="off">
+            <button type="submit" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+        </form>
+    </div>
+    <table class="layui-hide" id="user_list"></table>
+</div>
+
+<script type="text/html" id="user_op">
+    <button class="layui-btn layui-btn-sm" onclick="hack_login('{{d.user_id}}')">登录</button>
+</script>
+
+<script type="text/html" id="is_login">
+    {{# if (true == d.is_login) { }}
+    <span style="color: green">LOGIN</span>
+    {{# } }}
+</script>
+
+<script type="text/html" id="privileges_html">
+{{d.privileges_text}}
+</script>
+
+<script type="text/javascript">
+    layui.use('table', function () {
+        var user_list_table = layui.table;
+        user_list_table.render({
+            elem: '#user_list'
+            , url: '/hack/index/user_list_json'
+            , page: true
+            , cols: [[
+                {field: 'user_id', title: '用户名'}
+                , {field: 'nick', title: '昵称'}
+                , {field: 'nick', title: '权限', templet: '#privileges_html'}
+                , {field: 'is_login', title: '当前登录', templet: '#is_login'}
+                , {title: '操作', templet: '#user_op'}
+            ]],
+            where: {}
+            , id: 'user_list_table'
+        });
+    });
+
+    $('#userFilterForm').on('submit',function(){
+        let keyword = $('#keyword').val();
+        let table = layui.table;
+        table.reload('user_list_table', {where: {'keyword': keyword}});
+        return false;
+    });
+
+    function hack_login(user_id){
+        $.post('/hack/index/hack_login_json', {'user_id': user_id}, function(d){
+            // layer.alert('SUCCESS');
+            var table = layui.table;
+            table.reload('user_list_table');
+        }, 'json');
+    }
+</script>
+
+
+</body>
+</html>
