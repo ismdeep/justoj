@@ -70,6 +70,13 @@ class Contest extends AdminBaseController
         $contest->end_time = '';
         $contest->problem_ids = '';
         $contest->langmask = '*';
+        $contest->private = 0;
+        $contest->password = '';
+        $contest->type = 1; /* 0 比赛    1 作业 */
+        if ($this->is_root) {
+            $contest->type = 0;
+        }
+
 
         $allowed_langs_all = $this->allowed_langs();
         for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
@@ -151,10 +158,10 @@ class Contest extends AdminBaseController
         $description = '',
         $problem_ids = '',
         $private = 0,
-        $password = ''
+        $password = '',
+        $type = 1
     )
     {
-
         intercept_json('' == $title, '请输入标题');
         intercept_json('' == $start_time, '请选择开始时间');
         intercept_json('' == $end_time, '请选择结束时间');
@@ -211,6 +218,9 @@ class Contest extends AdminBaseController
         }else{
             $contest->langmask = $allowed_langs;
         }
+
+        $contest->type = intval($type);
+
         $contest->save();
 
         $problem_index = 0;

@@ -1,13 +1,21 @@
 {extend name="base" /}
 {block name="content"}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+<script src="https://cdn.bootcss.com/ckeditor/4.12.1/ckeditor.js"></script>
 <div class="x-body">
     <div class="layui-form">
-        <input type="text" id="contest_id" value="{$contest->contest_id}" hidden>
+        <input type="text" id="contest_id" value="{$contest->contest_id}" hidden />
         <div class="layui-form-item">
             <label class="layui-form-label">{$lang.title}</label>
             <div class="layui-input-block">
                 <input type="text" id="title" value="{$contest->title}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item" {if !$is_root}hidden{/if} >
+            <label class="layui-form-label">类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="type_flag" lay-filter="type_flag" value="0" title="比赛" {if '0' == $contest->type}checked=""{/if}>
+                <input type="radio" name="type_flag" lay-filter="type_flag" value="1" title="作业" {if '1' == $contest->type}checked=""{/if}>
             </div>
         </div>
 
@@ -44,6 +52,20 @@
             </div>
         </div>
 
+        <div class="layui-form-item">
+            <label class="layui-form-label">权限</label>
+            <div class="layui-input-block">
+                <input type="radio" name="private_flag" lay-filter="private_flag" value="0" title="公开" {if '0' == $contest->private}checked=""{/if}>
+                <input type="radio" name="private_flag" lay-filter="private_flag" value="1" title="私有" {if '1' == $contest->private}checked=""{/if}>
+            </div>
+        </div>
+
+        <div class="layui-form-item" pane="" id="password-div" {if '0' == $contest->private}hidden{/if}>
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-inline">
+                <input type="text" id="password" value="{$contest->password}" lay-verify="password" autocomplete="off" placeholder="{$lang.please_input_password}" class="layui-input">
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">题目</label>
@@ -116,10 +138,18 @@
         });
 
         form.on('radio(langmask_flag)', function(data){
-            if ('*' == data.value) {
+            if ('*' === data.value) {
                 $('#lang-list-div').hide();
             }else{
                 $('#lang-list-div').show();
+            }
+        });
+
+        form.on('radio(private_flag)', function(data){
+            if ('0' === data.value) {
+                $('#password-div').hide();
+            }else{
+                $('#password-div').show();
             }
         });
     });
@@ -129,7 +159,7 @@
         var data = {'problem_ids': $('#problem_ids').val()};
         console.log(data);
         $.post('/api/Problem/details_by_list',data,function(d){
-            if ('success' == d.status) {
+            if ('success' === d.status) {
                 var str = '';
                 for (var i = 0; i < d.data.length; i++) {
                     str += '<tr>' +
@@ -164,28 +194,25 @@
             'description'  : description.getData(),
             'problem_ids'  : $('#problem_ids').val(),
             'langmask_flag': $('input:radio[name=langmask_flag]:checked').val(),
+            'private'      : $('input:radio[name=private_flag]:checked').val(),
+            'type'         : $('input:radio[name=type_flag]:checked').val(),
+            'password'     : $('#password').val(),
             'allowed_langs': allowed_lang_ids
         };
+        console.log(postData);
         $.post('/admin/contest/save_json',postData,function(d){
             if ('success' == d.status) {
                 $('#contest_id').val(d.data.contest_id);
                 layer.confirm(d.msg, {
-                    btn: ['查看比赛','继续编辑','返回题目列表'] //按钮
+                    btn: ['查看比赛','继续编辑'] //按钮
                 }, function(){
                     layer.closeAll();
                     setTimeout(function(){
                         window.open('/contest?id=' + d.data.contest_id);
                     },100);
                 }, function(){
+                    location.href = "/admin/contest/edit?contest_id=" + d.data.contest_id;
                     layer.closeAll();
-                },function(){
-                    layer.closeAll();
-                    try{
-                        // 获得frame索引
-                        var index = parent.layer.getFrameIndex(window.name);
-                        //关闭当前frame
-                        parent.layer.close(index);
-                    }catch (e) {}
                 });
             }else{
                 layer.alert(d.msg);
