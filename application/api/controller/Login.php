@@ -23,6 +23,14 @@ class Login extends ApiBaseController
 		return json(['status' => 'error', 'msg' => 'Is not login.']);
 	}
 
+    /**
+     * Login
+     *
+     * @param $username
+     * @param $password
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
 	public function login($username,$password)
 	{
 		$user = UserModel::get(['user_id' => $username]);
