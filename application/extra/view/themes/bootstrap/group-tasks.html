@@ -5,14 +5,24 @@
 
 
 <div class="container">
-	{if $group->ownner_id == $loginuser->user_id}
-	<button class="btn btn-success" type="button" onclick="open_add_task();">{$lang.add_homework}</button>
-	{/if}
+
+	<div class="row">
+		<div class="container">
+			{if $group->ownner_id == $loginuser->user_id}
+			<button class="btn btn-success" type="button" onclick="open_add_task();">{$lang.add_homework}</button>
+			{/if}
+			<a class="btn btn-success" href="/group/members/download_member_source_code?id={$group->id}&user_id={$loginuser->user_id}">{$lang.download}{$lang.source_code}</a>
+		</div>
+	</div>
 	<table class="table table-hover">
 		<thead>
 		<tr>
 			<th>{$lang.title}</th>
+			{if $group->ownner_id == $loginuser->user_id}
+			<th>学生完成率</th>
+			{else}
 			<th>{$lang.status}</th>
+			{/if}
 			<th></th>
 			<th>{$lang.operation}</th>
 		</tr>
@@ -23,19 +33,59 @@
 			<td><a href="/contest?id={$task->contest_id}" target="_blank">{$task->contest->title}</a></td>
 			<td>
 				<div class="progress">
-					{if $task->contest->loginuser_ac_cnt == $task->contest->problem_cnt}
-					<div class="progress-bar progress-bar-success"
-						 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
-					</div>
+					{if $group->ownner_id == $loginuser->user_id}
+						{if $task->ac_member_cnt == $group_member_cnt}
+							{if 0 == $group_member_cnt}
+								<div class="progress-bar"
+									 style="width: 0%;">
+								</div>
+							{else}
+								<div class="progress-bar progress-bar-success"
+									 style="width: {$task->ac_member_cnt * 100.00 / $group_member_cnt}%;">
+								</div>
+							{/if}
+						{else}
+							{if 0 == $group_member_cnt}
+							<div class="progress-bar"
+								 style="width: 0%;">
+							</div>
+							{else}
+							<div class="progress-bar"
+								 style="width: {$task->ac_member_cnt * 100.00 / $group_member_cnt}%;">
+							</div>
+							{/if}
+						{/if}
 					{else}
-					<div class="progress-bar progress-bar-warning"
-						 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
-					</div>
+						{if $task->contest->loginuser_ac_cnt == $task->contest->problem_cnt}
+							{if $task->contest->problem_cnt == 0}
+								<div class="progress-bar"
+									 style="width: 0%;">
+								</div>
+							{else}
+							<div class="progress-bar progress-bar-success"
+								 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
+							</div>
+							{/if}
+						{else}
+							{if 0 == $task->contest->problem_cnt}
+							<div class="progress-bar"
+								 style="width: 0%;">
+							</div>
+							{else}
+							<div class="progress-bar"
+								 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
+							</div>
+							{/if}
+						{/if}
 					{/if}
 				</div>
 			</td>
 			<td>
-				{$task->contest->loginuser_ac_cnt} / {$task->contest->problem_cnt}
+				{if $group->ownner_id == $loginuser->user_id}
+					{$task->ac_member_cnt} / {$group_member_cnt}
+				{else}
+					{$task->contest->loginuser_ac_cnt} / {$task->contest->problem_cnt}
+				{/if}
 			</td>
 			<td>
 				<a href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
