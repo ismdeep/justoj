@@ -10,7 +10,10 @@
 			<th>{$lang.fullname}</th>
 			<th>{$lang.status}</th>
 			{if $is_group_manager}
-			<th>{$lang.download}</th>
+			<th>
+<!--				{$lang.source_code}-->
+				{$lang.download}
+			</th>
 			<th>{$lang.operation}</th>
 			{/if}
 		</tr>
@@ -18,7 +21,7 @@
 		<tbody>
 		{volist name='members' id='member'}
 		<tr>
-			<td><a href="/user/Info?user={$member->user_id}" target="_blank">{$member->user_id}</a></td>
+			<td><a href="/user/info?user={$member->user_id}" target="_blank">{$member->user_id}</a></td>
 			<td>{$member->realname}</td>
 			<td>
 				{if 0 == $member->status}
@@ -36,7 +39,7 @@
 			</td>
 			{if $is_group_manager}
 			<td>
-				<a href="javascript:;" onclick="layer.alert('暂不可用');">{$lang.download}</a>
+				<a href="/group/members/download_member_source_code?id={$group->id}&user_id={$member->user_id}">{$lang.download}</a>
 			</td>
 			<td>
 				{if $member->status == 0}
