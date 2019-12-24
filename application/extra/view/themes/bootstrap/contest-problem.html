@@ -8,76 +8,121 @@
 		});
 </script>
 <script src="//cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
 <div class="container">
-	<ul id="myTab" class="nav nav-tabs">
-		{volist name='contest_problems' id='p'}
-		<li{if $contest_problem->num == $p->num} class="active"{/if}><a href="/contest/Problem?id={$contest->contest_id}&pid={$p->num}">{if $p->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;{/if}
-		{if $p->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;{/if}{$alphabet[$p->num]}</a></li>
-		{/volist}
-	</ul>
-	<h2 align="center">
-		{if $contest_problem->ac}
-		<span class="glyphicon glyphicon-ok" style="color: green"></span>
-		{/if}
-		{if $contest_problem->pending}
-		<span class="glyphicon glyphicon-hand-right" style="color: red"></span>
-		{/if}
-		{$alphabet[$contest_problem->num]}: {$problem->title}</h2>
-	<div align="center">
-		<div class="panel panel-default">
-			<div class="panel-body">
-				<span class=green>{$lang.time_limit}: </span>{$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
-				<span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
-				<!--<span class=green>{$lang.accepted}: </span><a href="/status?problem_id={$problem->problem_id}&result=4" target="_blank">{$problem->solved}</a> &nbsp;&nbsp;&nbsp;&nbsp;-->
-				<!--<span class=green>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}" target="_blank">{$problem->submit}</a>-->
+	<div class="row">
+		<div class="col-md-9">
+			<ul id="myTab" class="nav nav-tabs">
+				{volist name='contest_problems' id='p'}
+				<li{if $contest_problem->num == $p->num} class="active"{/if}><a href="/contest/problem?id={$contest->contest_id}&pid={$p->num}">{if $p->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;{/if}
+				{if $p->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;{/if}{$alphabet[$p->num]}</a></li>
+				{/volist}
+			</ul>
+			<h2 align="center">
+				{if $contest_problem->ac}
+				<span class="glyphicon glyphicon-ok" style="color: green"></span>
+				{/if}
+				{if $contest_problem->pending}
+				<span class="glyphicon glyphicon-hand-right" style="color: red"></span>
+				{/if}
+				{$alphabet[$contest_problem->num]}: {$problem->title}</h2>
+			<div align="center">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<span class=green>{$lang.time_limit}: </span>{$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
+						<span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
+						<!--<span class=green>{$lang.accepted}: </span><a href="/status?problem_id={$problem->problem_id}&result=4" target="_blank">{$problem->solved}</a> &nbsp;&nbsp;&nbsp;&nbsp;-->
+						<!--<span class=green>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}" target="_blank">{$problem->submit}</a>-->
+					</div>
+				</div>
+
+				<!--功能按钮组 begin-->
+				<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
+				{if $loginuser}
+				<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+				{/if}
+
+				{if $is_administrator}
+				<a href="/admin/Problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
+				<a href="/admin/Problem/files?problem_id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.test_data}</a>
+				{/if}
+
+				{if $is_root}
+				<button class="btn btn-danger" onclick="rejudge_problem({$contest_problem->contest_id},{$contest_problem->num});">{$lang.rejudge}</button>
+				{/if}
+				<!--功能按钮组 end-->
+			</div>
+			<h3>{$lang.problem_description}</h3>
+			<div class="content">
+				{$problem->description}
+			</div>
+			<h3>{$lang.input}</h3>
+			<div class=content>{$problem->input}</div>
+			<h3>{$lang.output}</h3>
+			<div class=content>{$problem->output}</div>
+			<h3>{$lang.sample_input}</h3>
+			<pre><span class=sampledata>{$problem->sample_input}</span></pre>
+			<h3>{$lang.sample_output}</h3>
+			<pre><span class=sampledata>{$problem->sample_output}</span></pre>
+			<h3>{$lang.hint}</h3>
+			<div>{$problem->hint}</div>
+			<h3>{$lang.source}</h3>
+			<div class=content>
+				<p><a href='/problem/search?source={$problem->source}'>{$problem->source}</a></p>
+			</div>
+			<div class="content">
+				<a href="/problem?id={$problem->problem_id}" target="_blank">Original Problem Link</a>
+			</div>
+			<br>
+			<div align="center">
+				<!--功能按钮组 begin-->
+				<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
+				{if $loginuser}
+				<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+				{/if}
+				<!--功能按钮组 end-->
 			</div>
 		</div>
+		<div class="col-md-3">
 
-		<!--功能按钮组 begin-->
-		<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
-		{if $loginuser}
-		<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
-		{/if}
+			<!--			近期提交历史 begin-->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						近期提交历史
+					</h3>
+				</div>
+				<div class="panel-body">
+					{if $is_login}
+						{if sizeof($recent_solutions) > 0}
+						<table class="table">
+							<thead>
+							<tr>
+								<th>ID</th>
+								<th>Status</th>
+							</tr>
+							</thead>
+							<tbody>
+							{volist name="recent_solutions" id="recent_solution"}
+							<tr>
+								<td><a target="_blank" href="/status/solution/show/solution_id/{$recent_solution->solution_id}">{$recent_solution->solution_id}</a></td>
+								<td class="{$recent_solution->result_code}">{$recent_solution->result_text}</td>
+							</tr>
+							{/volist}
+							</tbody>
+						</table>
+						{else}
+						<p>尚无提交记录</p>
+						{/if}
+					{else}
+					<p>尚未登录</p>
+					{/if}
+				</div>
+			</div>
+			<!--			近期提交历史 end-->
 
-		{if $is_administrator}
-		<a href="/admin/Problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
-		<a href="/admin/Problem/files?problem_id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.test_data}</a>
-		{/if}
-
-		{if $is_root}
-		<button class="btn btn-danger" onclick="rejudge_problem({$contest_problem->contest_id},{$contest_problem->num});">{$lang.rejudge}</button>
-		{/if}
-		<!--功能按钮组 end-->
-	</div>
-	<h3>{$lang.problem_description}</h3>
-	<div class="content">
-		{$problem->description}
-	</div>
-	<h3>{$lang.input}</h3>
-	<div class=content>{$problem->input}</div>
-	<h3>{$lang.output}</h3>
-	<div class=content>{$problem->output}</div>
-	<h3>{$lang.sample_input}</h3>
-	<pre><span class=sampledata>{$problem->sample_input}</span></pre>
-	<h3>{$lang.sample_output}</h3>
-	<pre><span class=sampledata>{$problem->sample_output}</span></pre>
-	<h3>{$lang.hint}</h3>
-	<div>{$problem->hint}</div>
-	<h3>{$lang.source}</h3>
-	<div class=content>
-		<p><a href='/problem/search?source={$problem->source}'>{$problem->source}</a></p>
-	</div>
-	<div class="content">
-		<a href="/problem?id={$problem->problem_id}" target="_blank">Original Problem Link</a>
-	</div>
-	<br>
-	<div align="center">
-		<!--功能按钮组 begin-->
-		<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
-		{if $loginuser}
-		<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
-		{/if}
-		<!--功能按钮组 end-->
+		</div>
 	</div>
 </div>
 
