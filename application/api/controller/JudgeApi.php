@@ -89,13 +89,14 @@ class JudgeApi extends ApiBaseController
     /**
      * Update solution running result
      *
-     * http://justoj-web.ismdeep.com/admin/judge_solution_api/update_solution?sid=622923&result=4&time=3&memory=1668
+     * http://justoj.ismdeep.com/api/judge_api/update_solution?sid=622923&result=4&time=3&memory=1668
      *
      * @param string $sid
      * @param string $result
      * @param string $time
      * @param string $memory
      * @return string
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
@@ -113,6 +114,13 @@ class JudgeApi extends ApiBaseController
         $solution->memory = $memory;
         $solution->time = $time;
         $solution->save();
+
+        /* update user info */
+        UserModel::update_ac_cnt($solution->user_id);
+
+        /* update problem info */
+        ProblemModel::update_ac_cnt($solution->problem_id);
+
         return '1';
     }
 
@@ -154,8 +162,8 @@ class JudgeApi extends ApiBaseController
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
         echo $solution->problem_id . "\n";
         echo $solution->user_id . "\n";
-        echo $solution->language. "\n";
-        echo intval( $solution->contest_id ) . "\n";
+        echo $solution->language . "\n";
+        echo intval($solution->contest_id) . "\n";
     }
 
 
@@ -179,71 +187,8 @@ class JudgeApi extends ApiBaseController
 
         $compile_info = new CompileInfoModel();
         $compile_info->solution_id = $solution_id;
-        $compile_info->error       = $ceinfo;
+        $compile_info->error = $ceinfo;
         $compile_info->save();
         return "1";
-    }
-
-    /**
-     * Update problem submission count and solved count
-     *
-     * @param string $problem_id
-     * @return string
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function update_problem($problem_id = '')
-    {
-        intercept('' == $problem_id, '0');
-        $problem_id = intval($problem_id);
-
-        $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
-        intercept(null == $problem, '0');
-
-        $problem->accepted = (new SolutionModel())
-            ->where('problem_id', $problem_id)
-            ->where('result', 4)
-            ->where('contest_id', null)
-            ->count();
-        $problem->submit = (new SolutionModel())
-            ->where('problem_id', $problem_id)
-            ->where('contest_id', null)
-            ->count();
-        $problem->save();
-
-        return '1';
-    }
-
-    /**
-     * Update user solved count and submit count
-     *
-     * @param string $user_id
-     * @return string
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function update_user($user_id = '')
-    {
-        intercept('' == $user_id, '0');
-        $user = (new UserModel())->where('user_id', $user_id)->find();
-        intercept(null == $user, '0');
-
-        $user->submit = (new SolutionModel())
-            ->where('user_id', $user_id)
-            ->where('contest_id', null)
-            ->count();
-        $user->solved = (new SolutionModel())
-            ->where('user_id', $user_id)
-            ->where('result', 4)
-            ->where('contest_id', null)
-            ->distinct('problem_id')
-            ->count();
-        $user->save();
-
-        return '1';
     }
 }

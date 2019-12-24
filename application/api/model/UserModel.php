@@ -26,6 +26,33 @@ class UserModel extends Model
 		}
 	}
 
+    /**
+     * Update user ac/submit count
+     *
+     * @param string $user_id
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+	static public function update_ac_cnt($user_id = '') {
+        $user = (new UserModel())
+            ->where('user_id', $user_id)
+            ->find();
+        if (null != $user) {
+            $user->submit = (new SolutionModel())
+                ->where('user_id', $user_id)
+                ->whereNull('contest_id')
+                ->count();
+            $user->solved = (new SolutionModel())
+                ->where('user_id', $user_id)
+                ->whereNull('contest_id')
+                ->where('result', 4)
+                ->count('distinct problem_id');
+            $user->save();
+        }
+    }
+
 	static public function need_complete_info($user) {
 	    if ('' == $user->email) {
 	        return true;
