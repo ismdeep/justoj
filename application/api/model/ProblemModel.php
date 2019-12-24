@@ -49,4 +49,32 @@ class ProblemModel extends Model
         $this->solved = Db::query("select count(solution_id) as cnt from solution where problem_id=" . $this->problem_id . " and contest_id is null and result=4")[0]['cnt'];
         $this->submit = Db::query("select count(solution_id) as cnt from solution where problem_id=" . $this->problem_id . " and contest_id is null")[0]['cnt'];
     }
+
+    /**
+     * Update ac/submit count
+     *
+     * @param string $problem_id
+     * @throws \think\Exception
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    static public function update_ac_cnt($problem_id = '')
+    {
+        $problem = (new ProblemModel())
+            ->where('problem_id', $problem_id)
+            ->find();
+        if (null != $problem) {
+            $problem->submit = (new SolutionModel())
+                ->where('problem_id', $problem_id)
+                ->whereNull('contest_id')
+                ->count();
+            $problem->accepted = (new SolutionModel())
+                ->where('problem_id', $problem_id)
+                ->whereNull('contest_id')
+                ->where('result', 4)
+                ->count();
+        }
+    }
+
 }

@@ -21,13 +21,14 @@ use app\extra\controller\ApiBaseController;
 
 class Group extends ApiBaseController
 {
-	/**
-	 * 用户加入班级api接口
-	 *
-	 * @param $group_id
-	 * @return \think\response\Json
-	 *
-	 */
+    /**
+     * 用户加入班级api接口
+     *
+     * @param $group_id
+     * @param string $password
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
 	public function join($group_id, $password = '')
 	{
 		// 判断班级是否存在
@@ -106,9 +107,16 @@ class Group extends ApiBaseController
 	}
 
 
-	/**
-	 * 创建班级
-	 */
+    /**
+     * 创建班级
+     * @param $group_id
+     * @param $name
+     * @param $privilege
+     * @param $password
+     * @param $description
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
 	public function save($group_id, $name, $privilege, $password, $description)
 	{
 		if (!$this->is_administrator) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
