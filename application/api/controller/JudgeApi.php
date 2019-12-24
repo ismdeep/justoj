@@ -104,6 +104,9 @@ class JudgeApi extends ApiBaseController
     {
         $solution_id = intval($sid);
         $result = intval($result);
+        if ($result == 5) {
+            $result = 4;
+        }
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
         $solution->result = $result;
