@@ -19,6 +19,8 @@ class JudgeApi extends ApiBaseController
         parent::__construct($request);
         $secure_code = $request->param('secure_code');
         intercept(config('secure_code') != $secure_code, '0');
+        config('app_debug', false);
+        config('app_trace', false);
     }
 
     /**

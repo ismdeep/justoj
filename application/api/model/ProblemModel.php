@@ -74,6 +74,7 @@ class ProblemModel extends Model
                 ->whereNull('contest_id')
                 ->where('result', 4)
                 ->count();
+            $problem->save();
         }
     }
 
