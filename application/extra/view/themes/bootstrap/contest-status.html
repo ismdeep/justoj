@@ -71,7 +71,7 @@
 		$solution->result_text = $lang[$solution->result_code];
 		?>
 		<tr>
-			<td width="10%">{$solution->solution_id}</td>
+			<td width="10%"><a target="_blank" href="/status/solution/show/solution_id/{$solution->solution_id}">{$solution->solution_id}</a></td>
 			<td width="10%"><a href="/user/Info?user={$solution->user_id}">{$solution->user_id}</a></td>
 
 			<td width="10%"><a href="/contest/problem?id={$contest->contest_id}&pid={$problem_id_true_to_fake[$solution->problem_id]}">{$alphabet[$problem_id_true_to_fake[$solution->problem_id]]}</a></td>

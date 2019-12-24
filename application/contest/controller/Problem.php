@@ -35,9 +35,10 @@ class Problem extends ContestBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-	public function index($pid){
-
-
+	public function index($pid = ''){
+	    if ('' == $pid) {
+	        return $this->redirect("/contest?id=" . $this->contest->contest_id);
+        }
 
 		$contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
 		$contest_problem->ac = false;
@@ -113,6 +114,22 @@ class Problem extends ContestBaseController
                     }
                 }
             }
+        }
+
+		/* 获取近期提交记录 */
+        if ($this->is_login) {
+            $recent_solutions = (new SolutionModel())
+                ->where('contest_id', $this->contest_id)
+                ->where('user_id', $this->loginuser->user_id)
+                ->where('problem_id', $contest_problem->problem_id)
+                ->order('create_time', 'desc')
+                ->select();
+            foreach ($recent_solutions as $recent_solution) {
+                $recent_solution->fk();
+                $recent_solution->result_text = $this->lang[$recent_solution->result_code];
+            }
+
+            $this->assign('recent_solutions', $recent_solutions);
         }
 
 		$this->assign('contest_problems', $contest_problems);

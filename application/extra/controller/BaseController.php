@@ -58,15 +58,6 @@ class BaseController extends Controller
         parent::__construct($request);
 
         $this->theme_root = 'extra@themes/bootstrap';
-//        $this->theme_root = 'extra@themes/mincss';
-//        if (session('theme_root')) {
-//            $this->theme_root = session('theme_root');
-//        }
-
-//        if ($this->theme_root != 'extra@themes/bootstrap' && $this->theme_root != 'extra@themes/mincss') {
-//            $this->theme_root = 'extra@themes/bootstrap';
-//        }
-
 
         $this->assign('theme_root', $this->theme_root);
 
@@ -135,11 +126,6 @@ class BaseController extends Controller
         if ($this->loginuser && UserModel::need_complete_info((new UserModel())->where(['user_id' => $this->loginuser->user_id])->find())) {
             $this->assign('need_edit_profile', true);
         }
-
-//        if ($this->show_browser_banner) {
-//            $this->theme_root = 'extra@themes/mincss';
-//        }
-
     }
 
     public function need_root($type = 'json')
