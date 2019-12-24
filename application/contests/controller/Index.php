@@ -12,7 +12,6 @@ namespace app\contests\controller;
 use app\api\model\ContestEnrollModel;
 use app\api\model\ContestModel;
 use app\extra\controller\UserBaseController;
-use think\Db;
 use think\Request;
 
 class Index extends UserBaseController
