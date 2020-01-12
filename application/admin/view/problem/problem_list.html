@@ -19,7 +19,7 @@
     {{# } else { }}
     <button class="layui-btn layui-btn-sm" onclick="enable_problem({{d.problem_id}});">启用</button>
     {{# } }}
-    <a class="layui-btn layui-btn-sm" href="javascript:;" onclick="x_admin_show('编辑题目 - {{d.title}}','/admin/problem/edit?id={{d.problem_id}}',800,600);">编辑</a>
+    <a class="layui-btn layui-btn-sm" target="_blank" href="/admin/problem/edit?id={{d.problem_id}}">编辑</a>
     <a class="layui-btn layui-btn-sm" href="javascript:" onclick="x_admin_show('测试数据 - {{d.problem_id}} - {{d.title}}', '/admin/Problem/files?problem_id={{d.problem_id}}',700,400);">测试数据</a>
 </script>
 
