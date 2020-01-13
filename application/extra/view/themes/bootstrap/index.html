@@ -32,19 +32,19 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						近期比赛
+						{$lang.recent_contest}
 					</h3>
 				</div>
 				{if sizeof($recent_contests) <= 0}
 				<div class="panel-body">
-					尚无比赛
+					{$lang.no_contest}
 				</div>
 				{else}
 				<ul class="list-group">
 				{volist name="recent_contests" id="contest"}
 				<li class="list-group-item">
 					<p><a href="/contest?id={$contest->contest_id}">{$contest->title}</a></p>
-					<p>开始于：{$contest->start_time}</p>
+					<p><?php echo ['en' => 'Start at', 'cn' => '开始于'][$show_ui_lang];?>: {$contest->start_time}</p>
 				</li>
 				{/volist}
 				</ul>
@@ -54,32 +54,32 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						判题状态
+						{$lang.judge_status}
 					</h3>
 				</div>
 				<div class="panel-body">
 					<table class="table">
 						<thead>
 						<tr>
-							<th>状态</th>
-							<th>数量</th>
+							<th>{$lang.status}</th>
+							<th>{$lang.count}</th>
 						</tr>
 						</thead>
 						<tbody>
 						<tr>
-							<td>等待判题</td>
+							<td>{$lang.result_code_pending}</td>
 							<td id="pending_cnt"></td>
 						</tr>
 						<tr>
-							<td>正在运行</td>
+							<td>{$lang.result_code_running}</td>
 							<td id="running_cnt"></td>
 						</tr>
 						<tr>
-							<td>答案正确</td>
+							<td>{$lang.result_code_ac}</td>
 							<td id="ac_cnt" style="color: green"></td>
 						</tr>
 						<tr>
-							<td>未通过</td>
+							<td>{$lang.result_code_wa}</td>
 							<td id="not_ac_cnt" style="color: red"></td>
 						</tr>
 						</tbody>

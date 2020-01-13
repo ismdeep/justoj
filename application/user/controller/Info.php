@@ -29,7 +29,11 @@ class Info extends BaseController
     {
         $user = UserModel::get(['user_id' => $user]);
         $rank = (new UserModel)->where('solved', '>', $user['solved'])->count() + 1;
-        $ac_solutions = (new SolutionModel)->where('user_id', '=', $user->user_id)->order('problem_id', 'asc')->select();
+        $ac_solutions = (new SolutionModel)
+            ->where('user_id', '=', $user->user_id)
+            ->whereNull('contest_id')
+            ->order('problem_id', 'asc')
+            ->select();
 
         $ac_list = [];
         foreach ($ac_solutions as $ac) {
