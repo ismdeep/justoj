@@ -45,10 +45,7 @@
             var form = layui.form;
             //监听提交
             form.on('submit(login)', function(data){
-                layer.msg('正在登录', {
-                    icon: 16
-                    ,shade: 0.01
-                });
+                layer.load();
                 setTimeout(function(){
                     var loginData = {
                         'username': $('#username').val(),
@@ -69,11 +66,9 @@
                             layer.msg(d.msg, {icon: 2});
                         }
                     });
-                },300);
+                }, 300);
                 return false;
             });
-
-
         });
     });
 
