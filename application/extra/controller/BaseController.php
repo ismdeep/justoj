@@ -114,6 +114,7 @@ class BaseController extends Controller
             $this->show_ui_lang = $ui_language_obj->language;
         }
         $this->lang = array();
+        $this->assign('show_ui_lang', $this->show_ui_lang);
         foreach ($dicts as $key => $dict) {
             $this->lang[$key] = $dict[$this->show_ui_lang];
         }

@@ -60,7 +60,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						题目标签
+						<?php echo ['en' => 'Problem Tags', 'cn' => '题目标签'][$show_ui_lang];?>
 					</h3>
 				</div>
 				<div class="panel-body">
@@ -73,7 +73,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						近期未解决问题
+						<?php echo ['en' => 'Recent Not Solved', 'cn' => '近期未解决问题'][$show_ui_lang];?>
 					</h3>
 				</div>
 				<div class="panel-body">
@@ -82,7 +82,7 @@
 					<a href="/problem?id={$unsolved_problem_id}">{$unsolved_problem_id}</a>
 					{/volist}
 					{else}
-					尚未登陆
+					<?php echo ['en' => 'Not Login', 'cn' => '尚未登陆'][$show_ui_lang];?>
 					{/if}
 				</div>
 			</div>
