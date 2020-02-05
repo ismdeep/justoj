@@ -9,6 +9,7 @@
 namespace app\admin\controller;
 
 
+use app\api\model\ProblemLogModel;
 use app\api\model\ProblemModel;
 use app\api\model\ProblemTagDictModel;
 use app\api\model\ProblemTagModel;
@@ -97,6 +98,9 @@ class Problem extends AdminBaseController
         intercept_json(null == $problem, '题目不存在');
         $problem->defunct = 'N';
         $problem->save();
+
+        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+
         return json([
             'status' => 'success',
             'msg' => '操作成功'
@@ -110,6 +114,9 @@ class Problem extends AdminBaseController
         intercept_json(null == $problem, '题目不存在');
         $problem->defunct = 'Y';
         $problem->save();
+
+        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+
         return json([
             'status' => 'success',
             'msg' => '操作成功'
@@ -295,6 +302,8 @@ class Problem extends AdminBaseController
 //        $problem->tags = '';
         $problem->save();
 
+        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+
         if ($create_folder_flag) {
             // 新建题目目录并写入样例数据
             try {
@@ -361,6 +370,8 @@ class Problem extends AdminBaseController
             $problem->spj = $spj;
             $problem->save();
         }
+
+        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
 
         // 新建题目目录并写入样例数据
         try {
@@ -490,6 +501,8 @@ class Problem extends AdminBaseController
 
         $problem->tags = $tags;
         $problem->save();
+
+        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
 
         (new ProblemTagModel())->where('problem_id', $problem_id)->delete();
 

@@ -27,6 +27,8 @@ class GroupBaseController extends UserBaseController
 
         // 获取group信息
 		$this->group = GroupModel::get(['id' => $request->get('id')]);
+		intercept($this->group == null, 'NOT EXISTS');
+		intercept($this->group->deleted == 1, 'DELETED');
 		$this->assign('group', $this->group);
 
 		// 判断当前用户是否为此班级管理员

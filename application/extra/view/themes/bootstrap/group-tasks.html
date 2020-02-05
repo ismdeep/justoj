@@ -88,7 +88,10 @@
 				{/if}
 			</td>
 			<td>
-				<a href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
+				<a class="btn btn-sm btn-success" href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
+				{if $group->ownner_id == $loginuser->user_id}
+				<a class="btn btn-sm btn-danger" onclick="delete_task('{$task->contest->title}', {$task->id});" href="javascript:">删除</a>
+				{/if}
 			</td>
 		</tr>
 		{/volist}
@@ -181,11 +184,9 @@
 		</div>
 	</div>
 </div>
-</div>
 <!--添加作业之模态框 end-->
 
 <script type="text/javascript">
-
 	function getNowFormatDate2(val) {
 		var date = new Date();
 		date = new Date(date.getTime() + val + 10 * 60 * 1000);
@@ -219,8 +220,14 @@
 		$('#contest-title').val('');
 		$('#contest-description-edit').val('');
 		$('#problem-ids').val('');
-		$('#contest-begin-time').val('');
-		$('#contest-end-time').val('');
+		$('#contest-begin-time').val(getNowFormatDate2(0));
+		$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
+		if (localStorage.getItem('task_add_begin_time') !== null && localStorage.getItem('task_add_begin_time') !== '') {
+			$('#contest-begin-time').val(localStorage.getItem('task_add_begin_time'));
+		}
+		if (localStorage.getItem('task_add_end_time') !== null && localStorage.getItem('task_add_end_time') !== '') {
+			$('#contest-end-time').val(localStorage.getItem('task_add_end_time'));
+		}
 		layer.confirm('是否通过其他作业复试作业列表？', function(){
 			layer.closeAll();
 			//prompt层
@@ -228,12 +235,10 @@
 				layer.close(index);
 				console.log(contest_id);
 				$.post('/api/contest/base_info', {'contest_id': contest_id},function(d){
-					if('success' == d.status) {
+					if('success' === d.status) {
 						$('#contest-title').val(d.data.title);
 						$('#contest-description-edit').val(d.data.description);
 						$('#problem-ids').val(d.data.problem_ids);
-						$('#contest-begin-time').val(getNowFormatDate2(0));
-						$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
 						$('#addTaskModal').modal('show');
 					}else{
 						layer.alert(d.msg);
@@ -243,8 +248,6 @@
 			});
 		}, function(){
 			layer.closeAll();
-			$('#contest-begin-time').val(getNowFormatDate2(0));
-			$('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
 			$('#addTaskModal').modal('show');
 		});
 		// $('#addTaskModal').modal('show');
@@ -277,11 +280,13 @@
         var data = {
             'group_id': {$group->id},
 			'title': $('#contest-title').val(),
-			'begin_time' : $('#contest-begin-time').val(),
+			'begin_time': $('#contest-begin-time').val(),
 			'end_time': $('#contest-end-time').val(),
 			'description': $('#contest-description-edit').val(),
 			'problem_ids': $('#problem-ids').val()
 		};
+        localStorage.setItem('task_add_begin_time', data.begin_time);
+		localStorage.setItem('task_add_end_time', data.end_time);
         $.post('/api/Group/add_task', data, function(d){
             console.log(d);
             if ('success' == d.status) {
@@ -304,6 +309,24 @@
             elem: '#contest-end-time', type: 'datetime'
         });
     });
+</script>
+
+<script type="text/javascript">
+	function delete_task(title, id) {
+    	layer.confirm('是否删除作业 [ '+title+' ] ？<br> <p style="color: red">注：删除后作业中所有提交的数据均不可恢复。</p>', function(){
+    		layer.closeAll();
+    		$.post('/admin/group/delete_task_json', {
+    			'group_task_id': id
+			}, function(d){
+    			console.log(d);
+    			if ('success' === d.status) {
+    				location.reload();
+				} else {
+    				layer.alert(d.msg);
+				}
+			}, 'json');
+    	});
+    }
 </script>
 
 {/block}

@@ -21,10 +21,20 @@ class Mycreation extends UserBaseController
 		$this->assign('nav', 'groups');
 	}
 
+    /**
+     * @return \think\response\View
+     * @throws \think\exception\DbException
+     */
 	public function index()
 	{
 		if (!$this->is_administrator) $this->redirect('/login?redirect=%2Fgroups%2FMycreation');
-		$groups = GroupModel::where('ownner_id', $this->loginuser->user_id)->order('id', 'asc')->paginate(10);
+		$groups = (new GroupModel())
+            ->where([
+                'ownner_id' => $this->loginuser->user_id,
+                'deleted' => 0
+            ])
+            ->order('id', 'asc')
+            ->paginate(10);
 		$this->assign('groups', $groups);
 		return view($this->theme_root . '/groups-my-creation');
 	}
