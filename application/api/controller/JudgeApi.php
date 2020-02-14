@@ -191,4 +191,14 @@ class JudgeApi extends ApiBaseController
         $compile_info->save();
         return "1";
     }
+
+    public function get_problem_info($pid = '')
+    {
+        $pid = intval($pid);
+        $problem = (new ProblemModel())->where('problem_id', $pid)->find();
+        intercept(null == $problem, "PROBLEM NOT FOUND. [pid:$pid]");
+        echo $problem->time_limit . "\n";
+        echo $problem->memory_limit . "\n";
+        echo $problem->spj . "\n";
+    }
 }
