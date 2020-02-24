@@ -35,6 +35,7 @@ class Index extends UserBaseController
         if ('' != $keyword) {
             $where = $where->where('name', 'like', "%{$keyword}%");
         }
+        $where = $where->where('deleted', 0);
         $groups = $where->order('id', 'desc')->paginate(10);
         if ($this->loginuser) {
 			foreach ($groups as $group) $group->loginuser_group_join = GroupJoinModel::get(['user_id' => $this->loginuser->user_id, 'group_id' => $group->id]);

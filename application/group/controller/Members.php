@@ -53,9 +53,9 @@ class Members extends GroupBaseController
     function download_member_source_code($user_id = '')
     {
         intercept(!$this->is_group_manager && $user_id != $this->loginuser->user_id, 'YOU DONT HAVE PERMISSION FOR THIS OPERATION.');
-        intercept_json('' == $user_id, 'error');
+        intercept('' == $user_id, 'error');
         $user = (new UserModel())->where('user_id', $user_id)->find();
-        intercept_json(null == $user, "User not found.");
+        intercept(null == $user, "User not found.");
 
         $langs = config('langs');
         $langs_map = [];
@@ -87,7 +87,7 @@ class Members extends GroupBaseController
             ->where('user_id', $user_id)
             ->find();
 
-        intercept_json(null == $member, 'User not found in this group.');
+        intercept(null == $member, 'User not found in this group.');
 
 
         $cache_id = PasswordUtil::random_string("0123456789abcdef", 32);
