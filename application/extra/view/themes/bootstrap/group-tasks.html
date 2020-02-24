@@ -89,7 +89,9 @@
 			</td>
 			<td>
 				<a class="btn btn-sm btn-success" href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
+				{if $group->ownner_id == $loginuser->user_id}
 				<a class="btn btn-sm btn-danger" onclick="delete_task('{$task->contest->title}', {$task->id});" href="javascript:">删除</a>
+				{/if}
 			</td>
 		</tr>
 		{/volist}
