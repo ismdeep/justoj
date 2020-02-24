@@ -41,7 +41,7 @@ class Group extends ApiBaseController
 			return json(['status' => 'error', 'msg' => $this->lang['not_login']]);
 		}
 		// 判断用户是否为此班级管理员
-		if ($this->loginuser->user_id == $group->ownner_id) {
+		if ($this->loginuser->user_id == $group->owner_id) {
 			return json(['status' => 'error', 'msg' => $this->lang['you_are_the_manager_of_this_group']]);
 		}
 		// 判断用户是否已经有加入此班级记录
@@ -98,7 +98,7 @@ class Group extends ApiBaseController
 		if (!$group) return json(['status' => 'error', 'msg' => $this->lang['group_not_exists']]);
 
 		// 判断当前用户是否是班级管理员
-		if (!($this->loginuser && $this->loginuser->user_id == $group->ownner_id)) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+		if (!($this->loginuser && $this->loginuser->user_id == $group->owner_id)) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 
 		// 写入status
 		$group_join->status = $status;
@@ -125,12 +125,12 @@ class Group extends ApiBaseController
 		if ('' != $group_id) {
 			$group = GroupModel::get(['id' => $group_id]);
 			if (!$group) return json(['status' => 'error', 'msg' => 'group not exists']);
-			if ($group->ownner_id != $this->loginuser->user_id) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+			if ($group->owner_id != $this->loginuser->user_id) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 		}else{
 			$group = new GroupModel();
 		}
 		$group->name = $name;
-		$group->ownner_id = $this->loginuser->user_id;
+		$group->owner_id = $this->loginuser->user_id;
 		$group->type = $privilege;
 		$group->password = $password;
 		$group->description = $description;
@@ -165,7 +165,7 @@ class Group extends ApiBaseController
 		if (!$group) return json(['status' => 'error', 'msg' => 'Group not found.']);
 		// 判断当前用户是否登录已经是否为此班级之管理员
 		if (!$this->loginuser) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
-		if ($group->ownner_id != $this->loginuser->user_id) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
+		if ($group->owner_id != $this->loginuser->user_id) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
 		// 判断title
 		if ('' == $title) return json(['status' => 'error', 'msg' => '标题不可为空']);
 		// 判断begin_time和end_time
@@ -260,7 +260,7 @@ class Group extends ApiBaseController
 		if (!$group) return json(['status' => 'error', 'msg' => 'group not exists']);
 
 		// 判断是否有操作权限
-		if ($group->ownner_id != $this->loginuser->user_id)
+		if ($group->owner_id != $this->loginuser->user_id)
 			return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 
 		$group_join->delete();
@@ -279,7 +279,7 @@ class Group extends ApiBaseController
 		$group = GroupModel::get(['id' => $group_id]);
 		if (!$group) return json(['status' => 'error', 'msg' => $this->lang['group_not_exists']]);
 		// 判断当前用户是否为此班级管理员
-		if ($group->ownner_id != $this->loginuser->user_id)
+		if ($group->owner_id != $this->loginuser->user_id)
 			return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 		// 判断notification_id是否为空，空则表示新建一个公告，不为空则取出公告并判断公告是否存在
 		$notification = null;
@@ -316,7 +316,7 @@ class Group extends ApiBaseController
 		if (!$group) return json(['status' => 'error', 'msg' => $this->lang['group_not_exists']]);
 
 		// 判断当前用户是否为此班级管理员
-		if ($group->ownner_id != $this->loginuser->user_id)
+		if ($group->owner_id != $this->loginuser->user_id)
 			return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 
 		$notification->delete();

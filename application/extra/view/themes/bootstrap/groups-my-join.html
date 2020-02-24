@@ -15,7 +15,7 @@
 		<?php $group_join->fk(); $group_join->group->fk(); ?>
 		<tr>
 			<td><a href="/group?id={$group_join->group_id}">{if 1 == $group_join->group->type}<span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;{/if}{$group_join->group->name}</a></td>
-			<td>{$group_join->group->ownner_id}({$group_join->group->teacher->nick})</td>
+			<td>{$group_join->group->owner_id}({$group_join->group->teacher->nick})</td>
 			<td>
 				{if 0 == $group_join->status}
 				{$lang.waiting_for_verify}

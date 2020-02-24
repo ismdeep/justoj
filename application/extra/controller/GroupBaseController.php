@@ -33,7 +33,7 @@ class GroupBaseController extends UserBaseController
 
 		// 判断当前用户是否为此班级管理员
 		$this->is_group_manager = false;
-		if ($this->loginuser && $this->group->ownner_id == $this->loginuser->user_id) $this->is_group_manager = true;
+		if ($this->loginuser && $this->group->owner_id == $this->loginuser->user_id) $this->is_group_manager = true;
 		$this->assign('is_group_manager', $this->is_group_manager);
 
 		// 判断当前用户是否有访问权限
