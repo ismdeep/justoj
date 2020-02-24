@@ -11,7 +11,7 @@
 			{if $group->ownner_id == $loginuser->user_id}
 			<button class="btn btn-success" type="button" onclick="open_add_task();">{$lang.add_homework}</button>
 			{/if}
-			<a class="btn btn-success" href="/group/members/download_member_source_code?id={$group->id}&user_id={$loginuser->user_id}">{$lang.download}{$lang.source_code}</a>
+			<a class="btn btn-success" href="/group/members/download_member_source_code?id={$group->id}&user_id={$loginuser->user_id}">{$lang.download} {$lang.source_code}</a>
 		</div>
 	</div>
 	<table class="table table-hover">
