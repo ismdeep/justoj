@@ -30,7 +30,7 @@ class Mycreation extends UserBaseController
 		if (!$this->is_administrator) $this->redirect('/login?redirect=%2Fgroups%2FMycreation');
 		$groups = (new GroupModel())
             ->where([
-                'ownner_id' => $this->loginuser->user_id,
+                'owner_id' => $this->loginuser->user_id,
                 'deleted' => 0
             ])
             ->order('id', 'asc')

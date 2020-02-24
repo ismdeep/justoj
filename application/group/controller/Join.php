@@ -26,7 +26,7 @@ class Join extends UserBaseController
 		// 判断当前用户是否有访问班级权限
 		// 判断当前用户是否为此班级管理员
 		$is_group_manager = false;
-		if ($this->loginuser && $group->ownner_id == $this->loginuser->user_id) $is_group_manager = true;
+		if ($this->loginuser && $group->owner_id == $this->loginuser->user_id) $is_group_manager = true;
 		$this->assign('is_group_manager', $is_group_manager);
 
 		// 判断当前用户是否有访问权限

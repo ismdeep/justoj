@@ -24,7 +24,7 @@
 		<?php $group->fk();?>
 		<tr>
 			<td><a href="/group?id={$group->id}">{if 1 == $group->type}<span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;{/if}{$group->name}</a></td>
-			<td>{$group->ownner_id}({$group->teacher->nick})</td>
+			<td>{$group->owner_id}({$group->teacher->nick})</td>
 			<td>
 				{if $group->loginuser_group_join}
 

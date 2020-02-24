@@ -35,7 +35,7 @@ class Group extends AdminBaseController
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $where = [
-            'ownner_id' => $this->loginuser->user_id,
+            'owner_id' => $this->loginuser->user_id,
             'deleted' => 0
         ];
         $groups = (new GroupModel())->where($where)->limit(($page - 1) * $limit, $limit)->select();
@@ -55,7 +55,7 @@ class Group extends AdminBaseController
         $group = new GroupModel();
         $group->id = '';
         $group->name = '';
-        $group->ownner_id = $this->loginuser->user_id;
+        $group->owner_id = $this->loginuser->user_id;
         $group->type = 0;
         $group->password = '';
         $group->description = '';
@@ -93,7 +93,7 @@ class Group extends AdminBaseController
 
         if ('' == $group_id) {
             $group = new GroupModel();
-            $group->ownner_id = $this->loginuser->user_id;
+            $group->owner_id = $this->loginuser->user_id;
         }else{
             $group_id = intval($group_id);
             $group = (new GroupModel())->where('id', $group_id)->find();
@@ -155,7 +155,7 @@ class Group extends AdminBaseController
         intercept_json(null == $group_task, 'Group Task Not Found.');
         $group = (new GroupModel())->where('id', $group_task->group_id)->find();
         intercept_json(null == $group, 'Group Not Found.');
-        intercept_json($this->loginuser->user_id != $group->ownner_id, 'PERMISSION DENIED.');
+        intercept_json($this->loginuser->user_id != $group->owner_id, 'PERMISSION DENIED.');
 
         $contest = (new ContestModel())
             ->where('contest_id', $group_task->contest_id)

@@ -14,7 +14,7 @@ use think\Model;
 /**
  * @property string id
  * @property string name
- * @property string ownner_id
+ * @property string owner_id
  * @property int type
  * @property string password
  * @property string description
@@ -28,7 +28,7 @@ class GroupModel extends Model
 
     public function fk()
     {
-        $this->teacher = UserModel::get(['user_id' => $this->ownner_id]);
+        $this->teacher = UserModel::get(['user_id' => $this->owner_id]);
 
         // group权限fk
 		$this->type_text = '';
