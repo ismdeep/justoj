@@ -12,6 +12,12 @@ namespace app\api\model;
 use think\Db;
 use think\Model;
 
+/**
+ * Class UserModel
+ * @package app\api\model
+ * @property string user_id
+ * @property string password
+ */
 class UserModel extends Model
 {
 	protected $table = "users";
