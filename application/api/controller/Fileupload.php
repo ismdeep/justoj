@@ -36,6 +36,8 @@ class Fileupload extends ApiBaseController {
             $upload->file_size = $info->getSize();
             $upload->save();
 
+            unlink($file_path);
+
             return json([
                 'code' => 0
                 , 'data' => "https://ismdeep.oss-accelerate.aliyuncs.com/{$obj}"
