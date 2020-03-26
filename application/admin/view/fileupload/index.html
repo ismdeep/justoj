@@ -37,8 +37,11 @@ layui.use('upload', function(){
         ,bindAction: '#btn-upload'
         ,done: function(res){
             layer.closeAll();
-            console.log(res);
-            $('#link').val('/' + res.data);
+            if (res.code === 0) {
+                $('#link').val(res.data);
+            } else {
+                layer.alert(res.msg);
+            }
         }
         ,error: function(){
             //演示失败状态，并实现重传
