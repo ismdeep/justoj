@@ -40,7 +40,7 @@ class Fileupload extends ApiBaseController {
 
             return json([
                 'code' => 0
-                , 'data' => "https://ismdeep.oss-accelerate.aliyuncs.com/{$obj}"
+                , 'data' => "https://ismdeep.oss-cn-shenzhen.aliyuncs.com/{$obj}"
             ]);
         } catch (OssException $e) {
             return json([
