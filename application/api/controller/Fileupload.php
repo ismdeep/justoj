@@ -21,11 +21,16 @@ class Fileupload extends ApiBaseController {
         $file = request()->file('file');
         $info = $file->move('upload/' . $this->loginuser->user_id . '/' . date("Ymd") . '/', false, true);
 
+        $upload = new UploadModel();
+        $upload->user_id = $this->loginuser->user_id;
+        $upload->oss_path = "/{$info->getPath()}/{$info->getSaveName()}";
+        $upload->file_size = $info->getSize();
+        $upload->save();
 
         return json([
-                'code' => 0
-                , 'data' => "/{$info->getPath()}/{$info->getSaveName()}"
-            ]);
+            'code' => 0
+            , 'data' => "/{$info->getPath()}/{$info->getSaveName()}"
+        ]);
     }
 
 }
