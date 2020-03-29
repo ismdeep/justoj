@@ -8,6 +8,9 @@ use app\api\model\SolutionModel;
 use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
 use think\App;
+use think\Db;
+use think\Exception;
+use think\Model;
 use function Sodium\version_string;
 
 class Index extends AdminBaseController {
@@ -20,24 +23,52 @@ class Index extends AdminBaseController {
     }
 
     public function welcome() {
-        // 题目数量
-        $problem_count = (new ProblemModel())->count();
-        // 比赛数量
-        $contest_count = (new ContestModel())->where(['type' => 0])->count();
-        // 作业数量
-        $homework_count = (new ContestModel())->where(['type' => 1])->count();
-        // 用户数量
-        $user_count = (new UserModel())->count();
-        // 提交数量
-        $solution_count = (new SolutionModel())->count();
-        // AC数量
-        $ac_count = (new SolutionModel())->where(['result' => 4])->count();
 
-        // / 硬盘剩余信息
+        /** 题目数量 **/
+        try {
+            $problem_count = (new ProblemModel())->count();
+        } catch (Exception $e) {
+            $problem_count = '暂无信息';
+        }
+        /** 比赛数量 **/
+        try {
+            $contest_count = (new ContestModel())->where(['type' => 0])->count();
+        } catch (Exception $e) {
+            $contest_count = '暂无信息';
+        }
+        /** 作业数量 **/
+        try {
+            $homework_count = (new ContestModel())->where(['type' => 1])->count();
+        } catch (Exception $e) {
+            $homework_count = '暂无信息';
+        }
+        /** 用户数量 **/
+        try {
+            $user_count = (new UserModel())->count();
+        } catch (Exception $e) {
+            $user_count = '暂无信息';
+        }
+        /** 提交数量 **/
+        try {
+            $solution_count = (new SolutionModel())->count();
+        } catch (Exception $e) {
+            $solution_count = '暂无信息';
+        }
+        /** AC数量 **/
+        try {
+            $ac_count = (new SolutionModel())->where(['result' => 4])->count();
+        } catch (Exception $e) {
+            $ac_count = '暂无信息';
+        }
+        /** MySQL 数据库版本号 **/
+        $mysql_version = Db::query("select version() as ver")[0]['ver'];
+
+        /** / 硬盘剩余信息 **/
         $free_space = round(disk_free_space('/') / 1024 / 1024 / 1024, 2);
 
-        // /home 硬盘剩余信息
+        /** /home 硬盘剩余信息 **/
         $free_space_home = round(disk_free_space('/home') / 1024 / 1024 / 1024, 2);
+
 
         $this->assign('problem_count', $problem_count);
         $this->assign('contest_count', $contest_count);
@@ -47,6 +78,8 @@ class Index extends AdminBaseController {
         $this->assign('ac_count', $ac_count);
         $this->assign('free_space', $free_space);
         $this->assign('free_space_home', $free_space_home);
+        $this->assign('mysql_version', $mysql_version);
+        $this->assign('php_version', PHP_VERSION);
         $this->assign('thinkphp_version', THINK_VERSION);
 
         return view();
