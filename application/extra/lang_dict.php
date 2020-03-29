@@ -177,7 +177,6 @@ return [
     ,'test_data' => ['en' => 'Test Data', 'cn' => '测试数据']
     ,'time_limit' => ['en' => 'Time Limit', 'cn' => '时间限制']
     ,'title' => ['en' => 'Title', 'cn' => '标题']
-    ,'training' => ['en' => 'Training', 'cn' => '训练场']
     ,'type' => ['en' => 'Type', 'cn' => '类型']
     ,'count' => ['en' => 'Count', 'cn' => '数量']
     ,'upload' => ['en' => 'Upload', 'cn' => '上传']
