@@ -18,12 +18,10 @@ use app\extra\controller\GroupBaseController;
 use app\extra\util\PasswordUtil;
 use think\Request;
 
-class Members extends GroupBaseController
-{
+class Members extends GroupBaseController {
 
 
-    public function __construct(Request $request = null)
-    {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
         $this->assign('nav', 'members');
     }
@@ -31,8 +29,7 @@ class Members extends GroupBaseController
     /**
      * 班级成员页面
      */
-    public function index()
-    {
+    public function index() {
         $members = GroupJoinModel::all(['group_id' => $this->group->id]);
         foreach ($members as $member) {
             $member->realname = UserModel::get(['user_id' => $member->user_id])->realname;
@@ -50,8 +47,7 @@ class Members extends GroupBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    function download_member_source_code($user_id = '')
-    {
+    function download_member_source_code($user_id = '') {
         intercept(!$this->is_group_manager && $user_id != $this->loginuser->user_id, 'YOU DONT HAVE PERMISSION FOR THIS OPERATION.');
         intercept('' == $user_id, 'error');
         $user = (new UserModel())->where('user_id', $user_id)->find();

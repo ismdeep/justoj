@@ -14,10 +14,8 @@ use think\exception\DbException;
 use think\response\Json;
 use think\Session;
 
-class Index extends BaseController
-{
-    public function index()
-    {
+class Index extends BaseController {
+    public function index() {
         return view('user_list');
     }
 
@@ -31,8 +29,7 @@ class Index extends BaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function user_list_json($page = 1, $limit = 10, $keyword = '')
-    {
+    public function user_list_json($page = 1, $limit = 10, $keyword = '') {
         $where = (new UserModel());
 
         if ('' != $keyword) {
@@ -45,8 +42,7 @@ class Index extends BaseController
         }
 
         $users = $where->limit(($page - 1) * $limit, $limit)->select();
-        foreach($users as $user)
-        {
+        foreach ($users as $user) {
             if ($this->is_login && $this->loginuser->user_id == $user->user_id) {
                 $user->is_login = true;
             } else {
@@ -82,8 +78,7 @@ class Index extends BaseController
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    function hack_login_json($user_id = '')
-    {
+    function hack_login_json($user_id = '') {
         intercept_json('' == $user_id, '');
         $user = (new UserModel())->where('user_id', $user_id)->find();
         intercept_json(null == $user, '');

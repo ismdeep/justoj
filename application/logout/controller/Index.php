@@ -12,11 +12,9 @@ namespace app\logout\controller;
 use app\extra\controller\UserBaseController;
 use think\Session;
 
-class Index extends UserBaseController
-{
-	public function index($redirect='/')
-	{
-		Session::destroy();
-		$this->redirect($redirect);
-	}
+class Index extends UserBaseController {
+    public function index($redirect = '/') {
+        Session::destroy();
+        $this->redirect($redirect);
+    }
 }

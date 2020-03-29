@@ -19,11 +19,9 @@ use app\extra\util\PasswordUtil;
 use think\Exception;
 use think\response\Json;
 
-class Problem extends AdminBaseController
-{
+class Problem extends AdminBaseController {
 
-    public function problem_list()
-    {
+    public function problem_list() {
         return view();
     }
 
@@ -37,8 +35,7 @@ class Problem extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function problem_list_json($page = 1, $limit = 10, $keyword = '')
-    {
+    public function problem_list_json($page = 1, $limit = 10, $keyword = '') {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $problems = (new ProblemModel());
@@ -64,8 +61,7 @@ class Problem extends AdminBaseController
     /**
      * 文件管理器
      */
-    public function files($problem_id)
-    {
+    public function files($problem_id) {
         // 获取problem
         $problem = ProblemModel::get(['problem_id' => $problem_id]);
 
@@ -91,8 +87,7 @@ class Problem extends AdminBaseController
         return view();
     }
 
-    public function enable_problem_json($problem_id = '')
-    {
+    public function enable_problem_json($problem_id = '') {
         intercept_json('' == $problem_id, 'contest_id参数错误');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         intercept_json(null == $problem, '题目不存在');
@@ -107,8 +102,7 @@ class Problem extends AdminBaseController
         ]);
     }
 
-    public function disable_problem_json($problem_id = '')
-    {
+    public function disable_problem_json($problem_id = '') {
         intercept_json('' == $problem_id, 'contest_id参数错误');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         intercept_json(null == $problem, '题目不存在');
@@ -126,8 +120,7 @@ class Problem extends AdminBaseController
     /**
      * 打包下载文件
      */
-    public function download_files($problem_id)
-    {
+    public function download_files($problem_id) {
         // 获取文件列表
         $file_names = array();
         $dh = opendir(config('data_dir') . '/' . $problem_id);
@@ -173,8 +166,7 @@ class Problem extends AdminBaseController
      * @param null $problem_id
      * @param string $file_name
      */
-    public function download_single_file($problem_id = null, $file_name = '')
-    {
+    public function download_single_file($problem_id = null, $file_name = '') {
         $file_path = config('data_dir') . "/{$problem_id}/{$file_name}";
         intercept(file_exists($file_path) == false, '文件不存在');
 
@@ -192,8 +184,7 @@ class Problem extends AdminBaseController
     /**
      * 添加问题
      */
-    public function add()
-    {
+    public function add() {
         $problem = new ProblemModel();
         $problem->problem_id = '';
         $problem->title = '';
@@ -218,8 +209,7 @@ class Problem extends AdminBaseController
      * @return \think\response\View
      * @throws \think\exception\DbException
      */
-    public function edit($id = '')
-    {
+    public function edit($id = '') {
         intercept('' == $id, 'id参数不可为空');
         $problem = ProblemModel::get(['problem_id' => $id]);
         intercept(null == $problem, '题目不存在');
@@ -227,8 +217,7 @@ class Problem extends AdminBaseController
         return view('edit');
     }
 
-    public function edit2($id = '')
-    {
+    public function edit2($id = '') {
         intercept('' == $id, 'id参数不可为空');
         $problem = ProblemModel::get(['problem_id' => $id]);
         intercept(null == $problem, '题目不存在');
@@ -266,8 +255,7 @@ class Problem extends AdminBaseController
         $sample_output = '',
         $hint = '',
         $source = ''
-    )
-    {
+    ) {
         intercept_json('' == $title, '标题不可为空');
 
         $create_folder_flag = false;
@@ -334,8 +322,7 @@ class Problem extends AdminBaseController
     /**
      * add edit页面均提交到此处进行保存
      */
-    public function save($problem_id = '', $title = '', $time_limit = '', $memory_limit = '', $description = '', $input = '', $output = '', $sample_input = '', $sample_output = '', $hint = '', $source = '', $spj = 0)
-    {
+    public function save($problem_id = '', $title = '', $time_limit = '', $memory_limit = '', $description = '', $input = '', $output = '', $sample_input = '', $sample_output = '', $hint = '', $source = '', $spj = 0) {
         $problem = null;
         if ('' == $problem_id) {
             // 新建一个题目
@@ -395,8 +382,7 @@ class Problem extends AdminBaseController
     /**
      * 题目添加或修改成功跳到成功页面
      */
-    public function save_success($id)
-    {
+    public function save_success($id) {
         $problem = ProblemModel::get(['problem_id' => $id]);
         $this->assign('problem', $problem);
         return view();
@@ -407,8 +393,7 @@ class Problem extends AdminBaseController
      * @param string $problem_id
      * @return Json
      */
-    public function upload_files($problem_id = '')
-    {
+    public function upload_files($problem_id = '') {
         intercept('' == $problem_id, 'problem_id不可为空');
         $file = request()->file('file');
         // 移动到框架应用根目录/uploads/ 目录下
@@ -426,16 +411,14 @@ class Problem extends AdminBaseController
         }
     }
 
-    public function add_files($problem_id = '')
-    {
+    public function add_files($problem_id = '') {
         intercept('' == $problem_id, 'problem_id不可为空');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         $this->assign('problem', $problem);
         return view('add_files');
     }
 
-    public function add_to_training_json($problem_id = '')
-    {
+    public function add_to_training_json($problem_id = '') {
         intercept_json('' == $problem_id, 'problem_id不可为空');
         intercept_json((new TrainingProblemModel())->where('problem_id', $problem_id)->find() != null, '题目已经加入训练场');
         $training_problem = new TrainingProblemModel();
@@ -454,8 +437,7 @@ class Problem extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function set_tag($problem_id = '')
-    {
+    public function set_tag($problem_id = '') {
         intercept('' == $problem_id, 'ERROR on ARGS');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         intercept(null == $problem, "Not found this problem. [problem_id:$problem_id]");
@@ -488,8 +470,7 @@ class Problem extends AdminBaseController
      * @throws \think\exception\DbException
      * @throws Exception
      */
-    public function set_tag_json($problem_id = '', $tags = '')
-    {
+    public function set_tag_json($problem_id = '', $tags = '') {
         intercept_json('' == $problem_id, 'ERROR');
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         intercept_json(null == $problem, "Not found this problem. [problem_id:$problem_id]");

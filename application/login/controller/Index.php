@@ -12,11 +12,9 @@ namespace app\login\controller;
 use app\extra\controller\UserBaseController;
 use think\Controller;
 
-class Index extends UserBaseController
-{
-    public function index ($redirect='/')
-    {
-    	$this->assign('redirect', $redirect);
+class Index extends UserBaseController {
+    public function index($redirect = '/') {
+        $this->assign('redirect', $redirect);
         return view($this->theme_root . '/login');
     }
 }

@@ -12,11 +12,9 @@ namespace app\admin\controller;
 use app\api\model\NewsModel;
 use app\extra\controller\AdminBaseController;
 
-class News extends AdminBaseController
-{
+class News extends AdminBaseController {
 
-    public function news_list()
-    {
+    public function news_list() {
         return view();
     }
 
@@ -30,8 +28,7 @@ class News extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function news_list_json($page = 1, $limit = 10, $news_keyword = '', $defunct = '')
-    {
+    public function news_list_json($page = 1, $limit = 10, $news_keyword = '', $defunct = '') {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
 
@@ -56,8 +53,7 @@ class News extends AdminBaseController
         ]);
     }
 
-    public function preview($news_id = '')
-    {
+    public function preview($news_id = '') {
         intercept('' == $news_id, 'news_id不可为空');
         $news = (new NewsModel())->where('news_id', $news_id)->find();
         intercept(null == $news, '新闻不存在');
@@ -65,8 +61,7 @@ class News extends AdminBaseController
         return view();
     }
 
-    public function add()
-    {
+    public function add() {
         $news = new NewsModel();
         $news->news_id = '';
         $news->title = '';
@@ -84,8 +79,7 @@ class News extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function save_json($news_id = '', $title = '', $content = '')
-    {
+    public function save_json($news_id = '', $title = '', $content = '') {
         $this->need_root('json');
 
         intercept_json('' == $title, '标题不可为空');
@@ -123,8 +117,7 @@ class News extends AdminBaseController
 
     /****************************************/
 
-    public function edit($news_id)
-    {
+    public function edit($news_id) {
         $news = (new NewsModel())->where(['news_id' => $news_id])->find();
         $this->assign('news', $news);
         return view('edit');
@@ -136,8 +129,7 @@ class News extends AdminBaseController
      * @param $content
      * @throws \think\exception\DbException
      */
-    public function save($news_id = '', $title, $content)
-    {
+    public function save($news_id = '', $title, $content) {
         if ('' == $news_id) {
             $news = new NewsModel();
         } else {
@@ -158,8 +150,7 @@ class News extends AdminBaseController
      * @param string $defunct
      * @return \think\response\Json
      */
-    public function change_defunct_json($news_id = '', $defunct = '')
-    {
+    public function change_defunct_json($news_id = '', $defunct = '') {
         intercept_json('' == $news_id, 'news_id不可为空');
         intercept_json('' == $defunct, 'defunct不可为空');
         $news_id = intval($news_id);

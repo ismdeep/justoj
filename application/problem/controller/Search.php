@@ -10,12 +10,9 @@ namespace app\problem\controller;
 
 
 use app\extra\controller\UserBaseController;
-use think\Controller;
 
-class Search extends UserBaseController
-{
-    public function index($source = '')
-    {
+class Search extends UserBaseController {
+    public function index($source = '') {
         return $source;
     }
 }

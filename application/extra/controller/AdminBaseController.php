@@ -13,14 +13,11 @@ use think\Controller;
 use think\Request;
 use think\Session;
 
-class AdminBaseController extends BaseController
-{
+class AdminBaseController extends BaseController {
 
-    public function __construct(Request $request = null)
-    {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
-        if (!session('administrator'))
-        {
+        if (!session('administrator')) {
             return $this->redirect('/');
         }
     }

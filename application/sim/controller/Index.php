@@ -9,7 +9,6 @@
 namespace app\sim\controller;
 
 
-use app\api\controller\Contest;
 use app\api\model\ContestModel;
 use app\api\model\SimModel;
 use app\api\model\SolutionModel;
@@ -17,8 +16,7 @@ use app\api\model\SourceCodeModel;
 use app\api\model\UserModel;
 use app\extra\controller\BaseController;
 
-class Index extends BaseController
-{
+class Index extends BaseController {
     /**
      * @param string $id
      * @return \think\response\View
@@ -26,8 +24,7 @@ class Index extends BaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($id = '')
-    {
+    public function index($id = '') {
 //        intercept(!$this->is_administrator, $this->lang['do_not_have_privilege']);
         intercept('' == $id, 'null');
         $sim = (new SimModel())->where('s_id', $id)->find();

@@ -15,8 +15,7 @@ use app\extra\controller\UserBaseController;
 use app\extra\util\PasswordUtil;
 use think\Session;
 
-class Post extends UserBaseController
-{
+class Post extends UserBaseController {
     /**
      *
      * @param $username
@@ -24,8 +23,7 @@ class Post extends UserBaseController
      * @param string $redirect
      * @throws \think\exception\DbException
      */
-    public function index ($username, $password, $redirect = '/')
-    {
+    public function index($username, $password, $redirect = '/') {
         $user = UserModel::get(['user_id' => $username]);
         if (!$user) $this->redirect('/login');
         if (PasswordUtil::check_password($password, $user->password)) {

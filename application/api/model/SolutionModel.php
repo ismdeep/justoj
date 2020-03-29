@@ -23,8 +23,7 @@ use think\Model;
  * @property string contest_id
  * @package app\api\model
  */
-class SolutionModel extends Model
-{
+class SolutionModel extends Model {
     protected $table = 'solution';
 
     /**
@@ -40,37 +39,36 @@ class SolutionModel extends Model
      * 9 输出超限
      * 10 运行错误
      * 11 编译错误
-	 * 12 编译完成
-	 * 13 测试运行
-	 * 14 已经提交
+     * 12 编译完成
+     * 13 测试运行
+     * 14 已经提交
      */
-    public function fk()
-	{
-		$result_code_arr = array(
-			'result_code_pending',
-			'result_code_rejuding',
-			'result_code_compiling',
-			'result_code_running',
-			'result_code_ac',
-			'result_code_pe',
-			'result_code_wa',
-			'result_code_tle',
-			'result_code_mle',
-			'result_code_ole',
-			'result_code_re',
-			'result_code_ce',
-			'result_code_co',
-			'result_code_tr',
-			'result_code_so'
-		);
+    public function fk() {
+        $result_code_arr = array(
+            'result_code_pending',
+            'result_code_rejuding',
+            'result_code_compiling',
+            'result_code_running',
+            'result_code_ac',
+            'result_code_pe',
+            'result_code_wa',
+            'result_code_tle',
+            'result_code_mle',
+            'result_code_ole',
+            'result_code_re',
+            'result_code_ce',
+            'result_code_co',
+            'result_code_tr',
+            'result_code_so'
+        );
 
         $this->result_code = $result_code_arr[$this->result];
 
         $lang_arr = config('langs');
-		foreach ($lang_arr as $item) {
+        foreach ($lang_arr as $item) {
             if ($this->language == $item['id']) {
                 $this->language_text = $item['name'];
             }
         }
-	}
+    }
 }

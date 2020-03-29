@@ -11,7 +11,6 @@ namespace app\api\model;
 
 use think\Model;
 
-class SourceCodeModel extends Model
-{
+class SourceCodeModel extends Model {
     protected $table = 'source_code';
 }

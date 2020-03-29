@@ -13,14 +13,12 @@ use app\extra\controller\BaseController;
 use app\extra\util\smtp;
 
 
-class MailSender extends BaseController
-{
+class MailSender extends BaseController {
     /**
      * @return \think\response\Json
      * @throws \PHPMailer\PHPMailer\Exception
      */
-    public function index()
-    {
+    public function index() {
         //******************** 配置信息 ********************************
 //        $smtpserver = "smtp.qq.com";//SMTP服务器
 //        $smtpserverport = 465;//SMTP服务器端口
@@ -65,7 +63,6 @@ class MailSender extends BaseController
 //        ]);
 
 
-
         //************************ 配置信息 ****************************
 
         $smtp = new smtp('mail.jxust.edu.cn', 587, 3);
@@ -80,7 +77,6 @@ class MailSender extends BaseController
         $smtp->text($mailcontent, 'text/plain', 'utf-8');
         $smtp->charset('UTF-8'); // For subject, names, etc.
         $smtp->send();
-
 
 
         return json([

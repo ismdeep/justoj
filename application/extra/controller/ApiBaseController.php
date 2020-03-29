@@ -11,12 +11,10 @@ namespace app\extra\controller;
 
 use think\Request;
 
-class ApiBaseController extends BaseController
-{
-	public function __construct(Request $request = null)
-	{
-		parent::__construct($request);
+class ApiBaseController extends BaseController {
+    public function __construct(Request $request = null) {
+        parent::__construct($request);
         config('app_debug', false);
         config('app_trace', false);
-	}
+    }
 }

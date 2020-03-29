@@ -13,19 +13,16 @@ use app\extra\controller\GroupBaseController;
 use think\Model;
 use think\Request;
 
-class Index extends GroupBaseController
-{
-	public function __construct(Request $request = null)
-	{
-		parent::__construct($request);
-		$this->assign('nav', 'home');
-	}
+class Index extends GroupBaseController {
+    public function __construct(Request $request = null) {
+        parent::__construct($request);
+        $this->assign('nav', 'home');
+    }
 
-	/**
-	 * 班级首页
-	 */
-	public function index()
-	{
-		return view($this->theme_root . '/group');
-	}
+    /**
+     * 班级首页
+     */
+    public function index() {
+        return view($this->theme_root . '/group');
+    }
 }

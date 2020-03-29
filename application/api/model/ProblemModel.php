@@ -40,12 +40,10 @@ use think\Model;
  *
  * @package app\api\model
  */
-class ProblemModel extends Model
-{
+class ProblemModel extends Model {
     protected $table = 'problem';
 
-    public function fk()
-    {
+    public function fk() {
         $this->solved = Db::query("select count(solution_id) as cnt from solution where problem_id=" . $this->problem_id . " and contest_id is null and result=4")[0]['cnt'];
         $this->submit = Db::query("select count(solution_id) as cnt from solution where problem_id=" . $this->problem_id . " and contest_id is null")[0]['cnt'];
     }
@@ -59,8 +57,7 @@ class ProblemModel extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    static public function update_ac_cnt($problem_id = '')
-    {
+    static public function update_ac_cnt($problem_id = '') {
         $problem = (new ProblemModel())
             ->where('problem_id', $problem_id)
             ->find();

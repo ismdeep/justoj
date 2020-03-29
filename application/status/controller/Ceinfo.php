@@ -14,10 +14,8 @@ use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
 use app\extra\controller\UserBaseController;
 
-class Ceinfo extends UserBaseController
-{
-    public function index($id)
-    {
+class Ceinfo extends UserBaseController {
+    public function index($id) {
         // 获取solution信息
         $solution = SolutionModel::get(['solution_id' => $id]);
 

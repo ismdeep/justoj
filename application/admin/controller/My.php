@@ -13,10 +13,8 @@ use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
 use app\extra\util\PasswordUtil;
 
-class My extends AdminBaseController
-{
-    public function change_password()
-    {
+class My extends AdminBaseController {
+    public function change_password() {
         return view();
     }
 
@@ -30,8 +28,7 @@ class My extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function change_password_json($newpassword = '', $newpassword2 = '')
-    {
+    public function change_password_json($newpassword = '', $newpassword2 = '') {
         intercept_json('' == $newpassword || $newpassword != $newpassword2, '新密码不可为空且两次输入的密码必须相同。');
 
         $user = (new UserModel())->where('user_id', $this->loginuser->user_id)->find();

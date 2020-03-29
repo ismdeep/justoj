@@ -19,8 +19,7 @@ use app\extra\controller\ApiBaseController;
 use think\Db;
 use think\Exception;
 
-class Solution extends ApiBaseController
-{
+class Solution extends ApiBaseController {
     /**
      * 提交题目代码
      * @param $problem_id
@@ -29,48 +28,47 @@ class Solution extends ApiBaseController
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-	public function submit_problem_code($problem_id='', $language='', $code='')
-	{
-	    $this->need_login('json');
-	    intercept_json('' == $problem_id, 'problem_id cannot be empty');
+    public function submit_problem_code($problem_id = '', $language = '', $code = '') {
+        $this->need_login('json');
+        intercept_json('' == $problem_id, 'problem_id cannot be empty');
         intercept_json('' == $language, 'language cannot be empty');
         intercept_json('' == $code, 'source code cannot be empty.');
         intercept_json(null == (new ProblemModel())->where('problem_id', $problem_id)->find(), '题目不存在');
         intercept_json(null != (new SolutionModel())->where(
-            [
-                'user_id' => $this->loginuser->user_id,
-                'in_date' => ['>', date('Y-m-d H:i:s', time() - 3)]
-            ]
+                [
+                    'user_id' => $this->loginuser->user_id,
+                    'in_date' => ['>', date('Y-m-d H:i:s', time() - 3)]
+                ]
             )->find(), '提交过于频繁');
 
 
-		$solution = new SolutionModel();
-		$solution->result = 14;
-		$solution->problem_id = $problem_id;
-		$solution->user_id = $this->loginuser->user_id;
-		$solution->in_date = date('Y-m-d H:i:s', time());
-		$solution->code_length = strlen($code);
-		$solution->language = $language;
-		$solution->ip = '';
-		$solution->save();
+        $solution = new SolutionModel();
+        $solution->result = 14;
+        $solution->problem_id = $problem_id;
+        $solution->user_id = $this->loginuser->user_id;
+        $solution->in_date = date('Y-m-d H:i:s', time());
+        $solution->code_length = strlen($code);
+        $solution->language = $language;
+        $solution->ip = '';
+        $solution->save();
 
-		$source_code = new SourceCodeModel();
-		$source_code->solution_id = $solution->solution_id;
-		$source_code->source = $code;
-		$source_code->save();
+        $source_code = new SourceCodeModel();
+        $source_code->solution_id = $solution->solution_id;
+        $source_code->source = $code;
+        $source_code->save();
 
-		$solution->result = 0;
-		$solution->save();
-		$solution->fk();
-		$solution->result_text = $this->lang[$solution->result_code];
+        $solution->result = 0;
+        $solution->save();
+        $solution->fk();
+        $solution->result_text = $this->lang[$solution->result_code];
 
-		// 带上源码一起返回
-		$solution->source_code = SourceCodeModel::get(['solution_id' => $solution->solution_id]);
-		$solution->source_code->source = str_replace('<', '&lt;', $solution->source_code->source);
-		$solution->source_code->source = str_replace('>', '&gt;', $solution->source_code->source);
+        // 带上源码一起返回
+        $solution->source_code = SourceCodeModel::get(['solution_id' => $solution->solution_id]);
+        $solution->source_code->source = str_replace('<', '&lt;', $solution->source_code->source);
+        $solution->source_code->source = str_replace('>', '&gt;', $solution->source_code->source);
 
-		return json(['status' => 'success', 'data' => $solution]);
-	}
+        return json(['status' => 'success', 'data' => $solution]);
+    }
 
     /**
      * 比赛中提交代码
@@ -81,8 +79,7 @@ class Solution extends ApiBaseController
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-	public function submit_contest_problem_code($contest_id = '', $problem_num = '', $language = '', $code = '')
-	{
+    public function submit_contest_problem_code($contest_id = '', $problem_num = '', $language = '', $code = '') {
 
         $this->need_login('json');
         intercept_json('' == $contest_id, 'contest_id cannot be empty');
@@ -105,7 +102,7 @@ class Solution extends ApiBaseController
         $language_valid = false;
         if ('*' == $contest->langmask) {
             $language_valid = true;
-        }else{
+        } else {
             $lang_ids = explode(',', $contest->langmask);
             foreach ($lang_ids as $lang_id) {
                 if ($language == intval($lang_id)) {
@@ -117,82 +114,78 @@ class Solution extends ApiBaseController
         intercept_json(!$language_valid, '当前比赛/作业禁用此语言。');
 
 
-
-
         $solution = new SolutionModel();
-		$solution->result = 14;
-		$solution->contest_id = $contest_id;
-		$solution->problem_id = $contest_problem->problem_id;
-		$solution->user_id = $this->loginuser->user_id;
-		$solution->in_date = date('Y-m-d H:i:s');
-		$solution->code_length = strlen($code);
-		$solution->language = $language;
-		$solution->ip = '';
-		$solution->save();
+        $solution->result = 14;
+        $solution->contest_id = $contest_id;
+        $solution->problem_id = $contest_problem->problem_id;
+        $solution->user_id = $this->loginuser->user_id;
+        $solution->in_date = date('Y-m-d H:i:s');
+        $solution->code_length = strlen($code);
+        $solution->language = $language;
+        $solution->ip = '';
+        $solution->save();
 
-		$source_code = new SourceCodeModel();
-		$source_code->solution_id = $solution->solution_id;
-		$source_code->source = $code;
-		$source_code->save();
+        $source_code = new SourceCodeModel();
+        $source_code->solution_id = $solution->solution_id;
+        $source_code->source = $code;
+        $source_code->save();
 
-		$solution->result = 0;
-		$solution->save();
-		$solution->fk();
-		$solution->result_text = $this->lang[$solution->result_code];
-		return json(['status' => 'success', 'data' => $solution]);
-	}
+        $solution->result = 0;
+        $solution->save();
+        $solution->fk();
+        $solution->result_text = $this->lang[$solution->result_code];
+        return json(['status' => 'success', 'data' => $solution]);
+    }
 
-	/**
-	 * solution状态
-	 * @param $solution_id
-	 * @return \think\response\Json
-	 * @throws \think\exception\DbException
-	 */
-	public function status($solution_id)
-	{
-		$solution = SolutionModel::get(['solution_id' => $solution_id]);
+    /**
+     * solution状态
+     * @param $solution_id
+     * @return \think\response\Json
+     * @throws \think\exception\DbException
+     */
+    public function status($solution_id) {
+        $solution = SolutionModel::get(['solution_id' => $solution_id]);
 
-		// 检查solution是否存在
-		if (!$solution) return json(['status' => 'error', 'msg' => $this->lang['solution_not_exists']]);
+        // 检查solution是否存在
+        if (!$solution) return json(['status' => 'error', 'msg' => $this->lang['solution_not_exists']]);
 
-		// fk额外东西
-		$solution->fk();
-		$solution->result_text = $this->lang[$solution->result_code];
-		$solution->compile_info = CompileInfoModel::get(['solution_id' => $solution->solution_id]);
+        // fk额外东西
+        $solution->fk();
+        $solution->result_text = $this->lang[$solution->result_code];
+        $solution->compile_info = CompileInfoModel::get(['solution_id' => $solution->solution_id]);
 
-		return json(['status' => 'success', 'data' => $solution]);
-	}
+        return json(['status' => 'success', 'data' => $solution]);
+    }
 
-	public function details($id)
-	{
-		$solution = SolutionModel::get(['solution_id' => $id]);
+    public function details($id) {
+        $solution = SolutionModel::get(['solution_id' => $id]);
 
-		// 检查solution是否存在
-		if (!$solution) return json(['status' => 'error', 'msg' => $this->lang['solution_not_exists']]);
+        // 检查solution是否存在
+        if (!$solution) return json(['status' => 'error', 'msg' => $this->lang['solution_not_exists']]);
 
-		// 检查是否有访问权限
-		if (!($this->is_administrator || ($this->loginuser && $solution->user_id == $this->loginuser->user_id))) {
-			return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
-		}
+        // 检查是否有访问权限
+        if (!($this->is_administrator || ($this->loginuser && $solution->user_id == $this->loginuser->user_id))) {
+            return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+        }
 
-		$solution->fk();
-		$solution->result_text = $this->lang[$solution->result_code];
-		$solution->source_code = SourceCodeModel::get(['solution_id' => $solution->solution_id]);
-		$solution->source_code->source = htmlspecialchars($solution->source_code->source);
+        $solution->fk();
+        $solution->result_text = $this->lang[$solution->result_code];
+        $solution->source_code = SourceCodeModel::get(['solution_id' => $solution->solution_id]);
+        $solution->source_code->source = htmlspecialchars($solution->source_code->source);
 
-		// 如果编译错误则带上编译错误信息
-		if (11 == $solution->result) {
-			$solution->compile_info = CompileInfoModel::get(['solution_id' => $id]);
-			if (!$solution->compile_info) {
-				$solution_new = SolutionModel::get(['solution_id' => $id]);
-				$solution_new->result = 1;
-				$solution_new->save();
-			}
-			while (!$solution->compile_info) $solution->compile_info = CompileInfoModel::get(['solution_id' => $id]);
-		}
+        // 如果编译错误则带上编译错误信息
+        if (11 == $solution->result) {
+            $solution->compile_info = CompileInfoModel::get(['solution_id' => $id]);
+            if (!$solution->compile_info) {
+                $solution_new = SolutionModel::get(['solution_id' => $id]);
+                $solution_new->result = 1;
+                $solution_new->save();
+            }
+            while (!$solution->compile_info) $solution->compile_info = CompileInfoModel::get(['solution_id' => $id]);
+        }
 
-		return json(['status' => 'success', 'data' => $solution]);
-	}
+        return json(['status' => 'success', 'data' => $solution]);
+    }
 
     /**
      * 重判题目
@@ -203,28 +196,27 @@ class Solution extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-	public function rejudge_problem($problem_id)
-	{
-		if (!$this->is_root) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+    public function rejudge_problem($problem_id) {
+        if (!$this->is_root) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 
-		$problem = (new ProblemModel())->find(['problem_id' => $problem_id]);
-		if (!$problem) return json(['status' => 'error', 'msg' => $this->lang['no_such_problem']]);
-		// 查看是否有题目还在判题中
+        $problem = (new ProblemModel())->find(['problem_id' => $problem_id]);
+        if (!$problem) return json(['status' => 'error', 'msg' => $this->lang['no_such_problem']]);
+        // 查看是否有题目还在判题中
         $cnt = (new SolutionModel())
             ->where('problem_id', intval($problem_id))
             ->where('result', 1)
             ->where('contest_id', null)
             ->count();
-		if ($cnt > 0) {
-			return json(['status' => 'error', 'msg' => 'Problem is still rejudging.']);
-		}
+        if ($cnt > 0) {
+            return json(['status' => 'error', 'msg' => 'Problem is still rejudging.']);
+        }
 
         SolutionModel::update(
             ['result' => 1],
             ['problem_id' => intval($problem_id), 'contest_id' => null], 'result');
 
-		return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
-	}
+        return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
+    }
 
     /**
      * 重判比赛题目
@@ -236,8 +228,7 @@ class Solution extends ApiBaseController
      * @throws \think\exception\DbException
      * @throws Exception
      */
-    public function rejudge_contest_problem($contest_id='', $pid='')
-    {
+    public function rejudge_contest_problem($contest_id = '', $pid = '') {
         intercept_json(!$this->is_root, $this->lang['do_not_have_privilege']);
         intercept_json('' == $contest_id, 'contest_id cannot be empty.');
         intercept_json('' == $pid, 'pid cannot be empty.');

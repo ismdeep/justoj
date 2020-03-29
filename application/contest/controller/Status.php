@@ -16,10 +16,8 @@ use app\api\model\SolutionModel;
 use app\extra\controller\ContestBaseController;
 use think\Request;
 
-class Status extends ContestBaseController
-{
-    public function __construct(Request $request = null)
-    {
+class Status extends ContestBaseController {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
         $this->assign('nav', 'status');
         if (!(($this->permitted && $this->contest_started) || $this->is_administrator)) {
@@ -27,7 +25,7 @@ class Status extends ContestBaseController
         }
 
         if (!$this->permitted) {
-            $this->redirect('/contest?id='.$this->contest_id);
+            $this->redirect('/contest?id=' . $this->contest_id);
         }
     }
 
@@ -43,24 +41,23 @@ class Status extends ContestBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($run_id = '', $username = '', $problem_id = '', $result = '', $language = '')
-    {
+    public function index($run_id = '', $username = '', $problem_id = '', $result = '', $language = '') {
 
         if (!is_numeric($run_id)) {
             $run_id = '';
-        }else{
+        } else {
             $run_id = intval($run_id);
         }
 
         if (!is_numeric($result)) {
             $result = '';
-        }else{
+        } else {
             $result = intval($result);
         }
 
         if (!is_numeric($language)) {
             $language = '';
-        }else{
+        } else {
             $language = intval($language);
         }
 
