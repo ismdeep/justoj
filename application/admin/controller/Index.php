@@ -10,20 +10,16 @@ use app\extra\controller\AdminBaseController;
 use think\App;
 use function Sodium\version_string;
 
-class Index extends AdminBaseController
-{
-    public function index()
-    {
+class Index extends AdminBaseController {
+    public function index() {
         return view();
     }
 
-    public function index2()
-    {
+    public function index2() {
         return view();
     }
 
-    public function welcome()
-    {
+    public function welcome() {
         // 题目数量
         $problem_count = (new ProblemModel())->count();
         // 比赛数量
