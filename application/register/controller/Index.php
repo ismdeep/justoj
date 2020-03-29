@@ -11,10 +11,8 @@ namespace app\register\controller;
 
 use app\extra\controller\UserBaseController;
 
-class Index extends UserBaseController
-{
-	public function index()
-	{
-		return view($this->theme_root . '/register');
-	}
+class Index extends UserBaseController {
+    public function index() {
+        return view($this->theme_root . '/register');
+    }
 }

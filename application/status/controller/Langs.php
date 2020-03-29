@@ -11,10 +11,8 @@ namespace app\status\controller;
 
 use app\extra\controller\BaseController;
 
-class Langs extends BaseController
-{
-    public function index()
-    {
+class Langs extends BaseController {
+    public function index() {
         return view($this->theme_root . '/status-langs');
     }
 }

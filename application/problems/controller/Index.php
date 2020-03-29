@@ -15,13 +15,11 @@ use app\api\model\SolutionModel;
 use app\extra\controller\UserBaseController;
 use think\Request;
 
-class Index extends UserBaseController
-{
+class Index extends UserBaseController {
     public $max_p;
     public $page_cnt;
 
-    public function __construct(Request $request = null)
-    {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
         $this->assign('nav', 'problem');
         // 获取总页数
@@ -39,8 +37,7 @@ class Index extends UserBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($keyword = '', $tag = '', $page = 1)
-    {
+    public function index($keyword = '', $tag = '', $page = 1) {
         $page = intval($page);
         $this->assign('page', $page);
         $this->assign('keyword', htmlspecialchars($keyword));
@@ -69,7 +66,7 @@ class Index extends UserBaseController
                 ->select();
             foreach ($submit_problems as $submit_problem) {
                 if (!in_array($submit_problem->problem_id, $solved_problem_ids)) {
-                    $unsolved_problem_ids []= $submit_problem->problem_id;
+                    $unsolved_problem_ids [] = $submit_problem->problem_id;
                 }
             }
 

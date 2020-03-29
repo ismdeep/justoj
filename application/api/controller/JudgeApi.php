@@ -12,10 +12,8 @@ use app\api\model\UserModel;
 use app\extra\controller\ApiBaseController;
 use think\Request;
 
-class JudgeApi extends ApiBaseController
-{
-    public function __construct(Request $request = null)
-    {
+class JudgeApi extends ApiBaseController {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
         $secure_code = $request->param('secure_code');
         intercept(config('secure_code') != $secure_code, '0');
@@ -28,8 +26,7 @@ class JudgeApi extends ApiBaseController
      *
      * @return string
      */
-    public function check_secure_code()
-    {
+    public function check_secure_code() {
         return '1';
     }
 
@@ -44,8 +41,7 @@ class JudgeApi extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function get_pending($query_size = 1, $oj_lang_set = '')
-    {
+    public function get_pending($query_size = 1, $oj_lang_set = '') {
         $query_size = intval($query_size);
         $oj_lang_list = explode(',', $oj_lang_set);
         $solutions = (new SolutionModel())
@@ -74,8 +70,7 @@ class JudgeApi extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function checkout($sid = '', $result = '')
-    {
+    public function checkout($sid = '', $result = '') {
         $solution_id = intval($sid);
         $result = intval($result);
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
@@ -101,8 +96,7 @@ class JudgeApi extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function update_solution($sid = '', $result = '', $time = '', $memory = '')
-    {
+    public function update_solution($sid = '', $result = '', $time = '', $memory = '') {
         $solution_id = intval($sid);
         $result = intval($result);
         if ($result == 5) {
@@ -133,8 +127,7 @@ class JudgeApi extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function get_solution($sid = '')
-    {
+    public function get_solution($sid = '') {
         $solution_id = intval($sid);
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
@@ -155,8 +148,7 @@ class JudgeApi extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function get_solution_info($sid = '')
-    {
+    public function get_solution_info($sid = '') {
         $solution_id = intval($sid);
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
@@ -179,8 +171,7 @@ class JudgeApi extends ApiBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function add_ce_info($sid = '', $ceinfo = '')
-    {
+    public function add_ce_info($sid = '', $ceinfo = '') {
         $solution_id = intval($sid);
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
@@ -192,8 +183,7 @@ class JudgeApi extends ApiBaseController
         return "1";
     }
 
-    public function get_problem_info($pid = '')
-    {
+    public function get_problem_info($pid = '') {
         $pid = intval($pid);
         $problem = (new ProblemModel())->where('problem_id', $pid)->find();
         intercept(null == $problem, "PROBLEM NOT FOUND. [pid:$pid]");

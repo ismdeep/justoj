@@ -12,19 +12,17 @@ namespace app\profile\controller;
 use app\api\model\UserModel;
 use app\extra\controller\UserBaseController;
 
-class Editmyprofile extends UserBaseController
-{
-	public function index()
-	{
-	    if (null == $this->loginuser) {
-	        return $this->redirect('/');
+class Editmyprofile extends UserBaseController {
+    public function index() {
+        if (null == $this->loginuser) {
+            return $this->redirect('/');
         }
-	    $user = UserModel::get(['user_id' => $this->loginuser->user_id]);
-	    $user->school = htmlspecialchars($user->school);
+        $user = UserModel::get(['user_id' => $this->loginuser->user_id]);
+        $user->school = htmlspecialchars($user->school);
         $user->academy = htmlspecialchars($user->academy);
         $user->class = htmlspecialchars($user->class);
         $user->phone = htmlspecialchars($user->phone);
-	    $this->assign('user', $user);
-		return view($this->theme_root . '/edit-my-profile');
-	}
+        $this->assign('user', $user);
+        return view($this->theme_root . '/edit-my-profile');
+    }
 }

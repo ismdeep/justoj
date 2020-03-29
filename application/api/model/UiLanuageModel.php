@@ -11,7 +11,6 @@ namespace app\api\model;
 
 use think\Model;
 
-class UiLanuageModel extends Model
-{
+class UiLanuageModel extends Model {
     protected $table = 'ui_language';
 }

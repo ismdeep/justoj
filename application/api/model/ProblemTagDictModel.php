@@ -6,8 +6,7 @@ namespace app\api\model;
 
 use think\Model;
 
-class ProblemTagDictModel extends Model
-{
+class ProblemTagDictModel extends Model {
     protected $table = 'problem_tag_dict';
 
     /**

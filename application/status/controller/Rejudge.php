@@ -12,10 +12,9 @@ namespace app\status\controller;
 use app\api\model\SolutionModel;
 use app\extra\controller\BaseController;
 
-class Rejudge extends BaseController
-{
+class Rejudge extends BaseController {
     public function problem($id = '') {
-        return view($this->theme_root.'/status-rejudge', ['id' => $id]);
+        return view($this->theme_root . '/status-rejudge', ['id' => $id]);
     }
 
     /**

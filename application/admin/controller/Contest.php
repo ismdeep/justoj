@@ -17,10 +17,8 @@ use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
 use think\Db;
 
-class Contest extends AdminBaseController
-{
-    public function contest_list()
-    {
+class Contest extends AdminBaseController {
+    public function contest_list() {
         return view();
     }
 
@@ -28,12 +26,12 @@ class Contest extends AdminBaseController
      * @param int $page
      * @param int $limit
      * @return \think\response\Json
+     * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function contest_list_json($page = 1, $limit = 10)
-    {
+    public function contest_list_json($page = 1, $limit = 10) {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $where = ['type' => 0];
@@ -46,8 +44,7 @@ class Contest extends AdminBaseController
         ]);
     }
 
-    public function change_defunct_json($contest_id='', $defunct = '')
-    {
+    public function change_defunct_json($contest_id = '', $defunct = '') {
         intercept_json('' == $contest_id, 'contest_id参数错误');
         intercept_json('' == $defunct, 'defunct不可为空');
         $contest = (new ContestModel())->where('contest_id', $contest_id)->find();
@@ -60,8 +57,7 @@ class Contest extends AdminBaseController
         ]);
     }
 
-    public function add()
-    {
+    public function add() {
         $contest = new ContestModel();
         $contest->contest_id = '';
         $contest->title = '';
@@ -90,13 +86,11 @@ class Contest extends AdminBaseController
 
     /**
      * @param string $contest_id
-     * @return \think\response\View
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function edit($contest_id = '')
-    {
+    public function edit($contest_id = '') {
         intercept('' == $contest_id, 'contest_id参数不可为空。');
         $contest = (new ContestModel())->where('contest_id', $contest_id)->find();
         $contest_problems = (new ContestProblemModel())->where('contest_id', $contest_id)->order('num', 'asc')->select();
@@ -145,7 +139,7 @@ class Contest extends AdminBaseController
      * @param string $problem_ids
      * @param int $private
      * @param string $password
-     * @return \think\response\View
+     * @return \think\response\Json
      * @throws \think\exception\DbException
      */
     public function save_json(
@@ -160,8 +154,7 @@ class Contest extends AdminBaseController
         $private = 0,
         $password = '',
         $type = 1
-    )
-    {
+    ) {
         intercept_json('' == $title, '请输入标题');
         intercept_json('' == $start_time, '请选择开始时间');
         intercept_json('' == $end_time, '请选择结束时间');
@@ -174,7 +167,7 @@ class Contest extends AdminBaseController
             if (!$problem) {
                 return json([
                     'status' => 'error',
-                    'msg' => 'Problem not exists. id: '. $pid
+                    'msg' => 'Problem not exists. id: ' . $pid
                 ]);
             }
             $problems[] = $problem;
@@ -186,11 +179,11 @@ class Contest extends AdminBaseController
             $contest = new ContestModel(); // 创建比赛
             $contest->defunct = 'N';
             $contest->type = 1;
-        }else{
+        } else {
             // 判断contest实体是否存在
             $contest = ContestModel::get(['contest_id' => $contest_id]);
             if (null == $contest) {
-                return json([ 'status' => 'error', 'msg' => $this->lang['contest_not_exists']]);
+                return json(['status' => 'error', 'msg' => $this->lang['contest_not_exists']]);
             }
 
             // 删除contest_problem里面的记录
@@ -207,7 +200,7 @@ class Contest extends AdminBaseController
         $contest->private = intval($private);
         if (1 == intval($private)) {
             $contest->password = $password;
-        }else{
+        } else {
             $contest->password = '';
         }
         /**
@@ -215,7 +208,7 @@ class Contest extends AdminBaseController
          */
         if ('*' == $langmask_flag) {
             $contest->langmask = '*';
-        }else{
+        } else {
             $contest->langmask = $allowed_langs;
         }
 
@@ -256,8 +249,7 @@ class Contest extends AdminBaseController
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-    public function tourist_list_json($contest_id = '')
-    {
+    public function tourist_list_json($contest_id = '') {
         if ('' == $contest_id) {
             return json([
                 'code' => 1
@@ -266,10 +258,10 @@ class Contest extends AdminBaseController
 
         $contest_tourists = ContestTouristModel::all(['contest_id' => $contest_id]);
 
-        $users_tmp = Db::query("select DISTINCT user_id from solution where contest_id=".$contest_id);
+        $users_tmp = Db::query("select DISTINCT user_id from solution where contest_id=" . $contest_id);
         $users = [];
         foreach ($users_tmp as $user_id) {
-            $users []= UserModel::get(['user_id' => $user_id['user_id']]);
+            $users [] = UserModel::get(['user_id' => $user_id['user_id']]);
         }
         foreach ($users as $user) {
             $user->is_tourist = false;
@@ -286,8 +278,7 @@ class Contest extends AdminBaseController
         ]);
     }
 
-    public function edit_tourist($contest_id = '')
-    {
+    public function edit_tourist($contest_id = '') {
         intercept('' == $contest_id, 'Invalid');
 
         $this->assign('contest_id', $contest_id);
@@ -299,8 +290,7 @@ class Contest extends AdminBaseController
      * @param string $user_id
      * @return \think\response\Json
      */
-    public function add_tourist_json($contest_id = '', $user_id = '')
-    {
+    public function add_tourist_json($contest_id = '', $user_id = '') {
         intercept_json('' == $contest_id, 'error');
         intercept_json('' == $user_id, 'error');
         $tourist = new ContestTouristModel();
@@ -319,8 +309,7 @@ class Contest extends AdminBaseController
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-    public function remove_tourist_json($contest_id = '', $user_id = '')
-    {
+    public function remove_tourist_json($contest_id = '', $user_id = '') {
         intercept_json('' == $contest_id, 'error');
         intercept_json('' == $user_id, 'error');
         $tourists = ContestTouristModel::all(['contest_id' => $contest_id, 'user_id' => $user_id]);

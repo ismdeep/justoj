@@ -18,19 +18,18 @@ use think\Model;
  * @property string user_id
  * @property string password
  */
-class UserModel extends Model
-{
-	protected $table = "users";
-	public function fk()
-	{
-		$this->submit_ac = Db::query("select count(solution_id) as cnt from solution where user_id='".$this->user_id."' and result=4")[0]['cnt'];
-		$this->submit_cnt = Db::query("select count(solution_id) as cnt from solution where user_id='".$this->user_id."'")[0]['cnt'];
-		if ($this->submit_cnt <= 0) {
-			$this->ac_rate = "0.000";
-		}else{
-			$this->ac_rate = number_format($this->submit_ac * 100.00 / $this->submit_cnt,3);
-		}
-	}
+class UserModel extends Model {
+    protected $table = "users";
+
+    public function fk() {
+        $this->submit_ac = Db::query("select count(solution_id) as cnt from solution where user_id='" . $this->user_id . "' and result=4")[0]['cnt'];
+        $this->submit_cnt = Db::query("select count(solution_id) as cnt from solution where user_id='" . $this->user_id . "'")[0]['cnt'];
+        if ($this->submit_cnt <= 0) {
+            $this->ac_rate = "0.000";
+        } else {
+            $this->ac_rate = number_format($this->submit_ac * 100.00 / $this->submit_cnt, 3);
+        }
+    }
 
     /**
      * Update user ac/submit count
@@ -41,7 +40,7 @@ class UserModel extends Model
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-	static public function update_ac_cnt($user_id = '') {
+    static public function update_ac_cnt($user_id = '') {
         $user = (new UserModel())
             ->where('user_id', $user_id)
             ->find();
@@ -59,9 +58,9 @@ class UserModel extends Model
         }
     }
 
-	static public function need_complete_info($user) {
-	    if ('' == $user->email) {
-	        return true;
+    static public function need_complete_info($user) {
+        if ('' == $user->email) {
+            return true;
         }
 
         if ('' == $user->nick) {

@@ -13,17 +13,15 @@ use app\api\model\ProblemModel;
 use app\extra\controller\AdminBaseController;
 use think\Request;
 
-class Problems extends AdminBaseController
-{
-	public function __construct(Request $request = null)
-	{
-		parent::__construct($request);
-		$this->assign('nav', 'problem');
-	}
+class Problems extends AdminBaseController {
+    public function __construct(Request $request = null) {
+        parent::__construct($request);
+        $this->assign('nav', 'problem');
+    }
 
-	public function index(){
-		$problems = ProblemModel::where('')->order('problem_id','asc')->paginate(100);
-		$this->assign('problems', $problems);
-		return view();
-	}
+    public function index() {
+        $problems = ProblemModel::where('')->order('problem_id', 'asc')->paginate(100);
+        $this->assign('problems', $problems);
+        return view();
+    }
 }

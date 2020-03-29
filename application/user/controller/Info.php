@@ -14,8 +14,7 @@ use app\api\model\SolutionModel;
 use app\api\model\UserModel;
 use app\extra\controller\BaseController;
 
-class Info extends BaseController
-{
+class Info extends BaseController {
     /**
      * 用户信息(Public)
      * @param $user
@@ -25,8 +24,7 @@ class Info extends BaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($user)
-    {
+    public function index($user) {
         $user = UserModel::get(['user_id' => $user]);
         $rank = (new UserModel)->where('solved', '>', $user['solved'])->count() + 1;
         $ac_solutions = (new SolutionModel)

@@ -12,8 +12,7 @@ namespace app\paste\controller;
 use app\api\model\PasteModel;
 use app\extra\controller\BaseController;
 
-class Index extends BaseController
-{
+class Index extends BaseController {
     /**
      * Paste
      * @param string $id
@@ -22,8 +21,7 @@ class Index extends BaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($id = '')
-    {
+    public function index($id = '') {
         $this->assign('nav', 'paste');
         if ('' == $id) {
             $this->assign('allowed_langs', paste_allowed_langs());

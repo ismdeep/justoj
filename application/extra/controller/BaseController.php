@@ -16,8 +16,7 @@ use think\Controller;
 use think\Request;
 use think\Session;
 
-class BaseController extends Controller
-{
+class BaseController extends Controller {
     public $is_administrator;
     public $is_root;
     public $loginuser;
@@ -34,8 +33,7 @@ class BaseController extends Controller
     /**
      * 获取可以使用的语言列表
      */
-    public function allowed_langs()
-    {
+    public function allowed_langs() {
         $tmps = Config::get('langs');
         $allowed_langs = [];
         foreach ($tmps as $tmp) {
@@ -53,8 +51,7 @@ class BaseController extends Controller
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function __construct(Request $request = null)
-    {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
 
         $this->theme_root = 'extra@themes/bootstrap';
@@ -129,8 +126,7 @@ class BaseController extends Controller
         }
     }
 
-    public function need_root($type = 'json')
-    {
+    public function need_root($type = 'json') {
         if (!$this->is_root) {
             if ('json' == $type) {
                 header('Content-Type: application/json');
@@ -142,8 +138,7 @@ class BaseController extends Controller
         }
     }
 
-    public function need_admin($type = 'json')
-    {
+    public function need_admin($type = 'json') {
         if (!$this->is_administrator) {
             if ('json' == $type) {
                 header('Content-Type: application/json');
@@ -155,8 +150,7 @@ class BaseController extends Controller
         }
     }
 
-    public function need_login($type = 'json')
-    {
+    public function need_login($type = 'json') {
         if (!$this->loginuser) {
             if ('json' == $type) {
                 header('Content-Type: application/json');

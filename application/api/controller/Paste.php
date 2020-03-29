@@ -12,8 +12,7 @@ namespace app\api\controller;
 use app\api\model\PasteModel;
 use app\extra\controller\ApiBaseController;
 
-class Paste extends ApiBaseController
-{
+class Paste extends ApiBaseController {
 
     /**
      * 贴代码 post接口
@@ -21,14 +20,13 @@ class Paste extends ApiBaseController
      * @param string $code
      * @return \think\response\Json
      */
-    public function paste_post($lang = '', $code = '')
-    {
+    public function paste_post($lang = '', $code = '') {
         intercept_json(null == $this->loginuser, '尚未登录');
         intercept_json('' == $lang, 'lang参数错误');
         intercept_json('' == $code, '代码不可为空');
         $flag = false;
         $langs = paste_allowed_langs();
-        foreach ($langs as $key=>$o) {
+        foreach ($langs as $key => $o) {
             if ($lang == $key) {
                 $flag = true;
             }

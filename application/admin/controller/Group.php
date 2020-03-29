@@ -13,10 +13,8 @@ use app\api\model\GroupTaskModel;
 use app\api\model\SolutionModel;
 use app\extra\controller\AdminBaseController;
 
-class Group extends AdminBaseController
-{
-    public function group_list()
-    {
+class Group extends AdminBaseController {
+    public function group_list() {
         return view();
     }
 
@@ -30,8 +28,7 @@ class Group extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function group_list_json($page = 1, $limit = 10)
-    {
+    public function group_list_json($page = 1, $limit = 10) {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $where = [
@@ -50,8 +47,7 @@ class Group extends AdminBaseController
         ]);
     }
 
-    public function add()
-    {
+    public function add() {
         $group = new GroupModel();
         $group->id = '';
         $group->name = '';
@@ -63,8 +59,7 @@ class Group extends AdminBaseController
         return view('edit');
     }
 
-    public function edit($id = '')
-    {
+    public function edit($id = '') {
         intercept('' == $id, 'id参数错误');
         $id = intval($id);
         $group = (new GroupModel())->where('id', $id)->find();
@@ -85,8 +80,7 @@ class Group extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function save_json($group_id = '', $group_name = '', $type = '', $group_password = '', $description = '')
-    {
+    public function save_json($group_id = '', $group_name = '', $type = '', $group_password = '', $description = '') {
         intercept_json('' == $type, '请选择类型');
         $type = intval($type);
         intercept_json(1 == $type && '' == $group_password, '私有班级的密码不可为空。');
@@ -94,7 +88,7 @@ class Group extends AdminBaseController
         if ('' == $group_id) {
             $group = new GroupModel();
             $group->owner_id = $this->loginuser->user_id;
-        }else{
+        } else {
             $group_id = intval($group_id);
             $group = (new GroupModel())->where('id', $group_id)->find();
             intercept_json(null == $group, '班级不存在');
@@ -120,8 +114,7 @@ class Group extends AdminBaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function delete_json($group_id = '')
-    {
+    public function delete_json($group_id = '') {
         intercept_json('' == $group_id, 'group_id参数错误');
         $group_id = intval($group_id);
         $group = (new GroupModel())->where('id', $group_id)->find();

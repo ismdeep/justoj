@@ -13,8 +13,7 @@ namespace app\api\controller;
 use app\api\model\NewsModel;
 use app\extra\controller\ApiBaseController;
 
-class News extends ApiBaseController
-{
+class News extends ApiBaseController {
     /**
      * Change news' status
      * @param null $news_id
@@ -24,8 +23,8 @@ class News extends ApiBaseController
      */
     public function change_status($news_id = null, $status = null) {
         $this->need_root();
-        intercept(null == $news_id, 'news_id '.$this->lang['can_not_be_null']);
-        intercept(null == $status, 'status '.$this->lang['can_not_be_null']);
+        intercept(null == $news_id, 'news_id ' . $this->lang['can_not_be_null']);
+        intercept(null == $status, 'status ' . $this->lang['can_not_be_null']);
         $news = NewsModel::get(['news_id' => $news_id]);
         intercept(null == $news, 'cn' == $this->show_ui_lang ? '新闻不存在' : 'news not found');
         $news->defunct = $status;
@@ -44,7 +43,7 @@ class News extends ApiBaseController
      */
     public function delete($news_id = null) {
         $this->need_root();
-        intercept(null == $news_id, 'news_id '.$this->lang['can_not_be_null']);
+        intercept(null == $news_id, 'news_id ' . $this->lang['can_not_be_null']);
         $news = NewsModel::get(['news_id' => $news_id]);
         intercept(null == $news, 'cn' == $this->show_ui_lang ? '新闻不存在' : 'news not found');
         $news->delete();

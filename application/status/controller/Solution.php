@@ -13,8 +13,7 @@ use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
 use app\extra\controller\UserBaseController;
 
-class Solution extends UserBaseController
-{
+class Solution extends UserBaseController {
     /**
      * 显示提交结果
      * @param string $solution_id
@@ -38,7 +37,7 @@ class Solution extends UserBaseController
         $source_code = (new SourceCodeModel())->where('solution_id', $solution_id)->find();
         intercept(null == $source_code, 'invalid');
         $source_code->source = htmlspecialchars($source_code->source);
-        return view($this->theme_root.'/status-solution', [
+        return view($this->theme_root . '/status-solution', [
             'solution' => $solution,
             'source_code' => $source_code
         ]);

@@ -19,13 +19,11 @@ use think\Exception;
 use think\exception\DbException;
 use think\response\Json;
 
-class User extends AdminBaseController
-{
+class User extends AdminBaseController {
     /**
      * @return \think\response\View
      */
-    public function user_list()
-    {
+    public function user_list() {
         return view();
     }
 
@@ -39,8 +37,7 @@ class User extends AdminBaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function user_list_json($page = 1, $limit = 10, $keyword = '')
-    {
+    public function user_list_json($page = 1, $limit = 10, $keyword = '') {
         $where = (new UserModel());
         if ('' != $keyword) {
             $where = $where
@@ -52,8 +49,7 @@ class User extends AdminBaseController
         }
 
         $users = $where->limit(($page - 1) * $limit, $limit)->select();
-        foreach($users as $user)
-        {
+        foreach ($users as $user) {
             $user->school = htmlspecialchars($user->school);
         }
         $count = $where->count();
@@ -68,8 +64,7 @@ class User extends AdminBaseController
     /**
      * @return \think\response\View
      */
-    public function admin_user_list()
-    {
+    public function admin_user_list() {
         return view();
     }
 
@@ -79,8 +74,7 @@ class User extends AdminBaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function admin_user_list_json()
-    {
+    public function admin_user_list_json() {
         $privileges = (new PrivilegeModel())->where(['rightstr' => 'administrator'])->order('create_time', 'asc')->select();
         $user_ids = [];
         foreach ($privileges as $privilege) $user_ids[] = $privilege->user_id;
@@ -96,8 +90,7 @@ class User extends AdminBaseController
      * 添加管理员 页面
      * @return \think\response\View
      */
-    public function add_admin()
-    {
+    public function add_admin() {
         return view();
     }
 
@@ -111,8 +104,7 @@ class User extends AdminBaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function user_search_by_keyword_json($keyword = '', $page = 1, $limit = 10)
-    {
+    public function user_search_by_keyword_json($keyword = '', $page = 1, $limit = 10) {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $users = (new UserModel())->where(['user_id' => ['like', "%{$keyword}%"]])->whereOr(['nick' => ['like', "%{$keyword}%"]])->limit(($page - 1) * $limit, $limit)->select();
@@ -131,8 +123,7 @@ class User extends AdminBaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function add_admin_privilege($user_id = '')
-    {
+    public function add_admin_privilege($user_id = '') {
         intercept_json('' == $user_id, 'user_id参数不可为空');
         $user = (new UserModel())->where(['user_id' => $user_id])->find();
         intercept_json(null == $user, '用户不存在');
@@ -154,8 +145,7 @@ class User extends AdminBaseController
      * @param string $user_id
      * @return Json
      */
-    public function remove_admin_privilege_json($user_id = '')
-    {
+    public function remove_admin_privilege_json($user_id = '') {
         $this->need_root('json');
         intercept_json('' == $user_id, '参数错误');
 
@@ -175,8 +165,7 @@ class User extends AdminBaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function change_password($user_id='')
-    {
+    public function change_password($user_id = '') {
         intercept_json('' == $user_id, 'user_id不可为空');
         $user = (new UserModel())->where('user_id', $user_id)->find();
         intercept_json(null == $user, '用户不存在');
@@ -193,8 +182,7 @@ class User extends AdminBaseController
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function change_password_json($user_id='',$newpassword='',$newpassword2='')
-    {
+    public function change_password_json($user_id = '', $newpassword = '', $newpassword2 = '') {
         intercept_json(!$this->is_administrator, '没有操作权限');
         intercept_json('' == $user_id, 'user_id不可为空');
         intercept_json('' == $newpassword || $newpassword != $newpassword2, '密码不可为空且两次输入的密码必须相同。');

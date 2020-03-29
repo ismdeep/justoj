@@ -11,7 +11,6 @@ namespace app\api\model;
 
 use think\Model;
 
-class SimModel extends Model
-{
+class SimModel extends Model {
     protected $table = 'sim';
 }

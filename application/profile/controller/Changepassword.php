@@ -12,18 +12,15 @@ namespace app\profile\controller;
 use app\extra\controller\UserBaseController;
 use think\Request;
 
-class Changepassword extends UserBaseController
-{
-	public function __construct(Request $request = null)
-	{
-		parent::__construct($request);
-		if (!$this->loginuser) {
-			$this->redirect('/');
-		}
-	}
+class Changepassword extends UserBaseController {
+    public function __construct(Request $request = null) {
+        parent::__construct($request);
+        if (!$this->loginuser) {
+            $this->redirect('/');
+        }
+    }
 
-	public function index()
-	{
-		return view($this->theme_root . '/change-password');
-	}
+    public function index() {
+        return view($this->theme_root . '/change-password');
+    }
 }

@@ -17,8 +17,7 @@ use app\api\model\GroupTaskModel;
 use app\api\model\PrivilegeModel;
 use think\Request;
 
-class ContestBaseController extends UserBaseController
-{
+class ContestBaseController extends UserBaseController {
     public $contest_id;
     public $contest;
     public $contest_started;
@@ -31,8 +30,7 @@ class ContestBaseController extends UserBaseController
      * @param Request|null $request
      * @throws \think\exception\DbException
      */
-    public function __construct(Request $request = null)
-    {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
 
         // 分配一个字母数组
@@ -103,7 +101,7 @@ class ContestBaseController extends UserBaseController
         // 注册拦截，如果比赛是需要注册的，并且当前用户并没有注册比赛，则跳转至注册页面
         if (1 == intval($this->contest->is_need_enroll)) {
             if (null == $this->loginuser) {
-                $this->redirect("/login?redirect=".urlencode("/contest?id=".$this->contest_id));
+                $this->redirect("/login?redirect=" . urlencode("/contest?id=" . $this->contest_id));
                 die();
             }
 

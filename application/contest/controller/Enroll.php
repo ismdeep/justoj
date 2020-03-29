@@ -14,8 +14,7 @@ use app\api\model\ContestModel;
 use app\api\model\UserModel;
 use app\extra\controller\BaseController;
 
-class Enroll extends BaseController
-{
+class Enroll extends BaseController {
     /**
      * 注册比赛页面
      *
@@ -25,8 +24,7 @@ class Enroll extends BaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($contest_id = '')
-    {
+    public function index($contest_id = '') {
         intercept('' == $contest_id, 'contest_id参数错误');
         $contest = (new ContestModel())->where(['contest_id' => $contest_id])->find();
         intercept(null == $contest, '比赛不存在');
@@ -36,7 +34,7 @@ class Enroll extends BaseController
 
         // 判断是否需要完善个人信息
         if (null == $this->loginuser) {
-            $this->redirect("/login?redirect=" . urlencode("/contest/enroll?contest_id=".$contest_id));
+            $this->redirect("/login?redirect=" . urlencode("/contest/enroll?contest_id=" . $contest_id));
         }
 
         $user = (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find();
@@ -48,7 +46,7 @@ class Enroll extends BaseController
 
         // 判断是否已经注册
         if (null != (new ContestEnrollModel())->where([
-            'user_id' => $this->loginuser->user_id, 'contest_id' => $contest_id
+                'user_id' => $this->loginuser->user_id, 'contest_id' => $contest_id
             ])->find()) {
             $this->redirect("/contest?id={$contest_id}");
         }
@@ -64,15 +62,14 @@ class Enroll extends BaseController
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function do_contest_enroll_post($contest_id = '')
-    {
+    public function do_contest_enroll_post($contest_id = '') {
         intercept_json('' == $contest_id, 'contest_id参数不可为空');
         intercept_json(null == $this->loginuser, '尚未登录');
         intercept_json(UserModel::need_complete_info(
             (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find()
         ), '请先完善个人信息');
         intercept_json(null != (new ContestEnrollModel())->where([
-            'user_id' => $this->loginuser->user_id, 'contest_id' => $contest_id
+                'user_id' => $this->loginuser->user_id, 'contest_id' => $contest_id
             ])->find(), '你已经注册此比赛');
 
         $contest_enroll = new ContestEnrollModel();

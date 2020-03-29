@@ -39,8 +39,7 @@ namespace app\extra\util;
  * @package     SMTP
  * @link        http://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol Documentation
  */
-class smtp
-{
+class smtp {
     /**
      * New line character
      *
@@ -107,9 +106,9 @@ class smtp
      * @var array
      */
     protected $_server = array(
-        'host'      => null,
-        'port'      => 25,
-        'timeout'   => 3,
+        'host' => null,
+        'port' => 25,
+        'timeout' => 3,
     );
 
     /**
@@ -211,9 +210,9 @@ class smtp
      * @var string
      */
     protected $_text = array(
-        'body'          => '',
-        'Content-Type'  => 'text/plain',
-        'charset'       => 'UTF-8'
+        'body' => '',
+        'Content-Type' => 'text/plain',
+        'charset' => 'UTF-8'
     );
 
     /**
@@ -243,8 +242,7 @@ class smtp
      * @see http://www.pcvr.nl/tcpip/smtp_sim.htm
      * @param string $string
      */
-    protected function _encode($string)
-    {
+    protected function _encode($string) {
         if ($this->_charset) {
             return '=?' . $this->_charset . '?B?' . base64_encode($string) . '?=';
         } else {
@@ -260,27 +258,20 @@ class smtp
      * @param array $class
      * @throw Exception
      */
-    protected function _recipients($dest, $destName, $class)
-    {
-        if (in_array($class, array('_to', '_cc', '_bcc')))
-        {
-            if ($destName)
-            {
+    protected function _recipients($dest, $destName, $class) {
+        if (in_array($class, array('_to', '_cc', '_bcc'))) {
+            if ($destName) {
                 if ($dest)
                     $this->{$class}[$destName] = $dest;
-                else
-                {
+                else {
                     if (isset($this->{$class}[$destName]))
                         unset($this->{$class}[$destName]);
                 }
-            }
-            else
-            {
+            } else {
                 if ($dest)
                     $this->{$class}[] = $dest;
             }
-        }
-        else
+        } else
             throw new Exception('Wrong recipient');
     }
 
@@ -292,11 +283,10 @@ class smtp
      * @return string
      * @throw Exception
      */
-    protected function _dialog($request, $expect)
-    {
+    protected function _dialog($request, $expect) {
         $this->_log .= $request . PHP_EOL;
 
-        fwrite ($this->_smtp, $request . self::NL);
+        fwrite($this->_smtp, $request . self::NL);
         $response = fgets($this->_smtp);
 
         $this->_log .= $response . PHP_EOL;
@@ -311,13 +301,10 @@ class smtp
      * Connection to the SMTP server
      * @throw Exception
      */
-    public function _connect()
-    {
+    public function _connect() {
         // Connect (if not already connected)
-        if (empty($this->_smtp))
-        {
-            if ($this->_smtp = fsockopen($this->_server['host'], $this->_server['port'], $errno, $errstr, $this->_server['timeout']))
-            {
+        if (empty($this->_smtp)) {
+            if ($this->_smtp = fsockopen($this->_server['host'], $this->_server['port'], $errno, $errstr, $this->_server['timeout'])) {
                 if (substr($response = fgets($this->_smtp), 0, 3) != self::READY)
                     throw new Exception('Server NOT ready! The server responded with this message:' . PHP_EOL . $response);
 
@@ -328,16 +315,13 @@ class smtp
                 $this->_dialog('HELO ' . $sender[1], self::OK);
 
                 // Auth
-                if ($this->_user && $this->_pass)
-                {
+                if ($this->_user && $this->_pass) {
                     // See http://www.fehcom.de/qmail/smtpauth.html
                     $this->_dialog('auth login', self::TEXT64);
                     $this->_dialog($this->_user, self::TEXT64);
                     $this->_dialog($this->_pass, self::AUTHOK);
                 }
-            }
-            else
-            {
+            } else {
                 $message = 'Unable to connect to ' . $this->_server['host'] . ' on port ' . $this->_server['port'] . ' within ' . $this->_server['timeout'] . ' seconds' . PHP_EOL;
                 if (!empty($errstr))
                     $message .= 'The remote server responded:' . PHP_EOL . $errstr . '(' . $errno . ')';
@@ -354,25 +338,23 @@ class smtp
      * @param integer $timeout
      * @throw Exception
      */
-    public function __construct($host, $port = 25 , $timeout = 3)
-    {
+    public function __construct($host, $port = 25, $timeout = 3) {
         // Avoid a warning
         if (empty($host))
             throw new Exception('Undefined SMTP server');
 
         // Settings
-        $this->_server['host'] = (string) $host;
+        $this->_server['host'] = (string)$host;
         if ($port)
-            $this->_server['port'] = (integer) $port;
+            $this->_server['port'] = (integer)$port;
         if ($timeout)
-            $this->_server['timeout'] = (integer) $timeout;
+            $this->_server['timeout'] = (integer)$timeout;
     }
 
     /**
      * Closes connection
      */
-    public function __destruct()
-    {
+    public function __destruct() {
         // Quit
         $this->_dialog('QUIT', self::BYE);
 
@@ -389,8 +371,7 @@ class smtp
      * @param string $user
      * @param string $pass
      */
-    public function auth($user, $pass)
-    {
+    public function auth($user, $pass) {
         $this->_user = base64_encode($user);
         $this->_pass = base64_encode($pass);
     }
@@ -403,9 +384,8 @@ class smtp
      *
      * @param string
      */
-    public function charset($charset)
-    {
-        $this->_charset = (string) $charset;
+    public function charset($charset) {
+        $this->_charset = (string)$charset;
     }
 
     /**
@@ -415,12 +395,10 @@ class smtp
      * @param string $name
      * @return array
      */
-    public function from($from = null, $name = '')
-    {
-        if (null !== $from)
-        {
-            $this->_from['address'] = (string) $from;
-            $this->_from['name'] = (string) $name;
+    public function from($from = null, $name = '') {
+        if (null !== $from) {
+            $this->_from['address'] = (string)$from;
+            $this->_from['name'] = (string)$name;
         }
         return $this->_from;
     }
@@ -431,10 +409,9 @@ class smtp
      * @param string $mail_from
      * @return string
      */
-    public function mailFrom($mail_from = null)
-    {
+    public function mailFrom($mail_from = null) {
         if (null !== $mail_from)
-            $this->_mailFrom = (string) $mail_from;
+            $this->_mailFrom = (string)$mail_from;
 
         return $this->_mailFrom;
     }
@@ -446,13 +423,11 @@ class smtp
      * @param string $name
      * @return array
      */
-    public function replyTo($reply_to = null, $name = null)
-    {
+    public function replyTo($reply_to = null, $name = null) {
 
-        if (null !== $reply_to)
-        {
-            $this->_replyTo['address'] = (string) $reply_to;
-            $this->_replyTo['name'] = (string) $name;
+        if (null !== $reply_to) {
+            $this->_replyTo['address'] = (string)$reply_to;
+            $this->_replyTo['name'] = (string)$name;
         }
         return $this->_replyTo;
     }
@@ -464,8 +439,7 @@ class smtp
      * @param string $toName
      * @return array
      */
-    public function to($to = null, $toName = '')
-    {
+    public function to($to = null, $toName = '') {
         $this->_recipients($to, $toName, '_to');
         return $this->_to;
     }
@@ -477,8 +451,7 @@ class smtp
      * @param string $ccName
      * @return array
      */
-    public function cc($cc = null, $ccName = '')
-    {
+    public function cc($cc = null, $ccName = '') {
         $this->_recipients($cc, $ccName, '_cc');
         return $this->_cc;
     }
@@ -490,8 +463,7 @@ class smtp
      * @param string $bccName
      * @return array
      */
-    public function bcc($bcc = null, $bccName = '')
-    {
+    public function bcc($bcc = null, $bccName = '') {
         $this->_recipients($bcc, $bccName, '_bcc');
         return $this->_bcc;
     }
@@ -502,11 +474,9 @@ class smtp
      * @param integer $priority
      * @return integer
      */
-    public function priority($priority = null)
-    {
-        if ($priority)
-        {
-            $priority = (integer) $priority;
+    public function priority($priority = null) {
+        if ($priority) {
+            $priority = (integer)$priority;
             if (($priority > 0) && ($priority < 6))
                 $this->_priority = $priority;
             else
@@ -521,10 +491,9 @@ class smtp
      * @param string $header
      * @return array
      */
-    public function header($name = null, $value = null)
-    {
+    public function header($name = null, $value = null) {
         if ($name)
-            $this->_headers[(string) $name] = (string) $value;
+            $this->_headers[(string)$name] = (string)$value;
         return $this->_headers;
     }
 
@@ -534,10 +503,9 @@ class smtp
      * @param string $subject
      * @return string
      */
-    public function subject($subject = null)
-    {
+    public function subject($subject = null) {
         if (null !== $subject)
-            $this->_subject = (string) $subject;
+            $this->_subject = (string)$subject;
         return $this->_subject;
     }
 
@@ -547,14 +515,12 @@ class smtp
      * @param string $text
      * @return string
      */
-    public function text($text = null, $content_type = 'text/plain', $charset = 'utf-8')
-    {
-        if (null !== $text)
-        {
+    public function text($text = null, $content_type = 'text/plain', $charset = 'utf-8') {
+        if (null !== $text) {
             $this->_text = array(
-                'body'          => str_replace("\n", self::NL, (string) $text),
-                'Content-Type'  => $content_type,
-                'charset'       => $charset
+                'body' => str_replace("\n", self::NL, (string)$text),
+                'Content-Type' => $content_type,
+                'charset' => $charset
             );
         }
         return $this->_text;
@@ -571,21 +537,18 @@ class smtp
      * @param string $charset Will be used for text/* only
      * @return array
      */
-    public function attachment($path = null, $name = '', $content_type = 'application/octet-stream', $charset = 'utf-8')
-    {
-        if (is_readable($path))
-        {
+    public function attachment($path = null, $name = '', $content_type = 'application/octet-stream', $charset = 'utf-8') {
+        if (is_readable($path)) {
             $attachment = array(
-                'path'          => (string) $path,
-                'Content-Type'  => (string) $content_type,
-                'charset'       => (string) $charset
+                'path' => (string)$path,
+                'Content-Type' => (string)$content_type,
+                'charset' => (string)$charset
             );
 
             $name || ($name = pathinfo($path, PATHINFO_BASENAME));
 
             $this->_attachments[$name] = $attachment;
-        }
-        elseif(!empty($path))
+        } elseif (!empty($path))
             throw new Exception('File ' . $path . ' not found or not readable');
 
         return $this->_attachments;
@@ -603,14 +566,12 @@ class smtp
      * @param string $charset Will be used for text/* only
      * @return array
      */
-    public function raw($content = null, $name = '', $content_type = 'text/plain', $charset = 'utf-8')
-    {
-        if ($content)
-        {
+    public function raw($content = null, $name = '', $content_type = 'text/plain', $charset = 'utf-8') {
+        if ($content) {
             $attachment = array(
-                'content'       => (string) $content,
-                'Content-Type'  => (string) $content_type,
-                'charset'       => (string) $charset
+                'content' => (string)$content,
+                'Content-Type' => (string)$content_type,
+                'charset' => (string)$charset
             );
 
             if (empty($name))
@@ -624,8 +585,7 @@ class smtp
     /**
      * Completely clear recipients, attachments and headers (for a new message)
      */
-    public function clear()
-    {
+    public function clear() {
         $this->_to = array();
         $this->_cc = array();
         $this->_bcc = array();
@@ -641,8 +601,7 @@ class smtp
      * @return string
      * @throw Exception
      */
-    public function send()
-    {
+    public function send() {
         // Check for minimum requirements
         if (empty($this->_from))
             throw new Exception('Sender undefined');
@@ -667,11 +626,11 @@ class smtp
         $this->_dialog('MAIL FROM:<' . $from . '>', self::OK);
 
         // Recipients
-        foreach($this->_to as $rcpt)
+        foreach ($this->_to as $rcpt)
             $this->_dialog('RCPT TO:<' . $rcpt . '>', self::OK);
-        foreach($this->_cc as $rcpt)
+        foreach ($this->_cc as $rcpt)
             $this->_dialog('RCPT TO:<' . $rcpt . '>', self::OK);
-        foreach($this->_bcc as $rcpt)
+        foreach ($this->_bcc as $rcpt)
             $this->_dialog('RCPT TO:<' . $rcpt . '>', self::OK);
 
         // Data
@@ -687,8 +646,7 @@ class smtp
             $message .= 'From: "' . $this->_encode($this->_from['name']) . '"<' . $this->_from['address'] . '>' . self::NL;
 
         // Reply to
-        if (!empty($this->_replyTo))
-        {
+        if (!empty($this->_replyTo)) {
             if (empty($this->_replyTo['name']))
                 $message .= 'Reply-To: <' . $this->_replyTo['address'] . '>' . self::NL;
             else
@@ -696,8 +654,7 @@ class smtp
         }
 
         // To
-        foreach ($this->_to as $name => $rcpt)
-        {
+        foreach ($this->_to as $name => $rcpt) {
             if (is_integer($name))
                 $message .= 'To: <' . $rcpt . '>' . self::NL;
             else
@@ -705,8 +662,7 @@ class smtp
         }
 
         // Cc
-        foreach ($this->_cc as $name => $rcpt)
-        {
+        foreach ($this->_cc as $name => $rcpt) {
             if (is_integer($name))
                 $message .= 'Cc: <' . $rcpt . '>' . self::NL;
             else
@@ -714,8 +670,7 @@ class smtp
         }
 
         // Bcc
-        foreach ($this->_bcc as $name => $rcpt)
-        {
+        foreach ($this->_bcc as $name => $rcpt) {
             if (is_integer($name))
                 $message .= 'Bcc: <' . $rcpt . '>' . self::NL;
             else
@@ -732,7 +687,7 @@ class smtp
 
         // Custom headers
         foreach ($this->_headers as $name => $value)
-            $message .= $name . ': ' . $value. self::NL;
+            $message .= $name . ': ' . $value . self::NL;
 
         // Date
         $message .= 'Date: ' . date('r') . self::NL;
@@ -746,8 +701,7 @@ class smtp
         This implementation consider the multipart/mixed method only.
         http://en.wikipedia.org/wiki/MIME#Multipart_messages
         */
-        if ($this->_attachments || $this->_raw)
-        {
+        if ($this->_attachments || $this->_raw) {
             $separator = hash('sha256', time());
             $message .= 'MIME-Version: 1.0' . self::NL;
             $message .= 'Content-Type: multipart/mixed; boundary=' . $separator . self::NL;
@@ -757,36 +711,28 @@ class smtp
             $message .= 'Content-Type: ' . $this->_text['Content-Type'] . '; charset=' . $this->_text['charset'] . self::NL;
             $message .= self::NL;
             $message .= $this->_text['body'] . self::NL;
-            foreach ($this->_attachments as $name => $attach)
-            {
+            foreach ($this->_attachments as $name => $attach) {
                 $message .= '--' . $separator . self::NL;
                 $message .= 'Content-Disposition: attachment; filename=' . $name . '; modification-date="' . date('r', filemtime($attach['path'])) . '"' . self::NL;
-                if (substr($attach['Content-Type'], 0, 5) == 'text/')
-                {
+                if (substr($attach['Content-Type'], 0, 5) == 'text/') {
                     $message .= 'Content-Type: ' . $attach['Content-Type'] . '; charset=' . $attach['charset'] . self::NL;
                     $message .= self::NL;
                     $message .= file_get_contents($attach['path']) . self::NL;
-                }
-                else
-                {
+                } else {
                     $message .= 'Content-Type: ' . $attach['Content-Type'] . self::NL;
                     $message .= 'Content-Transfer-Encoding: base64' . self::NL;
                     $message .= self::NL;
                     $message .= base64_encode(file_get_contents($attach['path'])) . self::NL;
                 }
             }
-            foreach ($this->_raw as $name => $raw)
-            {
+            foreach ($this->_raw as $name => $raw) {
                 $message .= '--' . $separator . self::NL;
                 $message .= 'Content-Disposition: attachment; filename=' . $name . '; modification-date="' . date('r') . '"' . self::NL;
-                if (substr($raw['Content-Type'], 0, 5) == 'text/')
-                {
+                if (substr($raw['Content-Type'], 0, 5) == 'text/') {
                     $message .= 'Content-Type: ' . $raw['Content-Type'] . '; charset=' . $raw['charset'] . self::NL;
                     $message .= self::NL;
                     $message .= $raw['content'] . self::NL;
-                }
-                else
-                {
+                } else {
                     $message .= 'Content-Type: ' . $raw['Content-Type'] . self::NL;
                     $message .= 'Content-Transfer-Encoding: base64' . self::NL;
                     $message .= self::NL;
@@ -794,9 +740,7 @@ class smtp
                 }
             }
             $message .= '--' . $separator . '--' . self::NL;
-        }
-        else
-        {
+        } else {
             $message .= 'Content-Type: ' . $this->_text['Content-Type'] . '; charset=' . $this->_text['charset'] . self::NL;
             $message .= self::NL . $this->_text['body'] . self::NL;
         }
@@ -813,8 +757,7 @@ class smtp
      *
      * @return string
      */
-    public function dump()
-    {
+    public function dump() {
         return $this->_log;
     }
 }

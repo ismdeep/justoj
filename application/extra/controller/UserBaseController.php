@@ -10,10 +10,8 @@ namespace app\extra\controller;
 
 use think\Request;
 
-class UserBaseController extends BaseController
-{
-    public function __construct(Request $request = null)
-    {
+class UserBaseController extends BaseController {
+    public function __construct(Request $request = null) {
         parent::__construct($request);
     }
 }

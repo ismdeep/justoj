@@ -12,16 +12,13 @@ namespace app\admin\controller;
 use app\extra\controller\AdminBaseController;
 use think\Request;
 
-class Fileupload extends AdminBaseController
-{
-	public function __construct(Request $request = null)
-	{
-		parent::__construct($request);
-		$this->assign('nav', 'upload_file');
-	}
+class Fileupload extends AdminBaseController {
+    public function __construct(Request $request = null) {
+        parent::__construct($request);
+        $this->assign('nav', 'upload_file');
+    }
 
-	public function index()
-	{
-		return view();
-	}
+    public function index() {
+        return view();
+    }
 }
