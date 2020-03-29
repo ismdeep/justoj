@@ -11,8 +11,6 @@ namespace app\api\controller;
 
 use app\api\model\UploadModel;
 use app\extra\controller\ApiBaseController;
-use OSS\Core\OssException;
-use OSS\OssClient;
 
 
 class Fileupload extends ApiBaseController {
