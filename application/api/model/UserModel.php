@@ -10,6 +10,10 @@ namespace app\api\model;
 
 
 use think\Db;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\Exception;
+use think\exception\DbException;
 use think\Model;
 
 /**
@@ -17,6 +21,8 @@ use think\Model;
  * @package app\api\model
  * @property string user_id
  * @property string password
+ * @property int submit
+ * @property int solved
  */
 class UserModel extends Model {
     protected $table = "users";
@@ -35,23 +41,23 @@ class UserModel extends Model {
      * Update user ac/submit count
      *
      * @param string $user_id
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     *
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     static public function update_ac_cnt($user_id = '') {
+        /* @var $user UserModel */
         $user = (new UserModel())
             ->where('user_id', $user_id)
             ->find();
-        if (null != $user) {
+        if ($user) {
             $user->submit = (new SolutionModel())
                 ->where('user_id', $user_id)
-                ->whereNull('contest_id')
                 ->count();
             $user->solved = (new SolutionModel())
                 ->where('user_id', $user_id)
-                ->whereNull('contest_id')
                 ->where('result', 4)
                 ->count('distinct problem_id');
             $user->save();

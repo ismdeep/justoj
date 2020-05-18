@@ -49,7 +49,6 @@ class Index extends UserBaseController {
         if ($this->loginuser) {
             $solved_problems = (new SolutionModel())
                 ->where('user_id', $this->loginuser->user_id)
-                ->whereNull('contest_id')
                 ->where('result', 4)
                 ->distinct('problem_id')
                 ->field('problem_id')
@@ -60,7 +59,6 @@ class Index extends UserBaseController {
 
             $submit_problems = (new SolutionModel())
                 ->where('user_id', $this->loginuser->user_id)
-                ->where('contest_id', null)
                 ->distinct('problem_id')
                 ->field('problem_id')
                 ->select();

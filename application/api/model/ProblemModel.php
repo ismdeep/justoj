@@ -10,6 +10,10 @@ namespace app\api\model;
 
 
 use think\Db;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\Exception;
+use think\exception\DbException;
 use think\Model;
 
 
@@ -52,27 +56,18 @@ class ProblemModel extends Model {
      * Update ac/submit count
      *
      * @param string $problem_id
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     static public function update_ac_cnt($problem_id = '') {
-        $problem = (new ProblemModel())
-            ->where('problem_id', $problem_id)
-            ->find();
-        if (null != $problem) {
-            $problem->submit = (new SolutionModel())
-                ->where('problem_id', $problem_id)
-                ->whereNull('contest_id')
-                ->count();
-            $problem->accepted = (new SolutionModel())
-                ->where('problem_id', $problem_id)
-                ->whereNull('contest_id')
-                ->where('result', 4)
-                ->count();
+        /* @var $problem ProblemModel */
+        $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
+        if ($problem) {
+            $problem->submit = (new SolutionModel())->where('problem_id', $problem_id)->count();
+            $problem->accepted = (new SolutionModel())->where('problem_id', $problem_id)->where('result', 4)->count();
             $problem->save();
         }
     }
-
 }
