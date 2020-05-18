@@ -1,3 +1,6 @@
 .idea
-runtime
+composer.lock
+*.log
+thinkphp
 public/upload
+vendor
