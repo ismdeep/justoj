@@ -6,43 +6,43 @@
  * Date: 2018/8/4
  * Time: 下午6:33
  */
-
 namespace app\user\controller;
-
 
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
 use app\extra\controller\BaseController;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\Exception;
+use think\exception\DbException;
+use think\response\View;
 
 class Info extends BaseController {
+
     /**
      * 用户信息(Public)
      * @param $user
-     * @return \think\response\View
-     * @throws \think\Exception
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return View
+     * @throws Exception
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function index($user) {
         $user = UserModel::get(['user_id' => $user]);
         $rank = (new UserModel)->where('solved', '>', $user['solved'])->count() + 1;
         $ac_solutions = (new SolutionModel)
-            ->where('user_id', '=', $user->user_id)
-            ->whereNull('contest_id')
+            ->distinct(true)
+            ->field('problem_id')
+            ->where('user_id', $user->user_id)
+            ->where('result', 4)
             ->order('problem_id', 'asc')
             ->select();
 
-        $ac_list = [];
-        foreach ($ac_solutions as $ac) {
-            if (!in_array($ac->problem_id, $ac_list) && $ac->problem_id > 0) {
-                $ac_list[] = $ac->problem_id;
-            }
-        }
-        $submit_count = (new SolutionModel())
-            ->where('user_id', $user->user_id)
-            ->whereNull('contest_id')
-            ->count();
-        return view($this->theme_root . '/user-info', ['user' => $user, 'rank' => $rank, 'ac_list' => $ac_list, 'submit_count' => $submit_count]);
+        $this->assign('user', $user);
+        $this->assign('rank', $rank);
+        $this->assign('ac_list', $ac_solutions);
+
+        return view($this->theme_root . '/user-info');
     }
 }

@@ -16,9 +16,8 @@ use app\api\model\SolutionModel;
 use app\api\model\UserModel;
 use app\extra\controller\ContestBaseController;
 use app\extra\util\PenaltyUtil;
-use PHPExcel_Exception;
-use PHPExcel_Reader_Exception;
-use PHPExcel_Writer_Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use think\Db;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
@@ -137,16 +136,14 @@ class Rank extends ContestBaseController {
 
     /**
      * 导出排名xls文件
-     * @param $id
-     * @throws PHPExcel_Exception
-     * @throws PHPExcel_Reader_Exception
-     * @throws PHPExcel_Writer_Exception
+     * @param string $id
      * @throws DataNotFoundException
-     * @throws ModelNotFoundException
      * @throws DbException
+     * @throws ModelNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function export_xls($id = '') {
-
         intercept(null == $id || '' == $id, 'id can not be empty');
 
         // 获取当前已有提交的所有用户名$users
@@ -242,15 +239,15 @@ class Rank extends ContestBaseController {
          * F A
          * G B
          */
-        $phpexcel = new \PHPExcel();
-        $PHPSheet = $phpexcel->getActiveSheet(); //获得当前活动sheet的操作对象
+        $spreadsheet = new Spreadsheet();
+        $PHPSheet = $spreadsheet->getActiveSheet();
 
         // 标题比赛名称
         $PHPSheet->setCellValue('A1', $this->contest->title);
         $PHPSheet->mergeCells('A1:' . $cellKey[4 + sizeof($contest_problems)] . '1');
         $PHPSheet->getRowDimension('1')->setRowHeight('30');
-        $PHPSheet->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $PHPSheet->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+//        $PHPSheet->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+//        $PHPSheet->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $PHPSheet->getStyle('A1')->getFont()->setName('Courier New');
         $PHPSheet->getStyle('A1')->getFont()->setSize(18);
 
@@ -295,25 +292,25 @@ class Rank extends ContestBaseController {
         for ($i = 0; $i < sizeof($users); ++$i) {
             $PHPSheet->setCellValue('A' . ($i + 3), $i + 1);
             $PHPSheet->setCellValue('B' . ($i + 3), $users[$i]['user_id']);
-            $PHPSheet->getStyle('B' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('B' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('C' . ($i + 3), $users[$i]['user']['realname']);
-            $PHPSheet->getStyle('C' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('C' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
             $PHPSheet->setCellValue('D' . ($i + 3), $users[$i]['user']['school']);
-            $PHPSheet->getStyle('D' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('D' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
             $PHPSheet->setCellValue('E' . ($i + 3), $users[$i]['user']['academy']);
-            $PHPSheet->getStyle('E' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('E' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
             $PHPSheet->setCellValue('F' . ($i + 3), $users[$i]['user']['class']);
-            $PHPSheet->getStyle('F' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('F' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
             $PHPSheet->setCellValue('G' . ($i + 3), $users[$i]['ac_cnt']);
-            $PHPSheet->getStyle('G' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('G' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('H' . ($i + 3), $users[$i]['mark']);
-            $PHPSheet->getStyle('H' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('H' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('I' . ($i + 3), $users[$i]['penalty_text']);
-            $PHPSheet->getStyle('I' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('I' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
 
             // 写入每题详情
             for ($j = 0; $j < sizeof($contest_problems); ++$j) {
@@ -325,7 +322,7 @@ class Rank extends ContestBaseController {
                     }
                     $PHPSheet->setCellValue($cellKey[9 + $contest_problems[$j]->num] . ($i + 3), $text);
 
-                    $PHPSheet->getStyle($cellKey[9 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+//                    $PHPSheet->getStyle($cellKey[9 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
                     // 判断是否是一血
                     if ($users[$i][$contest_problems[$j]->problem_id]['first_ac']['solution_id'] == $contest_problems[$j]['first_ac']['solution_id']) {
                         $PHPSheet->getStyle($cellKey[9 + $contest_problems[$j]->num] . ($i + 3))->getFill()->getStartColor()->setARGB('008800');
@@ -336,20 +333,19 @@ class Rank extends ContestBaseController {
                 } else {
                     if ($users[$i][$contest_problems[$j]->problem_id]['wa_cnt'] > 0) {
                         $PHPSheet->setCellValue($cellKey[9 + $contest_problems[$j]->num] . ($i + 3), '-' . $users[$i][$contest_problems[$j]->problem_id]['wa_cnt']);
-                        $PHPSheet->getStyle($cellKey[9 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+//                        $PHPSheet->getStyle($cellKey[9 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
                         $PHPSheet->getStyle($cellKey[9 + $contest_problems[$j]->num] . ($i + 3))->getFill()->getStartColor()->setARGB('FF7A7A');
                     }
                 }
             }
         }
 
-        $PHPWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007');
-
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="contest' . $this->contest->contest_id . '_' . $this->contest->title . '.xlsx"');
         header('Cache-Control: max-age=0');
 
-        $PHPWriter->save('php://output');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
     /**
@@ -357,9 +353,6 @@ class Rank extends ContestBaseController {
      * @throws DataNotFoundException
      * @throws DbException
      * @throws ModelNotFoundException
-     * @throws PHPExcel_Exception
-     * @throws PHPExcel_Reader_Exception
-     * @throws PHPExcel_Writer_Exception
      */
     public function export_register_users($id = '') {
         intercept(null == $id || '' == $id, 'id can not be empty');
@@ -409,14 +402,14 @@ class Rank extends ContestBaseController {
          * F A
          * G B
          */
-        $phpexcel = new \PHPExcel();
-        $PHPSheet = $phpexcel->getActiveSheet(); //获得当前活动sheet的操作对象
+        $spreadsheet = new Spreadsheet();
+        $PHPSheet = $spreadsheet->getActiveSheet();
 
         // 标题比赛名称
         $PHPSheet->setCellValue('A1', $this->contest->title);
         $PHPSheet->getRowDimension('1')->setRowHeight('30');
-        $PHPSheet->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $PHPSheet->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+//        $PHPSheet->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+//        $PHPSheet->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $PHPSheet->getStyle('A1')->getFont()->setName('Courier New');
         $PHPSheet->getStyle('A1')->getFont()->setSize(18);
 
@@ -444,31 +437,28 @@ class Rank extends ContestBaseController {
         for ($i = 0; $i < sizeof($users); ++$i) {
             $PHPSheet->setCellValue('A' . ($i + 3), $i + 1);
             $PHPSheet->setCellValue('B' . ($i + 3), $users[$i]['user_id']);
-            $PHPSheet->getStyle('B' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('B' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('C' . ($i + 3), $users[$i]['user']['realname']);
-            $PHPSheet->getStyle('C' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('C' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('D' . ($i + 3), $users[$i]['user']['school']);
-            $PHPSheet->getStyle('D' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('D' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('E' . ($i + 3), $users[$i]['user']['class']);
-            $PHPSheet->getStyle('E' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('E' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
         }
-
-        $PHPWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007');
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="contest' . $this->contest->contest_id . '_' . $this->contest->title . '.xlsx"');
         header('Cache-Control: max-age=0');
 
-        $PHPWriter->save('php://output');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 
     /**
      * 导出班级contest的xls文件
+     *
      * @param string $group_id
      * @return string
-     * @throws PHPExcel_Exception
-     * @throws PHPExcel_Reader_Exception
-     * @throws PHPExcel_Writer_Exception
      * @throws DataNotFoundException
      * @throws ModelNotFoundException
      * @throws DbException
@@ -576,19 +566,16 @@ class Rank extends ContestBaseController {
          * F A
          * G B
          */
-        $phpexcel = new \PHPExcel();
-        $PHPSheet = $phpexcel->getActiveSheet(); //获得当前活动sheet的操作对象
-//        $invalidCharacters = $PHPSheet->getInvalidCharacters();
-//        $group->name = str_replace($invalidCharacters, '', $group->name);
-//        $sheet_title = $group->name . '-' . $this->contest->title;
-//		$PHPSheet->setTitle(subtext($sheet_title, 20));
+        /* @TODO PHPExcel 已删除，需要用 phpspreadsheet 重写相应功能代码 */
+        $spreadsheet = new  Spreadsheet();
+        $PHPSheet = $spreadsheet->getActiveSheet();
 
         // 标题比赛名称
         $PHPSheet->setCellValue('A1', $group->name . '-' . $this->contest->title);
         $PHPSheet->mergeCells('A1:' . $cellKey[4 + sizeof($contest_problems)] . '1');
         $PHPSheet->getRowDimension('1')->setRowHeight('30');
-        $PHPSheet->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
-        $PHPSheet->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
+//        $PHPSheet->getStyle('A1')->getAlignment()->setVertical(\PHPExcel_Style_Alignment::VERTICAL_CENTER);
+//        $PHPSheet->getStyle('A1')->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_CENTER);
         $PHPSheet->getStyle('A1')->getFont()->setName('微软雅黑');
         $PHPSheet->getStyle('A1')->getFont()->setSize(18);
 
@@ -624,15 +611,15 @@ class Rank extends ContestBaseController {
         for ($i = 0; $i < sizeof($users); ++$i) {
             $PHPSheet->setCellValue('A' . ($i + 3), $i + 1);
             $PHPSheet->setCellValue('B' . ($i + 3), $users[$i]['user_id']);
-            $PHPSheet->getStyle('B' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('B' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('C' . ($i + 3), $users[$i]['user']['nick']);
-            $PHPSheet->getStyle('C' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('C' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('D' . ($i + 3), $users[$i]['ac_cnt']);
-            $PHPSheet->getStyle('D' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('D' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('E' . ($i + 3), $users[$i]['mark']);
-            $PHPSheet->getStyle('E' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('E' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             $PHPSheet->setCellValue('F' . ($i + 3), $users[$i]['penalty_text']);
-            $PHPSheet->getStyle('F' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
+//            $PHPSheet->getStyle('F' . ($i + 3))->getAlignment()->setHorizontal(\PHPExcel_Style_Alignment::HORIZONTAL_LEFT);
             // 写入每题详情
             for ($j = 0; $j < sizeof($contest_problems); ++$j) {
                 if (isset($users[$i][$contest_problems[$j]->problem_id]['first_ac'])) {
@@ -643,7 +630,7 @@ class Rank extends ContestBaseController {
                     }
                     $PHPSheet->setCellValue($cellKey[6 + $contest_problems[$j]->num] . ($i + 3), $text);
 
-                    $PHPSheet->getStyle($cellKey[6 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+//                    $PHPSheet->getStyle($cellKey[6 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
                     // 判断是否是一血
                     if ($users[$i][$contest_problems[$j]->problem_id]['first_ac']['solution_id'] == $contest_problems[$j]['first_ac']['solution_id']) {
                         $PHPSheet->getStyle($cellKey[6 + $contest_problems[$j]->num] . ($i + 3))->getFill()->getStartColor()->setARGB('008800');
@@ -654,19 +641,20 @@ class Rank extends ContestBaseController {
                 } else {
                     if ($users[$i][$contest_problems[$j]->problem_id]['wa_cnt'] > 0) {
                         $PHPSheet->setCellValue($cellKey[6 + $contest_problems[$j]->num] . ($i + 3), '-' . $users[$i][$contest_problems[$j]->problem_id]['wa_cnt']);
-                        $PHPSheet->getStyle($cellKey[6 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+//                        $PHPSheet->getStyle($cellKey[6 + $contest_problems[$j]->num] . ($i + 3))->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
                         $PHPSheet->getStyle($cellKey[6 + $contest_problems[$j]->num] . ($i + 3))->getFill()->getStartColor()->setARGB('FF7A7A');
                     }
                 }
             }
         }
 
-        $PHPWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007');
+//        $PHPWriter = \PHPExcel_IOFactory::createWriter($phpexcel, 'Excel2007');
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="contest' . $this->contest->contest_id . '_' . $group->name . '_' . $this->contest->title . '.xlsx"');
         header('Cache-Control: max-age=0');
 
-        $PHPWriter->save('php://output');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save('php://output');
     }
 }

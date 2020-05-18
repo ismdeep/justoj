@@ -19,13 +19,13 @@
                 <td align="center"><a href="/status?username={$user->user_id}&result=4">{$user->solved}</a></td>
                 <td rowspan="14">
                     {volist name="ac_list" id="ac"}
-                    <a href="/problem?id={$ac}">{$ac} </a>
+                    <a href="/problem?id={$ac['problem_id']}">{$ac['problem_id']} </a>
                     {/volist}
                 </td>
             </tr>
             <tr>
                 <td>提交</td>
-                <td align="center"><a href="/status?username={$user->user_id}">{$submit_count}</a></td>
+                <td align="center"><a href="/status?username={$user->user_id}">{$user->submit}</a></td>
             </tr>
             </tbody>
         </table>

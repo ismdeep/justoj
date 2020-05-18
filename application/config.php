@@ -151,8 +151,8 @@ return [
     // +----------------------------------------------------------------------
 
     // 异常页面的模板文件
-    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
-//    'exception_tmpl'         => APP_PATH . DS . 'extra'.DS.'view' . DS . 'tpl' . DS . 'think_exception.tpl',
+//    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
+    'exception_tmpl'         => APP_PATH . DS . 'extra'.DS.'view' . DS . 'tpl' . DS . 'think_exception.tpl',
 
     // 错误显示信息,非调试模式有效
     'error_message'          => 'Oops，别黑了。年轻人，不要沉迷于攻击，攻击会麻痹你的神经的。攻击一时爽，回家没床躺。',
@@ -167,7 +167,7 @@ return [
 
     'log'                    => [
         // 日志记录方式，内置 file socket 支持扩展
-        'type'  => 'test',
+        'type'  => 'File',
         // 日志保存目录
         'path'  => LOG_PATH,
         // 日志记录级别

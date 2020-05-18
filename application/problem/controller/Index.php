@@ -5,7 +5,6 @@
  * Date: 2018/5/6
  * Time: 20:49
  */
-
 namespace app\problem\controller;
 
 
@@ -48,17 +47,13 @@ class Index extends UserBaseController {
         $problem->ac = false;
         $problem->pending = false;
         if ($this->loginuser) {
-            if (SolutionModel::
-            where("contest_id", null)
-                ->where('user_id', $this->loginuser->user_id)
+            if (SolutionModel::where('user_id', $this->loginuser->user_id)
                 ->where('problem_id', $problem->problem_id)
                 ->where('result', 4)
                 ->find()) {
                 $problem->ac = true;
             } else {
-                if (SolutionModel::
-                where("contest_id", null)
-                    ->where('user_id', $this->loginuser->user_id)
+                if (SolutionModel::where('user_id', $this->loginuser->user_id)
                     ->where('problem_id', $problem->problem_id)
                     ->find()) {
                     $problem->pending = true;
@@ -66,7 +61,6 @@ class Index extends UserBaseController {
             }
         }
 
-//        $problem->fk();
         $this->assign('problem', $problem);
         $this->assign('allowed_langs', $this->allowed_langs());
         return view($this->theme_root . '/problem');
