@@ -7,15 +7,15 @@ namespace app\api\controller;
 use app\api\model\SolutionModel;
 use app\extra\controller\ApiBaseController;
 
-class Info extends ApiBaseController
-{
+class Info extends ApiBaseController {
     /***
      * 统计系统中各个状态对提交记录条数
      * @return \think\response\Json
      * @throws \think\Exception
      */
-    public function solution_statistics()
-    {
+    public function solution_statistics() {
+        return json(['says' => '爱你哟～么么哒～']);
+
 
         $pending_cnt = (new SolutionModel())->where('result', 0)->count();
         $rejudging_cnt = (new SolutionModel())->where('result', 1)->count();
