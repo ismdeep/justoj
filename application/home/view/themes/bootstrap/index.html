@@ -1,0 +1,57 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name="body"}
+<div class="container">
+
+	<div class="row">
+		<div class="col-md-9">
+			<?php $hr_flag = false;?>
+			{volist name="newss" id="news"}
+			<?php $news->fk(); ?>
+
+			{if $hr_flag}<hr>{/if}<?php $hr_flag = true;?>
+
+			<div>
+				<h3>{$news->title}</h3>
+				<p>{$news->content}</p>
+				<!--<p>{$news->user->nick}({$news->user_id})</p>-->
+			</div>
+			{/volist}
+
+			<!--<hr>-->
+
+			<!--Choose the fastest JustOJ entrance for you:-->
+			<!--<div>-->
+			<!--<a href="http://oj.jxust.edu.cn">http://oj.jxust.edu.cn</a>-->
+			<!--</div>-->
+			<!--<div>-->
+			<!--<a href="https://oj.ismdeep.com">https://oj.ismdeep.com</a>-->
+			<!--</div>-->
+		</div>
+
+		<div class="col-md-3">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						{$lang.recent_contest}
+					</h3>
+				</div>
+				{if sizeof($recent_contests) <= 0}
+				<div class="panel-body">
+					{$lang.no_contest}
+				</div>
+				{else}
+				<ul class="list-group">
+				{volist name="recent_contests" id="contest"}
+				<li class="list-group-item">
+					<p><a href="/contest?id={$contest->contest_id}">{$contest->title}</a></p>
+					<p><?php echo ['en' => 'Start at', 'cn' => '开始于'][$show_ui_lang];?>: {$contest->start_time}</p>
+				</li>
+				{/volist}
+				</ul>
+				{/if}
+			</div>
+		</div>
+	</div>
+</div>
+
+{/block}

@@ -188,4 +188,8 @@ class Problem extends UserBaseController {
         return view($this->theme_root . '/problem');
     }
 
+    public function show_rejudge_page($id) {
+        return view($this->theme_root . '/status-rejudge', ['id' => $id]);
+    }
+
 }

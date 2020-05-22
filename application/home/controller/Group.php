@@ -3,7 +3,6 @@
 
 namespace app\home\controller;
 
-
 use app\api\model\GroupJoinModel;
 use app\api\model\GroupModel;
 use app\extra\controller\UserBaseController;

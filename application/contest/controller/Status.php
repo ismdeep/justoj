@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ismdeep
- * Date: 2018/5/9
- * Time: 11:45 PM
- */
+
 
 namespace app\contest\controller;
 
@@ -13,35 +8,27 @@ use app\api\model\ContestProblemModel;
 use app\api\model\ProblemModel;
 use app\api\model\SimModel;
 use app\api\model\SolutionModel;
-use app\extra\controller\ContestBaseController;
-use think\Request;
+use app\contest\common\ContestBaseController;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
 
 class Status extends ContestBaseController {
-    public function __construct(Request $request = null) {
-        parent::__construct($request);
-        $this->assign('nav', 'status');
-        if (!(($this->permitted && $this->contest_started) || $this->is_administrator)) {
-            $this->redirect('/contest?id=' . $this->contest->contest_id);
-        }
-
-        if (!$this->permitted) {
-            $this->redirect('/contest?id=' . $this->contest_id);
-        }
-    }
-
     /**
      * 比赛内搜索
+     *
+     * @param $id
      * @param string $run_id
      * @param string $username
      * @param string $problem_id
      * @param string $result
      * @param string $language
      * @return \think\response\View
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
-    public function index($run_id = '', $username = '', $problem_id = '', $result = '', $language = '') {
+    public function show_status_list($id, $run_id = '', $username = '', $problem_id = '', $result = '', $language = '') {
 
         if (!is_numeric($run_id)) {
             $run_id = '';
@@ -95,13 +82,6 @@ class Status extends ContestBaseController {
                 ->paginate(10);
             foreach ($solutions as $solution) {
                 $solution->sim = (new SimModel())->where('s_id', $solution->solution_id)->find();
-//                if (null != $solution->sim) {
-//                    if (
-//                        (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
-//                        == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
-//                        $solution->sim = null;
-//                    }
-//                }
             }
             $solutions->appends('run_id', $run_id);
             $this->assign('solutions', $solutions);
@@ -129,13 +109,6 @@ class Status extends ContestBaseController {
 
         foreach ($solutions as $solution) {
             $solution->sim = (new SimModel())->where('s_id', $solution->solution_id)->find();
-//            if (null != $solution->sim) {
-//                if (
-//                    (new SolutionModel())->where('solution_id', $solution->sim->s_id)->find()->user_id
-//                    == (new SolutionModel())->where('solution_id', $solution->sim->sim_s_id)->find()->user_id) {
-//                    $solution->sim = null;
-//                }
-//            }
         }
 
         $solutions->appends('id', $this->contest->contest_id);
@@ -148,4 +121,5 @@ class Status extends ContestBaseController {
         $this->assign('solutions', $solutions);
         return view($this->theme_root . '/contest-status');
     }
+
 }

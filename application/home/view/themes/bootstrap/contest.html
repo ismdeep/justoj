@@ -1,0 +1,169 @@
+{extend name="home@themes/bootstrap/layout-contest/contest-layout" /}
+{block name='titlepart'}{$contest->title} - {$lang['justoj']}{/block}
+{block name='body'}
+<div class="container">
+	<div class="jumbotron" style="margin-bottom: 10px; padding-top: 30px; padding-bottom: 30px">
+		<h2>
+            {if $contest->private == 1}
+            <span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;
+            {/if}
+            {$contest->title}
+        </h2>
+		<p>{$contest->description}</p>
+	</div>
+
+	<div class="panel panel-default">
+		<div class="panel-body">
+			{$lang.start_time}: <span style="color: purple">{$contest->start_time}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			{$lang.end_time}: <span style="color: purple">{$contest->end_time}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+			{$lang.current_time}: <span style="color: #1E9FFF" id="current-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+			{if !$contest_started}{$lang.start_countdown}: <span id="remain-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+			{$lang.status}: {if $contest_started}
+				{if $contest_ended}<span style="color: red">Ended</span>{else}<span style="color: green">Running</span>{/if}
+			{else}<span style="color: red">Pending</span>{/if}
+			{if $is_contest_manager}&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit?contest_id={$contest->contest_id}" target="_blank">{$lang.edit}</a>{/if}
+			{if $is_contest_manager}&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit_tourist?contest_id={$contest->contest_id}" target="_blank">旅游队设置</a>{/if}
+		</div>
+	</div>
+
+	{if ($permitted && $contest_started) || $is_administrator}
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>{$lang.status}</th>
+			<th>{$lang.problem_id}</th>
+			<th>{$lang.title}</th>
+			<th>{$lang.source}</th>
+			<th>{$lang.accepted}</th>
+			<th>{$lang.submit}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='contest_problems' id='contest_problem'}
+		<tr>
+			<td>
+				{if $contest_problem->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+				{if $contest_problem->pending}<span clascontests="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+			</td>
+			<td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></td>
+			<td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$contest_problem->problem->title}</a></td>
+			<td>{$contest_problem->problem->source}</td>
+			<td>{$contest_problem->problem->ac_cnt}</td>
+			<td>{$contest_problem->problem->submit_cnt}</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{/if}
+
+    {if !$permitted && $contest->private == 1}
+    <form class="form-inline" role="form" id="submitContestPasswordForm">
+        <div class="form-group">
+            <label class="sr-only" for="contest_password"></label>
+            <input type="text" class="form-control" name="contest_password" id="contest_password" placeholder="{$lang.contest_password}">
+        </div>
+        <button type="submit" class="btn btn-default">{$lang.enter}</button>
+    </form>
+    {/if}
+
+</div>
+
+
+<script type="text/javascript">
+    var interval_id = 0;
+    var start_time = '{$contest->start_time}';
+    var contest_started = {if $contest_started}true{else}false{/if};
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+
+        var hour = date.getHours();
+        var minute = date.getMinutes();
+        var second = date.getSeconds();
+
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate + " ";
+        if (hour < 10) currentdate += '0';
+        currentdate += hour + seperator2;
+        if (minute < 10) currentdate += '0';
+        currentdate += minute + seperator2;
+        if (second < 10) currentdate += '0';
+        currentdate += second;
+        //+ date.getHours() + seperator2 + date.getMinutes() + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
+    function check_status(){
+        var current_time = getNowFormatDate();
+        $('#current-time').html(current_time)
+        if (current_time > start_time && !contest_started) {
+            clearInterval(interval_id);
+            layer.alert("{$lang.contest_has_started}",function(){
+                location.href="/contest?id="+{$contest->contest_id};
+            });
+            contest_started = true;
+        }else{
+            var current_timestamp = new Date(current_time).getTime();
+            var start_timestamp = new Date(start_time).getTime();
+            var remain_time = (start_timestamp - current_timestamp) / 1000;
+            var remain_d, remain_h, remain_m, remain_s;
+            remain_s = remain_time % 60; remain_time = parseInt(remain_time / 60);
+            remain_m = remain_time % 60; remain_time = parseInt(remain_time / 60);
+            remain_h = remain_time % 24; remain_time = parseInt(remain_time / 24);
+            remain_d = remain_time;
+            var remain_str = "";
+            if (remain_d > 0) {
+                remain_str += remain_d + "{$lang.day} ";
+            }
+            if (remain_h < 10) remain_str += "0";
+            remain_str += remain_h + ":";
+            if (remain_m < 10) remain_str += "0";
+            remain_str += remain_m + ":";
+            if (remain_s < 10) remain_str += "0";
+            remain_str += remain_s;
+            if (isNaN(remain_s)) {
+                $('#remain-time').html("--:--:--");
+            }
+            else $('#remain-time').html(remain_str);
+        }
+    }
+
+    function check_status_without_countdown(){
+        var current_time = getNowFormatDate();
+        $('#current-time').html(current_time)
+    }
+
+    $(function(){
+        if (!contest_started) {
+            interval_id = window.setInterval("check_status()", 100);
+        }else{
+            interval_id = window.setInterval("check_status_without_countdown()", 100);
+        }
+    });
+
+    $('#submitContestPasswordForm').on('submit',function(){
+        var data = {
+            'contest_id': {$contest->contest_id},
+            'contest_password': $('#contest_password').val()
+        };
+        $.post('/api/contest/auth',data,function(d){
+            if ('success' == d.status) {
+                location.href = '/contest?id={$contest->contest_id}';
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+        return false;
+    });
+
+
+</script>
+{/block}

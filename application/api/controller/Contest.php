@@ -9,9 +9,11 @@
 namespace app\api\controller;
 
 
+use app\api\model\ContestEnrollModel;
 use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
 use app\api\model\PrivilegeModel;
+use app\api\model\UserModel;
 use app\extra\controller\ApiBaseController;
 
 class Contest extends ApiBaseController {
@@ -87,6 +89,35 @@ class Contest extends ApiBaseController {
                 'description' => $contest->description,
                 'problem_ids' => implode(',', $problem_ids)
             ]
+        ]);
+    }
+
+    /**
+     * 注册比赛 json接口
+     * @param string $contest_id
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function do_contest_enroll_post($contest_id = '') {
+        intercept_json('' == $contest_id, 'contest_id参数不可为空');
+        intercept_json(null == $this->loginuser, '尚未登录');
+        intercept_json(UserModel::need_complete_info(
+            (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find()
+        ), '请先完善个人信息');
+        intercept_json(null != (new ContestEnrollModel())->where([
+                'user_id' => $this->loginuser->user_id, 'contest_id' => $contest_id
+            ])->find(), '你已经注册此比赛');
+
+        $contest_enroll = new ContestEnrollModel();
+        $contest_enroll->user_id = $this->loginuser->user_id;
+        $contest_enroll->contest_id = $contest_id;
+        $contest_enroll->save();
+
+        return json([
+            'status' => 'success',
+            'msg' => '比赛注册成功'
         ]);
     }
 }

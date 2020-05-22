@@ -1,43 +1,26 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ismdeep
- * Date: 2018/5/15
- * Time: 10:35 AM
- */
+
 
 namespace app\contest\controller;
 
 
 use app\api\model\ContestProblemModel;
-use app\api\model\GroupJoinModel;
-use app\api\model\PrivilegeModel;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
-use app\extra\controller\ContestBaseController;
-use think\Request;
+use app\contest\common\ContestBaseController;
 
 class Problem extends ContestBaseController {
-    public function __construct(Request $request = null) {
-        parent::__construct($request);
-        if (!(($this->permitted && $this->contest_started) || $this->is_administrator)) {
-            $this->redirect('/contest?id=' . $this->contest_id);
-        }
-    }
 
     /**
      * 题目页面
+     *
      * @param $pid
      * @return \think\response\View
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
-    public function index($pid = '') {
-        if ('' == $pid) {
-            return $this->redirect("/contest?id=" . $this->contest->contest_id);
-        }
-
+    public function show_problem_detail($pid) {
         $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
         $contest_problem->ac = false;
         $contest_problem->pending = false;
@@ -134,4 +117,5 @@ class Problem extends ContestBaseController {
         $this->assign('allowed_langs', $allowed_langs);
         return view($this->theme_root . '/contest-problem');
     }
+
 }

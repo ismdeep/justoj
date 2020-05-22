@@ -1,26 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ismdeep
- * Date: 2018/5/9
- * Time: 8:17 PM
- */
+
 
 namespace app\contest\controller;
 
 
 use app\api\model\ContestEnrollModel;
+use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
-use app\extra\controller\ContestBaseController;
+use app\api\model\UserModel;
+use app\contest\common\ContestBaseController;
 use think\Db;
-use think\Request;
 
 class Index extends ContestBaseController {
-    public function __construct(Request $request = null) {
-        parent::__construct($request);
-    }
 
     /**
      * @return \think\response\View
@@ -29,8 +22,11 @@ class Index extends ContestBaseController {
      * @throws \think\exception\DbException
      * @throws \think\Exception
      */
-    public function index() {
-        $contest_problems_tmp = (new ContestProblemModel())->where('contest_id', $this->contest->contest_id)->order('num', 'asc')->select();
+    public function show_contest_home_page() {
+        $contest_problems_tmp = (new ContestProblemModel())
+            ->where('contest_id', $this->contest->contest_id)
+            ->order('num', 'asc')
+            ->select();
 
         $contest_problems = array();
         foreach ($contest_problems_tmp as $contest_problem) {
@@ -73,6 +69,40 @@ class Index extends ContestBaseController {
         $this->assign('user_count', $user_count);
         $this->assign('enroll_count', (new ContestEnrollModel())->where(['contest_id' => $this->contest_id])->count());
         $this->assign('contest_problems', $contest_problems);
+        $this->assign('contest', $this->contest);
         return view($this->theme_root . '/contest');
     }
+
+    /**
+     * 注册比赛页面
+     *
+     * @return \think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function show_contest_enroll_page() {
+        // 判断是否需要完善个人信息
+        if (null == $this->loginuser) {
+            $this->redirect("/login?redirect=" . urlencode("/contests/{$this->contest_id}/enroll"));
+        }
+
+        $user = (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find();
+
+        $this->assign('need_complete_info', false);
+        if (UserModel::need_complete_info($user)) {
+            $this->assign('need_complete_info', true);
+        }
+
+        // 判断是否已经注册
+        if (null != (new ContestEnrollModel())->where([
+                'user_id' => $this->loginuser->user_id,
+                'contest_id' => $this->contest_id,
+            ])->find()) {
+            $this->redirect("/contests/{$this->contest_id}");
+        }
+
+        return view($this->theme_root . '/contest-enroll');
+    }
+
 }

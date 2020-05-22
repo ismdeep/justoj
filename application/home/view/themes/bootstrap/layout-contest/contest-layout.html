@@ -1,0 +1,31 @@
+{extend name="home@themes/bootstrap/layout/common" /}
+{block name="navpart"}
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+					data-target="#example-navbar-collapse">
+				<span class="sr-only"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="/contests/{$contest->contest_id}">
+				{if $contest->private == 1}
+				<span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;
+				{/if}
+				{$contest->title}
+			</a>
+		</div>
+		<div class="collapse navbar-collapse" id="example-navbar-collapse">
+			<ul class="nav navbar-nav">
+				<li{if 'rank'==$nav} class="active"{/if}><a href="/contests/{$contest->contest_id}/rank">{$lang.rank}</a></li>
+				<li{if 'status'==$nav} class="active"{/if}><a href="/contests/{$contest->contest_id}/status">{$lang.status}</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a class="" href="/"><span class="glyphicon glyphicon-home"></span> {$lang.back_to_home}</a></li>
+			</ul>
+		</div>
+	</div>
+</nav>
+{/block}
