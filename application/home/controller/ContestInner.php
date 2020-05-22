@@ -293,10 +293,6 @@ class ContestInner extends ContestBaseController {
      * @throws \think\exception\DbException
      */
     public function show_problem_detail($pid) {
-        if (!$pid) {
-            $this->redirect("/contests/{$this->contest->contest_id}");
-        }
-
         $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
         $contest_problem->ac = false;
         $contest_problem->pending = false;

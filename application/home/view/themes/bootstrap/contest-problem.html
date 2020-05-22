@@ -15,7 +15,7 @@
 		<div class="col-md-9">
 			<ul id="myTab" class="nav nav-tabs">
 				{volist name='contest_problems' id='p'}
-				<li{if $contest_problem->num == $p->num} class="active"{/if}><a href="/contest/problem?id={$contest->contest_id}&pid={$p->num}">{if $p->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;{/if}
+				<li{if $contest_problem->num == $p->num} class="active"{/if}><a href="/contests/{$contest->contest_id}/problems/{$p->num}">{if $p->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;{/if}
 				{if $p->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;{/if}{$alphabet[$p->num]}</a></li>
 				{/volist}
 			</ul>
