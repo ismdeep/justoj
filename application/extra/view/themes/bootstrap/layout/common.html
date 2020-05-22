@@ -13,11 +13,6 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<!--	<link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">-->
-<!--	<link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">-->
-<!--	<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>-->
-<!--	<script src="https://cdn.bootcss.com/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
-
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 	<script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -25,7 +20,6 @@
 	<![endif]-->
 
 	<!--引入layer.js文件 begin-->
-<!--	<script src="https://cdn.bootcss.com/layer/2.3/layer.js"></script>-->
 	<script src="//cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
 	<!--引入layer.js文件 end-->
 
@@ -91,20 +85,7 @@
 				<li{if $nav == 'problem'} class="active"{/if}><a href="/problems">{$lang.problem}</a></li>
 				<li{if $nav == 'status'} class="active"{/if}><a href="/status">{$lang.status}</a></li>
 				<li{if $nav == 'rank'} class="active"{/if}><a href="/rank">{$lang.rank}</a></li>
-				<li class="dropdown{if $nav == 'groups'} active{/if}">
-					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">
-						{$lang.group} <b class="caret"></b>
-					</a>
-					<ul class="dropdown-menu">
-						{if $is_administrator}
-						<li><a href="/groups/mycreation">{$lang.my_creation}</a></li>
-						{/if}
-						<li><a href="/groups/myjoin">{$lang.my_join}</a></li>
-						<li class="divider"></li>
-						<li><a href="/groups">{$lang.allgroup}</a></li>
-					</ul>
-				</li>
-<!--				<li{if $nav == 'homeworks'} class="active"{/if}><a href="/homeworks">{$lang.homework}</a></li>-->
+				<li{if $nav == 'groups'} class="active"{/if}><a href="/groups">{$lang.group}</a></li>
 				<li{if $nav == 'contests'} class="active"{/if}><a href="/contests">{$lang.contest}</a></li>
 				<li{if $nav == 'paste'} class="active"{/if}><a href="/paste">{$lang.paste_code}</a></li>
 			</ul>
@@ -168,16 +149,16 @@
 		if (localStorage.getItem('tip-already-know') == null) {
 			layer.open({
 				type: 1
-				,title: false //不显示标题栏
-				,closeBtn: false
-				,area: '300px;'
-				,shade: 0.8
-				,id: 'LAY_layuipro' //设定一个id，防止重复弹出
-				,resize: false
-				,btn: ['我知道了，不再提示。', '关闭']
-				,btnAlign: 'c'
-				,moveType: 1 //拖拽模式，0或者1
-				,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站时发现任何问题或想提出任何建议都可直接发送邮件至 ' + genEmailAddress() + ' ，此邮件地址也会出现在网站底部。谢谢。</div>'
+				, title: false //不显示标题栏
+				, closeBtn: false
+				, area: '300px;'
+				, shade: 0.8
+				, id: 'LAY_layuipro' //设定一个id，防止重复弹出
+				, resize: false
+				, btn: ['我知道了，不再提示。', '关闭']
+				, btnAlign: 'c'
+				, moveType: 1 //拖拽模式，0或者1
+				, content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站时发现任何问题或想提出任何建议都可直接发送邮件至 ' + genEmailAddress() + ' ，此邮件地址也会出现在网站底部。谢谢。</div>'
 				, yes: function() {
 					localStorage.setItem('tip-already-know', true);
 					layer.closeAll();

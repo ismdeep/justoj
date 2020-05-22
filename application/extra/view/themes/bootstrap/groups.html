@@ -3,12 +3,24 @@
 {block name="body"}
 <div class="container">
 	<form class="form-horizontal" action="/groups" method="get">
-		<div class="col-sm-5" style="padding-left: 0px">
-			<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.search}: {$lang.name}">
-		</div>
-		<div class="col-sm-2">
+
+		<div class="form-inline">
+			<label class="radio-inline">
+				<input type="radio" name="filter" id="allgroup" onclick="goto_all_group();" value="" {if $filter==""}checked{/if}> 所有班级
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="filter" id="mycreated" onclick="goto_my_created();" value="1" {if $filter=="1"}checked{/if}> 我创建的
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="filter" id="myjoined" onclick="goto_my_joined();" value="2" {if $filter=="2"}checked{/if}> 我加入的
+			</label>
+
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+			<input class="form-control" style="border-radius: 0px" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="{$lang.search}: {$lang.name}">
 			<button class="btn btn-success"> <span class="glyphicon glyphicon-search"></span> {$lang.search}</button>
 		</div>
+
 	</form>
 
 	<table class="table table-hover">
@@ -44,7 +56,6 @@
 					<span class="label label-danger">{$lang.rejected}</span>
 					{/if}
 				{else}
-				<!--<a class="btn btn-sm btn-default" href="javascript:;" onclick="request_join('{$group->id}')">{$lang.join}</a>-->
 				<a class="btn btn-sm btn-default" href="/group/Join?id={$group->id}">{$lang.join}</a>
 				{/if}
 			</td>
@@ -71,20 +82,17 @@
 </style>
 
 <script type="text/javascript">
-function request_join(group_id){
-    layer.confirm('确定申请加入此班级？',function(index){
-        layer.close(index);
-        var data = {
-            'group_id': group_id
-		};
-        $.post('/api/Group/join',data,function(d){
-            if ('success' == d.status) {
-                location.reload();
-			}else{
-                layer.alert(d.msg);
-			}
-		},'json');
-	});
+function goto_all_group() {
+	location.href = '/groups?keyword=' + $('#keyword').val();
 }
+
+function goto_my_created() {
+	location.href = '/groups?filter=1&keyword=' + $('#keyword').val();
+}
+
+function goto_my_joined() {
+	location.href = '/groups?filter=2&keyword=' + $('#keyword').val();
+}
+
 </script>
 {/block}
