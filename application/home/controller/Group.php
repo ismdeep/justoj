@@ -33,6 +33,10 @@ class Group extends UserBaseController {
             $groups = $groups->where('name', 'like', "%{$keyword}%");
         }
 
+        if (in_array($filter, [1,2]) && !$this->loginuser) {
+            $this->redirect('/login');
+        }
+
         switch ($filter) {
             case 1:
                 $groups = $groups->where(['owner_id' => $this->loginuser->user_id]);
