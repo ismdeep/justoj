@@ -27,7 +27,7 @@ class BaseController extends Controller {
 
     public $show_browser_banner;
 
-    public $theme_root = 'extra@themes/bootstrap';
+    public $theme_root = 'home@themes/bootstrap';
 
 
     /**
@@ -54,7 +54,7 @@ class BaseController extends Controller {
     public function __construct(Request $request = null) {
         parent::__construct($request);
 
-        $this->theme_root = 'extra@themes/bootstrap';
+        $this->theme_root = 'home@themes/bootstrap';
 
         $this->assign('theme_root', $this->theme_root);
 

@@ -11,7 +11,7 @@ use app\extra\controller\ApiBaseController;
 
 class Theme extends ApiBaseController {
     public function select_theme($theme = 'bootstrap') {
-        session('theme_root', 'extra@themes/' . $theme);
+        session('theme_root', 'home@themes/' . $theme);
         return json([
             'code' => 0,
             'msg' => '操作成功',

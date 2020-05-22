@@ -30,13 +30,13 @@ class ContestBaseController extends UserBaseController {
      * @param Request|null $request
      * @throws \think\exception\DbException
      */
-    public function __construct(Request $request = null) {
+    public function __construct(Request $request = null, $id) {
         parent::__construct($request);
 
         // 分配一个字母数组
         $this->assign('alphabet', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ');
 
-        $this->contest_id = intval($request->param('id'));
+        $this->contest_id = intval($id);
 
         // 获取contest信息
         $this->contest = (new ContestModel())->where(['contest_id' => $this->contest_id])->find();

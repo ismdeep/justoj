@@ -1,0 +1,98 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name='titlepart'}{$lang['allgroup']} :: Welcome to JustOJ{/block}
+{block name="body"}
+<div class="container">
+	<form class="form-horizontal" action="/groups" method="get">
+
+		<div class="form-inline">
+			<label class="radio-inline">
+				<input type="radio" name="filter" id="allgroup" onclick="goto_all_group();" value="" {if $filter==""}checked{/if}> 所有班级
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="filter" id="mycreated" onclick="goto_my_created();" value="1" {if $filter=="1"}checked{/if}> 我创建的
+			</label>
+			<label class="radio-inline">
+				<input type="radio" name="filter" id="myjoined" onclick="goto_my_joined();" value="2" {if $filter=="2"}checked{/if}> 我加入的
+			</label>
+
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+			<input class="form-control" style="border-radius: 0px" type="text" id="keyword" name="keyword" value="{$keyword}" placeholder="{$lang.search}: {$lang.name}">
+			<button class="btn btn-success"> <span class="glyphicon glyphicon-search"></span> {$lang.search}</button>
+		</div>
+
+	</form>
+
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th width="40%">{$lang.name}</th>
+			<th width="35%">{$lang.teacher}</th>
+			<th width="10%">{$lang.operation}</th>
+		</tr>
+		</thead>
+		<tbody>
+		{volist name='groups' id='group'}
+		<?php $group->fk();?>
+		<tr>
+			<td><a href="/groups/{$group->id}">{if 1 == $group->type}<span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;{/if}{$group->name}</a></td>
+			<td>{$group->owner_id}({$group->teacher->nick})</td>
+			<td>
+				{if $group->loginuser_group_join}
+
+					{if 0 == $group->loginuser_group_join->status}
+					{$lang.waiting_for_verify}
+					{/if}
+
+					{if 1 == $group->loginuser_group_join->status}
+					<a class="btn btn-sm btn-success" href="/groups/{$group->loginuser_group_join->group_id}">{$lang.enter}</a>
+					{/if}
+
+					{if 2 == $group->loginuser_group_join->status}
+					<span class="label label-danger">{$lang.removed}</span>
+					{/if}
+
+					{if 3 == $group->loginuser_group_join->status}
+					<span class="label label-danger">{$lang.rejected}</span>
+					{/if}
+				{else}
+				<a class="btn btn-sm btn-default" href="/groups/{$group->id}/join">{$lang.join}</a>
+				{/if}
+			</td>
+		</tr>
+		{/volist}
+		</tbody>
+	</table>
+	{$groups->render()}
+</div>
+
+
+<style>
+	.pagination {
+		display: inline-block;
+		padding-left: 0;
+		margin: 0px 0;
+		border-radius: 4px;
+	}
+	.table {
+		width: 100%;
+		max-width: 100%;
+		margin-bottom: 0px;
+	}
+</style>
+
+<script type="text/javascript">
+function goto_all_group() {
+	location.href = '/groups?keyword=' + $('#keyword').val();
+}
+
+function goto_my_created() {
+	location.href = '/groups?filter=1&keyword=' + $('#keyword').val();
+}
+
+function goto_my_joined() {
+	location.href = '/groups?filter=2&keyword=' + $('#keyword').val();
+}
+
+</script>
+{/block}

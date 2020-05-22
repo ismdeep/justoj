@@ -1,0 +1,94 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name='titlepart'}{$lang['problem']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+	<div class="row">
+		<div class="col-md-9">
+			<div class="panel panel-default">
+				<div class="panel-body">
+					<form class="form-horizontal" action="/problems" method="get">
+						<div class="col-sm-5" style="padding-left: 0px">
+							<input class="form-control" style="border-radius: 0px" type="text" name="keyword" value="{$keyword}" placeholder="{$lang.keyword}: {$lang.title},{$lang.source}">
+						</div>
+						<div class="col-sm-2">
+							<button class="btn btn-success">{$lang.submit}</button>
+						</div>
+					</form>
+					<br><br>
+					{$problems->render()}
+
+					<table class="table table-hover">
+						<thead>
+						<tr >
+							<th></th>
+							<th>{$lang.problem_id}</th>
+							<th>{$lang.title}</th>
+							<th>{$lang.tag}</th>
+							<th>{$lang.accepted}</th>
+							<th>{$lang.submit}</th>
+						</tr>
+						</thead>
+						<tbody>
+						{volist name='problems' id='problem'}
+						{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $is_administrator)}
+						<tr>
+							<td>
+								{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+								{if 2 == $problem->solve_status}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+							</td>
+							<td><a href="/problems/{$problem->problem_id}">{$problem->problem_id}</a></td>
+							<td><a href="/problems/{$problem->problem_id}">{$problem->title}</a></td>
+							<td>
+								<?php $flag = false;?>
+								{volist name="problem->tag_list" id="tag"}{if $flag}&nbsp;{/if}<span class="label label-primary"><a href="/problems?tag={$tag}" style="color: white;text-decoration-line: none">{$problem_tag_dict_map[$tag]}</a></span><?php $flag = true;?>{/volist}
+							</td>
+							<td>{$problem->solved}</td>
+							<td>{$problem->submit}</td>
+						</tr>
+						{/if}
+						{/volist}
+						</tbody>
+					</table>
+
+					{$problems->render()}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+
+			<!--			题目标签 begin-->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<?php echo ['en' => 'Problem Tags', 'cn' => '题目标签'][$show_ui_lang];?>
+					</h3>
+				</div>
+				<div class="panel-body">
+					{volist name="problem_tags" id="problem_tag"}<span class="label label-primary"><a href="/problems?tag={$problem_tag->tag_id}" style="color: white;text-decoration-line: none">{$problem_tag->tag_name}({$problem_tag->cnt})</a></span> {/volist}
+				</div>
+			</div>
+			<!--			题目标签 end-->
+
+			<!--			近期未解决问题 begin-->
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">
+						<?php echo ['en' => 'Recent Not Solved', 'cn' => '近期未解决问题'][$show_ui_lang];?>
+					</h3>
+				</div>
+				<div class="panel-body">
+					{if $is_login}
+					{volist name="unsolved_problem_ids" id="unsolved_problem_id"}
+					<a href="/problem?id={$unsolved_problem_id}">{$unsolved_problem_id}</a>
+					{/volist}
+					{else}
+					<?php echo ['en' => 'Not Login', 'cn' => '尚未登陆'][$show_ui_lang];?>
+					{/if}
+				</div>
+			</div>
+			<!--			近期未解决问题 end-->
+
+		</div>
+	</div>
+</div>
+{/block}

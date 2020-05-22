@@ -1,0 +1,35 @@
+{extend name="home@themes/bootstrap/layout/common" /}
+{block name="body"}
+<!--<link rel="stylesheet" href="/static/xadmin/css/font.css">-->
+<!--<link rel="stylesheet" href="/static/xadmin/css/xadmin.css">-->
+
+<div class="container">
+    <form id="pasteForm">
+        <div class="form-group">
+            <div style="width: 300px">
+                <select class="form-control" name="lang">
+                    {foreach $allowed_langs as $key=>$name}
+                    <option value="{$key}">{$name}</option>
+                    {/foreach}
+                </select>
+            </div>
+        </div>
+
+        <p><textarea class="form-control" style="font-family:Courier New;width:100%" name="code" rows="20" cols="100"></textarea></p>
+        <p><button type="submit" class="btn btn-success">Paste</button></p>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $('#pasteForm').on('submit',function(){
+        $.post('/api/paste/paste_post',$('#pasteForm').serialize(),function(d){
+            if ('success' == d.status) {
+                location.href = '/pastes/' + d.data.id;
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+        return false;
+    });
+</script>
+{/block}

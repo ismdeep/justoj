@@ -8,21 +8,15 @@ use app\api\model\PasteModel;
 use app\extra\controller\UserBaseController;
 
 class Paste extends UserBaseController {
-    /**
-     * Paste
-     * @param string $id
-     * @return \think\response\View
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function index($id = '') {
-        $this->assign('nav', 'paste');
-        if ('' == $id) {
-            $this->assign('allowed_langs', paste_allowed_langs());
-            return view($this->theme_root . '/paste');
-        }
 
+    public function index() {
+        $this->assign('nav', 'paste');
+        $this->assign('allowed_langs', paste_allowed_langs());
+        return view($this->theme_root . '/paste');
+    }
+
+    public function show_paste_detail($id) {
+        $this->assign('nav', 'paste');
         $paste = (new PasteModel())->where('id', $id)->find();
         intercept(null == $paste, '代码不存在');
 
