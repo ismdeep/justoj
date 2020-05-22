@@ -1,18 +1,13 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ismdeep
- * Date: 2018/9/20
- * Time: 10:05 PM
- */
 
-namespace app\paste\controller;
+
+namespace app\home\controller;
 
 
 use app\api\model\PasteModel;
-use app\extra\controller\BaseController;
+use app\extra\controller\UserBaseController;
 
-class Index extends BaseController {
+class Paste extends UserBaseController {
     /**
      * Paste
      * @param string $id

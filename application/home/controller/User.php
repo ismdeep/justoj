@@ -1,35 +1,31 @@
-<?php /** @noinspection PhpUndefinedFieldInspection */
+<?php
 
-/**
- * Created by PhpStorm.
- * User: ismdeep
- * Date: 2018/8/4
- * Time: 下午6:33
- */
-namespace app\user\controller;
+
+namespace app\home\controller;
+
 
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
-use app\extra\controller\BaseController;
+use app\extra\controller\UserBaseController;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Exception;
 use think\exception\DbException;
 use think\response\View;
 
-class Info extends BaseController {
+class User extends UserBaseController {
 
     /**
      * 用户信息(Public)
-     * @param $user
+     * @param $user_id
      * @return View
      * @throws Exception
      * @throws DataNotFoundException
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function index($user) {
-        $user = UserModel::get(['user_id' => $user]);
+    public function get_user_detail($user_id) {
+        $user = UserModel::get(['user_id' => $user_id]);
         $rank = (new UserModel)->where('solved', '>', $user['solved'])->count() + 1;
         $ac_solutions = (new SolutionModel)
             ->distinct(true)
@@ -45,4 +41,5 @@ class Info extends BaseController {
 
         return view($this->theme_root . '/user-info');
     }
+
 }

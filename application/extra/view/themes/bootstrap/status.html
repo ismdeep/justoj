@@ -74,8 +74,8 @@
 				{$solution->solution_id}
 				{/if}
 			</td>
-			<td width="10%"><a href="/user/info?user={$solution->user_id}">{$solution->user_id}</a></td>
-			<td width="10%"><a href="/problem?id={$solution->problem_id}">{$solution->problem_id}</a></td>
+			<td width="10%"><a href="/users/{$solution->user_id}">{$solution->user_id}</a></td>
+			<td width="10%"><a href="/problems/{$solution->problem_id}">{$solution->problem_id}</a></td>
 			{if $solution->result_code == 'result_code_ce'}
 			<td width="10%"><a href="/status/ceinfo?id={$solution->solution_id}" target="_blank">{$solution->result_text}</a>
 			</td>
