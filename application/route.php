@@ -12,15 +12,16 @@
 
 use think\Route;
 
-Route::rule('/',           '/home/index/index');
-Route::rule('/captcha',    '/home/captcha/index');
-Route::rule('/login',      '/home/auth/sign_in');
-Route::rule('/login/post', '/home/auth/sign_in_post');
-Route::rule('/logout',     '/home/auth/sign_out');
-Route::rule('/register',   '/home/auth/sign_up');
-Route::rule('/homework',   '/home/homework/index');
-
-
+Route::rule('/',              'home/index/index');
+Route::rule('/captcha',       'home/captcha/index');
+Route::rule('/login',         'home/auth/sign_in');
+Route::post('/login/post',    'home/auth/sign_in_post');
+Route::rule('/logout',        'home/auth/sign_out');
+Route::rule('/register',      'home/auth/sign_up');
+Route::rule('/homework',      'home/homework/index');
+Route::rule('/status',        'home/status/index');
+Route::rule('/status/ceinfo', 'home/status/get_compile_error_info');
+Route::rule('/status/langs',  'home/status/show_languages');
 
 return [
     '__pattern__' => [
