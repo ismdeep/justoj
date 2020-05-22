@@ -34,7 +34,7 @@ class Group extends UserBaseController {
         }
 
         if (in_array($filter, [1,2]) && !$this->loginuser) {
-            $this->redirect('/login');
+            $this->redirect('/login?redirect=' . urlencode('/groups'));
         }
 
         switch ($filter) {
