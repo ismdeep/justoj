@@ -50,61 +50,8 @@
 				</ul>
 				{/if}
 			</div>
-
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						{$lang.judge_status}
-					</h3>
-				</div>
-				<div class="panel-body">
-					<table class="table">
-						<thead>
-						<tr>
-							<th>{$lang.status}</th>
-							<th>{$lang.count}</th>
-						</tr>
-						</thead>
-						<tbody>
-						<tr>
-							<td>{$lang.result_code_pending}</td>
-							<td id="pending_cnt"></td>
-						</tr>
-						<tr>
-							<td>{$lang.result_code_running}</td>
-							<td id="running_cnt"></td>
-						</tr>
-						<tr>
-							<td>{$lang.result_code_ac}</td>
-							<td id="ac_cnt" style="color: green"></td>
-						</tr>
-						<tr>
-							<td>{$lang.result_code_wa}</td>
-							<td id="not_ac_cnt" style="color: red"></td>
-						</tr>
-						</tbody>
-					</table>
-				</div>
-			</div>
 		</div>
 	</div>
 </div>
 
-<script type="text/javascript">
-	function fetch_data() {
-		$.get('/api/info/solution_statistics', function(d){
-			console.log(d);
-			$('#pending_cnt').html(d.pending_cnt + d.rejudging_cnt);
-			$('#running_cnt').html(d.running_cnt + d.compiling_cnt);
-			$('#ac_cnt').html(d.ac_cnt);
-			$('#not_ac_cnt').html(d.pe_cnt + d.wa_cnt + d.tle_cnt + d.mle_cnt + d.ole_cnt + d.re_cnt + d.ce_cnt);
-		}, 'json');
-	}
-	$(function(){
-		fetch_data();
-		setInterval(function(){
-			fetch_data();
-		}, 1000);
-	});
-</script>
 {/block}
