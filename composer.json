@@ -18,7 +18,8 @@
     "require": {
         "php": ">=5.4.0",
         "topthink/framework": "5.0.*",
-        "phpoffice/phpspreadsheet": "^1.12"
+        "phpoffice/phpspreadsheet": "^1.12",
+        "gregwar/captcha": "^1.1"
     },
     "autoload": {
         "psr-4": {

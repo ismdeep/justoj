@@ -1,12 +1,15 @@
 <?php
 
-namespace app\index\controller;
+
+namespace app\home\controller;
+
 
 use app\api\model\ContestModel;
 use app\api\model\NewsModel;
 use app\extra\controller\UserBaseController;
 
 class Index extends UserBaseController {
+
     /***
      * JustOJ Home Page Controller
      *
@@ -30,4 +33,5 @@ class Index extends UserBaseController {
 
         return view($this->theme_root . '/index');
     }
+
 }

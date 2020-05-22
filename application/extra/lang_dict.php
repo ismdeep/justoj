@@ -21,6 +21,7 @@ return [
     ,'are_you_sure_to_rejudge_this_problem' => ['en' => 'Are you sure to rejudge this problem?', 'cn' => '你确定要重判此题目？']
     ,'author' => ['en' => 'Author', 'cn' => '作者']
     ,'available' => ['en' => 'Available', 'cn' => '可用']
+    , 'captcha' => ['en' => 'Captcha', 'cn' => '验证码']
     ,'home' => ['en' => 'Home', 'cn' => '主页']
     ,'eg' => ['en' => 'E.g', 'cn' => '例如']
     ,'back_to_home' => ['en' => 'Go Home', 'cn' => '返回主页']
