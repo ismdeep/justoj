@@ -446,7 +446,6 @@ class Rank extends ContestBaseController {
          * F A
          * G B
          */
-        /* @TODO PHPExcel 已删除，需要用 phpspreadsheet 重写相应功能代码 */
         $spreadsheet = new  Spreadsheet();
         $PHPSheet = $spreadsheet->getActiveSheet();
 
