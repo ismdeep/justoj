@@ -1,19 +1,15 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ismdeep
- * Date: 2018/5/9
- * Time: 8:13 PM
- */
 
-namespace app\homeworks\controller;
+
+namespace app\home\controller;
 
 
 use app\api\model\ContestModel;
 use app\extra\controller\UserBaseController;
 use think\Request;
 
-class Index extends UserBaseController {
+class Homework extends UserBaseController {
+
     public function __construct(Request $request = null) {
         parent::__construct($request);
         $this->assign('nav', 'homeworks');
@@ -40,4 +36,5 @@ class Index extends UserBaseController {
         $this->assign('title_val', $this->lang['homework']);
         return view($this->theme_root . '/contests', ['keyword' => htmlspecialchars($keyword), 'target' => '/homeworks']);
     }
+
 }
