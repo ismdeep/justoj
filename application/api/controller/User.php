@@ -26,13 +26,13 @@ class User extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function register($username = '', $password = '', $password_again = '') {
-        if ('' == $username) return json(['status' => 'error', 'msg' => $this->show_ui_lang == 'en' ? 'Username can NOT be empty' : '用户名不可为空']);
-
+        if (!$username) return json(['status' => 'error', 'msg' => $this->show_ui_lang == 'en' ? 'Username can NOT be empty' : '用户名不可为空']);
+        if (strlen($username) < 4) return json(['status' => 'error', 'msg' => $this->show_ui_lang == 'en' ? 'Username length must >= 4' : '用户名长度必须大于或等于4']);
         if (!preg_match("/^[A-Za-z0-9_]+$/", $username)) {
             return json(['status' => 'error', 'msg' => $this->show_ui_lang == 'en' ? 'Username is invalid, only letters(a-z) , digits(0-9) and underscore(_) are allowed.' : '用户名不符合规范，仅支持英文字母和数字以及下划线']);
         }
 
-        if ('' == $password) return json(['status' => 'error', 'msg' => $this->lang['password_cant_be_empty']]);
+        if (!$password) return json(['status' => 'error', 'msg' => $this->lang['password_cant_be_empty']]);
         if ($password != $password_again) return json(['status' => 'error', 'msg' => $this->lang['password_and_password_again_must_be_same']]);
 
         // 匹配一卡通号并限制必须为完整的一卡通号。如：1520113526
