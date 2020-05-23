@@ -27,10 +27,6 @@
         <hr class="hr15">
         <input name="password" id="password" lay-verify="required" placeholder="{$lang.password}"  type="password" class="layui-input">
         <hr class="hr15">
-        <input name="captcha" id="captcha" lay-verify="required" placeholder="{$lang.captcha}"  type="text" class="layui-input">
-        <hr class="hr15">
-        <img src="/captcha" alt="">
-        <hr class="hr15">
         <input value="{$lang.login}" lay-submit lay-filter="login" style="width:100%;" type="submit">
         <hr class="hr20" >
         <p style="text-align: right">
@@ -53,17 +49,12 @@
                 setTimeout(function(){
                     var loginData = {
                         'username': $('#username').val(),
-                        'password': $('#password').val(),
-                        'captcha': $('#captcha').val()
+                        'password': $('#password').val()
                     };
                     $.post('/api/login/login',loginData,function(d){
-                        // layer.closeAll();
-                        if ('success' == d.status) {
+                        if ('success' === d.status) {
                             localStorage.setItem('username', loginData.username);
                             localStorage.setItem('password', loginData.password);
-                            // layer.alert(d.msg, {icon: 1},function(){
-                            //     location.href = '{$redirect}';
-                            // });
                             setTimeout(function(){
                                 location.href = '{$redirect}';
                             },100);

@@ -31,16 +31,9 @@ class Login extends ApiBaseController {
      * @return \think\response\Json
      * @throws \think\exception\DbException
      */
-    public function login($username, $password, $captcha) {
+    public function login($username, $password) {
         $request = Request::instance();
         $user = UserModel::get(['user_id' => $username]);
-        if (!$captcha) {
-            return json(['status' => 'error', 'msg' => 'Captcha is required.']);
-        }
-
-        if (strtolower($captcha) != Session::get('captcha')) {
-            return json(['status' => 'error', 'msg' => 'Captcha is wrong.']);
-        }
 
         if (!$user) return json(['status' => 'error', 'msg' => $this->lang['user_not_exists']]);
         if (PasswordUtil::check_password($password, $user->password)) {
