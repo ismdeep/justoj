@@ -95,7 +95,7 @@
 				<li><a class="" href="/admin"><span class="glyphicon glyphicon-cog"></span> {$lang.admin_system}</a></li>
 				{/if}
 				<li><a class="" href="/profile"><span class="glyphicon glyphicon-user"></span> {$loginuser->user_id}</a></li>
-				<li><a class="" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-out"></span> {$lang.logout}</a></li>
+				<li><a class="" onclick="logout();" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-out"></span> {$lang.logout}</a></li>
 				{else}
 				<li><a class="" href="/register"><span class="glyphicon glyphicon-user"></span> {$lang.register}</a></li>
 				<li><a class="" href="/login?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-in"></span> {$lang.login}</a></li>
@@ -166,7 +166,34 @@
 			});
 		}
 	});
+
+	function logout() {
+		localStorage.setItem('logout', "1");
+	}
 </script>
+
+{if !isset($loginuser)}
+<script type="text/javascript">
+	$(function () {
+		if (localStorage.getItem('username') && localStorage.getItem('logout') != "1") {
+			let username = localStorage.getItem('username');
+			let password = localStorage.getItem('password');
+			let loginData = {
+				'username': username,
+				'password': password
+			};
+			$.post('/api/login/login',loginData,function(d){
+				if ('success' === d.status) {
+					location.reload();
+				}else{
+					localStorage.removeItem('username');
+					localStorage.removeItem('password');
+				}
+			});
+		}
+	});
+</script>
+{/if}
 
 </body>
 </html>

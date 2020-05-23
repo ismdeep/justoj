@@ -55,6 +55,7 @@
                         if ('success' === d.status) {
                             localStorage.setItem('username', loginData.username);
                             localStorage.setItem('password', loginData.password);
+                            localStorage.removeItem('logout');
                             setTimeout(function(){
                                 location.href = '{$redirect}';
                             },100);
