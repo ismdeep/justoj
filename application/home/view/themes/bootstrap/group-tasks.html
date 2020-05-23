@@ -30,7 +30,7 @@
 		<tbody>
 		{volist name='tasks' id='task'}
 		<tr>
-			<td><a href="/contest?id={$task->contest_id}" target="_blank">{$task->contest->title}</a></td>
+			<td><a href="/contests/{$task->contest_id}" target="_blank">{$task->contest->title}</a></td>
 			<td>
 				<div class="progress">
 					{if $group->owner_id == $loginuser->user_id}
