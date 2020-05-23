@@ -65,32 +65,6 @@ class Status extends UserBaseController {
         return view($this->theme_root . '/status');
     }
 
-    public function get_compile_error_info($id) {
-        // 获取solution信息
-        $solution = SolutionModel::get(['solution_id' => $id]);
-
-        // TODO 权限检查 是否管理员、是否本人
-        intercept(null == $this->loginuser, $this->lang['not_login']);
-        intercept(!$this->is_administrator && $this->loginuser->user_id != $solution->user_id, $this->lang['do_not_have_privilege']);
-
-        $solution->fk();
-        $this->assign('solution', $solution);
-
-        $source_code = SourceCodeModel::get(['solution_id' => $id]);
-        $source_code->source = str_replace('<', '&lt;', $source_code->source);
-        $source_code->source = str_replace('>', '&gt;', $source_code->source);
-        $this->assign('source_code', $source_code);
-
-        $compile_info = CompileInfoModel::get(['solution_id' => $id]);
-        intercept(null == $compile_info, '没有编译信息');
-        if ($compile_info) {
-            $compile_info->error = str_replace('<', '&lt;', $compile_info->error);
-            $compile_info->error = str_replace('>', '&gt;', $compile_info->error);
-            $this->assign('compile_info', $compile_info);
-        }
-        return view($this->theme_root . '/status-ceinfo');
-    }
-
     public function show_languages() {
         return view($this->theme_root . '/status-langs');
     }

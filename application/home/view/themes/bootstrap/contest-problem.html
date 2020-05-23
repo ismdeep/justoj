@@ -32,15 +32,13 @@
 					<div class="panel-body">
 						<span class=green>{$lang.time_limit}: </span>{$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
 						<span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
-						<!--<span class=green>{$lang.accepted}: </span><a href="/status?problem_id={$problem->problem_id}&result=4" target="_blank">{$problem->solved}</a> &nbsp;&nbsp;&nbsp;&nbsp;-->
-						<!--<span class=green>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}" target="_blank">{$problem->submit}</a>-->
 					</div>
 				</div>
 
 				<!--功能按钮组 begin-->
 				<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
 				{if $loginuser}
-				<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+				<a href="/contests/{$contest->contest_id}/status?username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 				{/if}
 
 				{if $is_administrator}

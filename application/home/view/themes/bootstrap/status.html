@@ -69,7 +69,7 @@
 		<tr>
 			<td width="10%">
 				{if $is_administrator || ($loginuser && $solution->user_id == $loginuser->user_id)}
-				<a target="_blank" href="/status/solution/show/solution_id/{$solution->solution_id}">{$solution->solution_id}</a>
+				<a target="_blank" href="/solutions/{$solution->solution_id}">{$solution->solution_id}</a>
 				{else}
 				{$solution->solution_id}
 				{/if}
@@ -77,7 +77,7 @@
 			<td width="10%"><a href="/users/{$solution->user_id}">{$solution->user_id}</a></td>
 			<td width="10%"><a href="/problems/{$solution->problem_id}">{$solution->problem_id}</a></td>
 			{if $solution->result_code == 'result_code_ce'}
-			<td width="10%"><a href="/status/ceinfo?id={$solution->solution_id}" target="_blank">{$solution->result_text}</a>
+			<td width="10%"><a href="/solutions/{$solution->solution_id}/ceinfo" target="_blank">{$solution->result_text}</a>
 			</td>
 			{else}
 			<td width="10%" class="{$solution->result_code}">{$solution->result_text}

@@ -71,12 +71,12 @@
 		$solution->result_text = $lang[$solution->result_code];
 		?>
 		<tr>
-			<td width="10%"><a target="_blank" href="/status/solution/show/solution_id/{$solution->solution_id}">{$solution->solution_id}</a></td>
+			<td width="10%"><a target="_blank" href="/solutions/{$solution->solution_id}">{$solution->solution_id}</a></td>
 			<td width="10%"><a href="/users/{$solution->user_id}">{$solution->user_id}</a></td>
 
 			<td width="10%"><a href="/contests/{$contest->contest_id}/problems/{$problem_id_true_to_fake[$solution->problem_id]}">{$alphabet[$problem_id_true_to_fake[$solution->problem_id]]}</a></td>
 			{if $solution->result_code == 'result_code_ce'}
-			<td width="10%"><a href="/status/ceinfo?id={$solution->solution_id}" target="_blank">{$solution->result_text}</a></td>
+			<td width="10%"><a href="/solutions/{$solution->solution_id}/ceinfo" target="_blank">{$solution->result_text}</a></td>
 			{else}
 			<td width="10%" class="{$solution->result_code}">{$solution->result_text} {if $solution->sim != null}
 				<a href="/sim?id={$solution->sim->s_id}" target="_blank">{$solution->sim->sim}</a> {/if} </td>

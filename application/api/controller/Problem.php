@@ -10,6 +10,7 @@ namespace app\api\controller;
 
 
 use app\api\model\ProblemModel;
+use app\api\model\SolutionModel;
 use app\extra\controller\ApiBaseController;
 use think\Exception;
 
@@ -97,5 +98,39 @@ class Problem extends ApiBaseController {
         }
 
         return json(['status' => 'success', 'data' => $problems]);
+    }
+
+    /**
+     * Rejudge status
+     *
+     * @param string $id
+     * @return \think\response\Json
+     * @throws \think\Exception
+     */
+    public function rejudge_status_json($id = '') {
+
+        $total_cnt = (new SolutionModel())
+            ->where('problem_id', $id)
+            ->where('contest_id', null)
+            ->count();
+
+        $done_cnt = (new SolutionModel())
+            ->where('problem_id', $id)
+            ->where('contest_id', null)
+            ->where('result', '>=', 4)
+            ->count();
+
+        $percent_text = ($done_cnt * 100.0) / $total_cnt;
+        $percent_text .= '%';
+
+        return json([
+            'retcode' => 0,
+            'retmsg' => '操作成功',
+            'retdata' => [
+                'total_cnt' => $total_cnt,
+                'done_cnt' => $done_cnt,
+                'percent_text' => $percent_text
+            ]
+        ]);
     }
 }

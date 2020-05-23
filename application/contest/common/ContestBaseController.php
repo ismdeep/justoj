@@ -6,15 +6,14 @@
  * Time: 8:19 PM
  */
 
-namespace app\extra\controller;
-
+namespace app\contest\common;
 
 use app\api\model\ContestEnrollModel;
 use app\api\model\ContestModel;
-use app\api\model\ContestProblemModel;
 use app\api\model\GroupJoinModel;
 use app\api\model\GroupTaskModel;
 use app\api\model\PrivilegeModel;
+use app\extra\controller\UserBaseController;
 use think\Request;
 
 class ContestBaseController extends UserBaseController {
@@ -28,6 +27,9 @@ class ContestBaseController extends UserBaseController {
     /**
      * ContestBaseController constructor.
      * @param Request|null $request
+     * @param $id
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
      * @throws \think\exception\DbException
      */
     public function __construct(Request $request = null, $id) {
@@ -44,11 +46,11 @@ class ContestBaseController extends UserBaseController {
         $this->assign('contest', $this->contest);
 
         // 判断比赛是否已经开始
-        $this->contest_started = $this->contest->start_time > date("Y-m-d H:i:s") ? false : true;
+        $this->contest_started = $this->contest->start_time <= date("Y-m-d H:i:s");
         $this->assign('contest_started', $this->contest_started);
 
         // 判断比赛是否已经结束
-        $this->contest_ended = $this->contest->end_time < date("Y-m-d H:i:s") ? true : false;
+        $this->contest_ended = $this->contest->end_time < date("Y-m-d H:i:s");
         $this->assign('contest_ended', $this->contest_ended);
 
         // 判断是否是比赛管理员
@@ -109,8 +111,6 @@ class ContestBaseController extends UserBaseController {
                 $this->redirect("/contest/enroll?contest_id={$this->contest_id}");
                 die();
             }
-
         }
-
     }
 }

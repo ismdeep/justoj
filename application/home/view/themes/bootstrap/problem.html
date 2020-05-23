@@ -178,13 +178,6 @@
 						</tbody>
 					</table>
 				</div>
-<!--				<div id="code-panel">-->
-<!--					<pre id="solution-source-code" style="padding: 0px;tab-size: 4"></pre>-->
-<!--				</div>-->
-<!--				<div id="compile-info-panel" hidden>-->
-<!--					<pre id="solution-compile-error"></pre>-->
-<!--				</div>-->
-<!--				<div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>-->
 			</div>
 		</div>
 	</div>
@@ -313,16 +306,15 @@ function rejudge_problem(problem_id) {
         setTimeout(function(){
 			$.get('/api/Solution/rejudge_problem?problem_id='+problem_id,function(d){
 				layer.closeAll();
-				if ('success' == d.status) {
+				if ('success' === d.status) {
 					layer.open({
 						title: '正在重判...',
 						type: 2,
 						area: ['600px', '400px'],
 						fixed: false, //不固定
 						maxmin: true,
-						content: '/status/rejudge/problem/id/' + problem_id
+						content: '/problems/'+problem_id+'/rejudge'
 					});
-					// window.open('/status/rejudge/problem/id/' + problem_id);
 				}else{
 					layer.alert(d.msg);
 				}

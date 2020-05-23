@@ -28,7 +28,7 @@
         setInterval(function(){
             console.log(id);
             if (flag) {
-                $.post('/status/rejudge/problem_json', {'id': id}, function(d){
+                $.post('/api/problem/rejudge_status_json', {'id': id}, function(d){
                     $('#rejudge-progress-bar').attr('style', 'width: ' + d.retdata.percent_text);
                     $('#rejudge-progress-bar').html(d.retdata.done_cnt + ' / ' + d.retdata.total_cnt);
                     if (d.retdata.done_cnt >= d.retdata.total_cnt) {
