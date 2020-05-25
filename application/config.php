@@ -15,7 +15,7 @@ return [
     // +----------------------------------------------------------------------
 
     // 应用调试模式
-    'app_debug'              => true,
+    'app_debug'              => false,
     // 应用Trace
     'app_trace'              => false,
     // 应用模式状态
@@ -167,11 +167,14 @@ return [
 
     'log'                    => [
         // 日志记录方式，内置 file socket 支持扩展
-        'type'  => 'File',
+//        'type'  => 'File',
+        'type'  => 'None',
         // 日志保存目录
         'path'  => LOG_PATH,
         // 日志记录级别
         'level' => [],
+        'file_size' => 2147483647,
+        'apart_level' => ['error', 'sql', 'param']
     ],
 
     // +----------------------------------------------------------------------
@@ -239,7 +242,6 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
-//    'data_dir' => '/home/judge/data',
     'data_dir' => '/home/judge/data',
     'secure_code' => '12341234LinuxMakefile'
 ];

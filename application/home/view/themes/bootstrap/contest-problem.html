@@ -67,10 +67,10 @@
 			<div>{$problem->hint}</div>
 			<h3>{$lang.source}</h3>
 			<div class=content>
-				<p><a href='/problem/search?source={$problem->source}'>{$problem->source}</a></p>
+				<p><a href='javascript:'>{$problem->source}</a></p>
 			</div>
 			<div class="content">
-				<a href="/problem?id={$problem->problem_id}" target="_blank">Original Problem Link</a>
+				<a href="/problems/{$problem->problem_id}" target="_blank">Original Problem Link</a>
 			</div>
 			<br>
 			<div align="center">
