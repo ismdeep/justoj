@@ -20,7 +20,7 @@ class Index extends GroupBaseController {
         // 判断当前用户是否有访问班级权限
         // 判断当前用户是否为此班级管理员
         $is_group_manager = false;
-        if ($this->loginuser && $group->owner_id == $this->loginuser->user_id) $is_group_manager = true;
+        if ($this->loginuser && $this->group->owner_id == $this->loginuser->user_id) $is_group_manager = true;
         $this->assign('is_group_manager', $is_group_manager);
 
         // 判断当前用户是否有访问权限
@@ -33,7 +33,7 @@ class Index extends GroupBaseController {
 
         if ($have_permission) $this->redirect('/groups/' . $id);
 
-        $this->assign('group', $group);
+        $this->assign('group', $this->group);
         // 如果此班级为public，则询问学生是否加入。(type: 0public 1private)
         // 如果此班级为private但是没有密码，则询问学生是否加入，点击加入后告知学生需要等待管理员审核。
         // 如果此班级为private且有密码，则询问学生加入密码，密码正确则直接加入此班级。
