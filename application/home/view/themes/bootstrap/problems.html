@@ -79,7 +79,7 @@
 				<div class="panel-body">
 					{if $is_login}
 					{volist name="unsolved_problem_ids" id="unsolved_problem_id"}
-					<a href="/problem?id={$unsolved_problem_id}">{$unsolved_problem_id}</a>
+					<a href="/problems/{$unsolved_problem_id}">{$unsolved_problem_id}</a>
 					{/volist}
 					{else}
 					<?php echo ['en' => 'Not Login', 'cn' => '尚未登陆'][$show_ui_lang];?>
