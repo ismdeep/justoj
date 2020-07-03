@@ -36,7 +36,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Get pending solution ids
      *
-     * /api/judge_api/get_pending?max_running=1&oj_lang_set=1,2,3
+     * /api/judge_api/get_pending?query_size=1&oj_lang_set=1,2,3
      *
      * @param int $query_size
      * @param string $oj_lang_set
@@ -62,7 +62,7 @@ class JudgeApi extends ApiBaseController {
             $solution_ids []= $solution->solution_id;
         }
 
-        (new SolutionModel())->where(['id' => $solution_ids])->update(['result', 2]);
+        (new SolutionModel())->where(['solution_id' => $solution_ids])->update(['result', 2]);
     }
 
     /**
