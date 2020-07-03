@@ -15,9 +15,9 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'oj_jxust_edu_cn',
+    'database'        => 'justoj',
     // 用户名
-    'username'        => 'oj_jxust_edu_cn',
+    'username'        => 'justoj',
     // 密码
     'password'        => 'nkiNwScBDfE6KS87',
     // 端口
@@ -30,7 +30,7 @@ return [
         \PDO::MYSQL_ATTR_USE_BUFFERED_QUERY => true
     ],
     // 数据库编码默认采用utf8
-    'charset'         => 'utf8',
+    'charset'         => 'utf8mb4',
     // 数据库表前缀
     'prefix'          => '',
     // 数据库调试模式
