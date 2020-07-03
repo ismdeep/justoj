@@ -25,7 +25,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Judge secure_code is valid
      *
-     * http://oj.jxust.edu.cn/api/judge_api/check_secure_code
+     * /api/judge_api/check_secure_code
      *
      * @return string
      */
@@ -36,7 +36,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Get pending solution ids
      *
-     * http://oj.jxust.edu.cn/api/judge_api/get_pending?max_running=1&oj_lang_set=1,2,3
+     * /api/judge_api/get_pending?max_running=1&oj_lang_set=1,2,3
      *
      * @param int $query_size
      * @param string $oj_lang_set
@@ -54,11 +54,15 @@ class JudgeApi extends ApiBaseController {
             ->order('solution_id', 'asc')
             ->limit($query_size)
             ->select();
-
         echo "solution_ids\n";
+
+        $solution_ids = [];
         foreach ($solutions as $solution) {
             echo $solution->solution_id . "\n";
+            $solution_ids []= $solution->solution_id;
         }
+
+        (new UserModel())->where(['id' => $solution_ids])->update(['result', 2]);
     }
 
     /**
