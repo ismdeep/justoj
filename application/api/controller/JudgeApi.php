@@ -63,7 +63,7 @@ class JudgeApi extends ApiBaseController {
         }
 
         if (sizeof($solution_ids) > 0) {
-            (new SolutionModel())->where('solution_id', 'in', $solution_ids)->update(['result' => 2]);
+            (new SolutionModel())->where(['solution_id' => $solution_ids])->update(['result', 2]);
         }
     }
 
