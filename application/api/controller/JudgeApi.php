@@ -62,7 +62,7 @@ class JudgeApi extends ApiBaseController {
             $solution_ids []= $solution->solution_id;
         }
 
-        (new UserModel())->where(['id' => $solution_ids])->update(['result', 2]);
+        (new SolutionModel())->where(['id' => $solution_ids])->update(['result', 2]);
     }
 
     /**
