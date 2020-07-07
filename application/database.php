@@ -15,9 +15,9 @@ return [
     // 服务器地址
     'hostname'        => '127.0.0.1',
     // 数据库名
-    'database'        => 'justoj',
+    'database'        => 'oj_jxust_edu_cn',
     // 用户名
-    'username'        => 'justoj',
+    'username'        => 'oj_jxust_edu_cn',
     // 密码
     'password'        => 'nkiNwScBDfE6KS87',
     // 端口
