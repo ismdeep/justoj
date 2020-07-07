@@ -60,14 +60,26 @@ class Problem extends AdminBaseController {
 
     /**
      * 文件管理器
+     *
+     * @param $problem_id
+     * @return \think\response\View
+     * @throws \think\exception\DbException
      */
     public function files($problem_id) {
-        // 获取problem
+        /* 获取problem */
         $problem = ProblemModel::get(['problem_id' => $problem_id]);
+        intercept(!$problem, 'Problem not exists.');
 
-        // 获取文件列表
+        $data_path = config('data_dir') . "/{$problem_id}";
+
+        /* 判断目录是否存在，不存在则创建目录 */
+        if (!is_dir($data_path)) {
+            mkdir($data_path, 0777, true);
+        }
+
+        /* 获取文件列表 */
         $file_names = array();
-        $dh = opendir(config('data_dir') . '/' . $problem_id);
+        $dh = opendir($data_path);
         while (($file = readdir($dh)) != false) {
             if ('.' != $file && '..' != $file && !is_dir(config('data_dir') . '/' . $problem_id . '/' . $file)) {
                 array_push($file_names, $file);
