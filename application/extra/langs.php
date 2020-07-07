@@ -29,7 +29,7 @@ return [
         'name'    => 'Clang',
         'suffix'  => 'c',
         'version' => 'clang 3.4',
-        'allowed' => false
+        'allowed' => true
     ],
     [
         'id'      => 14,
@@ -37,7 +37,7 @@ return [
         'name'    => 'Clang++',
         'suffix'  => 'cc',
         'version' => 'clang++ 3.4',
-        'allowed' => false
+        'allowed' => true
     ],
     [
         'id'      => 3,
@@ -69,7 +69,7 @@ return [
         'name'    => 'Pascal',
         'suffix'  => 'pas',
         'version' => 'fpc 2.6.2',
-        'allowed' => false
+        'allowed' => true
     ],
     [
         'id'      => 4,
@@ -129,8 +129,8 @@ return [
     ],
     [
         'id'      => 12,
-        'code'    => 'Lisp(Scheme)',
-        'name'    => 'Lisp(Scheme)',
+        'code'    => 'Scheme(Guile)',
+        'name'    => 'Scheme(Guile)',
         'suffix'  => 'scm',
         'version' => 'guile 2.2.3',
         'allowed' => true
@@ -157,6 +157,14 @@ return [
         'name'    => 'Go',
         'suffix'  => 'go',
         'version' => 'go 1.2.1',
-        'allowed' => false
+        'allowed' => true
+    ],
+    [
+        'id'      => 19,
+        'code'    => 'Lisp(SBCL)',
+        'name'    => 'Lisp(SBCL)',
+        'suffix'  => 'lisp',
+        'version' => 'SBCL 1.4.5',
+        'allowed' => true
     ]
 ];

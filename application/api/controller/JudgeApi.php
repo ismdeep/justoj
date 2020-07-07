@@ -63,7 +63,7 @@ class JudgeApi extends ApiBaseController {
         }
 
         if (sizeof($solution_ids) > 0) {
-            (new SolutionModel())->where(['solution_id' => $solution_ids])->update(['result', 2]);
+            (new SolutionModel())->where('solution_id', 'in', $solution_ids)->update(['result' => 2]);
         }
     }
 
@@ -82,6 +82,7 @@ class JudgeApi extends ApiBaseController {
     public function checkout($sid = '', $result = '') {
         $solution_id = intval($sid);
         $result = intval($result);
+        /* @var $solution SolutionModel */
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
         $solution->result = $result;
@@ -141,8 +142,8 @@ class JudgeApi extends ApiBaseController {
         $solution_id = intval($sid);
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
-        $source_code = (new SourceCodeModel())->where('solution_id', $solution_id)
-            ->find();
+        /* @var $source_code SourceCodeModel */
+        $source_code = (new SourceCodeModel())->where('solution_id', $solution_id)->find();
         intercept(null == $source_code, "SOLUTION SOURCE CODE NOT FOUND. [solution_id:$solution_id]");
         echo $source_code->source;
     }
@@ -160,6 +161,7 @@ class JudgeApi extends ApiBaseController {
      */
     public function get_solution_info($sid = '') {
         $solution_id = intval($sid);
+        /* @var $solution SolutionModel */
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
         echo $solution->problem_id . "\n";
@@ -195,6 +197,7 @@ class JudgeApi extends ApiBaseController {
 
     public function get_problem_info($pid = '') {
         $pid = intval($pid);
+        /* @var $problem ProblemModel */
         $problem = (new ProblemModel())->where('problem_id', $pid)->find();
         intercept(null == $problem, "PROBLEM NOT FOUND. [pid:$pid]");
         echo $problem->time_limit . "\n";
