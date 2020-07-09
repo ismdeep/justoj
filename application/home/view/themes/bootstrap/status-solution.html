@@ -1,6 +1,6 @@
 {extend name="home@themes/bootstrap/layout/user" /}
-{block name='navpart'}{/block}
-{block name='titlepart'}{$lang['status']} - {$lang['justoj']}{/block}
+{block name='nav_block'}{/block}
+{block name='title_block'}{$lang['status']} - {$lang['justoj']}{/block}
 {block name="body"}
 <div class="container">
     <div id="info-panel">
@@ -9,6 +9,7 @@
             <tr>
                 <th>{$lang.run_id}</th>
                 <th>{$lang.status}</th>
+                {if $is_root}<th>{$lang.operation}</th>{/if}
                 <th>{$lang.code_length}</th>
                 <th>{$lang.memory}</th>
                 <th>{$lang.exe_time}</th>
@@ -20,11 +21,22 @@
             <tr>
                 <td><span id="solution_id_2">{$solution->solution_id}</span></td>
                 <td><span id="solution-result">{$solution->result_text}</span></td>
+
+                {if $is_root}
+                <td>
+                    <select name="manual-result" id="manual-result" onchange="manual_set_result();">
+                        {volist name="result_map" id="result_item"}
+                        <option value="{$result_item['id']}"{if $solution->result == $result_item['id']} selected {/if}>{$lang[$result_item['lang_id']]}</option>
+                        {/volist}
+                    </select>
+                </td>
+                {/if}
+
                 <td id="solution-code-length">{$solution->code_length}</td>
                 <td id="solution-memory">{$solution->memory}</td>
                 <td id="solution-exe-time">{$solution->time}</td>
                 <td id="solution-code-language">{$solution->language_text}</td>
-                <td id="solution-submittime">{$solution->in_date}</td>
+                <td id="solution-submit-time">{$solution->in_date}</td>
             </tr>
             </tbody>
         </table>
@@ -46,6 +58,21 @@
     $('pre code').each(function(i, block) {
         hljs.highlightBlock(block);
     });
+</script>
+
+<script type="text/javascript">
+    var solution_id = {$solution->solution_id};
+</script>
+
+<script type="text/javascript">
+    function manual_set_result() {
+        let manual_result_val = $('#manual-result').val();
+        console.log(manual_result_val);
+        console.log(solution_id);
+        $.post('/api/solution/manual_set_result', {'solution_id': solution_id, 'result': manual_result_val}, function(d){
+            console.log(d);
+        }, 'json')
+    }
 </script>
 
 {/block}

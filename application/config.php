@@ -9,15 +9,17 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
+use think\Env;
+
 return [
     // +----------------------------------------------------------------------
     // | 应用设置
     // +----------------------------------------------------------------------
 
     // 应用调试模式
-    'app_debug'              => false,
+    'app_debug'              => Env::get('config.app_debug'),
     // 应用Trace
-    'app_trace'              => false,
+    'app_trace'              => Env::get('app_trace'),
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -151,8 +153,9 @@ return [
     // +----------------------------------------------------------------------
 
     // 异常页面的模板文件
-//    'exception_tmpl'         => THINK_PATH . 'tpl' . DS . 'think_exception.tpl',
-    'exception_tmpl'         => APP_PATH . DS . 'extra'.DS.'view' . DS . 'tpl' . DS . 'think_exception.tpl',
+    'exception_tmpl'         => Env::get('config.app_debug')
+        ? THINK_PATH . 'tpl' . DS . 'think_exception.tpl'
+        : APP_PATH . DS . 'extra'.DS.'view' . DS . 'tpl' . DS . 'think_exception.tpl',
 
     // 错误显示信息,非调试模式有效
     'error_message'          => 'Oops，别黑了。年轻人，不要沉迷于攻击，攻击会麻痹你的神经的。攻击一时爽，回家没床躺。',
@@ -242,6 +245,6 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
-    'data_dir' => '/justoj-data/data',
-    'secure_code' => '12341234LinuxMakefile'
+    'data_dir' => Env::get('config.data_dir'),
+    'secure_code' => Env::get('config.secure_code')
 ];

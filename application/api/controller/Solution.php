@@ -265,4 +265,29 @@ class Solution extends ApiBaseController {
 
         return json(['status' => 'success', 'msg' => 'rejudge success']);
     }
+
+    /**
+     * 手动设置Solution的结果
+     *
+     * `/api/solution/manual_set_result`
+     *
+     * `{'solution_id': '', 'result': 1}`
+     *
+     * @param string $solution_id
+     * @param int $result
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function manual_set_result($solution_id = '', $result = 0) {
+        /* @var $solution SolutionModel */
+        $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
+        intercept_json(!$this->is_root, 'Permission Denied.');
+        intercept_json($solution == null, 'Not found.');
+
+        $solution->result = intval($result);
+        $solution->save();
+        return json(['status' => 'success']);
+    }
 }
