@@ -37,7 +37,8 @@ class Solution extends UserBaseController {
         $source_code->source = htmlspecialchars($source_code->source);
         return view($this->theme_root . '/status-solution', [
             'solution' => $solution,
-            'source_code' => $source_code
+            'source_code' => $source_code,
+            'result_map' => SolutionModel::$result_map,
         ]);
     }
 
