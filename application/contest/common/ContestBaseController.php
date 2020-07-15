@@ -83,6 +83,13 @@ class ContestBaseController extends UserBaseController {
             }
         }
 
+        /* 如果当前用户登录，判断当前用户在privilege中是否有此比赛的对应记录 */
+        if ($this->is_login) {
+            if (PrivilegeModel::get(['user_id' => $this->loginuser->user_id, 'rightstr' => 'c' . $this->contest_id, 'defunct' => 'N'])) {
+                $this->permitted = true;
+            }
+        }
+
         $this->assign('permitted', $this->permitted);
         /************ 访问权限拦截 end   ************/
 

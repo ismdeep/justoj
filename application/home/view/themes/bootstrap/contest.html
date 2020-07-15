@@ -159,7 +159,7 @@
         };
         $.post('/api/contest/auth',data,function(d){
             if ('success' == d.status) {
-                location.href = '/contest?id={$contest->contest_id}';
+                location.href = '/contests/{$contest->contest_id}';
             }else{
                 layer.alert(d.msg);
             }
