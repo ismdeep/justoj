@@ -201,14 +201,14 @@
         };
         console.log(postData);
         $.post('/admin/contest/save_json',postData,function(d){
-            if ('success' == d.status) {
+            if ('success' === d.status) {
                 $('#contest_id').val(d.data.contest_id);
                 layer.confirm(d.msg, {
                     btn: ['查看比赛','继续编辑'] //按钮
                 }, function(){
                     layer.closeAll();
                     setTimeout(function(){
-                        window.open('/contest?id=' + d.data.contest_id);
+                        window.open('/contests/' + d.data.contest_id);
                     },100);
                 }, function(){
                     location.href = "/admin/contest/edit?contest_id=" + d.data.contest_id;

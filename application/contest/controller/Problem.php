@@ -21,12 +21,17 @@ class Problem extends ContestBaseController {
      * @throws \think\exception\DbException
      */
     public function show_problem_detail($pid) {
+        /* 判断比赛是否开始 */
+        if (!$this->contest_started) {
+            $this->redirect("/contests/{$this->contest_id}");
+        }
+
         $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
         $contest_problem->ac = false;
         $contest_problem->pending = false;
         if ($this->loginuser) {
             if (SolutionModel::
-            where("contest_id", $contest_problem->contest_id)
+                where("contest_id", $contest_problem->contest_id)
                 ->where('user_id', $this->loginuser->user_id)
                 ->where('problem_id', $contest_problem->problem_id)
                 ->where('in_date', '>', $this->contest->start_time)
