@@ -13,6 +13,7 @@ use think\Model;
 
 /**
  * Class SolutionModel
+ *
  * @property string source
  * @property int result
  * @property int memory
@@ -21,6 +22,9 @@ use think\Model;
  * @property string user_id
  * @property int language
  * @property string contest_id
+ * @property \DateTime in_date
+ * @property int code_length
+ *
  * @package app\api\model
  */
 class SolutionModel extends Model {

@@ -42,7 +42,7 @@ class Solution extends ApiBaseController {
             )->find(), '提交过于频繁');
 
 
-        intercept_json((new SolutionModel())->where('result', 0)->count() > 4, '服务器繁忙');
+//        intercept_json((new SolutionModel())->where('result', 0)->count() > 4, '服务器繁忙');
 
         $solution = new SolutionModel();
         $solution->result = 14;
@@ -100,7 +100,7 @@ class Solution extends ApiBaseController {
                 ]
             )->find(), '提交过于频繁');
 
-        intercept_json((new SolutionModel())->where('result', 0)->count() > 4, '服务器繁忙');
+        // intercept_json((new SolutionModel())->where('result', 0)->count() > 4, '服务器繁忙');
 
         $allowed_langs_all = $this->allowed_langs();
         $language_valid = false;
