@@ -27,6 +27,11 @@ class Rank extends ContestBaseController {
      * @throws DbException
      */
     public function show_rank_page() {
+        /* 判断比赛是否开始 */
+        if (!$this->contest_started) {
+            $this->redirect("/contests/{$this->contest_id}");
+        }
+
         // 获取本场比赛旅游队列表
         $tourist_user_ids = ContestTouristModel::tourists_in_contest($this->contest->contest_id);
 

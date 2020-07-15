@@ -29,6 +29,11 @@ class Status extends ContestBaseController {
      * @throws ModelNotFoundException
      */
     public function show_status_list($id, $run_id = '', $username = '', $problem_id = '', $result = '', $language = '') {
+        /* 判断比赛是否开始 */
+        if (!$this->contest_started) {
+            $this->redirect("/contests/{$this->contest_id}");
+        }
+
 
         if (!is_numeric($run_id)) {
             $run_id = '';
