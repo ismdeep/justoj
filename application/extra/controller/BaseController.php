@@ -19,6 +19,7 @@ use think\Session;
 class BaseController extends Controller {
     public $is_administrator;
     public $is_root;
+    /* @var $loginuser UserModel */
     public $loginuser;
     public $is_login;
 
