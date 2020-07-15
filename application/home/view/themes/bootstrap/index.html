@@ -33,7 +33,7 @@
 				<ul class="list-group">
 				{volist name="recent_contests" id="contest"}
 				<li class="list-group-item">
-					<p><a href="/contest?id={$contest->contest_id}">{$contest->title}</a></p>
+					<p><a href="/contests/{$contest->contest_id}">{$contest->title}</a></p>
 					<p><?php echo ['en' => 'Start at', 'cn' => '开始于'][$show_ui_lang];?>: {$contest->start_time}</p>
 				</li>
 				{/volist}
