@@ -19,7 +19,7 @@ return [
     // 应用调试模式
     'app_debug'              => Env::get('config.app_debug'),
     // 应用Trace
-    'app_trace'              => Env::get('app_trace'),
+    'app_trace'              => Env::get('config.app_trace'),
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
