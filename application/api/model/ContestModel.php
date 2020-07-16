@@ -65,4 +65,63 @@ class ContestModel extends Model {
             $this->manager = UserModel::get(['user_id' => $this->manager_id]);
         }
     }
+
+    /**
+     * 获取参赛选手ID列表
+     */
+    public function get_user_ids() {
+        $user_ids = [];
+        $solutions = (new SolutionModel())->distinct(true)->field('user_id')->where('contest_id', $this->contest_id)->select();
+        foreach ($solutions as $solution) {
+            /* @var $solution SolutionModel */
+            $user_ids []= $solution->user_id;
+        }
+        return $user_ids;
+    }
+
+    /**
+     * 获取参赛选手users
+     */
+    public function get_users() {
+        return (new UserModel())->where('user_id', 'in', function($query){
+            $query->table('solution')->where(['contest_id' => $this->contest_id])->distinct(true)->field('user_id');
+        })->select();
+    }
+
+    /**
+     * 获取旅游队(打星号)选手ID列表
+     */
+    public function get_tourist_user_ids() {
+        $tourist_user_ids = [];
+        $contest_tourists = (new ContestTouristModel())->where(['contest_id' => $this->contest_id])->select();
+        foreach ($contest_tourists as $contest_tourist) {
+            /* @var $contest_tourist ContestTouristModel */
+            $tourist_user_ids []= $contest_tourist->user_id;
+        }
+        return $tourist_user_ids;
+    }
+
+    /**
+     * 获取本场比赛的有效提交Solutions
+     */
+    public function get_significant_solutions() {
+        return (new SolutionModel())
+            ->where('in_date', '>=', $this->start_time)
+            ->where('in_date', '<=', $this->end_time)
+            ->where('contest_id', $this->contest_id)
+            ->order('in_date', 'asc')
+            ->select();
+    }
+
+    /**
+     * 获取本场比赛的赛题列表
+     *
+     * @return bool|false|\PDOStatement|string|\think\Collection
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function get_contest_problems() {
+        return (new ContestProblemModel())->where(['contest_id' => $this->contest_id])->order('num', 'asc')->select();
+    }
 }

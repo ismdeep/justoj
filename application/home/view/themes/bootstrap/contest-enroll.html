@@ -44,7 +44,7 @@
 <script type="text/javascript">
     function do_contest_enroll(contest_id) {
         $.post('/api/contest/do_contest_enroll_post',{'contest_id': contest_id},function(d){
-            if ('success' == d.status) {
+            if ('success' === d.status) {
                 layer.alert(d.msg,function(){
                     location.href = "/contests/{$contest_id}";
                 });

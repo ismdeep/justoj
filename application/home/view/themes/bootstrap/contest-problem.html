@@ -79,7 +79,7 @@
 				<!--功能按钮组 begin-->
 				<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
 				{if $loginuser}
-				<a href="/contest/Status?id={$contest->contest_id}&run_id=&username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+				<a href="/contests/{$contest->contest_id}/status?username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 				{/if}
 				<!--功能按钮组 end-->
 			</div>
@@ -90,7 +90,7 @@
 			<div class="panel panel-default">
 				<div class="panel-heading">
 					<h3 class="panel-title">
-						近期提交历史
+						<?php echo ['en' => 'Recent Submissions', 'cn' => '近期提交历史'][$show_ui_lang];?>
 					</h3>
 				</div>
 				<div class="panel-body">
@@ -113,7 +113,7 @@
 							</tbody>
 						</table>
 						{else}
-						<p>尚无提交记录</p>
+						<p><?php echo ['en' => 'No submissions', 'cn' => '尚无提交记录'][$show_ui_lang];?></p>
 						{/if}
 					{else}
 					<p>尚未登录</p>
@@ -344,7 +344,7 @@
     $(function(){
         // 自动初始化语言
         var lang_val = localStorage.getItem('lang_val');
-        if (null == lang_val || undefined == lang_val) {
+        if (null == lang_val) {
             lang_val = 0;
         }
         document.getElementById('submit-language').value = lang_val;
