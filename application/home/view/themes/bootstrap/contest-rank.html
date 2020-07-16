@@ -57,9 +57,9 @@
 			{volist name='contest_problems' id='contest_problem'}
 			{if $user['problem'][$contest_problem->problem_id]['ac_flag']}
 				{if $user['problem'][$contest_problem->problem_id]['first_ac']}
-				<td style="background: #080;color: white">{$user['problem'][$contest_problem->problem_id]['first_ac']['penalty_text']}
+				<td style="background: #080;color: white">{$user['problem'][$contest_problem->problem_id]['penalty_text']}
 				{else}
-				<td style="background: #a9f5af;color: black">{$user['problem'][$contest_problem->problem_id]['first_ac']['penalty_text']}
+				<td style="background: #a9f5af;color: black">{$user['problem'][$contest_problem->problem_id]['penalty_text']}
 				{/if}
 
 				{if $user['problem'][$contest_problem->problem_id]['wa_cnt'] > 0}

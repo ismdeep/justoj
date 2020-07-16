@@ -59,6 +59,7 @@ class Rank extends ContestBaseController {
                 'ac_time' => null,
                 'wa_cnt' => 0,
                 'penalty' => 0,
+                'penalty_text' => '',
             ];
         }
 
@@ -89,6 +90,7 @@ class Rank extends ContestBaseController {
             if ($solution->result == SolutionModel::RESULT_AC) {
                 $problem[$solution->problem_id]['ac_time'] = strtotime($solution->in_date) - strtotime($this->contest->start_time);
                 $problem[$solution->problem_id]['penalty'] += strtotime($solution->in_date) - strtotime($this->contest->start_time);
+                $problem[$solution->problem_id]['penalty_text'] = PenaltyUtil::penalty_int_2_text($problem[$solution->problem_id]['penalty']);
                 $problem[$solution->problem_id]['ac_flag'] = true;
                 if (in_array($solution->solution_id, $first_ac_solution_ids)) {
                     $problem[$solution->problem_id]['first_ac'] = true;
