@@ -75,7 +75,7 @@ class Rank extends ContestBaseController {
         }
 
         $users_map = [];
-        foreach ($users as &$user) {
+        foreach ($users as $user) {
             /* @var $user UserModel */
             $users_map[$user->user_id] = $user;
         }
@@ -109,16 +109,10 @@ class Rank extends ContestBaseController {
         /* 对 $users 进行排序 */
         for ($i = 0; $i < sizeof($users) - 1; ++$i) {
             for ($j = 0; $j < sizeof($users) - 1 - $i; ++$j) {
-                if ($users[$j]['ac_cnt'] < $users[$j + 1]['ac_cnt']) {
+                if (($users[$j]['ac_cnt'] < $users[$j + 1]['ac_cnt']) || ($users[$j]['ac_cnt'] == $users[$j + 1]['ac_cnt'] && $users[$j]['penalty'] > $users[$j + 1]['penalty'])) {
                     $tmp = $users[$j];
                     $users[$j] = $users[$j + 1];
                     $users[$j + 1] = $tmp;
-                } else if ($users[$j]['ac_cnt'] == $users[$j + 1]['ac_cnt']) {
-                    if ($users[$j]['penalty'] > $users[$j + 1]['penalty']) {
-                        $tmp = $users[$j];
-                        $users[$j] = $users[$j + 1];
-                        $users[$j + 1] = $tmp;
-                    }
                 }
             }
         }
