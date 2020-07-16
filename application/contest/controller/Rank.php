@@ -21,7 +21,6 @@ use think\exception\DbException;
 class Rank extends ContestBaseController {
 
     /**
-     * @return \think\response\View
      * @throws DataNotFoundException
      * @throws ModelNotFoundException
      * @throws DbException
@@ -32,101 +31,107 @@ class Rank extends ContestBaseController {
             $this->redirect("/contests/{$this->contest_id}");
         }
 
-        // 获取本场比赛旅游队列表
-        $tourist_user_ids = ContestTouristModel::tourists_in_contest($this->contest->contest_id);
+        /* 获取本场比赛旅游队列表 */
+        $tourist_user_ids = $this->contest->get_tourist_user_ids();
 
-        // 获取当前已有提交的所有用户名$users
-        $users = [];
-        $users_tmp = Db::query("select DISTINCT user_id from solution where contest_id=" . $this->contest->contest_id);
-        // 获取当前比赛所有题目以及所有题目的first blood
-        $contest_problems = (new ContestProblemModel)->where('contest_id', $this->contest->contest_id)->order('num', 'asc')->select();
-        foreach ($contest_problems as $contest_problem) {
-            $contest_problem['first_ac'] = (new SolutionModel)->
-            where("contest_id", $contest_problem->contest_id)
-                ->where('problem_id', $contest_problem->problem_id)
-                ->where('in_date', '>', $this->contest->start_time)
-                ->where('in_date', '<', $this->contest->end_time)
-                ->where('result', 4)
-                ->find();
+        /* 获取本场比赛有效Solutions */
+        $solutions = $this->contest->get_significant_solutions();
+
+        /* 获取本场First Blood SolutionIDs */
+        $first_ac_solution_ids = [];
+        $tmp_problem_ids = [];
+        foreach ($solutions as $solution) {
+            /* @var $solution SolutionModel */
+            if ($solution->result == SolutionModel::RESULT_AC && !in_array($solution->problem_id, $tmp_problem_ids)) {
+                $first_ac_solution_ids []= $solution->solution_id;
+                $tmp_problem_ids []= $solution->problem_id;
+            }
         }
-        $this->assign('contest_problems', $contest_problems);
 
-        // 对每个用户进行计算AC题数依旧罚时Penalty
-        foreach ($users_tmp as $user) {
+        /* 准备每位选手数据下的problem列表 */
+        $contest_problems = $this->contest->get_contest_problems();
+        $problem_data = [];
+        foreach ($contest_problems as $contest_problem) {
+            /* @var $contest_problem ContestProblemModel */
+            $problem_data[$contest_problem->problem_id] = [
+                'first_ac' => false,
+                'ac_flag' => false,
+                'ac_time' => null,
+                'wa_cnt' => 0,
+                'penalty' => 0,
+                'penalty_text' => '',
+            ];
+        }
+
+        /* 获取当前已有提交的所有用户名$users */
+        $users = $this->contest->get_users();
+        foreach ($users as $user) {
+            /* @var $user UserModel */
+            $user['is_tourist'] = in_array($user->user_id, $tourist_user_ids);
             $user['ac_cnt'] = 0;
             $user['penalty'] = 0;
-            $user['user'] = UserModel::get(['user_id' => $user['user_id']]);
-            $user['mark'] = 0.00;
-            foreach ($contest_problems as $contest_problem) {
-                // 判断$user是否有AC$contest_problem
-                $user[$contest_problem->problem_id]['first_ac'] = (new SolutionModel)->
-                where("contest_id", $contest_problem->contest_id)
-                    ->where('user_id', $user['user_id'])
-                    ->where('problem_id', $contest_problem->problem_id)
-                    ->where('in_date', '>', $this->contest->start_time)
-                    ->where('in_date', '<', $this->contest->end_time)
-                    ->where('result', 4)
-                    ->find();
-                if ($user[$contest_problem->problem_id]['first_ac']) {
-                    // AC
-                    $user[$contest_problem->problem_id]['ac'] = true;
-                    $user['mark'] += 100;
-                    ++$user['ac_cnt'];
-                    // 计算在first_ac之前WA次数
-                    $user[$contest_problem->problem_id]['wa_cnt'] = Db::query("select count(solution_id) as cnt from solution where contest_id=" . $this->contest->contest_id . " and problem_id=" . $contest_problem->problem_id . " and user_id='" . $user['user_id'] . "' and in_date >= '" . $this->contest->start_time . "' and in_date < '" . $user[$contest_problem->problem_id]['first_ac']['in_date'] . "'")[0]['cnt'];
-                    $user[$contest_problem->problem_id]['first_ac']['penalty'] = (strtotime($user[$contest_problem->problem_id]['first_ac']['in_date']) - strtotime($this->contest->start_time));;
-                    $user['penalty'] += $user[$contest_problem->problem_id]['first_ac']['penalty'];
-                    $user['penalty'] += 20 * 60 * $user[$contest_problem->problem_id]['wa_cnt'];
-                    // 计算first_ac对应的时间数
-                    $user[$contest_problem->problem_id]['first_ac']['penalty_text'] = PenaltyUtil::penalty_int_2_text($user[$contest_problem->problem_id]['first_ac']['penalty']);
-                } else {
-                    // WA
-                    $user[$contest_problem->problem_id]['ac'] = false;
-                    // 直接获取比赛期间提交次数
-                    $user[$contest_problem->problem_id]['wa_cnt'] = Db::query("select count(solution_id) as cnt from solution where contest_id=" . $this->contest->contest_id . " and problem_id=" . $contest_problem->problem_id . " and user_id='" . $user['user_id'] . "' and in_date >= '" . $this->contest->start_time . "' and in_date <= '" . $this->contest->end_time . "'")[0]['cnt'];
-                    if (intval($user[$contest_problem->problem_id]['wa_cnt']) > 0) {
-                        $user['mark'] += 33.33334;
-                    }
-                }
-
-            }
-            $user['penalty_text'] = PenaltyUtil::penalty_int_2_text($user['penalty']);
-            $user['mark'] = intval($user['mark'] / sizeof($contest_problems));
-
-            // 处理是否是旅游队
-            $user['is_tourist'] = in_array($user['user_id'], $tourist_user_ids);
-
-            $users[] = $user;
+            $user['penalty_text'] = '';
+            $user['problem'] = $problem_data;
         }
 
+        $users_map = [];
+        foreach ($users as $user) {
+            /* @var $user UserModel */
+            $users_map[$user->user_id] = $user;
+        }
+
+        foreach ($solutions as $solution) {
+            /* @var $solution SolutionModel */
+            $user = $users_map[$solution->user_id];
+            $problem = $user['problem'];
+            if ($problem[$solution->problem_id]['ac_flag']) {
+                continue;
+            }
+            if ($solution->result == SolutionModel::RESULT_AC) {
+                $problem[$solution->problem_id]['ac_time'] = strtotime($solution->in_date) - strtotime($this->contest->start_time);
+                $problem[$solution->problem_id]['penalty'] += strtotime($solution->in_date) - strtotime($this->contest->start_time);
+                $problem[$solution->problem_id]['penalty_text'] = PenaltyUtil::penalty_int_2_text($problem[$solution->problem_id]['penalty']);
+                $problem[$solution->problem_id]['ac_flag'] = true;
+                if (in_array($solution->solution_id, $first_ac_solution_ids)) {
+                    $problem[$solution->problem_id]['first_ac'] = true;
+                }
+                $user['penalty'] += $problem[$solution->problem_id]['penalty'];
+                $user['penalty_text'] = PenaltyUtil::penalty_int_2_text($user['penalty']);
+                $user['ac_cnt'] = $user['ac_cnt'] + 1;
+            } else {
+                $problem[$solution->problem_id]['penalty'] += 20 * 60;
+                $problem[$solution->problem_id]['wa_cnt']++;
+            }
+
+            $user['problem'] = $problem;
+        }
+
+        /* 对 $users 进行排序 */
         for ($i = 0; $i < sizeof($users) - 1; ++$i) {
             for ($j = 0; $j < sizeof($users) - 1 - $i; ++$j) {
-                if ($users[$j]['ac_cnt'] < $users[$j + 1]['ac_cnt']) {
+                if (($users[$j]['ac_cnt'] < $users[$j + 1]['ac_cnt']) || ($users[$j]['ac_cnt'] == $users[$j + 1]['ac_cnt'] && $users[$j]['penalty'] > $users[$j + 1]['penalty'])) {
                     $tmp = $users[$j];
                     $users[$j] = $users[$j + 1];
                     $users[$j + 1] = $tmp;
-                } else if ($users[$j]['ac_cnt'] == $users[$j + 1]['ac_cnt']) {
-                    if ($users[$j]['penalty'] > $users[$j + 1]['penalty']) {
-                        $tmp = $users[$j];
-                        $users[$j] = $users[$j + 1];
-                        $users[$j + 1] = $tmp;
-                    }
                 }
             }
         }
 
+        $this->assign('contest_problems', $contest_problems);
         $this->assign('users', $users);
         return view($this->theme_root . '/contest-rank');
     }
 
     /**
-     * 导出班级contest的xls文件
+     * 导出班级 contest 的 xls 文件
      *
-     * @param string $group_id
+     * @param  string $group_id
      * @return string
      * @throws DataNotFoundException
-     * @throws ModelNotFoundException
      * @throws DbException
+     * @throws ModelNotFoundException
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
     public function export_group_contest_xls($group_id = '') {
         if ('' == $group_id) {

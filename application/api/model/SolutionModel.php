@@ -13,19 +13,20 @@ use think\Model;
 
 /**
  * Class SolutionModel
+ * @package app\api\model
  *
- * @property string source
- * @property int result
- * @property int memory
- * @property int time
+ * @property int solution_id
  * @property int problem_id
  * @property string user_id
- * @property int language
- * @property string contest_id
+ * @property int time
+ * @property int memory
  * @property \DateTime in_date
+ * @property int result
+ * @property int language
+ * @property string ip
+ * @property int contest_id
  * @property int code_length
  *
- * @package app\api\model
  */
 class SolutionModel extends Model {
     protected $table = 'solution';

@@ -37,7 +37,7 @@
 			{if $contest->type == 1}<th>{$lang.mark}</th>{/if}
 			<th>{$lang.penalty}</th>
 			{volist name='contest_problems' id='contest_problem'}
-			<th><a href="/contest/Problem?id={$contest->contest_id}&pid={$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></th>
+			<th><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></th>
 			{/volist}
 		</tr>
 		</thead>
@@ -49,32 +49,29 @@
 		<tr>
 			<td>{if false == $user['is_tourist']}{$rank_index}{else}*{/if}</td>
 			<td>{$user['user_id']}</td>
-			<td>{$user['user']['realname']}<a href="javascript:" class="tourist-btns-class" hidden onclick="add_tourist('{$user[\'user_id\']}');">设置</a></td>
-			<td>{$user['user']['class']}</td>
+			<td>{$user['realname']}<a href="javascript:" class="tourist-btns-class" hidden onclick="add_tourist('{$user[\'user_id\']}');">设置</a></td>
+			<td>{$user['class']}</td>
 			<td>{$user['ac_cnt']}</td>
             {if $contest->type == 1}<td>{$user['mark']}</td>{/if}
 			<td>{$user['penalty_text']}</td>
 			{volist name='contest_problems' id='contest_problem'}
-			{if $user[$contest_problem->problem_id]['first_ac']}
-				{if $user[$contest_problem->problem_id]['first_ac']['solution_id'] == $contest_problem['first_ac']['solution_id']}
-				<td style="background: #080;color: white">{$user[$contest_problem->problem_id]['first_ac']['penalty_text']}
+				{if $user['problem'][$contest_problem->problem_id]['ac_flag']}
+					{if $user['problem'][$contest_problem->problem_id]['first_ac']}
+					<td style="background: #080;color: white">{$user['problem'][$contest_problem->problem_id]['penalty_text']}
+					{else}
+					<td style="background: #a9f5af;color: black">{$user['problem'][$contest_problem->problem_id]['penalty_text']}
+					{/if}
+					{if $user['problem'][$contest_problem->problem_id]['wa_cnt'] > 0}
+					(-{$user['problem'][$contest_problem->problem_id]['wa_cnt']})
+					{/if}
+					</td>
 				{else}
-				<td style="background: #a9f5af;color: black">{$user[$contest_problem->problem_id]['first_ac']['penalty_text']}
+					{if $user['problem'][$contest_problem->problem_id]['wa_cnt'] > 0}
+					<td style="background-color:#ff7a7a;color:black">-{$user['problem'][$contest_problem->problem_id]['wa_cnt']}</td>
+					{else}
+					<td></td>
+					{/if}
 				{/if}
-
-				{if $user[$contest_problem->problem_id]['wa_cnt'] > 0}
-				(-{$user[$contest_problem->problem_id]['wa_cnt']})
-				{/if}
-				</td>
-
-			{else}
-				{if $user[$contest_problem->problem_id]['wa_cnt'] > 0}
-				<td style="background-color:#ff7a7a;color:black">-{$user[$contest_problem->problem_id]['wa_cnt']}</td>
-				{else}
-				<td></td>
-				{/if}
-			{/if}
-
 			{/volist}
 		</tr>
 		{/volist}
