@@ -7,6 +7,15 @@
     <table class="layui-hide" id="contest-list"></table>
 </div>
 
+<script type="text/html" id="idTpl">
+    <a class="layui-table-link" href="/contests/{{d.contest_id}}" target="_blank">{{d.contest_id}}</a>
+</script>
+
+<script type="text/html" id="titleTpl">
+    <a class="layui-table-link" href="/contests/{{d.contest_id}}" target="_blank">{{d.title}}</a>
+</script>
+
+
 <script type="text/html" id="operationTpl">
     <a href="javascript:" onclick="x_admin_show('编辑 - {{d.title}}', '/admin/contest/edit?contest_id={{d.contest_id}}');">编辑</a>
     {if $is_root}
@@ -41,11 +50,11 @@
               elem: '#contest-list'
             , url: '/admin/contest/contest_list_json'
             , cols: [[
-                  {field: 'contest_id', title: 'ID'}
-                , {field: 'title', title: '标题'}
-                , {field: 'private', title: '权限', templet: '#privateTpl'}
-                , {field: 'defunct', title: '状态', templet: '#defunctTpl'}
-                , {field: 'contest_id', title: '操作', templet: '#operationTpl'}
+                {field: 'contest_id', title: 'ID', templet: '#idTpl'},
+                {field: 'title', title: '标题', templet: '#titleTpl'},
+                {field: 'private', title: '权限', templet: '#privateTpl'},
+                {field: 'defunct', title: '状态', templet: '#defunctTpl'},
+                {field: 'contest_id', title: '操作', templet: '#operationTpl'}
             ]]
             , id: 'contest_list'
             , page: true
@@ -61,7 +70,7 @@
             console.log(contest_id);
             let defunct = this.checked ? 'N' : 'Y';
             $.post('/admin/contest/change_defunct_json',{'contest_id': contest_id, 'defunct': defunct}, function(d){
-                if ('success' == d.status) {
+                if ('success' === d.status) {
                     setTimeout(function(){
                         layer.closeAll();
                         table.reload('contest_list');

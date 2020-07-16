@@ -69,9 +69,11 @@
 			<div class=content>
 				<p><a href='javascript:'>{$problem->source}</a></p>
 			</div>
+			{if $is_administrator || $is_root}
 			<div class="content">
 				<a href="/problems/{$problem->problem_id}" target="_blank">Original Problem Link</a>
 			</div>
+			{/if}
 			<br>
 			<div align="center">
 				<!--功能按钮组 begin-->
