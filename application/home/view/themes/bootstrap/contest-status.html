@@ -2,8 +2,8 @@
 {block name='title_block'}{$lang['status']} - {$lang['justoj']}{/block}
 {block name='body'}
 <div class="container">
-	<form class="form-horizontal" action="/contest/Status" method="get">
-		<div hidden><input type="text" name="id" value="{$contest->contest_id}"></div>
+	<form class="form-horizontal" action="/contests/{$contest->contest_id}/status" method="get">
+		<div hidden><input type="text" name="id" value=""></div>
 		<div class="col-sm-2">
 			<input class="form-control" style="border-radius: 0px" type="text" name="run_id" value="{$run_id}" placeholder="{$lang.run_id}">
 		</div>
