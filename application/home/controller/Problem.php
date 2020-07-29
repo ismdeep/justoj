@@ -99,7 +99,8 @@ class Problem extends UserBaseController {
         $problem_tag_dicts = (new ProblemTagDictModel())->select();
         $problem_tag_dict_map = [];
         foreach ($problem_tag_dicts as $problem_tag_dict) {
-            $problem_tag_dict_map[$problem_tag_dict->tag_id] = $problem_tag_dict->tag_name;
+            /* @var $problem_tag_dict ProblemTagDictModel */
+            $problem_tag_dict_map[$problem_tag_dict->tag_id] = $problem_tag_dict->getTagName($this->show_ui_lang);
         }
         $this->assign('problem_tag_dict_map', $problem_tag_dict_map);
         /* <<<< 题目标签映射 */
