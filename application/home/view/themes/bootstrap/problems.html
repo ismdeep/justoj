@@ -64,7 +64,7 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-					{volist name="problem_tags" id="problem_tag"}<span class="label label-primary"><a href="/problems?tag={$problem_tag->tag_id}" style="color: white;text-decoration-line: none">{$problem_tag->tag_name}({$problem_tag->cnt})</a></span> {/volist}
+					{volist name="problem_tags" id="problem_tag"}<span class="label label-primary"><a href="/problems?tag={$problem_tag->tag_id}" style="color: white;text-decoration-line: none">{$problem_tag->getTagName($show_ui_lang)}({$problem_tag->cnt})</a></span> {/volist}
 				</div>
 			</div>
 			<!--			题目标签 end-->
