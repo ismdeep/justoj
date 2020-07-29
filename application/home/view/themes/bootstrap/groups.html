@@ -6,13 +6,13 @@
 
 		<div class="form-inline">
 			<label class="radio-inline">
-				<input type="radio" name="filter" id="allgroup" onclick="goto_all_group();" value="" {if $filter==""}checked{/if}> 所有班级
+				<input type="radio" name="filter" id="allgroup" onclick="goto_all_group();" value="" {if $filter==""}checked{/if}> {$lang.allgroup}
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="filter" id="mycreated" onclick="goto_my_created();" value="1" {if $filter=="1"}checked{/if}> 我创建的
+				<input type="radio" name="filter" id="mycreated" onclick="goto_my_created();" value="1" {if $filter=="1"}checked{/if}> {$lang.my_creation}
 			</label>
 			<label class="radio-inline">
-				<input type="radio" name="filter" id="myjoined" onclick="goto_my_joined();" value="2" {if $filter=="2"}checked{/if}> 我加入的
+				<input type="radio" name="filter" id="myjoined" onclick="goto_my_joined();" value="2" {if $filter=="2"}checked{/if}> {$lang.my_join}
 			</label>
 
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
