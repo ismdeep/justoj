@@ -6,7 +6,7 @@
             <label class="layui-form-label">{$lang['tag']}</label>
             <div class="layui-input-block">
                 {volist name="problem_tags" id="problem_tag"}
-                <input type="checkbox" name="tag" value="{$problem_tag->tag_id}" title="{$problem_tag->tag_name}" {if
+                <input type="checkbox" name="tag" value="{$problem_tag->tag_id}" title="{$problem_tag->getTagName($show_ui_lang)}" {if
                        $problem_tag->selected} checked="" {/if} >
                 {/volist}
             </div>
