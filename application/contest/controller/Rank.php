@@ -164,7 +164,6 @@ class Rank extends ContestBaseController {
             $user['ac_cnt'] = 0;
             $user['penalty'] = 0;
             $user['user'] = UserModel::get(['user_id' => $user['user_id']]);
-            $user['mark'] = 0.00;
             foreach ($contest_problems as $contest_problem) {
                 // 判断$user是否有AC$contest_problem
                 $user[$contest_problem->problem_id]['first_ac'] = (new SolutionModel)->
@@ -178,7 +177,6 @@ class Rank extends ContestBaseController {
                 if ($user[$contest_problem->problem_id]['first_ac']) {
                     // AC
                     $user[$contest_problem->problem_id]['ac'] = true;
-                    $user['mark'] += 100;
                     ++$user['ac_cnt'];
                     // 计算在first_ac之前WA次数
                     $user[$contest_problem->problem_id]['wa_cnt'] = Db::query("select count(solution_id) as cnt from solution where contest_id=" . $this->contest->contest_id . " and problem_id=" . $contest_problem->problem_id . " and user_id='" . $user['user_id'] . "' and in_date >= '" . $this->contest->start_time . "' and in_date < '" . $user[$contest_problem->problem_id]['first_ac']['in_date'] . "'")[0]['cnt'];
@@ -192,14 +190,10 @@ class Rank extends ContestBaseController {
                     $user[$contest_problem->problem_id]['ac'] = false;
                     // 直接获取比赛期间提交次数
                     $user[$contest_problem->problem_id]['wa_cnt'] = Db::query("select count(solution_id) as cnt from solution where contest_id=" . $this->contest->contest_id . " and problem_id=" . $contest_problem->problem_id . " and user_id='" . $user['user_id'] . "' and in_date >= '" . $this->contest->start_time . "' and in_date <= '" . $this->contest->end_time . "'")[0]['cnt'];
-                    if (intval($user[$contest_problem->problem_id]['wa_cnt']) > 0) {
-                        $user['mark'] += 33.33334;
-                    }
                 }
 
             }
             $user['penalty_text'] = PenaltyUtil::penalty_int_2_text($user['penalty']);
-            $user['mark'] = intval($user['mark'] / sizeof($contest_problems));
             $users[] = $user;
         }
 

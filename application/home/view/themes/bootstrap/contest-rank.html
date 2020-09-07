@@ -34,7 +34,6 @@
 			<th>{$lang.fullname}</th>
 			<th>{$lang.class}</th>
 			<th>{$lang.accepted}</th>
-			{if $contest->type == 1}<th>{$lang.mark}</th>{/if}
 			<th>{$lang.penalty}</th>
 			{volist name='contest_problems' id='contest_problem'}
 			<th><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></th>
@@ -52,7 +51,6 @@
 			<td>{$user['realname']}<a href="javascript:" class="tourist-btns-class" hidden onclick="add_tourist('{$user[\'user_id\']}');">设置</a></td>
 			<td>{$user['class']}</td>
 			<td>{$user['ac_cnt']}</td>
-            {if $contest->type == 1}<td>{$user['mark']}</td>{/if}
 			<td>{$user['penalty_text']}</td>
 			{volist name='contest_problems' id='contest_problem'}
 				{if $user['problem'][$contest_problem->problem_id]['ac_flag']}
