@@ -19,7 +19,7 @@
 <?php $rank_index = 0;?>
 <div class="container">
 	<p>
-		<a href="/contest/Rank/export_xls?id={$contest->contest_id}">比赛成绩</a>
+		<a href="/contests/{$contest->contest_id}/rank/xls">比赛成绩</a>
 		{if $is_administrator}
         <a href="/contest/rank/export_register_users?id={$contest->contest_id}">参赛列表</a>
 		&nbsp;&nbsp;&nbsp;&nbsp;
