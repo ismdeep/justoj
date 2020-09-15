@@ -19,12 +19,7 @@
 <?php $rank_index = 0;?>
 <div class="container">
 	<p>
-		<a href="/contests/{$contest->contest_id}/rank/xls">比赛成绩</a>
-		{if $is_administrator}
-        <a href="/contest/rank/export_register_users?id={$contest->contest_id}">参赛列表</a>
-		&nbsp;&nbsp;&nbsp;&nbsp;
-		<a href="javascript:" onclick="show_tourist_btns();">设置</a>
-        {/if}
+		<a href="/contests/{$contest->contest_id}/rank/xls">{$lang.download_rank}</a>
 	</p>
 	<table class="table table-hover">
 		<thead>

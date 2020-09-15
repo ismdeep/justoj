@@ -47,6 +47,7 @@ return [
     'disable' => ['en' => 'Disable', 'cn' => '禁用'],
     'disabled' => ['en' => 'Disabled', 'cn' => '不可用'],
     'download' => ['en' => 'Download', 'cn' => '下载'],
+    'download_rank' => ['en' => 'Download Rank', 'cn' => '下载排名'],
     'do_not_have_privilege' => ['en' => 'Do NOT have privilege', 'cn' => '没有访问权限'],
     'edit' => ['en' => 'Edit', 'cn' => '编辑'],
     'email' => ['en' => 'Email', 'cn' => 'Email'],
