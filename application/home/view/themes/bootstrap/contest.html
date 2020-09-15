@@ -45,7 +45,7 @@
 		<tr>
 			<td>
 				{if $contest_problem->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
-				{if $contest_problem->pending}<span clascontests="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+				{if $contest_problem->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
 			</td>
 			<td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></td>
 			<td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$contest_problem->problem->title}</a></td>
@@ -56,6 +56,8 @@
 		{/volist}
 		</tbody>
 	</table>
+	{else}
+	<div class="alert alert-warning"><?php echo ['en' => 'Contest is not start. Problems will show here after this contest is started.', 'cn' => '比赛尚未开始！比赛开始后可查看题目。'][$show_ui_lang];?></div>
 	{/if}
 
     {if !$permitted && $contest->private == 1}
