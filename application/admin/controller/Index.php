@@ -64,10 +64,20 @@ class Index extends AdminBaseController {
         $mysql_version = Db::query("select version() as ver")[0]['ver'];
 
         /** / 硬盘剩余信息 **/
-        $free_space = round(disk_free_space('/') / 1024 / 1024 / 1024, 2);
+        $free_space = 'N/A';
+        try {
+            $free_space = round(disk_free_space('/') / 1024 / 1024 / 1024, 2) . 'G';
+        } catch (Exception $e) {
+            $free_space = 'N/A';
+        }
 
         /** /home 硬盘剩余信息 **/
-        $free_space_home = round(disk_free_space('/home') / 1024 / 1024 / 1024, 2);
+        $free_space_home = 'N/A';
+        try {
+            $free_space_home = round(disk_free_space('/home') / 1024 / 1024 / 1024, 2) . 'G';
+        }catch (Exception $e) {
+            $free_space_home = 'N/A';
+        }
 
 
         $this->assign('problem_count', $problem_count);

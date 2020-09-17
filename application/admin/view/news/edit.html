@@ -6,18 +6,32 @@
 
 <div class="x-body">
 	<form class="layui-form" id="newsEditForm">
-        <input type="text" name="news_id" id="news_id" value="{$news->news_id}" hidden>
+        <input type="text" name="id" id="id" value="{$news->id}" hidden>
         <div class="layui-form-item">
-            <label class="layui-form-label">{$lang.title}</label>
+            <label class="layui-form-label">{$lang.title}(中文)</label>
             <div class="layui-input-block">
-                <input type="text" name="title" id="title" value="{$news->title}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
+                <input type="text" name="title_cn" id="title_cn" value="{$news->title_cn}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">{$lang.title}(英文)</label>
+            <div class="layui-input-block">
+                <input type="text" name="title_cn" id="title_en" value="{$news->title_en}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
             </div>
         </div>
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">{$lang.content}</label>
             <div class="layui-input-block">
-                <textarea name="content" id="content" placeholder="请输入内容" class="layui-textarea">{$news->content}</textarea>
-                <script> var content = CKEDITOR.replace( 'content' ); </script>
+                <textarea name="content_cn" id="content_cn" placeholder="请输入内容" class="layui-textarea">{$news->content_cn}</textarea>
+                <script> var content_cn = CKEDITOR.replace( 'content_cn' ); </script>
+            </div>
+        </div>
+
+        <div class="layui-form-item layui-form-text">
+            <label class="layui-form-label">{$lang.content}</label>
+            <div class="layui-input-block">
+                <textarea name="content_en" id="content_en" placeholder="请输入内容" class="layui-textarea">{$news->content_en}</textarea>
+                <script> var content_en = CKEDITOR.replace( 'content_en' ); </script>
             </div>
         </div>
 
@@ -33,9 +47,11 @@
 <script type="text/javascript">
     $('#newsEditForm').on('submit',function(){
         var postData = {
-            'news_id': $('#news_id').val(),
-            'title': $('#title').val(),
-            'content': content.getData()
+            'id': $('#id').val(),
+            'title_cn': $('#title_cn').val(),
+            'content_cn': content_cn.getData(),
+            'title_en': $('#title_en').val(),
+            'content_en': content_en.getData()
         };
         $.post('/admin/news/save_json',postData,function(d){
             if ('success' == d.status) {

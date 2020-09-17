@@ -2,9 +2,9 @@
 {block name="content"}
 <div class="x-body">
     <div class="layui-tab-content" style="height: 150px;">
-        <h1>{$news->title}</h1>
+        <h1>{$news->getTitle()}</h1>
         <div class="layui-tab-item layui-show">
-            {$news->content}
+            {$news->getContent()}
         </div>
     </div>
 </div>
