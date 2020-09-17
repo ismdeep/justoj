@@ -9,7 +9,7 @@
 	<div class="row">
 		<div class="container">
 			{if $group->owner_id == $loginuser->user_id}
-			<button class="btn btn-success" type="button" onclick="open_add_task();">{$lang.add_homework}</button>
+			<button class="btn btn-success" type="button" onclick="open_add_task();"><span class="glyphicon glyphicon-plus"></span> {$lang.add_homework}</button>
 			{/if}
 			<a class="btn btn-success" href="/groups/{$group->id}/members/{$loginuser->user_id}/source_codes/download">{$lang.download} {$lang.source_code}</a>
 		</div>

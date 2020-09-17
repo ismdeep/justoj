@@ -6,7 +6,7 @@
 <div class="container">
 	{if $group->owner_id == $loginuser->user_id}
 	<p>
-		<button class="btn btn-success" onclick="$('#notification-id').val('');$('#addNotificationModal').modal('show');">{$lang.add_notification}</button>
+		<button class="btn btn-success" onclick="$('#notification-id').val('');$('#addNotificationModal').modal('show');"><span class="glyphicon glyphicon-plus"></span> {$lang.add_notification}</button>
 	</p>
 	{/if}
 
