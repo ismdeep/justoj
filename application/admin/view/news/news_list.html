@@ -23,13 +23,13 @@
 </div>
 
 <script type="text/html" id="operationTpl">
-    <button class="layui-btn layui-btn-sm" onclick="x_admin_show('新闻预览','/admin/news/preview?news_id={{d.news_id}}',800,600);">预览</button>
-    <button class="layui-btn layui-btn-sm" onclick="x_admin_show('编辑新闻 - {{d.title}}','/admin/news/edit?news_id={{d.news_id}}',800,600);">编辑</button>
-    <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_news({{d.news_id}});">删除</a>
+    <button class="layui-btn layui-btn-sm" onclick="x_admin_show('新闻预览','/admin/news/preview?id={{d.id}}',800,600);">预览</button>
+    <button class="layui-btn layui-btn-sm" onclick="x_admin_show('编辑新闻 - {{d.title}}','/admin/news/edit?id={{d.id}}',800,600);">编辑</button>
+    <a href="javascript:" class="layui-btn layui-btn-sm layui-btn-danger" onclick="delete_news({{d.id}});">删除</a>
 </script>
 
 <script type="text/html" id="defunctTpl">
-    <input type="checkbox" lay-skin="switch" lay-text="开|关" id="{{d.news_id}}" lay-filter="switchTest" {{# if ('N' == d.defunct) { }}checked{{# } }}>
+    <input type="checkbox" lay-skin="switch" lay-text="开|关" id="{{d.id}}" lay-filter="switchTest" {{# if ('N' == d.defunct) { }}checked{{# } }}>
 </script>
 
 
@@ -47,10 +47,11 @@
             elem: '#news-list'
             , url: '/admin/news/news_list_json'
             , cols: [[
-                {field: 'news_id', title: 'ID'}
-                , {field: 'title', title: '标题'}
+                {field: 'id', title: 'ID'}
+                , {field: 'title_cn', title: '中文标题'}
+                , {field: 'title_en', title: '英文标题'}
                 , {field: 'defunct_text', title: '状态', width: '8%', templet: '#defunctTpl'}
-                , {field: 'time', width: '13%', title: '创建时间'}
+                , {field: 'create_time', width: '13%', title: '创建时间'}
                 , {title: '操作', templet: '#operationTpl'}
             ]]
             , id: 'news_list_table'
@@ -65,10 +66,10 @@
                 icon: 16
                 , shade: 0.01
             });
-            let news_id = data.elem.id;
-            console.log(news_id);
+            let id = data.elem.id;
+
             let defunct = this.checked ? 'N' : 'Y';
-            $.post('/admin/news/change_defunct_json',{'news_id': news_id, 'defunct': defunct}, function(d){
+            $.post('/admin/news/change_defunct_json',{'id': id, 'defunct': defunct}, function(d){
                 if ('success' == d.status) {
                     setTimeout(function(){
                         layer.closeAll();
@@ -88,10 +89,10 @@
         return false;
     });
 
-    function delete_news(news_id) {
+    function delete_news(id) {
         layer.confirm('确认删除？',function(){
             layer.closeAll();
-            $.post('/admin/news/delete_json',{'news_id': news_id},function(d){
+            $.post('/admin/news/delete_json',{'id': id},function(d){
                 if ('success' == d.status) {
                     var layer = layui.table;
                     layer.reload('news_list_table', {where: {'news_keyword':$('#news_keyword').val(), 'defunct': $('#status').val()}})
