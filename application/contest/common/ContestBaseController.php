@@ -57,7 +57,7 @@ class ContestBaseController extends UserBaseController {
 
         /* 判断是否是比赛管理员 */
         $this->is_contest_manager = false;
-        if ($this->is_login && PrivilegeModel::get(['user_id' => $this->loginuser->user_id, 'rightstr' => 'm' . $this->contest_id])) {
+        if ($this->is_login && PrivilegeModel::get(['user_id' => $this->login_user->user_id, 'rightstr' => 'm' . $this->contest_id])) {
             $this->is_contest_manager = true;
         }
         if ($this->is_root) {
@@ -77,7 +77,7 @@ class ContestBaseController extends UserBaseController {
         if ($this->is_login) {
             $group_tasks = GroupTaskModel::all(['contest_id' => $this->contest_id]);
             foreach ($group_tasks as $group_task) {
-                if (GroupJoinModel::get(['user_id' => $this->loginuser->user_id, 'group_id' => $group_task->group_id, 'status' => 1])) {
+                if (GroupJoinModel::get(['user_id' => $this->login_user->user_id, 'group_id' => $group_task->group_id, 'status' => 1])) {
                     $this->permitted = true;
                 }
             }
@@ -85,7 +85,7 @@ class ContestBaseController extends UserBaseController {
 
         /* 如果当前用户登录，判断当前用户在privilege中是否有此比赛的对应记录 */
         if ($this->is_login) {
-            if (PrivilegeModel::get(['user_id' => $this->loginuser->user_id, 'rightstr' => 'c' . $this->contest_id, 'defunct' => 'N'])) {
+            if (PrivilegeModel::get(['user_id' => $this->login_user->user_id, 'rightstr' => 'c' . $this->contest_id, 'defunct' => 'N'])) {
                 $this->permitted = true;
             }
         }
@@ -95,11 +95,11 @@ class ContestBaseController extends UserBaseController {
 
         /* 注册拦截，如果比赛是需要注册的，并且当前用户并没有注册比赛，则跳转至注册页面 */
         if ($this->contest->is_need_enroll) {
-            if (null == $this->loginuser) {
+            if (null == $this->login_user) {
                 $this->redirect("/login?redirect=" . urlencode("/contest?id=" . $this->contest_id));
             }
 
-            if (null == (new ContestEnrollModel())->where(['user_id' => $this->loginuser->user_id, 'contest_id' => $this->contest_id])->find()) {
+            if (null == (new ContestEnrollModel())->where(['user_id' => $this->login_user->user_id, 'contest_id' => $this->contest_id])->find()) {
                 $this->redirect("/contest/enroll?contest_id={$this->contest_id}");
             }
         }

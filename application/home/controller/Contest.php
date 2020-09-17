@@ -33,8 +33,8 @@ class Contest extends UserBaseController {
 
         foreach ($contests as $contest) {
             $contest->is_enroll = false;
-            if ($contest->is_need_enroll && $this->loginuser) {
-                $contest_enroll = ContestEnrollModel::get(['user_id' => $this->loginuser->user_id, 'contest_id' => $contest->contest_id]);
+            if ($contest->is_need_enroll && $this->login_user) {
+                $contest_enroll = ContestEnrollModel::get(['user_id' => $this->login_user->user_id, 'contest_id' => $contest->contest_id]);
                 if ($contest_enroll) {
                     $contest->is_enroll = true;
                 }

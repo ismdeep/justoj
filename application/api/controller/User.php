@@ -64,7 +64,7 @@ class User extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function change_password($password = '', $password_again = '') {
-        if (!$this->loginuser) {
+        if (!$this->login_user) {
             return json(['status' => 'error', 'msg' => $this->lang['not_login']]);
         }
 
@@ -76,7 +76,7 @@ class User extends ApiBaseController {
             return json(['status' => 'error', 'msg' => $this->lang['password_and_password_again_must_be_same']]);
         }
 
-        $user = UserModel::get(['user_id' => $this->loginuser->user_id]);
+        $user = UserModel::get(['user_id' => $this->login_user->user_id]);
         $user->password = PasswordUtil::gen_password($password);
         $user->save();
         return json(['status' => 'success', 'msg' => $this->lang['password_has_been_changed']]);
@@ -101,7 +101,7 @@ class User extends ApiBaseController {
         intercept_json('' == $academy, 'academy can not be empty.');
         intercept_json('' == $class, 'class can not be empty.');
         intercept_json('' == $realname, 'realname can not be empty.');
-        if (!$this->loginuser) {
+        if (!$this->login_user) {
             return json([
                 'status' => 'error',
                 'msg' => $this->lang['not_login']
@@ -116,7 +116,7 @@ class User extends ApiBaseController {
             ]);
         }
 
-        $user = UserModel::get(['user_id' => $this->loginuser->user_id]);
+        $user = UserModel::get(['user_id' => $this->login_user->user_id]);
         $user->email = $email;
         $user->nick = htmlspecialchars($nickname);
         $user->realname = htmlspecialchars($realname);

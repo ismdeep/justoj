@@ -48,7 +48,7 @@ class Task extends GroupBaseController {
             // 获取这个比赛题目数量
             $task->contest->problem_cnt = Db::query("select count(problem_id) as cnt from contest_problem where contest_id=" . $task->contest_id)[0]['cnt'];
             // 获得登录用户A题数量
-            $task->contest->loginuser_ac_cnt = Db::query("select count(DISTINCT problem_id) as cnt from solution where contest_id=" . $task->contest_id . " and user_id='" . $this->loginuser->user_id . "' and result=4")[0]['cnt'];
+            $task->contest->login_user_ac_cnt = Db::query("select count(DISTINCT problem_id) as cnt from solution where contest_id=" . $task->contest_id . " and user_id='" . $this->login_user->user_id . "' and result=4")[0]['cnt'];
 
             $task->ac_member_cnt = (new SolutionModel())
                 ->where('contest_id', $task->contest_id)

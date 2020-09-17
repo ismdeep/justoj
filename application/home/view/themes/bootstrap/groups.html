@@ -49,22 +49,22 @@
                     class="glyphicon glyphicon-lock text-danger"></span>&nbsp;{/if}{$group->name}</a></td>
             <td>{$group->owner_id}({$group->teacher->nick})</td>
             <td>
-                {if $group->loginuser_group_join}
+                {if $group->login_user_group_join}
 
-                {if 0 == $group->loginuser_group_join->status}
+                {if 0 == $group->login_user_group_join->status}
                 {$lang.waiting_for_verify}
                 {/if}
 
-                {if 1 == $group->loginuser_group_join->status}
+                {if 1 == $group->login_user_group_join->status}
                 <a class="btn btn-sm btn-success"
-                   href="/groups/{$group->loginuser_group_join->group_id}">{$lang.enter}</a>
+                   href="/groups/{$group->login_user_group_join->group_id}">{$lang.enter}</a>
                 {/if}
 
-                {if 2 == $group->loginuser_group_join->status}
+                {if 2 == $group->login_user_group_join->status}
                 <span class="label label-danger">{$lang.removed}</span>
                 {/if}
 
-                {if 3 == $group->loginuser_group_join->status}
+                {if 3 == $group->login_user_group_join->status}
                 <span class="label label-danger">{$lang.rejected}</span>
                 {/if}
                 {else}

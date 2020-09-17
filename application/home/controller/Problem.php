@@ -40,9 +40,9 @@ class Problem extends UserBaseController {
         $solved_problem_ids = [];
         $unsolved_problem_ids = [];
 
-        if ($this->loginuser) {
+        if ($this->login_user) {
             $solved_problems = (new SolutionModel())
-                ->where('user_id', $this->loginuser->user_id)
+                ->where('user_id', $this->login_user->user_id)
                 ->where('result', 4)
                 ->distinct('problem_id')
                 ->field('problem_id')
@@ -52,7 +52,7 @@ class Problem extends UserBaseController {
             }
 
             $submit_problems = (new SolutionModel())
-                ->where('user_id', $this->loginuser->user_id)
+                ->where('user_id', $this->login_user->user_id)
                 ->distinct('problem_id')
                 ->field('problem_id')
                 ->select();
@@ -119,7 +119,7 @@ class Problem extends UserBaseController {
 
             // 获取当前登录用户的解题情况
             $problem->solve_status = 0; // 无状态
-            if ($this->loginuser) {
+            if ($this->login_user) {
                 // 判断是否有提交
                 if (in_array($problem->problem_id, $unsolved_problem_ids)) {
                     $problem->solve_status = 1; // 有提交
@@ -170,14 +170,14 @@ class Problem extends UserBaseController {
         // 如果当前用户登录了，判断AC状态
         $problem->ac = false;
         $problem->pending = false;
-        if ($this->loginuser) {
-            if (SolutionModel::where('user_id', $this->loginuser->user_id)
+        if ($this->login_user) {
+            if (SolutionModel::where('user_id', $this->login_user->user_id)
                 ->where('problem_id', $problem->problem_id)
                 ->where('result', 4)
                 ->find()) {
                 $problem->ac = true;
             } else {
-                if (SolutionModel::where('user_id', $this->loginuser->user_id)
+                if (SolutionModel::where('user_id', $this->login_user->user_id)
                     ->where('problem_id', $problem->problem_id)
                     ->find()) {
                     $problem->pending = true;

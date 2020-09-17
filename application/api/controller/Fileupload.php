@@ -17,10 +17,10 @@ class Fileupload extends ApiBaseController {
 
     public function upload() {
         $file = request()->file('file');
-        $info = $file->move('upload/' . $this->loginuser->user_id . '/' . date("Ymd") . '/', false, true);
+        $info = $file->move('upload/' . $this->login_user->user_id . '/' . date("Ymd") . '/', false, true);
 
         $upload = new UploadModel();
-        $upload->user_id = $this->loginuser->user_id;
+        $upload->user_id = $this->login_user->user_id;
         $upload->oss_path = "/{$info->getPath()}/{$info->getSaveName()}";
         $upload->file_size = $info->getSize();
         $upload->save();
