@@ -32,19 +32,19 @@ class Group extends UserBaseController {
             $groups = $groups->where('name', 'like', "%{$keyword}%");
         }
 
-        if (in_array($filter, [1,2]) && !$this->loginuser) {
+        if (in_array($filter, [1,2]) && !$this->login_user) {
             $this->redirect('/login?redirect=' . urlencode('/groups'));
         }
 
         switch ($filter) {
             case 1:
-                $groups = $groups->where(['owner_id' => $this->loginuser->user_id]);
+                $groups = $groups->where(['owner_id' => $this->login_user->user_id]);
                 break;
             case 2:
                 $groups = $groups->where('id', 'in', function($query){
                     $query->table('group_join')
                         ->where([
-                            'user_id' => $this->loginuser->user_id,
+                            'user_id' => $this->login_user->user_id,
                             'deleted' => 0
                         ])->field('group_id');
                 });
@@ -52,10 +52,10 @@ class Group extends UserBaseController {
         }
 
         $groups = $groups->order('id', 'desc')->paginate(10);
-        if ($this->loginuser) {
-            foreach ($groups as $group) $group->loginuser_group_join = GroupJoinModel::get(['user_id' => $this->loginuser->user_id, 'group_id' => $group->id]);
+        if ($this->login_user) {
+            foreach ($groups as $group) $group->login_user_group_join = GroupJoinModel::get(['user_id' => $this->login_user->user_id, 'group_id' => $group->id]);
         } else {
-            foreach ($groups as $group) $group->loginuser_group_join = null;
+            foreach ($groups as $group) $group->login_user_group_join = null;
         }
 
         $groups->appends(['keyword' => $keyword, 'filter' => $filter]);

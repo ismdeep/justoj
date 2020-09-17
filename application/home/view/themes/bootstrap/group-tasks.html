@@ -8,18 +8,18 @@
 
 	<div class="row">
 		<div class="container">
-			{if $group->owner_id == $loginuser->user_id}
+			{if $group->owner_id == $login_user->user_id}
 			<button class="btn btn-success" type="button" onclick="open_add_task();"><span class="glyphicon glyphicon-plus"></span> {$lang.add_homework}</button>
 			{/if}
-			<a class="btn btn-success" href="/groups/{$group->id}/members/{$loginuser->user_id}/source_codes/download">{$lang.download} {$lang.source_code}</a>
+			<a class="btn btn-success" href="/groups/{$group->id}/members/{$login_user->user_id}/source_codes/download"><span class="glyphicon glyphicon-download"></span> {$lang.download} {$lang.source_code}</a>
 		</div>
 	</div>
 	<table class="table table-hover">
 		<thead>
 		<tr>
 			<th>{$lang.title}</th>
-			{if $group->owner_id == $loginuser->user_id}
-			<th>学生完成率</th>
+			{if $group->owner_id == $login_user->user_id}
+			<th><?php echo ['en' => 'Member Complete Rate', 'cn' => '学生完成率'][$show_ui_lang];?></th>
 			{else}
 			<th>{$lang.status}</th>
 			{/if}
@@ -33,7 +33,7 @@
 			<td><a href="/contests/{$task->contest_id}" target="_blank">{$task->contest->title}</a></td>
 			<td>
 				<div class="progress">
-					{if $group->owner_id == $loginuser->user_id}
+					{if $group->owner_id == $login_user->user_id}
 						{if $task->ac_member_cnt == $group_member_cnt}
 							{if 0 == $group_member_cnt}
 								<div class="progress-bar"
@@ -56,14 +56,14 @@
 							{/if}
 						{/if}
 					{else}
-						{if $task->contest->loginuser_ac_cnt == $task->contest->problem_cnt}
+						{if $task->contest->login_user_ac_cnt == $task->contest->problem_cnt}
 							{if $task->contest->problem_cnt == 0}
 								<div class="progress-bar"
 									 style="width: 0%;">
 								</div>
 							{else}
 							<div class="progress-bar progress-bar-success"
-								 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
+								 style="width: {$task->contest->login_user_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
 							</div>
 							{/if}
 						{else}
@@ -73,7 +73,7 @@
 							</div>
 							{else}
 							<div class="progress-bar"
-								 style="width: {$task->contest->loginuser_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
+								 style="width: {$task->contest->login_user_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
 							</div>
 							{/if}
 						{/if}
@@ -81,15 +81,15 @@
 				</div>
 			</td>
 			<td>
-				{if $group->owner_id == $loginuser->user_id}
+				{if $group->owner_id == $login_user->user_id}
 					{$task->ac_member_cnt} / {$group_member_cnt}
 				{else}
-					{$task->contest->loginuser_ac_cnt} / {$task->contest->problem_cnt}
+					{$task->contest->login_user_ac_cnt} / {$task->contest->problem_cnt}
 				{/if}
 			</td>
 			<td>
 				<a class="btn btn-sm btn-success" href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
-				{if $group->owner_id == $loginuser->user_id}
+				{if $group->owner_id == $login_user->user_id}
 				<a class="btn btn-sm btn-danger" onclick="delete_task('{$task->contest->title}', {$task->id});" href="javascript:">删除</a>
 				{/if}
 			</td>

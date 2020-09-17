@@ -30,13 +30,13 @@ class Contest extends ApiBaseController {
         if (!$contest) return json(['status' => 'error', 'msg' => $this->lang['contest_not_exists']]);
 
         // 判断当前用户是否登录
-        if (!$this->loginuser) return json(['status' => 'error', 'msg' => $this->lang['not_login']]);
+        if (!$this->login_user) return json(['status' => 'error', 'msg' => $this->lang['not_login']]);
 
         // 判断密码
         if ($contest_password != $contest->password) return json(['status' => 'error', 'msg' => $this->lang['wrong_password']]);
 
         $privilege = new PrivilegeModel();
-        $privilege->user_id = $this->loginuser->user_id;
+        $privilege->user_id = $this->login_user->user_id;
         $privilege->rightstr = 'c' . $contest_id;
         $privilege->save();
 
@@ -102,16 +102,16 @@ class Contest extends ApiBaseController {
      */
     public function do_contest_enroll_post($contest_id = '') {
         intercept_json('' == $contest_id, 'contest_id参数不可为空');
-        intercept_json(null == $this->loginuser, '尚未登录');
+        intercept_json(null == $this->login_user, '尚未登录');
         intercept_json(UserModel::need_complete_info(
-            (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find()
+            (new UserModel())->where(['user_id' => $this->login_user->user_id])->find()
         ), '请先完善个人信息');
         intercept_json(null != (new ContestEnrollModel())->where([
-                'user_id' => $this->loginuser->user_id, 'contest_id' => $contest_id
+                'user_id' => $this->login_user->user_id, 'contest_id' => $contest_id
             ])->find(), '你已经注册此比赛');
 
         $contest_enroll = new ContestEnrollModel();
-        $contest_enroll->user_id = $this->loginuser->user_id;
+        $contest_enroll->user_id = $this->login_user->user_id;
         $contest_enroll->contest_id = $contest_id;
         $contest_enroll->save();
 

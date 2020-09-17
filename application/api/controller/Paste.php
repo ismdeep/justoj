@@ -21,7 +21,7 @@ class Paste extends ApiBaseController {
      * @return \think\response\Json
      */
     public function paste_post($lang = '', $code = '') {
-        intercept_json(null == $this->loginuser, '尚未登录');
+        intercept_json(null == $this->login_user, '尚未登录');
         intercept_json('' == $lang, 'lang参数错误');
         intercept_json('' == $code, '代码不可为空');
         $flag = false;
@@ -34,7 +34,7 @@ class Paste extends ApiBaseController {
         intercept_json(!$flag, 'lang不合法');
 
         $paste = new PasteModel();
-        $paste->user_id = $this->loginuser->user_id;
+        $paste->user_id = $this->login_user->user_id;
         $paste->lang = $lang;
         $paste->code = $code;
         $paste->save();

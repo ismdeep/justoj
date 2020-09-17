@@ -37,8 +37,8 @@
 
 				<!--功能按钮组 begin-->
 				<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
-				{if $loginuser}
-				<a href="/contests/{$contest->contest_id}/status?username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+				{if $login_user}
+				<a href="/contests/{$contest->contest_id}/status?username={$login_user->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 				{/if}
 
 				{if $is_administrator}
@@ -78,8 +78,8 @@
 			<div align="center">
 				<!--功能按钮组 begin-->
 				<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
-				{if $loginuser}
-				<a href="/contests/{$contest->contest_id}/status?username={$loginuser->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+				{if $login_user}
+				<a href="/contests/{$contest->contest_id}/status?username={$login_user->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 				{/if}
 				<!--功能按钮组 end-->
 			</div>

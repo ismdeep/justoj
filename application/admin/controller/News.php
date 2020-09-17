@@ -93,7 +93,7 @@ class News extends AdminBaseController {
 
         if ('' == $id) {
             $news = new NewsModel();
-            $news->user_id = $this->loginuser->user_id;
+            $news->user_id = $this->login_user->user_id;
             $news->defunct = 'N';
         } else {
             $news = (new NewsModel())->where('id', $id)->find();

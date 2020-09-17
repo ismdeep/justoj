@@ -36,7 +36,7 @@ class Solution extends ApiBaseController {
         intercept_json(null == (new ProblemModel())->where('problem_id', $problem_id)->find(), '题目不存在');
         intercept_json(null != (new SolutionModel())->where(
                 [
-                    'user_id' => $this->loginuser->user_id,
+                    'user_id' => $this->login_user->user_id,
                     'in_date' => ['>', date('Y-m-d H:i:s', time() - 3)]
                 ]
             )->find(), '提交过于频繁');
@@ -47,7 +47,7 @@ class Solution extends ApiBaseController {
         $solution = new SolutionModel();
         $solution->result = 14;
         $solution->problem_id = $problem_id;
-        $solution->user_id = $this->loginuser->user_id;
+        $solution->user_id = $this->login_user->user_id;
         $solution->in_date = date('Y-m-d H:i:s', time());
         $solution->code_length = strlen($code);
         $solution->language = $language;
@@ -95,7 +95,7 @@ class Solution extends ApiBaseController {
         intercept_json(null == (new ProblemModel())->where('problem_id', $contest_problem->problem_id)->find(), '题目不存在');
         intercept_json(null != (new SolutionModel())->where(
                 [
-                    'user_id' => $this->loginuser->user_id,
+                    'user_id' => $this->login_user->user_id,
                     'in_date' => ['>', date('Y-m-d H:i:s', time() - 3)]
                 ]
             )->find(), '提交过于频繁');
@@ -122,7 +122,7 @@ class Solution extends ApiBaseController {
         $solution->result = 14;
         $solution->contest_id = $contest_id;
         $solution->problem_id = $contest_problem->problem_id;
-        $solution->user_id = $this->loginuser->user_id;
+        $solution->user_id = $this->login_user->user_id;
         $solution->in_date = date('Y-m-d H:i:s');
         $solution->code_length = strlen($code);
         $solution->language = $language;
@@ -169,7 +169,7 @@ class Solution extends ApiBaseController {
         if (!$solution) return json(['status' => 'error', 'msg' => $this->lang['solution_not_exists']]);
 
         // 检查是否有访问权限
-        if (!($this->is_administrator || ($this->loginuser && $solution->user_id == $this->loginuser->user_id))) {
+        if (!($this->is_administrator || ($this->login_user && $solution->user_id == $this->login_user->user_id))) {
             return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
         }
 

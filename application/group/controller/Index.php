@@ -20,7 +20,7 @@ class Index extends GroupBaseController {
         // 判断当前用户是否有访问班级权限
         // 判断当前用户是否为此班级管理员
         $is_group_manager = false;
-        if ($this->loginuser && $this->group->owner_id == $this->loginuser->user_id) $is_group_manager = true;
+        if ($this->login_user && $this->group->owner_id == $this->login_user->user_id) $is_group_manager = true;
         $this->assign('is_group_manager', $is_group_manager);
 
         // 判断当前用户是否有访问权限
@@ -28,7 +28,7 @@ class Index extends GroupBaseController {
         // 判断当前用户与班级是否有group_join,并且status=1
         if ($is_group_manager) $have_permission = true;
 
-        $group_join = GroupJoinModel::get(['user_id' => $this->loginuser->user_id, 'group_id' => $id]);
+        $group_join = GroupJoinModel::get(['user_id' => $this->login_user->user_id, 'group_id' => $id]);
         if ($group_join && $group_join->status == 1) $have_permission = true;
 
         if ($have_permission) $this->redirect('/groups/' . $id);

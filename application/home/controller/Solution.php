@@ -26,7 +26,7 @@ class Solution extends UserBaseController {
         intercept(null == $solution, 'invalid');
 
         // 检查是否有访问权限
-        if (!($this->is_administrator || ($this->loginuser && $solution->user_id == $this->loginuser->user_id))) {
+        if (!($this->is_administrator || ($this->login_user && $solution->user_id == $this->login_user->user_id))) {
             return $this->lang['do_not_have_privilege'];
         }
 
@@ -47,8 +47,8 @@ class Solution extends UserBaseController {
         $solution = SolutionModel::get(['solution_id' => $solution_id]);
 
         // TODO 权限检查 是否管理员、是否本人
-        intercept(null == $this->loginuser, $this->lang['not_login']);
-        intercept(!$this->is_administrator && $this->loginuser->user_id != $solution->user_id, $this->lang['do_not_have_privilege']);
+        intercept(null == $this->login_user, $this->lang['not_login']);
+        intercept(!$this->is_administrator && $this->login_user->user_id != $solution->user_id, $this->lang['do_not_have_privilege']);
 
         $solution->fk();
         $this->assign('solution', $solution);

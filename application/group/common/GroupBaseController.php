@@ -16,7 +16,7 @@ class GroupBaseController extends UserBaseController {
     public function __construct(Request $request = null, $id) {
         parent::__construct($request);
         // 判断是否登录，如果没有登录直接跳转到登录页面
-        if (!$this->loginuser) $this->redirect('/login?redirect=' . urlencode($_SERVER['REQUEST_URI']));
+        if (!$this->login_user) $this->redirect('/login?redirect=' . urlencode($_SERVER['REQUEST_URI']));
 
         // 获取group信息
         $this->group = GroupModel::get(['id' => $id]);

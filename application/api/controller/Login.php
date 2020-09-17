@@ -19,7 +19,7 @@ use think\Session;
 
 class Login extends ApiBaseController {
     public function islogin() {
-        if ($this->loginuser) return json(['status' => 'success', 'data' => $this->loginuser]);
+        if ($this->login_user) return json(['status' => 'success', 'data' => $this->login_user]);
         return json(['status' => 'error', 'msg' => 'Is not login.']);
     }
 

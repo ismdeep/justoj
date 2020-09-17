@@ -18,14 +18,14 @@ class Uilanguage extends ApiBaseController {
         if ('' == $language) return json(['status' => 'error', 'msg' => 'Arguments error.']);
         if ('cn' == $language || 'en' == $language) {
             // 判断用户是否登录
-            if ($this->loginuser) {
-                $uilanguage = UiLanuageModel::get(['user_id' => $this->loginuser->user_id]);
+            if ($this->login_user) {
+                $uilanguage = UiLanuageModel::get(['user_id' => $this->login_user->user_id]);
                 if ($uilanguage) {
                     $uilanguage->language = $language;
                     $uilanguage->save();
                 } else {
                     $uilanguage = new UiLanuageModel();
-                    $uilanguage->user_id = $this->loginuser->user_id;
+                    $uilanguage->user_id = $this->login_user->user_id;
                     $uilanguage->language = $language;
                     $uilanguage->save();
                 }

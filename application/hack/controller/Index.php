@@ -43,7 +43,7 @@ class Index extends BaseController {
 
         $users = $where->limit(($page - 1) * $limit, $limit)->select();
         foreach ($users as $user) {
-            if ($this->is_login && $this->loginuser->user_id == $user->user_id) {
+            if ($this->is_login && $this->login_user->user_id == $user->user_id) {
                 $user->is_login = true;
             } else {
                 $user->is_login = false;

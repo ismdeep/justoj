@@ -40,10 +40,10 @@ class Index extends ContestBaseController {
             // 如果当前用户登录了，判断AC状态
             $contest_problem->ac = false;
             $contest_problem->pending = false;
-            if ($this->loginuser) {
+            if ($this->login_user) {
                 if ((new SolutionModel())->
                 where("contest_id", $contest_problem->contest_id)
-                    ->where('user_id', $this->loginuser->user_id)
+                    ->where('user_id', $this->login_user->user_id)
                     ->where('problem_id', $contest_problem->problem_id)
                     ->where('in_date', '>', $this->contest->start_time)
                     ->where('in_date', '<', $this->contest->end_time)
@@ -53,7 +53,7 @@ class Index extends ContestBaseController {
                 } else {
                     if ((new SolutionModel())->
                     where("contest_id", $contest_problem->contest_id)
-                        ->where('user_id', $this->loginuser->user_id)
+                        ->where('user_id', $this->login_user->user_id)
                         ->where('problem_id', $contest_problem->problem_id)
                         ->where('in_date', '>', $this->contest->start_time)
                         ->where('in_date', '<', $this->contest->end_time)
@@ -83,11 +83,11 @@ class Index extends ContestBaseController {
      */
     public function show_contest_enroll_page() {
         // 判断是否需要完善个人信息
-        if (null == $this->loginuser) {
+        if (null == $this->login_user) {
             $this->redirect("/login?redirect=" . urlencode("/contests/{$this->contest_id}/enroll"));
         }
 
-        $user = (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find();
+        $user = (new UserModel())->where(['user_id' => $this->login_user->user_id])->find();
 
         $this->assign('need_complete_info', false);
         if (UserModel::need_complete_info($user)) {
@@ -96,7 +96,7 @@ class Index extends ContestBaseController {
 
         // 判断是否已经注册
         if (null != (new ContestEnrollModel())->where([
-                'user_id' => $this->loginuser->user_id,
+                'user_id' => $this->login_user->user_id,
                 'contest_id' => $this->contest_id,
             ])->find()) {
             $this->redirect("/contests/{$this->contest_id}");

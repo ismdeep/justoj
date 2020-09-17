@@ -106,7 +106,7 @@ class Problem extends AdminBaseController {
         $problem->defunct = 'N';
         $problem->save();
 
-        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+        ProblemLogModel::pushByProblemObj($problem, $this->login_user->user_id);
 
         return json([
             'status' => 'success',
@@ -121,7 +121,7 @@ class Problem extends AdminBaseController {
         $problem->defunct = 'Y';
         $problem->save();
 
-        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+        ProblemLogModel::pushByProblemObj($problem, $this->login_user->user_id);
 
         return json([
             'status' => 'success',
@@ -282,7 +282,7 @@ class Problem extends AdminBaseController {
             $problem->submit = 0;
             $problem->solved = 0;
             $problem->tags = '';
-            $problem->owner_id = $this->loginuser->user_id;
+            $problem->owner_id = $this->login_user->user_id;
         } else {
             $problem_id = intval($problem_id);
             $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
@@ -302,7 +302,7 @@ class Problem extends AdminBaseController {
 //        $problem->tags = '';
         $problem->save();
 
-        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+        ProblemLogModel::pushByProblemObj($problem, $this->login_user->user_id);
 
         if ($create_folder_flag) {
             // 新建题目目录并写入样例数据
@@ -349,7 +349,7 @@ class Problem extends AdminBaseController {
             $problem->source = $source;
             $problem->time_limit = $time_limit;
             $problem->memory_limit = $memory_limit;
-            $problem->owner_id = $this->loginuser->user_id;
+            $problem->owner_id = $this->login_user->user_id;
             $problem->spj = $spj;
             $problem->save();
         } else {
@@ -365,12 +365,12 @@ class Problem extends AdminBaseController {
             $problem->source = $source;
             $problem->time_limit = $time_limit;
             $problem->memory_limit = $memory_limit;
-            $problem->owner_id = $this->loginuser->user_id;
+            $problem->owner_id = $this->login_user->user_id;
             $problem->spj = $spj;
             $problem->save();
         }
 
-        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+        ProblemLogModel::pushByProblemObj($problem, $this->login_user->user_id);
 
         // 新建题目目录并写入样例数据
         try {
@@ -495,7 +495,7 @@ class Problem extends AdminBaseController {
         $problem->tags = $tags;
         $problem->save();
 
-        ProblemLogModel::pushByProblemObj($problem, $this->loginuser->user_id);
+        ProblemLogModel::pushByProblemObj($problem, $this->login_user->user_id);
 
         (new ProblemTagModel())->where('problem_id', $problem_id)->delete();
 

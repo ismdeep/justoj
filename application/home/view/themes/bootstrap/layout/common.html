@@ -90,11 +90,11 @@
 				<li{if $nav == 'paste'} class="active"{/if}><a href="/paste">{$lang.paste_code}</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
-				{if isset($loginuser)}
+				{if isset($login_user)}
 				{if $is_administrator}
 				<li><a class="" href="/admin"><span class="glyphicon glyphicon-cog"></span> {$lang.admin_system}</a></li>
 				{/if}
-				<li><a class="" href="/profile"><span class="glyphicon glyphicon-user"></span> {$loginuser->user_id}</a></li>
+				<li><a class="" href="/profile"><span class="glyphicon glyphicon-user"></span> {$login_user->user_id}</a></li>
 				<li><a class="" onclick="logout();" href="/logout?redirect=<?php echo urlencode($_SERVER['REQUEST_URI']);?>"><span class="glyphicon glyphicon-log-out"></span> {$lang.logout}</a></li>
 				{else}
 				<li><a class="" href="/register"><span class="glyphicon glyphicon-user"></span> {$lang.register}</a></li>
@@ -172,7 +172,7 @@
 	}
 </script>
 
-{if !isset($loginuser)}
+{if !isset($login_user)}
 <script type="text/javascript">
 	$(function () {
 		if (localStorage.getItem('username') && localStorage.getItem('logout') != "1") {

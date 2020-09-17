@@ -19,8 +19,8 @@ use think\Session;
 class BaseController extends Controller {
     public $is_administrator;
     public $is_root;
-    /* @var $loginuser UserModel */
-    public $loginuser;
+    /* @var $login_user UserModel */
+    public $login_user;
     public $is_login;
 
     public $show_ui_lang;
@@ -76,15 +76,15 @@ class BaseController extends Controller {
         $this->assign('show_browser_banner', $this->show_browser_banner);
 
         // 初始化当前登录用户变量
-        $this->loginuser = null;
+        $this->login_user = null;
         $this->is_login = false;
         if (session('user')) {
-            $this->loginuser = session('user');
-            $this->loginuser = (new UserModel())->where(['user_id' => $this->loginuser->user_id])->find();
+            $this->login_user = session('user');
+            $this->login_user = (new UserModel())->where(['user_id' => $this->login_user->user_id])->find();
             $this->is_login = true;
         }
         $this->assign('is_login', $this->is_login);
-        $this->assign('loginuser', $this->loginuser);
+        $this->assign('login_user', $this->login_user);
 
         // 赋予管理员权限
         $this->is_administrator = false;
@@ -99,13 +99,13 @@ class BaseController extends Controller {
         // 设置用户UI语言
         $dicts = Config::get('lang_dict');
         $this->show_ui_lang = 'cn'; // 默认语言
-        if (!$this->loginuser) {
+        if (!$this->login_user) {
             if (Session::get('ui_language')) $this->show_ui_lang = Session::get('ui_language');
         } else {
-            $ui_language_obj = UiLanuageModel::get(['user_id' => $this->loginuser->user_id]);
+            $ui_language_obj = UiLanuageModel::get(['user_id' => $this->login_user->user_id]);
             if (!$ui_language_obj) {
                 $ui_language_obj = new UiLanuageModel();
-                $ui_language_obj->user_id = $this->loginuser->user_id;
+                $ui_language_obj->user_id = $this->login_user->user_id;
                 $ui_language_obj->language = 'en';
                 $ui_language_obj->save();
             }
@@ -122,7 +122,7 @@ class BaseController extends Controller {
         $this->assign('nav', 'home');
 
         $this->assign('need_edit_profile', false);
-        if ($this->loginuser && UserModel::need_complete_info((new UserModel())->where(['user_id' => $this->loginuser->user_id])->find())) {
+        if ($this->login_user && UserModel::need_complete_info((new UserModel())->where(['user_id' => $this->login_user->user_id])->find())) {
             $this->assign('need_edit_profile', true);
         }
     }
@@ -152,7 +152,7 @@ class BaseController extends Controller {
     }
 
     public function need_login($type = 'json') {
-        if (!$this->loginuser) {
+        if (!$this->login_user) {
             if ('json' == $type) {
                 header('Content-Type: application/json');
                 echo json_encode(['status' => 'error', 'msg' => $this->lang['not_login']]);

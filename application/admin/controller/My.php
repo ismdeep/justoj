@@ -31,7 +31,7 @@ class My extends AdminBaseController {
     public function change_password_json($newpassword = '', $newpassword2 = '') {
         intercept_json('' == $newpassword || $newpassword != $newpassword2, '新密码不可为空且两次输入的密码必须相同。');
 
-        $user = (new UserModel())->where('user_id', $this->loginuser->user_id)->find();
+        $user = (new UserModel())->where('user_id', $this->login_user->user_id)->find();
         $user->password = PasswordUtil::gen_password($newpassword);
         $user->save();
 

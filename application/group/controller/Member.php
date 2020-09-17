@@ -24,7 +24,7 @@ class Member extends GroupBaseController {
 
         // 判断当前用户是否为此班级管理员
         $is_group_manager = false;
-        if ($this->loginuser && $this->group->owner_id == $this->loginuser->user_id) $is_group_manager = true;
+        if ($this->login_user && $this->group->owner_id == $this->login_user->user_id) $is_group_manager = true;
         $this->assign('is_group_manager', $is_group_manager);
 
 
@@ -47,10 +47,10 @@ class Member extends GroupBaseController {
 
         // 判断当前用户是否为此班级管理员
         $is_group_manager = false;
-        if ($this->loginuser && $this->group->owner_id == $this->loginuser->user_id) $is_group_manager = true;
+        if ($this->login_user && $this->group->owner_id == $this->login_user->user_id) $is_group_manager = true;
         $this->assign('is_group_manager', $is_group_manager);
 
-        intercept(!$is_group_manager && $user_id != $this->loginuser->user_id, 'YOU DONT HAVE PERMISSION FOR THIS OPERATION.');
+        intercept(!$is_group_manager && $user_id != $this->login_user->user_id, 'YOU DONT HAVE PERMISSION FOR THIS OPERATION.');
         intercept('' == $user_id, 'error');
         $user = (new UserModel())->where('user_id', $user_id)->find();
         intercept(null == $user, "User not found.");

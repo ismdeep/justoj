@@ -190,7 +190,7 @@ class User extends AdminBaseController {
         intercept_json(null == $user, '用户不存在');
 
         // 权限拦截（超级管理员可以修改任何人密码，管理员只能修改普通用户密码。）
-        intercept_json(!$this->is_root && $this->loginuser->user_id != $user_id && null != (new PrivilegeModel())->where(['user_id' => $user_id, 'rightstr' => 'administrator'])->find(), '没有操作权限');
+        intercept_json(!$this->is_root && $this->login_user->user_id != $user_id && null != (new PrivilegeModel())->where(['user_id' => $user_id, 'rightstr' => 'administrator'])->find(), '没有操作权限');
 
         $user->password = PasswordUtil::gen_password($newpassword);
         $user->save();

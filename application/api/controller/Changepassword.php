@@ -24,12 +24,12 @@ class Changepassword extends ApiBaseController
     public function change_password($user_id, $password)
 	{
 		// 判断用户是否登录
-		intercept_json(null == $this->loginuser, $this->lang['not_login']);
+		intercept_json(null == $this->login_user, $this->lang['not_login']);
 		// 判断用户是否存在
 		$user = UserModel::get(['user_id' => $user_id]);
 		intercept_json(!$user, $this->lang['user_not_exists']);
 		// 判断权限
-        intercept_json(!($this->is_administrator || $user->user_id == $this->loginuser->user_id), $this->lang['do_not_have_privilege']);
+        intercept_json(!($this->is_administrator || $user->user_id == $this->login_user->user_id), $this->lang['do_not_have_privilege']);
 		// 生成新的密码
 		$user->password = PasswordUtil::gen_password($password);
 		$user->save();

@@ -29,10 +29,10 @@ class Problem extends ContestBaseController {
         $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
         $contest_problem->ac = false;
         $contest_problem->pending = false;
-        if ($this->loginuser) {
+        if ($this->login_user) {
             if (SolutionModel::
                 where("contest_id", $contest_problem->contest_id)
-                ->where('user_id', $this->loginuser->user_id)
+                ->where('user_id', $this->login_user->user_id)
                 ->where('problem_id', $contest_problem->problem_id)
                 ->where('in_date', '>', $this->contest->start_time)
                 ->where('in_date', '<', $this->contest->end_time)
@@ -42,7 +42,7 @@ class Problem extends ContestBaseController {
             } else {
                 if (SolutionModel::
                 where("contest_id", $contest_problem->contest_id)
-                    ->where('user_id', $this->loginuser->user_id)
+                    ->where('user_id', $this->login_user->user_id)
                     ->where('problem_id', $contest_problem->problem_id)
                     ->where('in_date', '>', $this->contest->start_time)
                     ->where('in_date', '<', $this->contest->end_time)
@@ -63,10 +63,10 @@ class Problem extends ContestBaseController {
             // 如果当前用户登录了，判断AC状态
             $problem->ac = false;
             $problem->pending = false;
-            if ($this->loginuser) {
+            if ($this->login_user) {
                 if (SolutionModel::
                 where("contest_id", $problem->contest_id)
-                    ->where('user_id', $this->loginuser->user_id)
+                    ->where('user_id', $this->login_user->user_id)
                     ->where('problem_id', $problem->problem_id)
                     ->where('in_date', '>', $this->contest->start_time)
                     ->where('in_date', '<', $this->contest->end_time)
@@ -76,7 +76,7 @@ class Problem extends ContestBaseController {
                 } else {
                     if ((new SolutionModel())
                         ->where("contest_id", $problem->contest_id)
-                        ->where('user_id', $this->loginuser->user_id)
+                        ->where('user_id', $this->login_user->user_id)
                         ->where('problem_id', $problem->problem_id)
                         ->where('in_date', '>', $this->contest->start_time)
                         ->where('in_date', '<', $this->contest->end_time)
@@ -106,7 +106,7 @@ class Problem extends ContestBaseController {
         if ($this->is_login) {
             $recent_solutions = (new SolutionModel())
                 ->where('contest_id', $this->contest_id)
-                ->where('user_id', $this->loginuser->user_id)
+                ->where('user_id', $this->login_user->user_id)
                 ->where('problem_id', $contest_problem->problem_id)
                 ->order('create_time', 'desc')
                 ->select();
