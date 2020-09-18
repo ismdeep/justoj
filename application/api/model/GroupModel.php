@@ -9,6 +9,7 @@
 namespace app\api\model;
 
 
+use think\Exception;
 use think\Model;
 
 /**
@@ -41,4 +42,66 @@ class GroupModel extends Model
                 break;
         }
     }
+
+    public function copy_task_from_homework($homework_id, $start_time, $end_time) {
+        /* 获取作业信息 */
+        /* @var $homework_from ContestModel */
+        $homework_from = (new ContestModel())->where('contest_id', $homework_id)->find();
+        if (!$homework_from) {
+            throw new Exception("作业不存在");
+        }
+
+        /* 创建作业 */
+        $homework = new ContestModel();
+        $homework->title = $homework_from->title;
+        $homework->start_time = $start_time;
+        $homework->end_time = $end_time;
+        $homework->defunct = 'N';
+        $homework->description = $homework_from->description;
+        $homework->private = 0;
+        $homework->type = ContestModel::TYPE_HOMEWORK;
+        $homework->save();
+
+        /* 获取作业题目列表 */
+        $homework_from_problems = (new ContestProblemModel())->where('contest_id', $homework_from->contest_id)->select();
+
+        $problem_index = 0;
+        foreach ($homework_from_problems as $homework_from_problem) {
+            $homework_problem = new ContestProblemModel();
+            $homework_problem->problem_id = $homework_from_problem->problem_id;
+            $homework_problem->contest_id = $homework->contest_id;
+            $homework_problem->num = $problem_index;
+            $homework_problem->save();
+            $problem_index++;
+        }
+
+        /* 赋予当前用户于比赛管理权限 */
+        $privilege = new PrivilegeModel();
+        $privilege->user_id = $this->owner_id;
+        $privilege->rightstr = 'm' . $homework->contest_id;
+        $privilege->defunct = 'N';
+        $privilege->save();
+
+        // 关联比赛与班级
+        $group_task = new GroupTaskModel();
+        $group_task->group_id = $this->id;
+        $group_task->title = $homework->title;
+        $group_task->contest_id = $homework->contest_id;
+        $group_task->save();
+    }
+
+    public function copy_tasks_from_group($group_id, $start_time, $end_time) {
+        /* @var $group_from GroupModel */
+        $group_from = (new GroupModel())->where('id', $group_id)->find();
+        if (!$group_from) {
+            throw new Exception("班级不存在");
+        }
+
+        $group_tasks = (new GroupTaskModel())->where(['group_id' => $group_from->id])->select();
+        foreach ($group_tasks as $group_task) {
+            /* @var $group_task GroupTaskModel */
+            $this->copy_task_from_homework($group_task->contest_id, $start_time, $end_time);
+        }
+    }
+
 }

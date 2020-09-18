@@ -68,11 +68,7 @@ class Contest extends AdminBaseController {
         $contest->langmask = '*';
         $contest->private = 0;
         $contest->password = '';
-        $contest->type = 1; /* 0 比赛    1 作业 */
-        if ($this->is_root) {
-            $contest->type = 0;
-        }
-
+        $contest->type = ContestModel::TYPE_CONTEST; /* 0 比赛    1 作业 */
 
         $allowed_langs_all = $this->allowed_langs();
         for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
@@ -178,7 +174,7 @@ class Contest extends AdminBaseController {
         if ('' == $contest_id) {
             $contest = new ContestModel(); // 创建比赛
             $contest->defunct = 'N';
-            $contest->type = 1;
+            $contest->type = ContestModel::TYPE_HOMEWORK;
         } else {
             // 判断contest实体是否存在
             $contest = ContestModel::get(['contest_id' => $contest_id]);

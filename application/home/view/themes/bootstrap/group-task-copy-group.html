@@ -1,0 +1,131 @@
+{extend name="admin@base" /}
+{block name="content"}
+<div class="x-body">
+    <form class="layui-form" id="homework-copy-from-group-form">
+        <input type="text" value="{$group->id}" id="group-id" hidden>
+
+        <div class="layui-form-item">
+            <input type="text" id="from-group-id" hidden>
+            <label class="layui-form-label">
+                {$lang.group}
+            </label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <input type="text" name="group_search" list="groups" autocomplete="off"
+                           placeholder="请输入名称搜索班级" class="layui-input" id="group_search">
+                    <div class="greetings" id="groups">
+                        <ul id="groupids"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div>
+                <label class="layui-form-label">
+                    <?php echo ['en' => 'Begin Time', 'cn' => '开始时间'][$show_ui_lang];?>
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="contest-begin-time" class="layui-input">
+                </div>
+            </div>
+            <div>
+                <label class="layui-form-label">
+                    <?php echo ['en' => 'End Time', 'cn' => '结束时间'][$show_ui_lang];?>
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="contest-end-time" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="add" lay-submit="">
+                {$lang.submit}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="/static/js/date_utils.js"></script>
+<script type="text/javascript">
+    /* 题目预览 */
+    function show_preview() {
+        let data = {'problem_ids': $('#problem-ids').val()};
+        $.post('/api/problem/details_by_list',data,function(d){
+            if ('success' === d.status) {
+                let str = '';
+                for (let i = 0; i < d.data.length; i++) {
+                    str += '<tr>' +
+                        '<td>'+d.data[i].problem_id+'</td>' +
+                        '<td>'+d.data[i].title+'</td>' +
+                        '</tr>';
+                }
+                $('#task-list').html(str);
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+    }
+
+    $(function () {
+        laydate.render({
+            elem: '#contest-begin-time', type: 'datetime'
+        });
+        laydate.render({
+            elem: '#contest-end-time', type: 'datetime'
+        });
+
+        $('#contest-begin-time').val(getNowFormatDate2(0));
+        $('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
+    });
+
+    $('#homework-copy-from-group-form').on('submit', function () {
+        let postData = {
+            'group_id': $('#from-group-id').val(),
+            'start_time': $('#contest-begin-time').val(),
+            'end_time': $('#contest-end-time').val(),
+        };
+
+        $.post('/groups/{$group->id}/tasks/copy/group/json', postData, function(d){
+            if (d.code === 0) {
+                layer.alert('添加成功', function(){
+                    parent.location.reload();
+                });
+            } else {
+                layer.alert(d.msg);
+            }
+        }, 'json');
+
+        return false;
+    });
+
+    $("#group_search").keyup(function () {
+        $("#groups").show();
+        let search_key = $("#group_search").val();
+        if (search_key !== '') {
+            $.get('/api/group/search_json?search_key=' + search_key, function (d) {
+                var agents = d.data;
+                $('#groupids li').remove();
+                for (var i in agents) {
+                    var li = $('<li value="' + agents[i].id + '"></li>');
+                    $(li).html(agents[i].name);
+                    $('#groupids').append(li);
+                }
+            }, 'json');
+        }
+    });
+    $("#groupids").on("click", "li", function () {
+        let groups = $("#groups");
+        groups.show();
+        var group_list = $("#groupids li");
+        var index = $(this).index();//获取li的下标
+        var Tresult = group_list.eq(index).text();
+        $("#group_search").val(Tresult);
+        groups.hide();
+        $('#from-group-id').val(group_list.eq(index).val());
+    });
+</script>
+{/block}

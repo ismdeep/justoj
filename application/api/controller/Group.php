@@ -132,100 +132,7 @@ class Group extends ApiBaseController {
         $group->description = $description;
         $group->save();
 
-        // 给当前用户添加一个加入班级之记录
-//		$group_join = new GroupJoinModel();
-//		$group_join->user_id = $this->login_user->user_id;
-//		$group_join->group_id = $group->id;
-//		$group_join->status = 1;
-//		$group_join->save();
-
         return json(['status' => 'success']);
-    }
-
-
-    /**
-     * 添加比赛作业
-     * @param $group_id
-     * @param $title
-     * @param $begin_time
-     * @param $end_time
-     * @param $description
-     * @param $problem_ids
-     * @return \think\response\Json
-     * @throws \think\exception\DbException
-     */
-    public function add_task($group_id, $title, $begin_time, $end_time, $description, $problem_ids) {
-        // 判断group_id
-        $group = GroupModel::get(['id' => $group_id]);
-        if (!$group) return json(['status' => 'error', 'msg' => 'Group not found.']);
-        // 判断当前用户是否登录已经是否为此班级之管理员
-        if (!$this->login_user) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
-        if ($group->owner_id != $this->login_user->user_id) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
-        // 判断title
-        if ('' == $title) return json(['status' => 'error', 'msg' => '标题不可为空']);
-        // 判断begin_time和end_time
-        $patten = "/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])(\s+(0?[0-9]|1[0-9]|2[0-3])\:(0?[0-9]|[1-5][0-9])\:(0?[0-9]|[1-5][0-9]))?$/";
-        if (!preg_match($patten, $begin_time)) {
-            return json(['status' => 'error', 'msg' => '请选择开始时间']);
-        }
-
-        if (!preg_match($patten, $begin_time)) {
-            return json(['status' => 'error', 'msg' => '请选择结束时间']);
-        }
-
-
-        // 判断problem_ids是否合法
-        if (strchr($problem_ids, '，')) {
-            return json(['status' => 'error', 'msg' => '请使用英文逗号,']);
-        }
-
-        // 判断这些题目是否都存在
-        $pids = explode(',', $problem_ids);
-        $problems = array();
-        foreach ($pids as $pid) {
-            $problem = ProblemModel::get(['problem_id' => $pid]);
-            if (!$problem) {
-                return json(['status' => 'error', 'msg' => 'Problem not exists. id: ' . $pid]);
-            }
-            array_push($problems, $problem);
-        }
-
-        // 创建比赛
-        $contest = new ContestModel();
-        $contest->title = $title;
-        $contest->start_time = $begin_time;
-        $contest->end_time = $end_time;
-        $contest->defunct = 'N';
-        $contest->description = $description;
-        $contest->private = 0;
-        $contest->type = 1;
-        $contest->save();
-
-        $problem_index = 0;
-        foreach ($problems as $p) {
-            $contest_problem = new ContestProblemModel();
-            $contest_problem->problem_id = $p->problem_id;
-            $contest_problem->contest_id = $contest->contest_id;
-            $contest_problem->num = $problem_index;
-            $contest_problem->save();
-            $problem_index++;
-        }
-
-        // 赋予当前用户于比赛管理权限
-        $privilege = new PrivilegeModel();
-        $privilege->user_id = $this->login_user->user_id;
-        $privilege->rightstr = 'm' . $contest->contest_id;
-        $privilege->defunct = 'N';
-        $privilege->save();
-
-        // 关联比赛与班级
-        $group_task = new GroupTaskModel();
-        $group_task->group_id = $group_id;
-        $group_task->title = $title;
-        $group_task->contest_id = $contest->contest_id;
-        $group_task->save();
-
-        return json(['status' => 'success', 'msg' => 'success']);
     }
 
     /**
@@ -346,4 +253,22 @@ class Group extends ApiBaseController {
         $notification = GroupAnnounceModel::get(['id' => $notification_id]);
         return json(['status' => 'success', 'data' => $notification]);
     }
+
+    /**
+     * 搜索班级
+     *
+     * @param string $search_key
+     */
+    public function search_json($search_key = '') {
+        $groups = (new GroupModel())->where('name', 'like', "%{$search_key}%")
+            ->whereOr('id', $search_key)
+            ->limit(10)
+            ->select();
+        foreach ($groups as $group) {
+            /* @var $group GroupModel */
+            $group->password = '******';
+        }
+        return json(['code' => 0, 'data' => $groups]);
+    }
+
 }
