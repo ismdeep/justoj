@@ -1,0 +1,138 @@
+{extend name="admin@base" /}
+{block name="content"}
+<div class="x-body">
+    <form class="layui-form" id="homework-create-form">
+        <input type="text" value="{$group->id}" id="group-id" hidden>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                {$lang.title}
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="homework-title" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div>
+                <label class="layui-form-label">
+                    <?php echo ['en' => 'Begin Time', 'cn' => '开始时间'][$show_ui_lang];?>
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="contest-begin-time" class="layui-input">
+                </div>
+            </div>
+            <div>
+                <label class="layui-form-label">
+                    <?php echo ['en' => 'End Time', 'cn' => '结束时间'][$show_ui_lang];?>
+                </label>
+                <div class="layui-input-inline">
+                    <input type="text" id="contest-end-time" class="layui-input">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                {$lang.description}
+            </label>
+            <div class="layui-input-block">
+                <textarea class="layui-textarea" name="description" id="description" rows="6"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+                {$lang.problem} ID
+            </label>
+            <div class="layui-input-inline">
+                <input type="text" id="problem-ids" class="layui-input" placeholder="<?php echo ['en' => 'eg: 1000,1001', 'cn' => '例如：1000,1001'][$show_ui_lang];?>">
+            </div>
+
+            <div class="layui-input-inline">
+                <a href="javascript:" class="layui-btn layui-btn-normal" onclick="show_preview();"><?php echo ['en' => 'Preview', 'cn' => '预览'][$show_ui_lang];?></a>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label"></label>
+            <div class="layui-input-block">
+                <table class="layui-table">
+                    <thead>
+                    <tr>
+                        <th>{$lang.problem}ID</th>
+                        <th>{$lang.title}</th>
+                    </tr>
+                    </thead>
+                    <tbody id="task-list">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">
+            </label>
+            <button class="layui-btn" lay-filter="add" lay-submit="">
+                {$lang.submit}
+            </button>
+        </div>
+    </form>
+</div>
+
+<script src="/static/js/date_utils.js"></script>
+<script type="text/javascript">
+    /* 题目预览 */
+    function show_preview() {
+        let data = {'problem_ids': $('#problem-ids').val()};
+        $.post('/api/problem/details_by_list',data,function(d){
+            if ('success' === d.status) {
+                let str = '';
+                for (let i = 0; i < d.data.length; i++) {
+                    str += '<tr>' +
+                        '<td>'+d.data[i].problem_id+'</td>' +
+                        '<td>'+d.data[i].title+'</td>' +
+                        '</tr>';
+                }
+                $('#task-list').html(str);
+            }else{
+                layer.alert(d.msg);
+            }
+        },'json');
+    }
+
+    $(function () {
+        laydate.render({
+            elem: '#contest-begin-time', type: 'datetime'
+        });
+        laydate.render({
+            elem: '#contest-end-time', type: 'datetime'
+        });
+
+        $('#contest-begin-time').val(getNowFormatDate2(0));
+        $('#contest-end-time').val(getNowFormatDate2(90 * 86400000));
+    });
+
+    $('#homework-create-form').on('submit', function () {
+        let postData = {
+            'title': $('#homework-title').val(),
+            'start_time': $('#contest-begin-time').val(),
+            'end_time': $('#contest-end-time').val(),
+            'description': $('#description').val(),
+            'problem_ids': $('#problem-ids').val()
+        };
+
+        $.post('/groups/{$group->id}/tasks/create/json', postData, function(d){
+            if (d.code === 0) {
+                layer.alert('添加成功', function(){
+                    parent.location.reload();
+                });
+            } else {
+                layer.alert(d.msg);
+            }
+        }, 'json');
+
+        return false;
+    });
+</script>
+{/block}

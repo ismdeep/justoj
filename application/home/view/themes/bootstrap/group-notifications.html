@@ -4,7 +4,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
 
 <div class="container">
-	{if $group->owner_id == $login_user->user_id}
+	{if $is_group_manager}
 	<p>
 		<button class="btn btn-success" onclick="$('#notification-id').val('');$('#addNotificationModal').modal('show');"><span class="glyphicon glyphicon-plus"></span> {$lang.add_notification}</button>
 	</p>
@@ -14,9 +14,9 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			{$notification->title}
-			{if $group->owner_id == $login_user->user_id}
-			<a href="javascript:;" class="glyphicon glyphicon-edit" onclick="edit_notification({$notification->id});">修改</a>
-			<a href="javascript:;" class="glyphicon glyphicon-remove" onclick="remove_notification({$notification->id}, '{$notification->title}');">删除</a>
+			{if $is_group_manager}
+			<a href="javascript:" class="glyphicon glyphicon-edit" onclick="edit_notification({$notification->id});">修改</a>
+			<a href="javascript:" class="glyphicon glyphicon-remove" onclick="remove_notification({$notification->id}, '{$notification->title}');">删除</a>
 			{/if}
 		</div>
 		<div class="panel-body">

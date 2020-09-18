@@ -79,7 +79,7 @@ class Problem extends ApiBaseController {
      */
     public function details_by_list($problem_ids = '') {
         if ('' == $problem_ids) {
-            return json(['status' => 'success', 'data' => []]);
+            return json(['status' => 'error', 'msg' => '题目ID列表不可为空']);
         }
         // 判断输入字符合法性
         if (strchr($problem_ids, '，')) {

@@ -30,14 +30,19 @@ Route::rule('/problems/:id',             'home/problem/get_problem_detail');
 Route::rule('/problems',                 'home/problem/get_problem_list');
 Route::rule('/users/:user_id',           'home/user/get_user_detail');
 
-Route::rule('/groups/:id/notifications', 'group/notification/show_group_notifications');
+Route::rule('/groups/:id/notifications',            'group/notification/show_group_notifications');
 Route::rule('/groups/:id/members/:user_id/source_codes/download', 'group/member/download_member_source_code');
-Route::rule('/groups/:id/members',       'group/member/show_group_members');
-Route::rule('/groups/:id/tasks',         'group/task/show_group_tasks');
-Route::rule('/groups/:id/join',          'group/index/show_group_join_page');
-Route::rule('/groups/:id',               'group/index/show_group_detail');
-
-Route::rule('/groups',                   'home/group/get_group_list');
+Route::rule('/groups/:id/members',                  'group/member/show_group_members');
+Route::rule('/groups/:id/tasks/create/json',        'group/task/create_homework_page_json');
+Route::rule('/groups/:id/tasks/create',             'group/task/create_homework_page');
+Route::rule('/groups/:id/tasks/copy/group/json',    'group/task/copy_homeworks_from_group_json');
+Route::rule('/groups/:id/tasks/copy/group',         'group/task/copy_homeworks_from_group');
+Route::rule('/groups/:id/tasks/copy/homework/json', 'group/task/copy_homework_from_homework_json');
+Route::rule('/groups/:id/tasks/copy/homework',      'group/task/copy_homework_from_homework');
+Route::rule('/groups/:id/tasks',                    'group/task/show_group_tasks');
+Route::rule('/groups/:id/join',                     'group/index/show_group_join_page');
+Route::rule('/groups/:id',                          'group/index/show_group_detail');
+Route::rule('/groups',                              'home/group/get_group_list');
 
 Route::rule('/contests/:id/rank/xls',      'contest/rank/export_xls');
 Route::rule('/contests/:id/rank',          'contest/rank/show_rank_page');

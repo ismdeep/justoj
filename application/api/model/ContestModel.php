@@ -34,6 +34,9 @@ use think\Model;
 class ContestModel extends Model {
     protected $table = 'contest';
 
+    const TYPE_CONTEST = 0;
+    const TYPE_HOMEWORK = 1;
+
     public function fk() {
         // 比赛状态有：未开始，进行中，已结束
         $this->status_text = '';
