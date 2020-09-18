@@ -37,6 +37,10 @@ class ContestModel extends Model {
     const TYPE_CONTEST = 0;
     const TYPE_HOMEWORK = 1;
 
+    const PRIVATE_PUBLIC = 0;
+    const PRIVATE_PRIVATE = 1;
+
+
     public function fk() {
         // 比赛状态有：未开始，进行中，已结束
         $this->status_text = '';
@@ -126,5 +130,22 @@ class ContestModel extends Model {
      */
     public function get_contest_problems() {
         return (new ContestProblemModel())->where(['contest_id' => $this->contest_id])->order('num', 'asc')->select();
+    }
+
+    /**
+     * 设置比赛/作业的问题列表
+     *
+     * @param $problem_ids
+     */
+    public function set_problems($problem_ids) {
+        $problem_index = 0;
+        foreach ($problem_ids as $problem_id) {
+            $homework_problem = new ContestProblemModel();
+            $homework_problem->problem_id = $problem_id;
+            $homework_problem->contest_id = $this->contest_id;
+            $homework_problem->num = $problem_index;
+            $homework_problem->save();
+            $problem_index++;
+        }
     }
 }

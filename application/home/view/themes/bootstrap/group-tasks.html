@@ -5,7 +5,6 @@
 
 
 <div class="container">
-
     <div class="row">
         <div class="container">
             {if $group->owner_id == $login_user->user_id}
@@ -21,11 +20,12 @@
         <thead>
         <tr>
             <th>{$lang.title}</th>
-            {if $group->owner_id == $login_user->user_id}
-            <th><?php echo ['en' => 'Member Complete Rate', 'cn' => '学生完成率'][$show_ui_lang];?></th>
+            <th>{if $is_group_manager}
+            <?php echo ['en' => 'Member Complete Rate', 'cn' => '学生完成率'][$show_ui_lang];?>
             {else}
-            <th>{$lang.status}</th>
+            {$lang.status}
             {/if}
+            </th>
             <th></th>
             <th>{$lang.operation}</th>
         </tr>
@@ -36,12 +36,10 @@
             <td><a href="/contests/{$task->contest_id}" target="_blank">{$task->contest->title}</a></td>
             <td>
                 <div class="progress">
-                    {if $group->owner_id == $login_user->user_id}
+                    {if $is_group_manager}
                     {if $task->ac_member_cnt == $group_member_cnt}
                     {if 0 == $group_member_cnt}
-                    <div class="progress-bar"
-                         style="width: 0%;">
-                    </div>
+                    <div class="progress-bar progress-bar-success"></div>
                     {else}
                     <div class="progress-bar progress-bar-success" style="width: {$task->ac_member_cnt * 100.00 / $group_member_cnt}%;"></div>
                     {/if}
@@ -82,7 +80,7 @@
                 </div>
             </td>
             <td>
-                {if $group->owner_id == $login_user->user_id}
+                {if $is_group_manager}
                 {$task->ac_member_cnt} / {$group_member_cnt}
                 {else}
                 {$task->contest->login_user_ac_cnt} / {$task->contest->problem_cnt}
@@ -90,10 +88,14 @@
             </td>
             <td>
                 <a class="btn btn-sm btn-success"
-                   href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">下载成绩</a>
-                {if $group->owner_id == $login_user->user_id}
-                <a class="btn btn-sm btn-danger" onclick="delete_task('{$task->contest->title}', {$task->id});"
-                   href="javascript:">删除</a>
+                   href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">
+                    <span class="glyphicon glyphicon-download"></span> <?php echo ['en' => 'Download', 'cn' => '下载成绩'][$show_ui_lang];?>
+                </a>
+                {if $is_group_manager}
+                <a class="btn btn-sm btn-success" href="javascript:" onclick="open_edit_contest('{$task->contest_id}');"><span class="glyphicon glyphicon-edit"></span> {$lang.edit}</a>
+                <a class="btn btn-sm btn-danger" href="javascript:" onclick="layer.alert('暂不支持');">
+                    <span class="glyphicon glyphicon-trash"></span> {$lang.delete}
+                </a>
                 {/if}
             </td>
         </tr>
@@ -101,95 +103,6 @@
         </tbody>
     </table>
 </div>
-
-
-<!--添加作业之模态框 begin-->
-<div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-                <h4 class="modal-title" id="editContestModalLabel">{$lang.add_homework}</h4>
-            </div>
-            <div class="modal-body">
-                <div data-spy="scroll" data-target="#navbar-edit-contest" data-offset="0"
-                     class="scrollspy-edit-contest">
-                    <div class="card-block">
-                        <div class="form-group row">
-                            <label for="contest-title" class="col-xs-2 col-form-label">{$lang.title}</label>
-                            <div class="col-xs-10">
-                                <input class="form-control" type="text" id="contest-title"
-                                       placeholder="eg: 信息安全111班-数据结构-栈">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="contest-begin-time" class="col-xs-2 col-form-label">{$lang.start_time}</label>
-                            <div class="col-xs-10">
-                                <input class="form-control" type="text" id="contest-begin-time"
-                                       placeholder="请选择开始时间">
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label for="contest-end-time" class="col-xs-2 col-form-label">{$lang.end_time}</label>
-                            <div class="col-xs-10">
-                                <input class="form-control" type="text" id="contest-end-time"
-                                       placeholder="请选择结束时间">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="contest-description-edit"
-                               class="col-xs-2 col-form-label">{$lang.description}</label>
-                        <div class="col-xs-10">
-							<textarea class="form-control" name="description" id="contest-description-edit" rows="5"
-                                      data-original-title="" title=""></textarea>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <label for="contest-description-edit" class="col-xs-2 col-form-label">{$lang.problem}</label>
-                        <div class="col-xs-7">
-                            <input class="form-control" type="text" id="problem-ids"
-                                   placeholder="eg: 1000,1001">
-                        </div>
-                        <div class="col-xs-3">
-                            <a class="btn btn-success" href="javascript:;" onclick="preview_problems()">{$lang.preview_problems}</a>
-                        </div>
-                    </div>
-                </div>
-                <h4 id="panel-problems"></h4>
-                <div class="card-block" id="card-problems">
-                    <div class="alert alert-warning" id="info-problem-set-fixed" hidden>
-                        You can't change problem set after contest starts.
-                    </div>
-
-                    <table id="addTable" class="sorted_table table table-hover">
-                        <thead>
-                        <tr>
-                            <th>{$lang.problem_id}</th>
-                            <th>{$lang.title}</th>
-                        </tr>
-                        </thead>
-                        <tbody id="task-list">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <div class="modal-footer">
-                <div class="alert alert-danger" role="alert" id="edit-alert" style="display: none"></div>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="btn-confirm" onclick="add_task()">Confirm</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--添加作业之模态框 end-->
 
 <script type="text/javascript">
     function open_create_homework_page() {
@@ -237,6 +150,15 @@
                 layer.closeAll();
                 open_copy_homework_from_homework();
             },
+        });
+    }
+
+    function open_edit_contest(contest_id) {
+        layer.open({
+            type: 2,
+            title: '复制作业',
+            area: ['800px', '600px'],
+            content: '/admin/contest/edit?contest_id=' + contest_id
         });
     }
 </script>

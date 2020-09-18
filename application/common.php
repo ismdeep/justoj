@@ -55,3 +55,8 @@ function paste_allowed_langs() {
         'sql' => 'SQL'
     ];
 }
+
+function datetime_human_valid($datetime_str) {
+    $patten = "/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])(\s+(0?[0-9]|1[0-9]|2[0-3])\:(0?[0-9]|[1-5][0-9])\:(0?[0-9]|[1-5][0-9]))?$/";
+    return preg_match($patten, $datetime_str);
+}

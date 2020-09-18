@@ -64,16 +64,13 @@ class GroupModel extends Model
 
         /* 获取作业题目列表 */
         $homework_from_problems = (new ContestProblemModel())->where('contest_id', $homework_from->contest_id)->select();
-
-        $problem_index = 0;
+        $problem_ids = [];
         foreach ($homework_from_problems as $homework_from_problem) {
-            $homework_problem = new ContestProblemModel();
-            $homework_problem->problem_id = $homework_from_problem->problem_id;
-            $homework_problem->contest_id = $homework->contest_id;
-            $homework_problem->num = $problem_index;
-            $homework_problem->save();
-            $problem_index++;
+            /* @var $homework_from_problem ContestProblemModel */
+            $problem_ids []= $homework_from_problem->problem_id;
         }
+
+        $homework->set_problems($problem_ids);
 
         /* 赋予当前用户于比赛管理权限 */
         $privilege = new PrivilegeModel();
