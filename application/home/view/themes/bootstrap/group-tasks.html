@@ -88,7 +88,7 @@
             </td>
             <td>
                 <a class="btn btn-sm btn-success"
-                   href="/contest/rank/export_group_contest_xls?id={$task->contest->contest_id}&group_id={$group->id}">
+                   href="/contests/{$task->contest->contest_id}/rank/xls">
                     <span class="glyphicon glyphicon-download"></span> <?php echo ['en' => 'Download', 'cn' => '下载成绩'][$show_ui_lang];?>
                 </a>
                 {if $is_group_manager}
