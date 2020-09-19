@@ -35,7 +35,10 @@ class Group extends AdminBaseController {
             'owner_id' => $this->login_user->user_id,
             'deleted' => 0
         ];
-        $groups = (new GroupModel())->where($where)->limit(($page - 1) * $limit, $limit)->select();
+        $groups = (new GroupModel())
+            ->where($where)
+            ->order('id', 'desc')
+            ->limit(($page - 1) * $limit, $limit)->select();
         $count = (new GroupModel())->where($where)->count();
         foreach ($groups as $group) {
             $group->fk();
