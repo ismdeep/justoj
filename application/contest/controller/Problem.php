@@ -120,7 +120,7 @@ class Problem extends ContestBaseController {
 
         $this->assign('contest_problems', $contest_problems);
         $this->assign('allowed_langs', $allowed_langs);
-        return view($this->theme_root . '/contest-problem');
+        return view('./contest-problem');
     }
 
 }

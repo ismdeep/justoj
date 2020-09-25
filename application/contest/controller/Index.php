@@ -70,7 +70,7 @@ class Index extends ContestBaseController {
         $this->assign('enroll_count', (new ContestEnrollModel())->where(['contest_id' => $this->contest_id])->count());
         $this->assign('contest_problems', $contest_problems);
         $this->assign('contest', $this->contest);
-        return view($this->theme_root . '/contest');
+        return view('./contest');
     }
 
     /**
@@ -102,7 +102,7 @@ class Index extends ContestBaseController {
             $this->redirect("/contests/{$this->contest_id}");
         }
 
-        return view($this->theme_root . '/contest-enroll');
+        return view('./contest-enroll');
     }
 
 }
