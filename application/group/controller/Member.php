@@ -30,7 +30,7 @@ class Member extends GroupBaseController {
 
         $this->assign('members', $members);
         $this->assign('group', $this->group);
-        return view($this->theme_root . '/group-members');
+        return view('./group-members');
     }
 
 

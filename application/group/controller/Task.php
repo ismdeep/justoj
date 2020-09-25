@@ -61,12 +61,12 @@ class Task extends GroupBaseController {
 
         }
         $this->assign('tasks', $tasks);
-        return view($this->theme_root . '/group-tasks');
+        return view('./group-tasks');
     }
 
     public function create_homework_page() {
         intercept(!$this->is_group_manager, 'Access Denied');
-        return view($this->theme_root . '/group-task-create');
+        return view('./group-task-create');
     }
 
     /**
@@ -137,7 +137,7 @@ class Task extends GroupBaseController {
 
     public function copy_homeworks_from_group() {
         intercept(!$this->is_group_manager, 'Access Denied');
-        return view($this->theme_root . '/group-task-copy-group');
+        return view('./group-task-copy-group');
     }
 
     /**
@@ -163,7 +163,7 @@ class Task extends GroupBaseController {
 
     public function copy_homework_from_homework() {
         intercept(!$this->is_group_manager, 'Access Denied');
-        return view($this->theme_root . '/group-task-copy-homework');
+        return view('./group-task-copy-homework');
     }
 
     /**

@@ -14,6 +14,6 @@ class Notification extends GroupBaseController {
 
         $notifications = GroupAnnounceModel::all(['group_id' => $this->group->id]);
         $this->assign('notifications', $notifications);
-        return view($this->theme_root . '/group-notifications');
+        return view('./group-notifications');
     }
 }
