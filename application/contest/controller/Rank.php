@@ -119,7 +119,7 @@ class Rank extends ContestBaseController {
 
         $this->assign('contest_problems', $contest_problems);
         $this->assign('users', $users);
-        return view($this->theme_root . '/contest-rank');
+        return view('./contest-rank');
     }
 
     /**

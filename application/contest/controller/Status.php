@@ -90,7 +90,7 @@ class Status extends ContestBaseController {
             }
             $solutions->appends('run_id', $run_id);
             $this->assign('solutions', $solutions);
-            return view($this->theme_root . '/contest-status');
+            return view('./contest-status');
         }
         // 获取所有题目列表
 
@@ -124,7 +124,6 @@ class Status extends ContestBaseController {
         $solutions->appends('language', $language);
 
         $this->assign('solutions', $solutions);
-        return view($this->theme_root . '/contest-status');
+        return view('./contest-status');
     }
-
 }
