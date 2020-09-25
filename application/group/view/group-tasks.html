@@ -26,7 +26,6 @@
             <?php echo ['en' => 'My Status', 'cn' => '我的状态'][$show_ui_lang];?>
             {/if}
             </th>
-            <th></th>
             <th>{$lang.status}</th>
             <th>{$lang.operation}</th>
         </tr>
@@ -38,54 +37,11 @@
             <td>
                 <div class="progress">
                     {if $is_group_manager}
-                    {if $task->ac_member_cnt == $group_member_cnt}
-                    {if 0 == $group_member_cnt}
-                    <div class="progress-bar progress-bar-success"></div>
+                    {$task->avg_progress_html}
                     {else}
-                    <div class="progress-bar progress-bar-success" style="width: {$task->ac_member_cnt * 100.00 / $group_member_cnt}%;"></div>
-                    {/if}
-                    {else}
-                    {if 0 == $group_member_cnt}
-                    <div class="progress-bar"
-                         style="width: 0%;">
-                    </div>
-                    {else}
-                    <div class="progress-bar"
-                         style="width: {$task->ac_member_cnt * 100.00 / $group_member_cnt}%;">
-                    </div>
-                    {/if}
-                    {/if}
-                    {else}
-                    {if $task->contest->login_user_ac_cnt == $task->contest->problem_cnt}
-                    {if $task->contest->problem_cnt == 0}
-                    <div class="progress-bar"
-                         style="width: 0%;">
-                    </div>
-                    {else}
-                    <div class="progress-bar progress-bar-success"
-                         style="width: {$task->contest->login_user_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
-                    </div>
-                    {/if}
-                    {else}
-                    {if 0 == $task->contest->problem_cnt}
-                    <div class="progress-bar"
-                         style="width: 0%;">
-                    </div>
-                    {else}
-                    <div class="progress-bar"
-                         style="width: {$task->contest->login_user_ac_cnt * 100.00 / $task->contest->problem_cnt}%;">
-                    </div>
-                    {/if}
-                    {/if}
+                    {$task->login_user_progress_html}
                     {/if}
                 </div>
-            </td>
-            <td>
-                {if $is_group_manager}
-                {$task->ac_member_cnt} / {$group_member_cnt}
-                {else}
-                {$task->contest->login_user_ac_cnt} / {$task->contest->problem_cnt}
-                {/if}
             </td>
             <td>
                 <div class="row">
