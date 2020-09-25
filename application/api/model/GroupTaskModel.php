@@ -27,7 +27,19 @@ use think\Model;
 class GroupTaskModel extends Model {
     protected $table = 'group_task';
 
-    public function getProblemIds() {
+    public function get_start_time() {
+        /* @var $contest ContestModel */
+        $contest = (new ContestModel())->where('contest_id', $this->contest_id)->find();
+        return $contest->start_time;
+    }
+
+    public function get_end_time() {
+        /* @var $contest ContestModel */
+        $contest = (new ContestModel())->where('contest_id', $this->contest_id)->find();
+        return $contest->end_time;
+    }
+
+    public function get_problem_ids() {
         $problem_ids = [];
         $contest_problems = (new ContestProblemModel())->where('contest_id', $this->contest_id)->select();
         foreach ($contest_problems as $contest_problem) {
@@ -41,10 +53,12 @@ class GroupTaskModel extends Model {
      * 获取班级平均完成题目数
      */
     public function getTotalDoneCnt() {
-        /* @todo 需要完善只筛选在作业合法时间段提交的完成数量 */
-        $problem_ids = $this->getProblemIds();
+        $problem_ids = $this->get_problem_ids();
+        $start_time = $this->get_start_time();
+        $end_time = $this->get_end_time();
         return (new SolutionModel())
             ->where('contest_id', $this->contest_id)
+            ->whereBetween('in_date', [$start_time, $end_time])
             ->whereIn('problem_id', $problem_ids)
             ->where('result', SolutionModel::RESULT_AC)
             ->group('problem_id,user_id')
@@ -59,12 +73,13 @@ class GroupTaskModel extends Model {
      * @throws \think\Exception
      */
     public function getDoneCntByUserId($user_id = '') {
-        /* @todo 需要完善只筛选在作业合法时间段提交的完成数量 */
-        /* 获取当前作业题目ID */
-        $problem_ids = $this->getProblemIds();
+        $problem_ids = $this->get_problem_ids();
+        $start_time = $this->get_start_time();
+        $end_time = $this->get_end_time();
         return (new SolutionModel())
             ->where('contest_id', $this->contest_id)
             ->whereIn('problem_id', $problem_ids)
+            ->whereBetween('in_date', [$start_time, $end_time])
             ->where('user_id', $user_id)
             ->where('result', SolutionModel::RESULT_AC)
             ->group('problem_id')
@@ -79,5 +94,4 @@ class GroupTaskModel extends Model {
             ->where('contest_id', $this->contest_id)
             ->count();
     }
-
 }

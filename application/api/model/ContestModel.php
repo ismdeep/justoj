@@ -44,7 +44,6 @@ class ContestModel extends Model {
     const STATUS_RUNNING = 1;
     const STATUS_ENDED = 2;
 
-
     public function get_status() {
         $start_time_unix = strtotime($this->start_time);
         $end_time_unix = strtotime($this->end_time);
