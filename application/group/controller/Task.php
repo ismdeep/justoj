@@ -5,12 +5,10 @@ namespace app\group\controller;
 
 
 use app\api\model\ContestModel;
-use app\api\model\ContestProblemModel;
 use app\api\model\GroupJoinModel;
 use app\api\model\GroupTaskModel;
 use app\api\model\PrivilegeModel;
 use app\api\model\ProblemModel;
-use app\api\model\SolutionModel;
 use app\group\common\GroupBaseController;
 use think\Exception;
 
@@ -38,30 +36,47 @@ class Task extends GroupBaseController {
         }
         $group_member_cnt = sizeof($users);
 
-        $this->assign('group_member_cnt', $group_member_cnt);
-
         foreach ($tasks as $task) {
             $task->contest = ContestModel::get(['contest_id' => $task->contest_id]);
             /* 获取这个比赛题目数量 */
-            $task->contest->problem_cnt = (new ContestProblemModel())->where('contest_id', $task->contest_id)->count('problem_id');
+            $task->contest->problem_cnt = $task->getProblemCnt();
             /* 获得登录用户AC题目数量 */
-            $task->contest->login_user_ac_cnt = (new SolutionModel())
-                ->where('contest_id', $task->contest_id)
-                ->where('user_id', $this->login_user->user_id)
-                ->where('result', SolutionModel::RESULT_AC)
-                ->group('problem_id')
-                ->distinct('problem_id')
-                ->count('problem_id');
+            $task->contest->login_user_ac_cnt = $task->getDoneCntByUserId($this->login_user->user_id);
+            /* 获取班级平均AC题目数量 */
+            $task->contest->total_ac_cnt = $task->getTotalDoneCnt();
+            $task->contest->avg_ac_cnt = 0;
+            if ($group_member_cnt > 0) {
+                $task->contest->avg_ac_cnt = round($task->contest->total_ac_cnt * 1.0 / $group_member_cnt, 1);
+            }
 
-            $task->ac_member_cnt = (new SolutionModel())
-                ->where('contest_id', $task->contest_id)
-                ->where('result', 4)
-                ->whereIn('user_id', $user_ids)
-                ->count('distinct user_id');
+            $task->avg_progress_html = "<div class='progress-bar'>0/0</div>";
+            $task->login_user_progress_html = "<div class='progress-bar'>0/0</div>";
 
+            if ($task->contest->problem_cnt > 0) {
+                $process_bar_style = 'progress-bar-info';
+                $login_user_ac_rate = round($task->contest->login_user_ac_cnt * 100.00 / $task->contest->problem_cnt, 2);
+                if ($login_user_ac_rate >= 100.0) {
+                    $login_user_ac_rate = 100.0;
+                    $process_bar_style = 'progress-bar-success';
+                }
+
+                $task->login_user_progress_html = "<div class='progress-bar {$process_bar_style}' style='width: {$login_user_ac_rate}%;'>{$task->contest->login_user_ac_cnt}/{$task->contest->problem_cnt}</div>";
+            }
+
+            if ($task->contest->problem_cnt > 0 && $group_member_cnt > 0) {
+                $process_bar_style = 'progress-bar-info';
+                $avg_rate = round($task->contest->total_ac_cnt * 100.00 / ($task->contest->problem_cnt * $group_member_cnt), 2);
+                if ($avg_rate >= 100.0) {
+                    $avg_rate = 100.0;
+                    $process_bar_style = 'progress-bar-success';
+                }
+                $task->avg_progress_html = "<div class='progress-bar {$process_bar_style}' style='width: {$avg_rate}%;'>{$task->contest->avg_ac_cnt}/{$task->contest->problem_cnt}</div>";
+            }
         }
         $this->assign('tasks', $tasks);
-        return view('./group-tasks');
+        return view('./group-tasks', [
+            'group_member_cnt' => $group_member_cnt
+        ]);
     }
 
     public function create_homework_page() {
