@@ -23,10 +23,11 @@
             <th>{if $is_group_manager}
             <?php echo ['en' => 'Member Complete Rate', 'cn' => '学生完成率'][$show_ui_lang];?>
             {else}
-            {$lang.status}
+            <?php echo ['en' => 'My Status', 'cn' => '我的状态'][$show_ui_lang];?>
             {/if}
             </th>
             <th></th>
+            <th>{$lang.status}</th>
             <th>{$lang.operation}</th>
         </tr>
         </thead>
@@ -85,6 +86,21 @@
                 {else}
                 {$task->contest->login_user_ac_cnt} / {$task->contest->problem_cnt}
                 {/if}
+            </td>
+            <td>
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>{$task->contest->start_time}</p>
+                        <p>{$task->contest->end_time}</p>
+                    </div>
+                    <div class="col-md-4">
+                        {switch name="$task->contest->get_status()"}
+                        {case value="0"}<div style="color: darkgray"><?php echo ['en' => 'Pending', 'cn' => '未开始'][$show_ui_lang];?></div>{/case}
+                        {case value="1"}<div style="color: green"><?php echo ['en' => 'Running', 'cn' => '已开始'][$show_ui_lang];?></div>{/case}
+                        {case value="2"}<div style="color: red"><?php echo ['en' => 'Ended', 'cn' => '已结束'][$show_ui_lang];?></div>{/case}
+                        {/switch}
+                    </div>
+                </div>
             </td>
             <td>
                 <a class="btn btn-sm btn-success"

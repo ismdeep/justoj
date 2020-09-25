@@ -40,6 +40,26 @@ class ContestModel extends Model {
     const PRIVATE_PUBLIC = 0;
     const PRIVATE_PRIVATE = 1;
 
+    const STATUS_PENDING = 0;
+    const STATUS_RUNNING = 1;
+    const STATUS_ENDED = 2;
+
+
+    public function get_status() {
+        $start_time_unix = strtotime($this->start_time);
+        $end_time_unix = strtotime($this->end_time);
+        $current_time_unix = time();
+
+        if ($current_time_unix < $start_time_unix) {
+            return self::STATUS_PENDING;
+        }
+
+        if ($current_time_unix > $end_time_unix) {
+            return self::STATUS_ENDED;
+        }
+
+        return self::STATUS_RUNNING;
+    }
 
     public function fk() {
         // 比赛状态有：未开始，进行中，已结束
