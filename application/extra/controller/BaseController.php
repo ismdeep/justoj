@@ -13,6 +13,7 @@ use app\api\model\UiLanuageModel;
 use app\api\model\UserModel;
 use think\Config;
 use think\Controller;
+use think\Env;
 use think\Request;
 use think\Session;
 
@@ -57,6 +58,7 @@ class BaseController extends Controller {
 
         $this->theme_root = 'home@themes/bootstrap';
 
+        $this->assign('admin_email', Env::get('config.admin_email'));
         $this->assign('theme_root', $this->theme_root);
 
         // 判断User-Agent

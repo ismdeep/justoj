@@ -9,6 +9,7 @@ use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
 use think\App;
 use think\Db;
+use think\Env;
 use think\Exception;
 use think\Model;
 use function Sodium\version_string;
@@ -91,6 +92,7 @@ class Index extends AdminBaseController {
         $this->assign('mysql_version', $mysql_version);
         $this->assign('php_version', PHP_VERSION);
         $this->assign('thinkphp_version', THINK_VERSION);
+        $this->assign('admin_email', Env::get('config.admin_email'));
 
         return view();
     }
