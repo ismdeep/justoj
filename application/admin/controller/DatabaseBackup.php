@@ -18,21 +18,11 @@ class DatabaseBackup extends AdminBaseController {
                 'msg' => '系统正在执行数据库备份，请稍后再试。'
             ]);
         }
-        $file_name = sprintf("justoj-%d.sql", time());
+        $file_name = sprintf("justoj-%d.sql.gz", time());
 
-        $mysql_port = Env::get('database.port', '3306');
-        $mysql_hostname = Env::get('database.hostname');
-        $mysql_database = Env::get('database.database');
-        $mysql_username = Env::get('database.username');
-        $mysql_password = Env::get('database.password');
-
-        $cmd = sprintf("mysqldump -h%s -P%s -u%s -p%s %s | gzip > %s/%s.gz &",
-            $mysql_hostname,
-            $mysql_port,
-            $mysql_username,
-            $mysql_password,
-            $mysql_database,
-            Env::get('database.backup_output_path'),
+        $cmd = sprintf("bash %s %s %s >/dev/null 2>/dev/null &",
+            Env::get('database.backup_sh'),
+            Env::get('database.backup_dir'),
             $file_name
         );
 
@@ -40,8 +30,9 @@ class DatabaseBackup extends AdminBaseController {
 
         return json([
             'code' => 0,
+            'cmd' => $cmd,
             'msg' => 'success',
-            'file_name' => $file_name . ".gz"
+            'file_name' => $file_name
         ]);
     }
 
@@ -67,7 +58,7 @@ class DatabaseBackup extends AdminBaseController {
             ]);
         }
 
-        unlink(Env::get('database.backup_output_path') . '/' . $filename);
+        unlink(Env::get('database.backup_dir') . '/' . $filename);
         return json(['code' => 0, 'msg' => 'success']);
     }
 
