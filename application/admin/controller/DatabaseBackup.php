@@ -1,8 +1,6 @@
 <?php
 
-
 namespace app\admin\controller;
-
 
 use app\extra\controller\AdminBaseController;
 use think\Env;
@@ -19,7 +17,6 @@ class DatabaseBackup extends AdminBaseController {
             ]);
         }
         $file_name = sprintf("justoj-%d.sql.gz", time());
-
         $cmd = sprintf("bash %s %s %s >/dev/null 2>/dev/null &",
             Env::get('database.backup_sh'),
             Env::get('database.backup_dir'),
@@ -38,9 +35,7 @@ class DatabaseBackup extends AdminBaseController {
         $results = [];
         $cmd = sprintf("ps aux | grep mysqldump | grep -v grep | wc -l");
         exec($cmd, $results);
-
         $is_running = $results[0] == "0" ? false : true;
-
 
         return json([
             'code' => 0,
@@ -59,5 +54,4 @@ class DatabaseBackup extends AdminBaseController {
         unlink(Env::get('database.backup_dir') . '/' . $filename);
         return json(['code' => 0, 'msg' => 'success']);
     }
-
 }
