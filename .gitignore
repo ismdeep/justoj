@@ -1,7 +1,7 @@
-.idea
-composer.lock
-*.log
-thinkphp
-public/upload
-vendor
-.env
+/.idea
+/.env
+/runtime
+/vendor
+/composer.lock
+/thinkphp
+/public/upload
