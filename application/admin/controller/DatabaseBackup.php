@@ -26,13 +26,15 @@ class DatabaseBackup extends AdminBaseController {
             $file_name
         );
 
-        exec($cmd);
+        $results = [];
+        exec($cmd, $results);
 
         return json([
             'code' => 0,
             'cmd' => $cmd,
             'msg' => 'success',
-            'file_name' => $file_name
+            'file_name' => $file_name,
+            'result' => $results
         ]);
     }
 
