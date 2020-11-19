@@ -20,7 +20,7 @@ class DatabaseBackup extends AdminBaseController {
         }
         $file_name = sprintf("justoj-%d.sql.gz", time());
 
-        $cmd = sprintf("bash %s %s %s &",
+        $cmd = sprintf("bash %s %s %s",
             Env::get('database.backup_sh'),
             Env::get('database.backup_dir'),
             $file_name
