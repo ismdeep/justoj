@@ -16,7 +16,7 @@ class DatabaseBackup extends AdminBaseController {
                 'msg' => '系统正在执行数据库备份，请稍后再试。'
             ]);
         }
-        $file_name = sprintf("justoj-%d.sql.gz", time());
+        $file_name = sprintf("justoj-%s.sql.gz", date('Y-m-d-His', time()));
         $cmd = sprintf("bash %s %s %s >/dev/null 2>/dev/null &",
             Env::get('database.backup_sh'),
             Env::get('database.backup_dir'),
