@@ -21,11 +21,9 @@
 
 </head>
 <body class="login-bg">
-
 <div class="login layui-anim">
     <div class="message">{$lang['user_register']}</div>
     <div id="darkbannerwrap"></div>
-
     <form method="post" class="layui-form" >
         <input name="username" id="username" placeholder="{$lang.username}"  type="text" lay-verify="required" class="layui-input" >
         <hr class="hr15">
@@ -37,8 +35,9 @@
         <hr class="hr15">
         <img src="/captcha" alt="">
         <hr class="hr15">
-        <input value="{$lang.register}" lay-submit lay-filter="register" style="width:100%;" type="submit">
+        <input id="register-btn" value="{$lang.register}" lay-submit lay-filter="register" style="width:100%;" type="submit">
         <hr class="hr20" >
+        <span id="tips" style="color: red">&nbsp;</span>
         <p style="text-align: right">
             <a style="color: blue" href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a style="color: blue" href="/login">{$lang.login}</a>
@@ -49,28 +48,30 @@
 <script>
     $(function  () {
         layui.use('form', function(){
-            var form = layui.form;
+            let form = layui.form;
+            let register_btn = $('#register-btn');
+            let tips_span = $('#tips');
             form.on('submit(register)', function(data){
-                layer.msg('Loading....', {
-                    icon: 16
-                    ,shade: 0.01
-                });
+                tips_span.html('&nbsp;');
+                register_btn.val('Loading...');
+                register_btn.attr('disabled', true);
                 setTimeout(function(){
-                    var postData = {
+                    let postData = {
                         'username': $('#username').val(),
                         'password': $('#password').val(),
                         'password_again': $('#password-again').val()
                     };
                     $.post('/api/User/register',postData,function(d){
-                        layer.closeAll();
-                        if ('success' == d.status) {
+                        if ('success' === d.status) {
                             localStorage.setItem('username', postData.username);
                             localStorage.setItem('password', postData.password);
                             layer.alert(d.msg, {icon: 1},function(){
                                 location.href = '/login';
                             });
                         }else{
-                            layer.msg(d.msg, {icon: 2});
+                            tips_span.html(d.msg);
+                            register_btn.val('{$lang.register}');
+                            register_btn.attr('disabled', false);
                         }
                     });
                 },300);
