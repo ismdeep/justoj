@@ -5,16 +5,16 @@
     <title>{$lang['login']} - {$lang['justoj']}</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
 
-    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon"/>
     <link rel="stylesheet" href="/static/css/font.css">
     <link rel="stylesheet" href="/static/css/xadmin.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/static/lib/layui/layui.js" charset="utf-8"></script>
     <script type="text/javascript" src="/static/js/xadmin.js"></script>
-
 </head>
 <body class="login-bg">
 
@@ -22,13 +22,17 @@
     <div class="message">{$lang['user_login']}</div>
     <div id="darkbannerwrap"></div>
 
-    <form method="post" class="layui-form" >
-        <input name="username" id="username" placeholder="{$lang.username}"  type="text" lay-verify="required" class="layui-input" >
+    <form method="post" class="layui-form">
+        <input name="username" id="username" placeholder="{$lang.username}" type="text" lay-verify="required"
+               class="layui-input">
         <hr class="hr15">
-        <input name="password" id="password" lay-verify="required" placeholder="{$lang.password}"  type="password" class="layui-input">
+        <input name="password" id="password" lay-verify="required" placeholder="{$lang.password}" type="password"
+               class="layui-input">
         <hr class="hr15">
-        <input value="{$lang.login}" lay-submit lay-filter="login" style="width:100%;" type="submit">
-        <hr class="hr20" >
+        <input value="{$lang.login}" id="login-btn" lay-submit lay-filter="login" style="width:100%;" type="submit">
+        <hr class="hr20">
+        <span id="tips" style="color: red">&nbsp;</span>
+
         <p style="text-align: right">
             <a style="color: blue" href="/">{$lang.home}</a>&nbsp;&nbsp;&nbsp;&nbsp;
             <a style="color: blue" href="/register">{$lang.register}</a>
@@ -40,27 +44,33 @@
 </div>
 
 <script>
-    $(function  () {
-        layui.use('form', function(){
-            var form = layui.form;
+    $(function () {
+        layui.use('form', function () {
+            let form = layui.form;
+            let login_btn = $('#login-btn');
+            let tips_span = $('#tips');
             //监听提交
-            form.on('submit(login)', function(data){
-                layer.load();
-                setTimeout(function(){
-                    var loginData = {
+            form.on('submit(login)', function (data) {
+                tips_span.html('&nbsp;');
+                login_btn.val('{$lang.logging_in}');
+                login_btn.attr('disabled', true);
+                setTimeout(function () {
+                    let loginData = {
                         'username': $('#username').val(),
                         'password': $('#password').val()
                     };
-                    $.post('/api/login/login',loginData,function(d){
+                    $.post('/api/login/login', loginData, function (d) {
                         if ('success' === d.status) {
                             localStorage.setItem('username', loginData.username);
                             localStorage.setItem('password', loginData.password);
                             localStorage.removeItem('logout');
-                            setTimeout(function(){
+                            setTimeout(function () {
                                 location.href = '{$redirect}';
-                            },100);
-                        }else{
-                            layer.msg(d.msg, {icon: 2});
+                            }, 100);
+                        } else {
+                            tips_span.html(d.msg);
+                            login_btn.val('{$lang.login}');
+                            login_btn.attr('disabled', false);
                         }
                     });
                 }, 300);
@@ -73,9 +83,9 @@
         layer.alert('忘记密码，请联系任课老师前往后台(用户管理 - 用户管理)进行修改密码。');
     }
 
-    $(function(){
-        $('#username').val( localStorage.getItem('username') );
-        $('#password').val( localStorage.getItem('password') );
+    $(function () {
+        $('#username').val(localStorage.getItem('username'));
+        $('#password').val(localStorage.getItem('password'));
     });
 </script>
 

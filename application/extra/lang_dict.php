@@ -78,6 +78,7 @@ return [
     'keywords' => ['en' => 'Keywords', 'cn' => '关键字'],
     'language' => ['en' => 'Language', 'cn' => '语言'],
     'login' => ['en' => 'Login', 'cn' => '登录'],
+    'logging_in' => ['en' => 'Logging in ...', 'cn' => '正在登录 ...'],
     'login_success' => ['en' => 'Login Successfully', 'cn' => '登录成功'],
     'logout' => ['en' => 'Logout', 'cn' => '注销'],
     'mark' => ['en' => 'Mark', 'cn' => '成绩'],
