@@ -1,0 +1,32 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name='title_block'}{$lang['personal_information']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+    <p>
+        <label for="new_email">New Email:</label> <input id="new_email" type="text">
+        <button class="btn" type="button" onclick="change_email();">Change</button>
+    </p>
+
+</div>
+
+<script type="text/javascript">
+    function change_email() {
+        let postData = {
+            'email': $('#new_email').val()
+        };
+
+        console.log(postData);
+
+        $.post('/profile/email/change/json', postData, function (d) {
+            console.log(d);
+            if (d.code !== 0) {
+                alert(d.msg);
+            } else {
+                alert(d.msg);
+                location.href = '/profile/email/verify';
+            }
+        }, 'json');
+    }
+</script>
+
+{/block}

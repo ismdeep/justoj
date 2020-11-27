@@ -1,0 +1,48 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name='title_block'}{$lang['personal_information']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+    <p>
+        <span>Email: {$user->email}</span>
+        <button class="btn" type="button" onclick="send_verify_code();">Send Verify Code</button>
+    </p>
+
+    <p>
+        <label for="verify_code">Verify Code:</label> <input id="verify_code" type="text">
+        <button class="btn" type="button" onclick="verify();">Verify</button>
+    </p>
+
+</div>
+
+<script type="text/javascript">
+    function send_verify_code() {
+        $.get('/profile/email/verify/send_code/json', function (d) {
+            console.log(d);
+            if (d.code !== 0) {
+                alert(d.msg);
+            } else {
+                alert(d.msg);
+            }
+        }, 'json');
+    }
+
+    function verify() {
+        let postData = {
+            'code': $('#verify_code').val()
+        };
+
+        console.log(postData);
+
+        $.post('/profile/email/verify/verify_code/json', postData, function (d) {
+            console.log(d);
+            if (d.code !== 0) {
+                alert(d.msg);
+            } else {
+                alert(d.msg);
+                location.href = '/profile';
+            }
+        }, 'json');
+    }
+</script>
+
+{/block}
