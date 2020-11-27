@@ -23,6 +23,8 @@ use think\Model;
  * @property string password
  * @property int submit
  * @property int solved
+ * @property string email
+ * @property int email_verified
  */
 class UserModel extends Model {
     protected $table = "users";

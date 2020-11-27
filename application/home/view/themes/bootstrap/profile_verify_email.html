@@ -1,0 +1,48 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name='title_block'}{$lang['personal_information']} - {$lang['justoj']}{/block}
+{block name="body"}
+<div class="container">
+    <p>
+        <span>Email: {$user->email}</span>
+        <button id="send-verify-code-btn" class="btn" type="button" onclick="send_verify_code();">Send Verify Code</button>
+    </p>
+
+    <p>
+        <label for="verify_code">Verify Code:</label> <input id="verify_code" type="text">
+        <button class="btn" type="button" onclick="verify();">Verify</button>
+        <span id="tips"></span>
+    </p>
+
+</div>
+
+<script type="text/javascript">
+    function send_verify_code() {
+        let send_verify_code_btn = $('#send-verify-code-btn');
+        send_verify_code_btn.attr('disabled', true);
+        $.get('/profile/email/verify/send_code/json', function (d) {
+            console.log(d);
+            if (d.code !== 0) {
+                alert(d.msg);
+            } else {
+                send_verify_code_btn.text('已发送');
+            }
+        }, 'json');
+    }
+
+    function verify() {
+        let postData = {
+            'code': $('#verify_code').val()
+        };
+
+        $.post('/profile/email/verify/verify_code/json', postData, function (d) {
+            console.log(d);
+            if (d.code !== 0) {
+                $('#tips').html(d.msg);
+            } else {
+                location.href = '/profile';
+            }
+        }, 'json');
+    }
+</script>
+
+{/block}

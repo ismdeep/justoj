@@ -16,10 +16,14 @@ Route::rule('/status',                   'home/status/index');
 Route::rule('/solutions/:solution_id/ceinfo','home/solution/get_compile_error_info');
 Route::rule('/solutions/:solution_id',       'home/solution/show_detail');
 
-
 Route::rule('/pastes/:id',             'home/paste/show_paste_detail');
 Route::rule('/paste',                    'home/paste/index');
 
+Route::rule('/profile/email/change',          'home/profile/change_email');
+Route::rule('/profile/email/change/json',     'home/profile/change_email_json');
+Route::rule('/profile/email/verify/verify_code/json',     'home/profile/verify_email_code_json');
+Route::rule('/profile/email/verify/send_code/json',     'home/profile/send_verify_code_json');
+Route::rule('/profile/email/verify',     'home/profile/verify_email');
 Route::rule('/profile/changepassword',   'home/profile/change_password');
 Route::rule('/profile/edit',             'home/profile/edit_my_profile');
 Route::rule('/profile',                  'home/profile/index');
