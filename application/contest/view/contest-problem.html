@@ -106,7 +106,7 @@
 							<tbody>
 							{volist name="recent_solutions" id="recent_solution"}
 							<tr>
-								<td><a target="_blank" href="/status/solution/show/solution_id/{$recent_solution->solution_id}">{$recent_solution->solution_id}</a></td>
+								<td><a target="_blank" href="/solutions/{$recent_solution->solution_id}">{$recent_solution->solution_id}</a></td>
 								<td class="{$recent_solution->result_code}">{$recent_solution->result_text}</td>
 							</tr>
 							{/volist}
