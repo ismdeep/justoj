@@ -8,8 +8,11 @@ use app\api\model\EmailCodeModel;
 use app\api\model\UserModel;
 use app\extra\controller\UserBaseController;
 use app\extra\util\PasswordUtil;
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
+use think\Env;
 use think\exception\DbException;
 use think\Request;
 use think\response\Json;
@@ -49,12 +52,48 @@ class Profile extends UserBaseController {
             return json(['code' => 404, 'msg' => '请设置邮箱账号']);
         }
 
+        $email_verify_code = PasswordUtil::random_string('0123456789', 6);
+
         $email_code = new EmailCodeModel();
         $email_code->email = $this->login_user->email;
-        $email_code->code = PasswordUtil::random_string('0123456789', 6); // @TODO 设置成随机码
+        $email_code->code = $email_verify_code;
         $email_code->save();
 
-        return json(['code' => 0, 'msg' => '发送成功']);
+        // 实例化
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->CharSet = 'utf-8';
+            $mail->Host = Env::get('email.host');
+            $mail->SMTPAuth = true;
+            $mail->Username = Env::get('email.username');
+            $mail->Password = Env::get('email.password');
+            $mail->SMTPSecure = 'ssl';
+            $mail->Port = Env::get('email.port');
+
+            //Recipients
+            $mail->setFrom(Env::get('email.username'), 'JustOJ 管理员');
+            $mail->addAddress($this->login_user->email, $this->login_user->user_id);
+
+            //Content
+            $mail->isHTML(true);
+            $mail->Subject = "[JustOJ] 绑定邮箱验证码";
+            $mail->Body    = "已收到你的绑定邮箱要求，请输入验证码：{$email_verify_code}，该验证码1440分钟内有效。
+
+感谢对JustOJ的支持，再次希望你在JustOJ的体验有益和愉快。
+
+-- JustOJ
+
+(这是一封自动产生的email，请勿回复。)";                            // 设置邮件发送内容
+
+            $mail->send();
+
+            return json(['code' => 0, 'msg' => '发送成功']);
+        } catch (Exception $e) {
+            return json(['code' => 500, 'msg' => '发送失败']);
+        }
     }
 
     /**
