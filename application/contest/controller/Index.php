@@ -73,36 +73,6 @@ class Index extends ContestBaseController {
         return view('./contest');
     }
 
-    /**
-     * 注册比赛页面
-     *
-     * @return \think\response\View
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
-     */
-    public function show_contest_enroll_page() {
-        // 判断是否需要完善个人信息
-        if (null == $this->login_user) {
-            $this->redirect("/login?redirect=" . urlencode("/contests/{$this->contest_id}/enroll"));
-        }
 
-        $user = (new UserModel())->where(['user_id' => $this->login_user->user_id])->find();
-
-        $this->assign('need_complete_info', false);
-        if (UserModel::need_complete_info($user)) {
-            $this->assign('need_complete_info', true);
-        }
-
-        // 判断是否已经注册
-        if (null != (new ContestEnrollModel())->where([
-                'user_id' => $this->login_user->user_id,
-                'contest_id' => $this->contest_id,
-            ])->find()) {
-            $this->redirect("/contests/{$this->contest_id}");
-        }
-
-        return view('./contest-enroll');
-    }
 
 }

@@ -19,8 +19,8 @@
 		</div>
 		<div class="collapse navbar-collapse" id="example-navbar-collapse">
 			<ul class="nav navbar-nav">
-				<li{if 'rank'==$nav} class="active"{/if}><a href="/contests/{$contest->contest_id}/rank">{$lang.rank}</a></li>
-				<li{if 'status'==$nav} class="active"{/if}><a href="/contests/{$contest->contest_id}/status">{$lang.status}</a></li>
+				<li id="nav-rank"><a href="/contests/{$contest->contest_id}/rank">{$lang.rank}</a></li>
+				<li id="nav-status"><a href="/contests/{$contest->contest_id}/status">{$lang.status}</a></li>
 			</ul>
 			<ul class="nav navbar-nav navbar-right">
 				<li><a class="" href="/"><span class="glyphicon glyphicon-home"></span> {$lang.back_to_home}</a></li>
@@ -28,4 +28,17 @@
 		</div>
 	</div>
 </nav>
+
+<script type="text/javascript">
+	let nav = "{$nav}";
+	$(function(){
+		if (nav === 'rank') {
+			$('#nav-rank').addClass('active');
+		}
+		if (nav === 'status') {
+			$('#nav-status').addClass('active');
+		}
+	});
+</script>
+
 {/block}

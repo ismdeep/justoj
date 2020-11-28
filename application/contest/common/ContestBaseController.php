@@ -100,7 +100,7 @@ class ContestBaseController extends UserBaseController {
             }
 
             if (null == (new ContestEnrollModel())->where(['user_id' => $this->login_user->user_id, 'contest_id' => $this->contest_id])->find()) {
-                $this->redirect("/contest/enroll?contest_id={$this->contest_id}");
+                $this->redirect("/contests/{$this->contest_id}/enroll");
             }
         }
     }

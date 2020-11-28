@@ -51,7 +51,7 @@ Route::rule('/groups',                              'home/group/get_group_list')
 Route::rule('/contests/:id/rank/xls',      'contest/rank/export_xls');
 Route::rule('/contests/:id/rank',          'contest/rank/show_rank_page');
 Route::rule('/contests/:id/status',        'contest/status/show_status_list');
-Route::rule('/contests/:id/enroll',        'contest/index/show_contest_enroll_page');
+Route::rule('/contests/:id/enroll',        'contest/enroll/show_contest_enroll_page');
 Route::rule('/contests/:id/problems/:pid', 'contest/problem/show_problem_detail');
 Route::rule('/contests/:id',               'contest/index/show_contest_home_page');
 

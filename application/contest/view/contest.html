@@ -2,69 +2,75 @@
 {block name='title_block'}{$contest->title} - {$lang['justoj']}{/block}
 {block name='body'}
 <div class="container">
-	<div class="jumbotron" style="margin-bottom: 10px; padding-top: 30px; padding-bottom: 30px">
-		<h2>
+    <div class="jumbotron" style="margin-bottom: 10px; padding-top: 30px; padding-bottom: 30px">
+        <h2>
             {if $contest->private == 1}
             <span class="glyphicon glyphicon-lock text-danger"></span>&nbsp;
             {/if}
             {$contest->title}
         </h2>
-		<p>{$contest->description}</p>
-	</div>
+        <p>{$contest->description}</p>
+    </div>
 
-	<div class="panel panel-default">
-		<div class="panel-body">
-			{$lang.start_time}: <span style="color: purple">{$contest->start_time}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-			{$lang.end_time}: <span style="color: purple">{$contest->end_time}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-			{$lang.current_time}: <span style="color: #1E9FFF" id="current-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;
-			{if !$contest_started}{$lang.start_countdown}: <span id="remain-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
-			{$lang.status}: {if $contest_started}
-				{if $contest_ended}<span style="color: red">Ended</span>{else}<span style="color: green">Running</span>{/if}
-			{else}<span style="color: red">Pending</span>{/if}
-			{if $is_contest_manager}
-			&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit_tourist?contest_id={$contest->contest_id}" target="_blank">{$lang.tourist}</a>
-			&nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit?contest_id={$contest->contest_id}" target="_blank">{$lang.edit}</a>
-			{/if}
-		</div>
-	</div>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            {$lang.start_time}: <span style="color: purple">{$contest->start_time}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            {$lang.end_time}: <span style="color: purple">{$contest->end_time}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            {$lang.current_time}: <span style="color: #1E9FFF" id="current-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            {if !$contest_started}{$lang.start_countdown}: <span id="remain-time"></span>&nbsp;&nbsp;&nbsp;&nbsp;{/if}
+            {$lang.status}: {if $contest_started}
+            {if $contest_ended}<span style="color: red">Ended</span>{else}<span style="color: green">Running</span>{/if}
+            {else}<span style="color: red">Pending</span>{/if}
+            {if $is_contest_manager}
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit_tourist?contest_id={$contest->contest_id}"
+                                       target="_blank">{$lang.tourist}</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="/admin/contest/edit?contest_id={$contest->contest_id}" target="_blank">{$lang.edit}</a>
+            {/if}
+        </div>
+    </div>
 
-	{if $contest_started}
-	<table class="table table-hover">
-		<thead>
-		<tr>
-			<th>{$lang.status}</th>
-			<th>{$lang.problem_id}</th>
-			<th>{$lang.title}</th>
-			<th>{$lang.source}</th>
-			<th>{$lang.accepted}</th>
-			<th>{$lang.submit}</th>
-		</tr>
-		</thead>
-		<tbody>
-		{volist name='contest_problems' id='contest_problem'}
-		<tr>
-			<td>
-				{if $contest_problem->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
-				{if $contest_problem->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
-			</td>
-			<td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$alphabet[$contest_problem->num]}</a></td>
-			<td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$contest_problem->problem->title}</a></td>
-			<td>{$contest_problem->problem->source}</td>
-			<td>{$contest_problem->problem->ac_cnt}</td>
-			<td>{$contest_problem->problem->submit_cnt}</td>
-		</tr>
-		{/volist}
-		</tbody>
-	</table>
-	{else}
-	<div class="alert alert-warning"><?php echo ['en' => 'Contest is not start. Problems will show here after this contest is started.', 'cn' => '比赛尚未开始！比赛开始后可查看题目。'][$show_ui_lang];?></div>
-	{/if}
+    {if $contest_started}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{$lang.status}</th>
+            <th>{$lang.problem_id}</th>
+            <th>{$lang.title}</th>
+            <th>{$lang.source}</th>
+            <th>{$lang.accepted}</th>
+            <th>{$lang.submit}</th>
+        </tr>
+        </thead>
+        <tbody>
+        {volist name='contest_problems' id='contest_problem'}
+        <tr>
+            <td>
+                {if $contest_problem->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>{/if}
+                {if $contest_problem->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
+            </td>
+            <td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$alphabet[$contest_problem->num]}</a>
+            </td>
+            <td><a href="/contests/{$contest->contest_id}/problems/{$contest_problem->num}">{$contest_problem->problem->title}</a>
+            </td>
+            <td>{$contest_problem->problem->source}</td>
+            <td>{$contest_problem->problem->ac_cnt}</td>
+            <td>{$contest_problem->problem->submit_cnt}</td>
+        </tr>
+        {/volist}
+        </tbody>
+    </table>
+    {else}
+    <div class="alert alert-warning"><?php echo ['en' => 'Contest is not start. Problems will show here after this
+        contest is started.', 'cn' => '比赛尚未开始！比赛开始后可查看题目。'][$show_ui_lang];?>
+    </div>
+    {/if}
 
     {if !$permitted && $contest->private == 1}
     <form class="form-inline" role="form" id="submitContestPasswordForm">
         <div class="form-group">
             <label class="sr-only" for="contest_password"></label>
-            <input type="text" class="form-control" name="contest_password" id="contest_password" placeholder="{$lang.contest_password}">
+            <input type="text" class="form-control" name="contest_password" id="contest_password"
+                   placeholder="{$lang.contest_password}">
         </div>
         <button type="submit" class="btn btn-default">{$lang.enter}</button>
     </form>
@@ -72,11 +78,24 @@
 
 </div>
 
+{if $contest_started}
+<script type="text/javascript">
+    let contest_started = true;
+</script>
+{else}
+<script type="text/javascript">
+    let contest_started = false;
+</script>
+{/if}
 
 <script type="text/javascript">
-    var interval_id = 0;
-    var start_time = '{$contest->start_time}';
-    var contest_started = {if $contest_started}true{else}false{/if};
+    let contest_id = "{$contest->contest_id}";
+    let interval_id = 0;
+    let start_time = '{$contest->start_time}';
+</script>
+
+
+<script type="text/javascript">
     function getNowFormatDate() {
         var date = new Date();
         var seperator1 = "-";
@@ -105,23 +124,26 @@
         return currentdate;
     }
 
-    function check_status(){
+    function check_status() {
         var current_time = getNowFormatDate();
         $('#current-time').html(current_time)
         if (current_time > start_time && !contest_started) {
             clearInterval(interval_id);
-            layer.alert("{$lang.contest_has_started}",function(){
-                location.href="/contest?id="+{$contest->contest_id};
+            layer.alert("{$lang.contest_has_started}", function () {
+                location.href = "/contest?id=" + contest_id;
             });
             contest_started = true;
-        }else{
+        } else {
             var current_timestamp = new Date(current_time).getTime();
             var start_timestamp = new Date(start_time).getTime();
             var remain_time = (start_timestamp - current_timestamp) / 1000;
             var remain_d, remain_h, remain_m, remain_s;
-            remain_s = remain_time % 60; remain_time = parseInt(remain_time / 60);
-            remain_m = remain_time % 60; remain_time = parseInt(remain_time / 60);
-            remain_h = remain_time % 24; remain_time = parseInt(remain_time / 24);
+            remain_s = remain_time % 60;
+            remain_time = parseInt(remain_time / 60);
+            remain_m = remain_time % 60;
+            remain_time = parseInt(remain_time / 60);
+            remain_h = remain_time % 24;
+            remain_time = parseInt(remain_time / 24);
             remain_d = remain_time;
             var remain_str = "";
             if (remain_d > 0) {
@@ -135,36 +157,35 @@
             remain_str += remain_s;
             if (isNaN(remain_s)) {
                 $('#remain-time').html("--:--:--");
-            }
-            else $('#remain-time').html(remain_str);
+            } else $('#remain-time').html(remain_str);
         }
     }
 
-    function check_status_without_countdown(){
+    function check_status_without_countdown() {
         var current_time = getNowFormatDate();
         $('#current-time').html(current_time)
     }
 
-    $(function(){
+    $(function () {
         if (!contest_started) {
             interval_id = window.setInterval("check_status()", 100);
-        }else{
+        } else {
             interval_id = window.setInterval("check_status_without_countdown()", 100);
         }
     });
 
-    $('#submitContestPasswordForm').on('submit',function(){
-        var data = {
-            'contest_id': {$contest->contest_id},
+    $('#submitContestPasswordForm').on('submit', function () {
+        let postData = {
+            'contest_id': contest_id,
             'contest_password': $('#contest_password').val()
         };
-        $.post('/api/contest/auth',data,function(d){
-            if ('success' == d.status) {
+        $.post('/api/contest/auth', postData, function (d) {
+            if ('success' === d.status) {
                 location.href = '/contests/{$contest->contest_id}';
-            }else{
+            } else {
                 layer.alert(d.msg);
             }
-        },'json');
+        }, 'json');
         return false;
     });
 
