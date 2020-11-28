@@ -33,10 +33,9 @@ class Login extends ApiBaseController {
      */
     public function login($username, $password) {
         $request = Request::instance();
-        if (strpos($username, '@') >= 0) {
+        $user = UserModel::get(['user_id' => $username]);
+        if (!$user) {
             $user = UserModel::get(['email' => $username, 'email_verified' => 1]);
-        } else {
-            $user = UserModel::get(['user_id' => $username]);
         }
 
         if (!$user) return json(['status' => 'error', 'msg' => $this->lang['user_not_exists']]);
