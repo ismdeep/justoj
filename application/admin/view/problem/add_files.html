@@ -41,34 +41,14 @@
 
 <script type="text/javascript">
     layui.use(['form', 'layedit', 'laydate', 'upload'], function() {
-        var form = layui.form
+        let form = layui.form
             , layer = layui.layer
             , layedit = layui.layedit
             , laydate = layui.laydate
             , upload = layui.upload;
 
-        // //拖拽上传
-        // upload.render({
-        //     elem: '#test10'
-        //     , url: '/admin/file_upload/upload_post'
-        //     , done: function(res){
-        //         layer.closeAll();
-        //         console.log(res);
-        //         $('#done-html').html( "<p><a href=\""+res.data+"\" target=\"_blank\">"+res.file_name+"</a></p>" + $('#done-html').html() );
-        //         // $('#img_url_show').attr('src', res.data);
-        //         // $('#img_url').val(res.data);
-        //
-        //     }
-        //     , before: function () {
-        //         layer.msg('正在上传', {
-        //             icon: 16
-        //             ,shade: 0.01
-        //         });
-        //     }
-        // });
-
         //多文件列表示例
-        var demoListView = $('#demoList')
+        let demoListView = $('#demoList')
             ,uploadListIns = upload.render({
             elem: '#test10'
             ,url: '/admin/Problem/upload_files?problem_id={$problem->problem_id}'

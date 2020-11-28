@@ -20,7 +20,6 @@
         let send_verify_code_btn = $('#send-verify-code-btn');
         send_verify_code_btn.attr('disabled', true);
         $.get('/profile/email/verify/send_code/json', function (d) {
-            console.log(d);
             if (d.code !== 0) {
                 alert(d.msg);
             } else {
@@ -35,7 +34,6 @@
         };
 
         $.post('/profile/email/verify/verify_code/json', postData, function (d) {
-            console.log(d);
             if (d.code !== 0) {
                 $('#tips').html(d.msg);
             } else {

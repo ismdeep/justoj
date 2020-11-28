@@ -158,7 +158,6 @@
 <script type="text/javascript">
     function show_solution(id) {
         $.get('/api/Solution/details?id=' + id, function (d) {
-			console.log(d);
             $('#solution_id').html(id);
             $('#solution-link').attr('href', '/status/solution/show/solution_id/' + id);
             $('#solution_id_2').html(id);
@@ -170,7 +169,7 @@
             $('#solution-submittime').html(d.data.in_date);
             $('#solution-source-code').html('<code class="'+d.data.language_text+'">'+d.data.source_code.source+'</code>');
             /* 如果是编译错误还要显示编译错误信息 */
-            if ('11' == d.data.result) {
+            if ('11' === d.data.result) {
                 $('#solution-compile-error').html('<code class="bash">'+d.data.compile_info.error+'</code>');
                 $('#compile-info-panel').show();
             }

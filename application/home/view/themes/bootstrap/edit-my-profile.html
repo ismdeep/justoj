@@ -79,10 +79,8 @@
 
 <script type="text/javascript">
 $('#editProfileForm').on('submit',function(){
-    console.log( $('#editProfileForm').serialize() );
     $.post('/api/User/modify_profile', $('#editProfileForm').serialize(), function(d){
-        console.log(d);
-        if ('success' == d.status) {
+        if ('success' === d.status) {
             location.href = '/profile';
         }else{
             layer.alert(d.msg);

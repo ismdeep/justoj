@@ -97,9 +97,8 @@
     }
 
     $('#problemFilterForm').on('submit',function(){
-        var keyword = $('#keyword').val();
-        console.log(keyword);
-        var table = layui.table;
+        let keyword = $('#keyword').val();
+        let table = layui.table;
         table.reload('problem_list', {where: {'keyword': keyword}});
         return false;
     });

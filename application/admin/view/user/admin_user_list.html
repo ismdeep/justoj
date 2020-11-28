@@ -14,17 +14,8 @@
 </script>
 
 <script type="text/javascript">
-
-    // $('#user-search-form').on('submit',function(){
-    //     x_admin_show('选择添加至管理员','/admin/user/add_to_admin',)
-        // $.post('/admin/user/user_search_by_keyword_json',$('#user-search-form').serialize(),function(d){
-        //     console.log(d);
-        // },'json');
-        // return false;
-    // });
-
     layui.use('table', function () {
-        var user_list_table = layui.table;
+        let user_list_table = layui.table;
         user_list_table.render({
             elem: '#admin-user-list'
             , url: '/admin/user/admin_user_list_json'
@@ -45,8 +36,8 @@
         layer.confirm('是否移除 ' + user_id + ' 的管理员权限？',function(){
             $.post('/admin/user/remove_admin_privilege_json',{'user_id':user_id},function(d){
                 layer.closeAll();
-                if ('success' == d.status) {
-                    var table = layui.table;
+                if ('success' === d.status) {
+                    let table = layui.table;
                     table.reload('admin_user_list_table');
                 }else{
                     layer.alert(d.msg);

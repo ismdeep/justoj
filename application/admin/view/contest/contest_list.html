@@ -67,7 +67,6 @@
                 , shade: 0.01
             });
             let contest_id = data.elem.id;
-            console.log(contest_id);
             let defunct = this.checked ? 'N' : 'Y';
             $.post('/admin/contest/change_defunct_json',{'contest_id': contest_id, 'defunct': defunct}, function(d){
                 if ('success' === d.status) {
@@ -88,8 +87,7 @@
             , shade: 0.01
         });
         $.post('/admin/contest/set_contest_type_json', {'contest_id': contest_id, 'type': 1}, function(d){
-            console.log(d);
-            if ('success' == d.status) {
+            if ('success' === d.status) {
                 setTimeout(function(){
                     layer.closeAll();
                     table.reload('contest_list');

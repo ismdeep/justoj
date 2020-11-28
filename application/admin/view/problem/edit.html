@@ -99,9 +99,7 @@
             ,shade: 0.01
         });
         setTimeout(function () {
-            console.log('problemEditForm is submit.');
-            console.log($('#problemEditForm').serialize());
-            var postData = {
+            let postData = {
                 'problem_id': $('#problem_id').val(),
                 'title': $('#title').val(),
                 'time_limit': $('#time_limit').val(),

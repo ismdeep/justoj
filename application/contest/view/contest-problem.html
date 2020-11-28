@@ -280,7 +280,6 @@
 
     function status_monitor(solution_id){
         $.get('/api/Solution/status?solution_id='+solution_id,function(d){
-            console.log(d);
             if (d.data.result < 4) {
                 $('#solution-result').html('<span class="'+d.data.result_code+'">'+d.data.result_text+'</span>');
                 setTimeout(status_monitor(solution_id),100);
@@ -320,8 +319,7 @@
 
     // 源代码语言切换
     function language_change(){
-        var lang_val = document.getElementById('submit-language').value;
-        console.log(lang_val);
+        let lang_val = document.getElementById('submit-language').value;
         localStorage.setItem("lang_val", lang_val);
     }
 

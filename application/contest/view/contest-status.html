@@ -157,7 +157,6 @@
 <script type="text/javascript">
     function show_solution(id) {
         $.get('/api/Solution/details?id=' + id, function (d) {
-            console.log(d);
             $('#solution_id').html(id);
             $('#solution_id_2').html(id);
             $('#solution-result').html(d.data.result_text);

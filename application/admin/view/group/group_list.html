@@ -37,10 +37,9 @@
 
     function delete_group(group_id,group_name){
         layer.confirm('确定删除此班级？' + group_name, function(){
-            console.log(group_id);
             $.post('/admin/group/delete_json',{'group_id':group_id},function(d){
                 layer.closeAll();
-                if ('success' == d.status) {
+                if ('success' === d.status) {
                     location.reload();
                 }else{
                     layer.alert(d.msg);

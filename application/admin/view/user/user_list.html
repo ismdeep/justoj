@@ -36,9 +36,8 @@
     });
 
     $('#userFilterForm').on('submit',function(){
-        var keyword = $('#keyword').val();
-        console.log(keyword);
-        var table = layui.table;
+        let keyword = $('#keyword').val();
+        let table = layui.table;
         table.reload('user_list_table', {where: {'keyword': keyword}});
         return false;
     });

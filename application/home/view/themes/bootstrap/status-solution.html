@@ -67,10 +67,7 @@
 <script type="text/javascript">
     function manual_set_result() {
         let manual_result_val = $('#manual-result').val();
-        console.log(manual_result_val);
-        console.log(solution_id);
         $.post('/api/solution/manual_set_result', {'solution_id': solution_id, 'result': manual_result_val}, function(d){
-            console.log(d);
         }, 'json')
     }
 </script>

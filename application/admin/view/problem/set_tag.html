@@ -29,16 +29,15 @@
             icon: 16
             , shade: 0.01
         });
-        var arr = new Array();
+        let arr = new Array();
         $("input:checkbox[name='tag']:checked").each(function(i){
             arr[i] = $(this).val();
         });
-        var str = arr.join(",");//将数组合并成字符串
+        let str = arr.join(",");//将数组合并成字符串
         let postData = {
             'problem_id': problem_id,
             'tags': str
         };
-        console.log(postData);
         $.post('/admin/problem/set_tag_json', postData, function (d) {
             layer.closeAll();
             layer.alert('设置成功', function(){
