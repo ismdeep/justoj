@@ -5,5 +5,3 @@
 /composer.lock
 /thinkphp
 /public/upload
-/public/database_backup_output
-/backup-db.sh
