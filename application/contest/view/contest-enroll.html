@@ -12,7 +12,8 @@
     <div class="panel panel-default">
         <div class="panel-heading">比赛声明</div>
         <div class="panel-body">
-            <p>请所有参赛选手报名之前务必认真、仔细阅读《江西理工大学第八届C语言程序设计竞赛参赛规程》，在您提交报名信息后即被默认为您已阅读、理解并同意遵守《江西理工大学第八届C语言程序设计竞赛参赛规程》的一切内容并签署及提交参赛声明。</p>
+            <p>
+                请所有参赛选手报名之前务必认真、仔细阅读《江西理工大学第八届C语言程序设计竞赛参赛规程》，在您提交报名信息后即被默认为您已阅读、理解并同意遵守《江西理工大学第八届C语言程序设计竞赛参赛规程》的一切内容并签署及提交参赛声明。</p>
             <p>作为参赛选手，我本人做出以下声明：</p>
             <p>1、谨此声明本人自愿参加江西理工大学第八届C语言程序设计竞赛及一切相关活动；</p>
             <p>2、本人全面理解并同意遵守组委会及协助部门所制定的各项规定及采取的措施；</p>
@@ -34,24 +35,36 @@
     {/if}
 
     <div style="text-align: center">
-        <input type="text" name="contest_id" id="contest_id" value="{$contest_id}" hidden>
-        <button class="btn btn-primary" {if $need_complete_info}disabled{/if} onclick="do_contest_enroll({$contest_id})">
+        <button id="do-contest-enroll-btn" class="btn btn-primary" onclick="do_contest_enroll()">
             同意并注册比赛
         </button>
     </div>
 </div>
 
 <script type="text/javascript">
-    function do_contest_enroll(contest_id) {
-        $.post('/api/contest/do_contest_enroll_post',{'contest_id': contest_id},function(d){
+    let need_complete_info = "{$need_complete_info}";
+    let contest_id = "{$contest->contest_id}";
+
+    $(function () {
+        if (need_complete_info) {
+            $('#do-contest-enroll-btn').attr('disabled', true);
+        }
+    });
+
+
+    function do_contest_enroll() {
+        let postData = {
+            'contest_id': contest_id
+        };
+        $.post('/api/contest/do_contest_enroll_post', postData, function (d) {
             if ('success' === d.status) {
-                layer.alert(d.msg,function(){
-                    location.href = "/contests/{$contest_id}";
+                layer.alert(d.msg, function () {
+                    location.href = "/contests/" + contest_id;
                 });
-            }else{
+            } else {
                 layer.alert(d.msg);
             }
-        },'json');
+        }, 'json');
     }
 </script>
 {/block}
