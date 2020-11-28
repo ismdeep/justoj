@@ -5,24 +5,23 @@
     <p>
         <label for="new_email">New Email:</label> <input id="new_email" type="text">
         <button class="btn" type="button" onclick="change_email();">Change</button>
+        <span id="tips"></span>
     </p>
 
 </div>
 
 <script type="text/javascript">
     function change_email() {
+        $('#tips').html('');
         let postData = {
             'email': $('#new_email').val()
         };
 
-        console.log(postData);
-
         $.post('/profile/email/change/json', postData, function (d) {
             console.log(d);
             if (d.code !== 0) {
-                alert(d.msg);
+                $('#tips').html(d.msg);
             } else {
-                alert(d.msg);
                 location.href = '/profile/email/verify';
             }
         }, 'json');

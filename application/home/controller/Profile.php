@@ -79,7 +79,7 @@ class Profile extends UserBaseController {
             ->where(['email' => $this->login_user->email, 'code' => $code])->find();
 
         if (!$email_code) {
-            return json(['code' => 400, 'msg' => '验证码验证失败']);
+            return json(['code' => 400, 'msg' => '验证失败']);
         }
 
         $user = UserModel::get(['user_id' => $this->login_user->user_id]);
