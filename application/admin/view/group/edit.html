@@ -57,9 +57,8 @@
             'group_password': $('#group_password').val(),
             'description': description.getData()
         };
-        console.log(postData);
         $.post('/admin/group/save_json',postData,function(d){
-            if ('success' == d.status) {
+            if ('success' === d.status) {
                 layer.alert(d.msg,function(){
                     parent.location.reload();
                 });

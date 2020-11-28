@@ -26,7 +26,6 @@
     $(function(){
         let flag = true;
         setInterval(function(){
-            console.log(id);
             if (flag) {
                 $.post('/api/problem/rejudge_status_json', {'id': id}, function(d){
                     $('#rejudge-progress-bar').attr('style', 'width: ' + d.retdata.percent_text);
@@ -38,7 +37,6 @@
                     }
                 }, 'json');
             }
-            // console.log(new Date());
         }, 300);
     });
 </script>

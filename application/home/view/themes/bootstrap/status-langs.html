@@ -9,8 +9,8 @@
        <div style="text-align: center;margin-top:20px;margin-bottom: 20px;">
            <hr>
            &copy; 2018&nbsp;&nbsp;<a href="/">JustOJ</a>&nbsp;&nbsp;&nbsp;&nbsp;
-           <a href="javascript:;" onclick="$.get('/api/Uilanguage/set_lang?language=cn',function(d){location.reload();},'json');">中文</a>&nbsp;
-           <a href="javascript:;" onclick="$.get('/api/Uilanguage/set_lang?language=en',function(d){location.reload();},'json');">English</a>&nbsp;
+           <a href="javascript:" onclick="$.get('/api/Uilanguage/set_lang?language=cn',function(d){location.reload();},'json');">中文</a>&nbsp;
+           <a href="javascript:" onclick="$.get('/api/Uilanguage/set_lang?language=en',function(d){location.reload();},'json');">English</a>&nbsp;
        </div>
    </body>
 </html>
@@ -22,15 +22,13 @@
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/dataTool.min.js"></script>
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/china.js"></script>
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/map/js/world.js"></script>
-<!--<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ZUONbpqGBsYGXNIYHicvbAbM"></script>-->
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts/extension/bmap.min.js"></script>
 <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/simplex.js"></script>
 <script type="text/javascript">
 function fetchData() {
     $.get('/api/langs/statistics',function(d){
-        console.log(d);
-        var legendData = ['C','C++','Java','Python'];
-        var seriesData = [
+        let legendData = ['C','C++','Java','Python'];
+        let seriesData = [
             {name:'C',value:125578},
             {name:'C++',value:78043},
             {name:'Java',value:3700},

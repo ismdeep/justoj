@@ -81,8 +81,7 @@ function save_notification(){
 	};
 
     $.post('/api/Group/save_notification', data, function(d) {
-        console.log(d);
-        if ('success' == d.status) {
+        if ('success' === d.status) {
             location.reload();
 		}else{
             layer.alert(d.msg);
@@ -95,10 +94,8 @@ function save_notification(){
  * @param notification_id
  */
 function edit_notification(notification_id) {
-    console.log('test');
     $.get('/api/Group/notification_details', {'notification_id': notification_id}, function(d) {
-        console.log(d);
-        if ('success' == d.status) {
+        if ('success' === d.status) {
             $('#notification-id').val( d.data.id );
             $('#notification-title').val( d.data.title );
             // $('#notification_msg').val( d.data.msg );

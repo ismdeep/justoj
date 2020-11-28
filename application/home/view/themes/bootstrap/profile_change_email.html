@@ -18,7 +18,6 @@
         };
 
         $.post('/profile/email/change/json', postData, function (d) {
-            console.log(d);
             if (d.code !== 0) {
                 $('#tips').html(d.msg);
             } else {

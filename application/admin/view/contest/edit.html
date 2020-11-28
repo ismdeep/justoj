@@ -157,10 +157,9 @@
     /* 题目预览 */
     function preview_problems(){
         var data = {'problem_ids': $('#problem_ids').val()};
-        console.log(data);
         $.post('/api/Problem/details_by_list',data,function(d){
             if ('success' === d.status) {
-                var str = '';
+                let str = '';
                 for (var i = 0; i < d.data.length; i++) {
                     str += '<tr>' +
                         '<td>'+d.data[i].problem_id+'</td>' +
@@ -199,7 +198,6 @@
             'password'     : $('#password').val(),
             'allowed_langs': allowed_lang_ids
         };
-        console.log(postData);
         $.post('/admin/contest/save_json',postData,function(d){
             if ('success' === d.status) {
                 $('#contest_id').val(d.data.contest_id);
