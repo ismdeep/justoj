@@ -70,7 +70,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Update solution running result temporary(e.g. Compiling)
      *
-     * http://justoj-web.ismdeep.com/admin/judge_solution_api/checkout?sid=622923&result=1
+     * /admin/judge_solution_api/checkout?sid=622923&result=1
      *
      * @param string $sid
      * @param string $result
@@ -94,7 +94,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Update solution running result
      *
-     * http://justoj.ismdeep.com/api/judge_api/update_solution?sid=622923&result=4&time=3&memory=1668
+     * /api/judge_api/update_solution?sid=622923&result=4&time=3&memory=1668
      *
      * @param string $sid
      * @param string $result
@@ -152,7 +152,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Get solution info
      *
-     * http://justoj-web.ismdeep.com/admin/judge_solution_api/get_solution_info?sid=2394
+     * /admin/judge_solution_api/get_solution_info?sid=2394
      *
      * @param string $sid
      * @throws DataNotFoundException
@@ -174,7 +174,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Add Compile Error to Solution
      *
-     * http://justoj-web.ismdeep.com/admin/judge_solution_api/add_ce_info?sid=2394&ceinfo=CCC
+     * /admin/judge_solution_api/add_ce_info?sid=2394&ceinfo=CCC
      *
      * @param string $sid
      * @param string $ceinfo

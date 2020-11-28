@@ -79,14 +79,14 @@ class Profile extends UserBaseController {
 
             //Content
             $mail->isHTML(true);
-            $mail->Subject = "[JustOJ] 绑定邮箱验证码";
+            $mail->Subject = "[{$this->site_name}] 绑定邮箱验证码";
             $mail->Body    = "已收到你的绑定邮箱要求，请输入验证码：{$email_verify_code}，该验证码1440分钟内有效。
 
-感谢对JustOJ的支持，再次希望你在JustOJ的体验有益和愉快。
+感谢对{$this->site_name}的支持，再次希望你在{$this->site_name}的体验有益和愉快。
 
--- JustOJ
+-- {$this->site_name}
 
-(这是一封自动产生的email，请勿回复。)";                            // 设置邮件发送内容
+(这是一封自动产生的email，请勿回复。)";
 
             $mail->send();
 
