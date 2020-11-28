@@ -189,6 +189,7 @@ return [
     'username' => ['en' => 'Username', 'cn' => '用户名'],
     'user_not_exists' => ['en' => 'User not exists', 'cn' => '用户不存在'],
     'waiting_for_verify' => ['en' => 'Waiting for verify', 'cn' => '等待审核'],
+    'welcome_to_justoj' => ['en' => 'Welcome to JustOJ', 'cn' => '江西理工大学在线测评系统'],
     'wrong_password' => ['en' => 'Wrong Password', 'cn' => '密码错误'],
     'forgot_password' => ['en' => 'Forgot Password', 'cn' => '忘记密码'],
     'you_are_the_manager_of_this_group' => ['en' => 'Your are the manager of this group', 'cn' => '你是此班级的管理员'],
