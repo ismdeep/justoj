@@ -5,7 +5,7 @@
 	<meta name="description" content="JustOJ、江西理工大学在线测评系统、在线编程平台、只为提高你的编程水平。">
 	<meta name="keywords" content="ACM-ICPC,Online Judge,编程,C语言,C++,Java,Python,ACMer,JustOJ">
 	<link rel="shortcut icon" href="/favicon.gif" type="image/x-icon" />
-	<title>{block name='title_block'}{$lang['welcome_to_justoj']}{/block}</title>
+	<title>{block name='title_full_block'}{block name='title_block'}{$site_name}{/block} - {$site_name}{/block}</title>
 	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0">
 
 	<link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -78,7 +78,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand" href="/">JustOJ</a>
+			<a class="navbar-brand" href="/">{$site_name}</a>
 		</div>
 		<div class="collapse navbar-collapse" id="example-navbar-collapse">
 			<ul class="nav navbar-nav">
@@ -119,7 +119,7 @@
 {block name="footer"}
 <div style="text-align: center;margin-top:20px;margin-bottom: 20px;">
 	<hr>
-	&copy; 2019&nbsp;<a href="/">JustOJ</a>&nbsp;&nbsp;&nbsp;&nbsp;
+	&copy; 2019&nbsp;<a href="/">{$site_name}</a>&nbsp;&nbsp;&nbsp;&nbsp;
 	{include file="home@common_html/language_selector"}
 	|
 	<a id="email-address-a" href="mailto:{$admin_email}">{$admin_email}</a>

@@ -73,7 +73,6 @@ return [
     'homework_list' => ['en' => 'Homework List', 'cn' => '作业列表'],
     'input' => ['en' => 'Input', 'cn' => '输入'],
     'join' => ['en' => 'Join', 'cn' => '加入'],
-    'justoj' => ['en' => 'JustOJ', 'cn' => '江西理工大学在线测评系统'],
     'keyword' => ['en' => 'Keyword', 'cn' => '关键字'],
     'keywords' => ['en' => 'Keywords', 'cn' => '关键字'],
     'language' => ['en' => 'Language', 'cn' => '语言'],

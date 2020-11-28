@@ -24,6 +24,8 @@ class BaseController extends Controller {
     public $login_user;
     public $is_login;
 
+    public $site_name;
+
     public $show_ui_lang;
     public $lang;
 
@@ -55,6 +57,9 @@ class BaseController extends Controller {
      */
     public function __construct(Request $request = null) {
         parent::__construct($request);
+
+        $this->site_name = Env::get('config.site_name', 'JustOJ');
+        $this->assign('site_name', $this->site_name);
 
         $this->theme_root = 'home@themes/bootstrap';
 
