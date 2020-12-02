@@ -59,28 +59,8 @@ class Profile extends UserBaseController {
         $email_code->code = $email_verify_code;
         $email_code->save();
 
-        // 实例化
-        $mail = new PHPMailer(true);
-        try {
-            //Server settings
-            $mail->SMTPDebug = 0;
-            $mail->isSMTP();
-            $mail->CharSet = 'utf-8';
-            $mail->Host = Env::get('email.host');
-            $mail->SMTPAuth = true;
-            $mail->Username = Env::get('email.username');
-            $mail->Password = Env::get('email.password');
-            $mail->SMTPSecure = 'ssl';
-            $mail->Port = Env::get('email.port');
-
-            //Recipients
-            $mail->setFrom(Env::get('email.username'), 'JustOJ 管理员');
-            $mail->addAddress($this->login_user->email, $this->login_user->user_id);
-
-            //Content
-            $mail->isHTML(true);
-            $mail->Subject = "[{$this->site_name}] 绑定邮箱验证码";
-            $mail->Body    = "已收到你的绑定邮箱要求，请输入验证码：{$email_verify_code}，该验证码1440分钟内有效。
+        $email_title = "[{$this->site_name}] 绑定邮箱验证码";
+        $email_content    = "已收到你的绑定邮箱要求，请输入验证码：{$email_verify_code}，该验证码1440分钟内有效。
 
 感谢对{$this->site_name}的支持，再次希望你在{$this->site_name}的体验有益和愉快。
 
@@ -88,12 +68,16 @@ class Profile extends UserBaseController {
 
 (这是一封自动产生的email，请勿回复。)";
 
-            $mail->send();
+        $send_result = send_email(
+            $this->login_user->email, $this->login_user->user_id, $email_title,
+            $email_content, false
+        );
 
-            return json(['code' => 0, 'msg' => '发送成功']);
-        } catch (Exception $e) {
+        if (!$send_result) {
             return json(['code' => 500, 'msg' => '发送失败']);
         }
+
+        return json(['code' => 0, 'msg' => '发送成功']);
     }
 
     /**

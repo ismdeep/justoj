@@ -38,7 +38,7 @@
             <a style="color: blue" href="/register">{$lang.register}</a>
         </p>
         <p style="text-align: right">
-            <a style="color: blue" href="javascript:" onclick="forgot_password();">{$lang.forgot_password}?</a>
+            <a style="color: blue" href="/forgot-password">{$lang.forgot_password}?</a>
         </p>
     </form>
 </div>
@@ -78,10 +78,6 @@
             });
         });
     });
-
-    function forgot_password() {
-        layer.alert('忘记密码，请联系任课老师前往后台(用户管理 - 用户管理)进行修改密码。');
-    }
 
     $(function () {
         $('#username').val(localStorage.getItem('username'));
