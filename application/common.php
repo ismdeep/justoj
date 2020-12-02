@@ -1,6 +1,9 @@
 <?php
 
 // 应用公共文件
+use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
+use think\Env;
 
 /**
  * intercept while $flag is true
@@ -59,4 +62,34 @@ function paste_allowed_langs() {
 function datetime_human_valid($datetime_str) {
     $patten = "/^\d{4}[\-](0?[1-9]|1[012])[\-](0?[1-9]|[12][0-9]|3[01])(\s+(0?[0-9]|1[0-9]|2[0-3])\:(0?[0-9]|[1-5][0-9])\:(0?[0-9]|[1-5][0-9]))?$/";
     return preg_match($patten, $datetime_str);
+}
+
+function send_email($to_email, $to_nick, $title, $content, $is_html) {
+    // 实例化
+    $mail = new PHPMailer(true);
+    try {
+        //Server settings
+        $mail->SMTPDebug = 0;
+        $mail->isSMTP();
+        $mail->CharSet = 'utf-8';
+        $mail->Host = Env::get('email.host');
+        $mail->SMTPAuth = true;
+        $mail->Username = Env::get('email.username');
+        $mail->Password = Env::get('email.password');
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = Env::get('email.port');
+
+        //Recipients
+        $mail->setFrom(Env::get('email.username'), 'JustOJ 管理员');
+        $mail->addAddress($to_email, $to_nick);
+
+        //Content
+        $mail->isHTML($is_html);
+        $mail->Subject = $title;
+        $mail->Body    = $content;
+        $mail->send();
+        return true;
+    } catch (Exception $e) {
+        return false;
+    }
 }
