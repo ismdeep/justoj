@@ -35,6 +35,9 @@ class Contest extends AdminBaseController {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $where = ['type' => 0];
+        if (!$this->is_root) {
+            $where['creator_id'] = $this->login_user->user_id;
+        }
         $contests = (new ContestModel())->where($where)->order('contest_id', 'desc')->limit(($page - 1) * $limit, $limit)->select();
         $count = (new ContestModel())->where($where)->count();
         return json([
@@ -169,20 +172,21 @@ class Contest extends AdminBaseController {
             $problems[] = $problem;
         }
 
-        // 判断contest_id是否存在
+        /* 判断contest_id是否存在 */
         $contest = null;
         if ('' == $contest_id) {
-            $contest = new ContestModel(); // 创建比赛
-            $contest->defunct = 'N';
-            $contest->type = ContestModel::TYPE_HOMEWORK;
+            $contest             = new ContestModel(); // 创建比赛
+            $contest->creator_id = $this->login_user->user_id;
+            $contest->defunct    = 'N';
+            $contest->type       = ContestModel::TYPE_HOMEWORK;
         } else {
-            // 判断contest实体是否存在
+            /* 判断contest实体是否存在 */
             $contest = ContestModel::get(['contest_id' => $contest_id]);
             if (null == $contest) {
                 return json(['status' => 'error', 'msg' => $this->lang['contest_not_exists']]);
             }
 
-            // 删除contest_problem里面的记录
+            /* 删除contest_problem里面的记录 */
             (new ContestProblemModel())->where('contest_id', $contest_id)->delete();
         }
 
@@ -194,6 +198,7 @@ class Contest extends AdminBaseController {
         $contest->end_time = $end_time;
         $contest->description = $description;
         $contest->private = intval($private);
+
         if (1 == intval($private)) {
             $contest->password = $password;
         } else {
