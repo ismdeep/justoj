@@ -54,7 +54,12 @@
 
 <script type="text/javascript">
 	function open_setting() {
-		layer.alert("Pending...");
+		let group_id = "{$group->id}";
+		layer.open({
+			type: 2,
+			area: ['700px', '500px'],
+			content: '/admin/group/edit?id=' + group_id
+		});
 	}
 </script>
 
