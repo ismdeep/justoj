@@ -1,6 +1,8 @@
 {extend name="base" /}
 {block name="content"}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+
+{include file="common@snippets/ckeditor"}
+
 <div class="x-body">
     <form class="layui-form" id="problemEditForm">
         <input type="text" name="problem_id" id="problem_id" value="{$problem->problem_id}" hidden>

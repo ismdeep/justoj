@@ -1,14 +1,8 @@
 {extend name="common/contest-layout" /}
 {block name='title_block'}{$alphabet[$contest_problem->num]}:{$problem->title} - {$contest->title} - 江西理工大学在线测评系统{/block}
 {block name="body"}
-<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-			tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-			"HTML-CSS": {linebreaks: {automatic: true}}
-		});
-</script>
-<script src="//cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
+{include file="common@snippets/mathjax"}
 
 <div class="container">
 	<div class="row">
