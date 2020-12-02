@@ -119,6 +119,7 @@ class Rank extends ContestBaseController {
 
         $this->assign('contest_problems', $contest_problems);
         $this->assign('users', $users);
+        $this->assign('nav', 'rank');
         return view('./contest-rank');
     }
 
