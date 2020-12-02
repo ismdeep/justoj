@@ -4,20 +4,36 @@
 
 {include file="common@snippets/mathjax"}
 
+<script type="text/javascript">
+	$(function(){
+		let current_problem_num = "{$contest_problem->num}";
+		$('#li-problem-' + current_problem_num).addClass('active');
+	});
+</script>
+
 <div class="container">
 	<div class="row">
 		<div class="col-md-9">
 			<ul id="myTab" class="nav nav-tabs">
 				{volist name='contest_problems' id='p'}
-				<li{if $contest_problem->num == $p->num} class="active"{/if}><a href="/contests/{$contest->contest_id}/problems/{$p->num}">{if $p->ac}<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;{/if}
-				{if $p->pending}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;{/if}{$alphabet[$p->num]}</a></li>
+				<li id="li-problem-{$p->num}"><a href="/contests/{$contest->contest_id}/problems/{$p->num}">
+				{if $p->ac}
+				<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;
+				{elseif $p->ac2}
+				<span class="glyphicon glyphicon-ok" style="color: blue"></span>&nbsp;
+				{elseif $p->pending}
+				<span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;
+				{/if}
+				{$alphabet[$p->num]}</a>
+				</li>
 				{/volist}
 			</ul>
 			<h2 align="center">
 				{if $contest_problem->ac}
 				<span class="glyphicon glyphicon-ok" style="color: green"></span>
-				{/if}
-				{if $contest_problem->pending}
+				{elseif $contest_problem->ac2}
+				<span class="glyphicon glyphicon-ok" style="color: blue"></span>
+				{elseif $contest_problem->pending}
 				<span class="glyphicon glyphicon-hand-right" style="color: red"></span>
 				{/if}
 				{$alphabet[$contest_problem->num]}: {$problem->title}</h2>

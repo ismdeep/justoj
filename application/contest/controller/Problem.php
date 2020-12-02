@@ -28,10 +28,11 @@ class Problem extends ContestBaseController {
 
         $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
         $contest_problem->ac = false;
+        $contest_problem->ac2 = false;
         $contest_problem->pending = false;
         if ($this->login_user) {
             if (SolutionModel::
-                where("contest_id", $contest_problem->contest_id)
+            where("contest_id", $contest_problem->contest_id)
                 ->where('user_id', $this->login_user->user_id)
                 ->where('problem_id', $contest_problem->problem_id)
                 ->where('in_date', '>', $this->contest->start_time)
@@ -62,10 +63,12 @@ class Problem extends ContestBaseController {
             $contest_problem->fk();
             // 如果当前用户登录了，判断AC状态
             $problem->ac = false;
+            $problem->ac2 = false; /* ac2表示赛后AC */
             $problem->pending = false;
+
             if ($this->login_user) {
-                if (SolutionModel::
-                where("contest_id", $problem->contest_id)
+                if ((new SolutionModel())
+                    ->where("contest_id", $problem->contest_id)
                     ->where('user_id', $this->login_user->user_id)
                     ->where('problem_id', $problem->problem_id)
                     ->where('in_date', '>', $this->contest->start_time)
@@ -73,16 +76,22 @@ class Problem extends ContestBaseController {
                     ->where('result', 4)
                     ->find()) {
                     $problem->ac = true;
-                } else {
-                    if ((new SolutionModel())
-                        ->where("contest_id", $problem->contest_id)
-                        ->where('user_id', $this->login_user->user_id)
-                        ->where('problem_id', $problem->problem_id)
-                        ->where('in_date', '>', $this->contest->start_time)
-                        ->where('in_date', '<', $this->contest->end_time)
-                        ->find()) {
-                        $problem->pending = true;
-                    }
+                } else if ((new SolutionModel())
+                    ->where("contest_id", $problem->contest_id)
+                    ->where('user_id', $this->login_user->user_id)
+                    ->where('problem_id', $problem->problem_id)
+                    ->where('in_date', '>=', $this->contest->end_time)
+                    ->where('result', 4)
+                    ->find()) {
+                    $problem->ac2 = true;
+                } else if ((new SolutionModel())
+                    ->where("contest_id", $problem->contest_id)
+                    ->where('user_id', $this->login_user->user_id)
+                    ->where('problem_id', $problem->problem_id)
+                    ->where('in_date', '>', $this->contest->start_time)
+                    ->where('in_date', '<', $this->contest->end_time)
+                    ->find()) {
+                    $problem->pending = true;
                 }
             }
         }
