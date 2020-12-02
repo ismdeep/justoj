@@ -27,6 +27,7 @@ use think\Model;
  * @property string password
  * @property int type
  * @property int is_need_enroll
+ * @property string creator_id
  * @property \DateTime create_time
  * @property \DateTime update_time
  *
@@ -82,14 +83,9 @@ class ContestModel extends Model {
         $privilege_code_arr = array('privilege_code_public', 'privilege_code_private');
         $this->privilege_code = $privilege_code_arr[$this->private];
 
-        // 获取比赛创建者
-        try {
-            $this->manager_id = PrivilegeModel::where('rightstr', 'm' . $this->contest_id)->order('create_time', 'asc')->find()->user_id;
-            $this->manager = UserModel::get(['user_id' => $this->manager_id]);
-        } catch (Exception $e) {
-            $this->manager_id = 'ismdeep';
-            $this->manager = UserModel::get(['user_id' => $this->manager_id]);
-        }
+        /* 获取比赛创建者 */
+        $this->manager_id = $this->creator_id;
+        $this->manager = UserModel::get(['user_id' => $this->manager_id]);
     }
 
     /**
