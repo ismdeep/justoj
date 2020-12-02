@@ -54,8 +54,13 @@ Route::rule('/contests/:id/status',        'contest/status/show_status_list');
 Route::rule('/contests/:id/enroll',        'contest/enroll/show_contest_enroll_page');
 Route::rule('/contests/:id/problems/:pid', 'contest/problem/show_problem_detail');
 Route::rule('/contests/:id',               'contest/index/show_contest_home_page');
-
 Route::rule('/contests',                   'home/contest/get_contest_list');
+
+/* 找回密码页面 */
+Route::rule('/forgot-password/reset-password/:uuid', 'home/forgot_password/reset_password');
+Route::rule('/forgot-password/send-email/json', 'home/forgot_password/send_email_json');
+Route::rule('/forgot-password/set-password/json', 'home/forgot_password/set_password_json');
+Route::rule('/forgot-password',                 'home/forgot_password/index');
 
 return [
     '__pattern__' => [
