@@ -1,13 +1,9 @@
 {extend name="home@themes/bootstrap/layout/user" /}
 {block name='title_block'}{$problem->problem_id} - {$problem->title}{/block}
 {block name="body"}
-<script type="text/x-mathjax-config">
-		MathJax.Hub.Config({
-			tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]},
-			"HTML-CSS": {linebreaks: {automatic: true}}
-		});
-</script>
-<script src="https://cdn.bootcss.com/mathjax/2.7.6/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+{include file="common@snippets/mathjax"}
+
 <!--题目内容显示页面 begin-->
 <div class="container">
 	<h2 align="center">
@@ -323,8 +319,8 @@ function rejudge_problem(problem_id) {
 
 $(function(){
 	// 自动初始化语言
-    var lang_val = localStorage.getItem('lang_val');
-    if (null == lang_val || undefined == lang_val) {
+    let lang_val = localStorage.getItem('lang_val');
+    if (null == lang_val) {
         lang_val = 0;
     }
     document.getElementById('submit-language').value = lang_val;
@@ -343,6 +339,6 @@ function show_set_tag(problem_id) {
 
 </script>
 
-<link href="https://cdn.bootcss.com/highlight.js/9.15.10/styles/atom-one-light.min.css" rel="stylesheet">
-<script src="https://cdn.bootcss.com/highlight.js/9.15.10/highlight.min.js"></script>
+{include file="common@snippets/highlight"}
+
 {/block}
