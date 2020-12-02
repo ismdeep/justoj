@@ -1,6 +1,8 @@
 {extend name="base" /}
 {block name="content"}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.9.2/ckeditor.js"></script>
+
+{include file="common@snippets/ckeditor"}
+
 <div class="x-body">
     <form class="layui-form" id="groupEditForm">
         <input type="text" name="group_id" id="group_id" value="{$group->id}" hidden>

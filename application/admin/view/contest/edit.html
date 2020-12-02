@@ -1,6 +1,8 @@
 {extend name="base" /}
 {block name="content"}
-<script src="https://cdn.bootcss.com/ckeditor/4.12.1/ckeditor.js"></script>
+
+{include file="common@snippets/ckeditor"}
+
 <div class="x-body">
     <div class="layui-form">
         <input type="text" id="contest_id" value="{$contest->contest_id}" hidden />
