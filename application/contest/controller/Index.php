@@ -5,11 +5,9 @@ namespace app\contest\controller;
 
 
 use app\api\model\ContestEnrollModel;
-use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
-use app\api\model\UserModel;
 use app\contest\common\ContestBaseController;
 use think\Db;
 
@@ -39,10 +37,11 @@ class Index extends ContestBaseController {
             $contest_problem->fk();
             // 如果当前用户登录了，判断AC状态
             $contest_problem->ac = false;
+            $contest_problem->ac2 = false;
             $contest_problem->pending = false;
             if ($this->login_user) {
-                if ((new SolutionModel())->
-                where("contest_id", $contest_problem->contest_id)
+                if ((new SolutionModel())
+                    ->where("contest_id", $contest_problem->contest_id)
                     ->where('user_id', $this->login_user->user_id)
                     ->where('problem_id', $contest_problem->problem_id)
                     ->where('in_date', '>', $this->contest->start_time)
@@ -50,16 +49,22 @@ class Index extends ContestBaseController {
                     ->where('result', 4)
                     ->find()) {
                     $contest_problem->ac = true;
-                } else {
-                    if ((new SolutionModel())->
-                    where("contest_id", $contest_problem->contest_id)
-                        ->where('user_id', $this->login_user->user_id)
-                        ->where('problem_id', $contest_problem->problem_id)
-                        ->where('in_date', '>', $this->contest->start_time)
-                        ->where('in_date', '<', $this->contest->end_time)
-                        ->find()) {
-                        $contest_problem->pending = true;
-                    }
+                } else if ((new SolutionModel())->
+                where("contest_id", $contest_problem->contest_id)
+                    ->where('user_id', $this->login_user->user_id)
+                    ->where('problem_id', $contest_problem->problem_id)
+                    ->where('in_date', '>=', $this->contest->end_time)
+                    ->where('result', 4)
+                    ->find()) {
+                    $contest_problem->ac2 = true;
+                } else if ((new SolutionModel())
+                    ->where("contest_id", $contest_problem->contest_id)
+                    ->where('user_id', $this->login_user->user_id)
+                    ->where('problem_id', $contest_problem->problem_id)
+                    ->where('in_date', '>', $this->contest->start_time)
+                    ->where('in_date', '<', $this->contest->end_time)
+                    ->find()) {
+                    $contest_problem->pending = true;
                 }
             }
         }
@@ -72,7 +77,6 @@ class Index extends ContestBaseController {
         $this->assign('contest', $this->contest);
         return view('./contest');
     }
-
 
 
 }
