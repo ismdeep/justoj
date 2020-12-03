@@ -190,6 +190,30 @@ class Problem extends UserBaseController {
         return view($this->theme_root . '/problem');
     }
 
+    public function get_problem_detail_recent_solution_part($id = '') {
+        $problem = ProblemModel::get(['problem_id' => $id]);
+
+        /* 获取近期提交记录 */
+        if ($this->is_login) {
+            $recent_solutions = (new SolutionModel())
+                ->where('contest_id', null)
+                ->where('user_id', $this->login_user->user_id)
+                ->where('problem_id', $problem->problem_id)
+                ->order('create_time', 'desc')
+                ->limit(5)
+                ->select();
+            foreach ($recent_solutions as $recent_solution) {
+                /* @var $recent_solution SolutionModel */
+                $recent_solution->fk();
+                $recent_solution->result_text = $this->lang[$recent_solution->result_code];
+            }
+
+            $this->assign('recent_solutions', $recent_solutions);
+        }
+
+        return view($this->theme_root . "/problem-recent-solutions-part");
+    }
+
     public function show_rejudge_page($id) {
         return view($this->theme_root . '/status-rejudge', ['id' => $id]);
     }

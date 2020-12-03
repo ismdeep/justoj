@@ -30,6 +30,7 @@ Route::rule('/profile',                  'home/profile/index');
 
 Route::rule('/rank',                     'home/rank/index');
 Route::rule('/problems/:id/rejudge',     'home/problem/show_rejudge_page');
+Route::rule('/problems/:id/recent_solutions','home/problem/get_problem_detail_recent_solution_part');
 Route::rule('/problems/:id',             'home/problem/get_problem_detail');
 Route::rule('/problems',                 'home/problem/get_problem_list');
 Route::rule('/users/:user_id',           'home/user/get_user_detail');
@@ -52,6 +53,8 @@ Route::rule('/contests/:id/rank/xls',      'contest/rank/export_xls');
 Route::rule('/contests/:id/rank',          'contest/rank/show_rank_page');
 Route::rule('/contests/:id/status',        'contest/status/show_status_list');
 Route::rule('/contests/:id/enroll',        'contest/enroll/show_contest_enroll_page');
+
+Route::rule('/contests/:id/problems/:pid/recent_solutions', 'contest/problem/show_problem_recent_solutions_part');
 Route::rule('/contests/:id/problems/:pid', 'contest/problem/show_problem_detail');
 Route::rule('/contests/:id',               'contest/index/show_contest_home_page');
 Route::rule('/contests',                   'home/contest/get_contest_list');
