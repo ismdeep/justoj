@@ -6,133 +6,155 @@
 
 <!--题目内容显示页面 begin-->
 <div class="container">
-    <h2 style="text-align: center">
-        {if $problem->ac}
-        <span class="glyphicon glyphicon-ok" style="color: green"></span>
-        {/if}
-        {if $problem->pending}
-        <span class="glyphicon glyphicon-hand-right" style="color: red"></span>
-        {/if}
-        {$problem->problem_id}: {$problem->title}
-    </h2>
-    <div style="text-align: center">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <span class=green>{$lang.time_limit}: </span>C/C++ {$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
-                Java/Python {$problem->time_limit * 3} s &nbsp;&nbsp;&nbsp;&nbsp;
-                <span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
-                <span class=green>{$lang.accepted}: </span><a href="/status?problem_id={$problem->problem_id}&result=4"
-                                                              target="_blank">{$problem->accepted}</a> &nbsp;&nbsp;&nbsp;&nbsp;
-                <span class=green>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}"
-                                                            target="_blank">{$problem->submit}</a>
-            </div>
-        </div>
+    <div class="row">
+        <div class="col-md-9">
+            <h2 style="text-align: center">
+                {if $problem->ac}
+                <span class="glyphicon glyphicon-ok" style="color: green"></span>
+                {/if}
+                {if $problem->pending}
+                <span class="glyphicon glyphicon-hand-right" style="color: red"></span>
+                {/if}
+                {$problem->problem_id}: {$problem->title}
+            </h2>
+            <div style="text-align: center">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <span class=green>{$lang.time_limit}: </span>C/C++ {$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
+                        Java/Python {$problem->time_limit * 3} s &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class=green>{$lang.accepted}: </span><a
+                            href="/status?problem_id={$problem->problem_id}&result=4"
+                            target="_blank">{$problem->accepted}</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class=green>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}"
+                                                                    target="_blank">{$problem->submit}</a>
+                    </div>
+                </div>
 
-        <!--功能按钮组 begin-->
-        {include file="home@common_html/problem_btns"}
-        <!--功能按钮组 end-->
-    </div>
-    <h3>{$lang.problem_description}</h3>
-    <div class="content">
-        {$problem->description}
-    </div>
-    <h3>{$lang.input}</h3>
-    <div class=content>{$problem->input}</div>
-    <h3>{$lang.output}</h3>
-    <div class=content>{$problem->output}</div>
-    <h3>{$lang.sample_input}</h3>
-    <pre><span class=sampledata>{$problem->sample_input}</span></pre>
-    <h3>{$lang.sample_output}</h3>
-    <pre><span class=sampledata>{$problem->sample_output}</span></pre>
-    <h3>{$lang.hint}</h3>
-    <div>{$problem->hint}</div>
-    <h3>{$lang.source}</h3>
-    <div class=content>
-        <p><a href='/problems?keyword={$problem->source}'>{$problem->source}</a></p>
-    </div>
-    <h3>{$lang.tag}</h3>
-    <div class=content>
-        {volist name="problem->tag_list" id="tag"}<a href="/problems?tag={$tag}">#{$problem_tag_dict_map[$tag]}</a>&nbsp;&nbsp;{/volist}
-    </div>
-    <br>
+                <!--功能按钮组 begin-->
+                {include file="home@common_html/problem_btns"}
+                <!--功能按钮组 end-->
+            </div>
+            <h3>{$lang.problem_description}</h3>
+            <div class="content">
+                {$problem->description}
+            </div>
+            <h3>{$lang.input}</h3>
+            <div class=content>{$problem->input}</div>
+            <h3>{$lang.output}</h3>
+            <div class=content>{$problem->output}</div>
+            <h3>{$lang.sample_input}</h3>
+            <pre><span class=sampledata>{$problem->sample_input}</span></pre>
+            <h3>{$lang.sample_output}</h3>
+            <pre><span class=sampledata>{$problem->sample_output}</span></pre>
+            <h3>{$lang.hint}</h3>
+            <div>{$problem->hint}</div>
+            <h3>{$lang.source}</h3>
+            <div class=content>
+                <p><a href='/problems?keyword={$problem->source}'>{$problem->source}</a></p>
+            </div>
+            <h3>{$lang.tag}</h3>
+            <div class=content>
+                {volist name="problem->tag_list" id="tag"}<a
+                    href="/problems?tag={$tag}">#{$problem_tag_dict_map[$tag]}</a>&nbsp;&nbsp;{/volist}
+            </div>
+            <br>
 
-<!--	提交代码表单组 begin-->
-    <div class="form-group" id="submit-group">
-        <div class="row">
-            <label class="col-md-1 col-form-label"></label>
-            <div class="col-md-11">
-                <h3>{$lang.submit_code}</h3>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <label for="submit-language" class="col-md-1 col-form-label"
-                   style="text-align: right">{$lang.language}:</label>
-            <div class="col-md-11">
-                <select class="form-control custom-select" name="language" id="submit-language"
-                        onchange="language_change()">
-                    {volist name="allowed_langs" id="item"}
-                    <option value="{$item.id}">{$item.name} ({$item.version})</option>
-                    {/volist}
-                </select>
-            </div>
-        </div>
-        <br>
-        <div class="row">
-            <label for="submit-source" class="col-md-1 col-form-label"
-                   style="text-align: right">{$lang.source_code}:</label>
-            <div class="col-md-11">
+            <!--	提交代码表单组 begin-->
+            <div class="form-group" id="submit-group">
+                <div class="row">
+                    <label class="col-md-1 col-form-label"></label>
+                    <div class="col-md-11">
+                        <h3>{$lang.submit_code}</h3>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label for="submit-language" class="col-md-1 col-form-label"
+                           style="text-align: right">{$lang.language}:</label>
+                    <div class="col-md-11">
+                        <select class="form-control custom-select" name="language" id="submit-language"
+                                onchange="language_change()">
+                            {volist name="allowed_langs" id="item"}
+                            <option value="{$item.id}">{$item.name} ({$item.version})</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label for="submit-source" class="col-md-1 col-form-label"
+                           style="text-align: right">{$lang.source_code}:</label>
+                    <div class="col-md-11">
                 <textarea class="form-control" style="font-family: Consolas,Courier,monospace;" name="submit-source"
                           id="submit-source" rows="19"></textarea>
-            </div>
-        </div>
-        <br>
-		<div class="row">
-			<label class="col-md-1 col-form-label"></label>
-			<div class="col-md-11">
-				<button class="btn btn-success" type="button" onclick="checkLoginThenSubmitCode();" id="submit-code-btn">{$lang.submit}</button>
-                <span id="solution-result-div" hidden>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-md-1 col-form-label"></label>
+                    <div class="col-md-11">
+                        <button class="btn btn-success" type="button" onclick="checkLoginThenSubmitCode();"
+                                id="submit-code-btn">{$lang.submit}
+                        </button>
+                        <span id="solution-result-div" hidden>
                     <span id="solution-result"></span>
                     <span id="solution-pending-spin" hidden>&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
                     <span id="solution-id-span">运行编号：<a href="javascript:" target="_blank" id="solution-id"></a></span>
                 </span>
-			</div>
-		</div>
-        <br>
-        <div class="row">
-            <label class="col-md-1 col-form-label"></label>
-            <div class="col-md-11">
-                <div id="compile-info-panel" hidden>
-                    <pre id="solution-compile-error"></pre>
+                    </div>
                 </div>
-                <div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
+                <br>
+                <div class="row">
+                    <label class="col-md-1 col-form-label"></label>
+                    <div class="col-md-11">
+                        <div id="compile-info-panel" hidden>
+                            <pre id="solution-compile-error"></pre>
+                        </div>
+                        <div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
+                    </div>
+                </div>
             </div>
+            <!--	提交代码表单组 end-->
+
         </div>
+
+        <div class="col-md-3" id="recent-solutions-part"></div>
+
     </div>
-<!--	提交代码表单组 end-->
 
 </div>
 <!--题目内容显示页面 end-->
 
 <script type="text/javascript">
+    $(function () {
+        let problem_id = "{$problem->problem_id}";
+        $("#recent-solutions-part").load("/problems/" + problem_id + "/recent_solutions");
+        setInterval(function () {
+            $("#recent-solutions-part").load("/problems/" + problem_id + "/recent_solutions");
+        }, 1000);
+    });
+</script>
+
+<script type="text/javascript">
     function checkLogin(func) {
         /* 先判断用户是否已经登录 */
-		$.get('/api/Login/islogin', function (d) {
+        $.get('/api/Login/islogin', function (d) {
             if ('success' === d.status) {
                 func();
             } else {
-				let loginData = {
-					'username': localStorage.getItem('username'),
-					'password': localStorage.getItem('password')
-				};
-				$.post('/api/Login/login', loginData, function (d) {
-					if ('success' === d.status) {
-						func();
-					} else {
-						location.href = '/login'
-					}
-				}, 'json');
-			}
+                let loginData = {
+                    'username': localStorage.getItem('username'),
+                    'password': localStorage.getItem('password')
+                };
+                $.post('/api/Login/login', loginData, function (d) {
+                    if ('success' === d.status) {
+                        func();
+                    } else {
+                        location.href = '/login'
+                    }
+                }, 'json');
+            }
         }, 'json');
     }
 
@@ -189,12 +211,12 @@
         }, 'json');
     }
 
-    function checkLoginThenSubmitCode () {
+    function checkLoginThenSubmitCode() {
         $('#solution-result-div').hide();
         $('#compile-info-panel').hide();
-    	checkLogin(function(){
-    	    submit_code()
-		});
+        checkLogin(function () {
+            submit_code()
+        });
     }
 
     /* 源代码语言切换 */

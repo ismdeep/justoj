@@ -5,304 +5,290 @@
 {include file="common@snippets/mathjax"}
 
 <script type="text/javascript">
-	$(function(){
-		let current_problem_num = "{$contest_problem->num}";
-		$('#li-problem-' + current_problem_num).addClass('active');
-	});
+    $(function () {
+        let current_problem_num = "{$contest_problem->num}";
+        $('#li-problem-' + current_problem_num).addClass('active');
+    });
 </script>
 
 <div class="container">
-	<div class="row">
-		<div class="col-md-9">
-			<ul id="myTab" class="nav nav-tabs">
-				{volist name='contest_problems' id='p'}
-				<li id="li-problem-{$p->num}"><a href="/contests/{$contest->contest_id}/problems/{$p->num}">
-				{if $p->ac}
-				<span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;
-				{elseif $p->ac2}
-				<span class="glyphicon glyphicon-ok" style="color: blue"></span>&nbsp;
-				{elseif $p->pending}
-				<span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;
-				{/if}
-				{$alphabet[$p->num]}</a>
-				</li>
-				{/volist}
-			</ul>
-			<h2 style="text-align: center">
-				{if $contest_problem->ac}
-				<span class="glyphicon glyphicon-ok" style="color: green"></span>
-				{elseif $contest_problem->ac2}
-				<span class="glyphicon glyphicon-ok" style="color: blue"></span>
-				{elseif $contest_problem->pending}
-				<span class="glyphicon glyphicon-hand-right" style="color: red"></span>
-				{/if}
-				{$alphabet[$contest_problem->num]}: {$problem->title}</h2>
-			<div style="text-align: center">
-				<div class="panel panel-default">
-					<div class="panel-body">
-						<span class=green>{$lang.time_limit}: </span>{$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
-						<span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
-					</div>
-				</div>
+    <div class="row">
+        <div class="col-md-9">
+            <ul id="myTab" class="nav nav-tabs">
+                {volist name='contest_problems' id='p'}
+                <li id="li-problem-{$p->num}"><a href="/contests/{$contest->contest_id}/problems/{$p->num}">
+                    {if $p->ac}
+                    <span class="glyphicon glyphicon-ok" style="color: green"></span>&nbsp;
+                    {elseif $p->ac2}
+                    <span class="glyphicon glyphicon-ok" style="color: blue"></span>&nbsp;
+                    {elseif $p->pending}
+                    <span class="glyphicon glyphicon-hand-right" style="color: red"></span>&nbsp;
+                    {/if}
+                    {$alphabet[$p->num]}</a>
+                </li>
+                {/volist}
+            </ul>
+            <h2 style="text-align: center">
+                {if $contest_problem->ac}
+                <span class="glyphicon glyphicon-ok" style="color: green"></span>
+                {elseif $contest_problem->ac2}
+                <span class="glyphicon glyphicon-ok" style="color: blue"></span>
+                {elseif $contest_problem->pending}
+                <span class="glyphicon glyphicon-hand-right" style="color: red"></span>
+                {/if}
+                {$alphabet[$contest_problem->num]}: {$problem->title}</h2>
+            <div style="text-align: center">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <span class=green>{$lang.time_limit}: </span>{$problem->time_limit} s &nbsp;&nbsp;&nbsp;&nbsp;
+                        <span class=green>{$lang.memory_limit}: </span>{$problem->memory_limit} MB &nbsp;&nbsp;&nbsp;&nbsp;
+                    </div>
+                </div>
 
-				<!--功能按钮组 begin-->
-				<button type="button" class="btn btn-success" onclick="gotoSubmitFormGroup();">{$lang.submit}</button>
-				{if $login_user}
-				<a href="/contests/{$contest->contest_id}/status?username={$login_user->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
-				{/if}
+                <!--功能按钮组 begin-->
+                <button type="button" class="btn btn-success" onclick="gotoSubmitFormGroup();">{$lang.submit}</button>
+                {if $login_user}
+                <a href="/contests/{$contest->contest_id}/status?username={$login_user->user_id}&problem_id={$contest_problem->num}"
+                   target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+                {/if}
 
-				{if $is_administrator}
-				<a href="/admin/Problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
-				<a href="/admin/Problem/files?problem_id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.test_data}</a>
-				{/if}
+                {if $is_administrator}
+                <a href="/admin/Problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
+                <a href="/admin/Problem/files?problem_id={$problem->problem_id}" class="btn btn-primary"
+                   target="_blank">{$lang.test_data}</a>
+                {/if}
 
-				{if $is_root}
-				<button class="btn btn-danger" onclick="rejudge_problem('{$contest_problem->contest_id}', '{$contest_problem->num}');">{$lang.rejudge}</button>
-				{/if}
-				<!--功能按钮组 end-->
-			</div>
-			<h3>{$lang.problem_description}</h3>
-			<div class="content">
-				{$problem->description}
-			</div>
-			<h3>{$lang.input}</h3>
-			<div class=content>{$problem->input}</div>
-			<h3>{$lang.output}</h3>
-			<div class=content>{$problem->output}</div>
-			<h3>{$lang.sample_input}</h3>
-			<pre><span class=sampledata>{$problem->sample_input}</span></pre>
-			<h3>{$lang.sample_output}</h3>
-			<pre><span class=sampledata>{$problem->sample_output}</span></pre>
-			<h3>{$lang.hint}</h3>
-			<div>{$problem->hint}</div>
-			<h3>{$lang.source}</h3>
-			<div class=content>
-				<p><a href='javascript:'>{$problem->source}</a></p>
-			</div>
-			{if $is_administrator || $is_root}
-			<div class="content">
-				<a href="/problems/{$problem->problem_id}" target="_blank">Original Problem Link</a>
-			</div>
-			{/if}
-			<br>
-			<div style="text-align: center">
-				<!--功能按钮组 begin-->
-				<button type="button" class="btn btn-success" onclick="gotoSubmitFormGroup();">{$lang.submit}</button>
-				{if $login_user}
-				<a href="/contests/{$contest->contest_id}/status?username={$login_user->user_id}&problem_id={$contest_problem->num}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
-				{/if}
-				<!--功能按钮组 end-->
-			</div>
+                {if $is_root}
+                <button class="btn btn-danger"
+                        onclick="rejudge_problem('{$contest_problem->contest_id}', '{$contest_problem->num}');">
+                    {$lang.rejudge}
+                </button>
+                {/if}
+                <!--功能按钮组 end-->
+            </div>
+            <h3>{$lang.problem_description}</h3>
+            <div class="content">
+                {$problem->description}
+            </div>
+            <h3>{$lang.input}</h3>
+            <div class=content>{$problem->input}</div>
+            <h3>{$lang.output}</h3>
+            <div class=content>{$problem->output}</div>
+            <h3>{$lang.sample_input}</h3>
+            <pre><span class=sampledata>{$problem->sample_input}</span></pre>
+            <h3>{$lang.sample_output}</h3>
+            <pre><span class=sampledata>{$problem->sample_output}</span></pre>
+            <h3>{$lang.hint}</h3>
+            <div>{$problem->hint}</div>
+            <h3>{$lang.source}</h3>
+            <div class=content>
+                <p><a href='javascript:'>{$problem->source}</a></p>
+            </div>
+            {if $is_administrator || $is_root}
+            <div class="content">
+                <a href="/problems/{$problem->problem_id}" target="_blank">Original Problem Link</a>
+            </div>
+            {/if}
+            <br>
+            <div style="text-align: center">
+                <!--功能按钮组 begin-->
+                <button type="button" class="btn btn-success" onclick="gotoSubmitFormGroup();">{$lang.submit}</button>
+                {if $login_user}
+                <a href="/contests/{$contest->contest_id}/status?username={$login_user->user_id}&problem_id={$contest_problem->num}"
+                   target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
+                {/if}
+                <!--功能按钮组 end-->
+            </div>
 
-			<!--	提交代码表单组 begin-->
-			<div class="form-group" id="submit-group">
-				<div class="row">
-					<label class="col-md-1 col-form-label"></label>
-					<div class="col-md-11">
-						<h3>{$lang.submit_code}</h3>
-					</div>
-				</div>
-				<br>
-				<div class="row">
-					<label for="submit-language" class="col-md-1 col-form-label"
-						   style="text-align: right">{$lang.language}:</label>
-					<div class="col-md-11">
-						<select class="form-control custom-select" name="language" id="submit-language"
-								onchange="language_change()">
-							{volist name="allowed_langs" id="item"}
-							<option value="{$item.id}">{$item.name} ({$item.version})</option>
-							{/volist}
-						</select>
-					</div>
-				</div>
-				<br>
-				<div class="row">
-					<label for="submit-source" class="col-md-1 col-form-label"
-						   style="text-align: right">{$lang.source_code}:</label>
-					<div class="col-md-11">
+            <!--	提交代码表单组 begin-->
+            <div class="form-group" id="submit-group">
+                <div class="row">
+                    <label class="col-md-1 col-form-label"></label>
+                    <div class="col-md-11">
+                        <h3>{$lang.submit_code}</h3>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label for="submit-language" class="col-md-1 col-form-label"
+                           style="text-align: right">{$lang.language}:</label>
+                    <div class="col-md-11">
+                        <select class="form-control custom-select" name="language" id="submit-language"
+                                onchange="language_change()">
+                            {volist name="allowed_langs" id="item"}
+                            <option value="{$item.id}">{$item.name} ({$item.version})</option>
+                            {/volist}
+                        </select>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label for="submit-source" class="col-md-1 col-form-label"
+                           style="text-align: right">{$lang.source_code}:</label>
+                    <div class="col-md-11">
                 <textarea class="form-control" style="font-family: Consolas,Courier,monospace;" name="submit-source"
-						  id="submit-source" rows="19"></textarea>
-					</div>
-				</div>
-				<br>
-				<div class="row">
-					<label class="col-md-1 col-form-label"></label>
-					<div class="col-md-11">
-						<button class="btn btn-success" type="button" onclick="checkLoginThenSubmitCode();" id="submit-code-btn">{$lang.submit}</button>
-						<span id="solution-result-div" hidden>
+                          id="submit-source" rows="19"></textarea>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-md-1 col-form-label"></label>
+                    <div class="col-md-11">
+                        <button class="btn btn-success" type="button" onclick="checkLoginThenSubmitCode();"
+                                id="submit-code-btn">{$lang.submit}
+                        </button>
+                        <span id="solution-result-div" hidden>
                     <span id="solution-result"></span>
                     <span id="solution-pending-spin" hidden>&nbsp;<i class="fa fa-refresh fa-spin"></i></span>
                     <span id="solution-id-span">运行编号：<a href="javascript:" target="_blank" id="solution-id"></a></span>
                 </span>
-					</div>
-				</div>
-				<br>
-				<div class="row">
-					<label class="col-md-1 col-form-label"></label>
-					<div class="col-md-11">
-						<div id="compile-info-panel" hidden>
-							<pre id="solution-compile-error"></pre>
-						</div>
-						<div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
-					</div>
-				</div>
-			</div>
-			<!--	提交代码表单组 end-->
-		</div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <label class="col-md-1 col-form-label"></label>
+                    <div class="col-md-11">
+                        <div id="compile-info-panel" hidden>
+                            <pre id="solution-compile-error"></pre>
+                        </div>
+                        <div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
+                    </div>
+                </div>
+            </div>
+            <!--	提交代码表单组 end-->
+        </div>
 
 
-		<div class="col-md-3">
-			<!--			近期提交历史 begin-->
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">
-						<?php echo ['en' => 'Recent Submissions', 'cn' => '近期提交历史'][$show_ui_lang];?>
-					</h3>
-				</div>
-				<div class="panel-body">
-					{if $is_login}
-						{if sizeof($recent_solutions) > 0}
-						<table class="table">
-							<thead>
-							<tr>
-								<th>ID</th>
-								<th>Status</th>
-							</tr>
-							</thead>
-							<tbody>
-							{volist name="recent_solutions" id="recent_solution"}
-							<tr>
-								<td><a target="_blank" href="/solutions/{$recent_solution->solution_id}">{$recent_solution->solution_id}</a></td>
-								<td class="{$recent_solution->result_code}">{$recent_solution->result_text}</td>
-							</tr>
-							{/volist}
-							</tbody>
-						</table>
-						{else}
-						<p><?php echo ['en' => 'No submissions', 'cn' => '尚无提交记录'][$show_ui_lang];?></p>
-						{/if}
-					{else}
-					<p>尚未登录</p>
-					{/if}
-				</div>
-			</div>
-			<!--			近期提交历史 end-->
-		</div>
-	</div>
+        <div class="col-md-3" id="recent-solutions-part"></div>
+
+
+    </div>
 </div>
 
 
 <script type="text/javascript">
-    function status_monitor(solution_id){
-        $.get('/api/Solution/status?solution_id='+solution_id,function(d){
+    $(function () {
+        let current_problem_num = "{$contest_problem->num}";
+        let contest_id = "{$contest_problem->contest_id}";
+        $("#recent-solutions-part").load("/contests/" + contest_id + "/problems/" + current_problem_num + "/recent_solutions");
+        setInterval(function () {
+            $("#recent-solutions-part").load("/contests/" + contest_id + "/problems/" + current_problem_num + "/recent_solutions");
+        }, 1000);
+    });
+</script>
+
+
+<script type="text/javascript">
+    function status_monitor(solution_id) {
+        $.get('/api/Solution/status?solution_id=' + solution_id, function (d) {
             if (d.data.result < 4) {
-                $('#solution-result').html('<span class="'+d.data.result_code+'">'+d.data.result_text+'</span>');
-                setTimeout(function(){
-					status_monitor(solution_id)
-				}, 300);
-            }else{
-				$('#submit-code-btn').text("{$lang.submit}");
-				$('#submit-code-btn').attr('disabled', false);
-				$('#solution-result').html('<span class="'+d.data.result_code+'">'+d.data.result_text+'</span>');
+                $('#solution-result').html('<span class="' + d.data.result_code + '">' + d.data.result_text + '</span>');
+                setTimeout(function () {
+                    status_monitor(solution_id)
+                }, 300);
+            } else {
+                $('#submit-code-btn').text("{$lang.submit}");
+                $('#submit-code-btn').attr('disabled', false);
+                $('#solution-result').html('<span class="' + d.data.result_code + '">' + d.data.result_text + '</span>');
                 $('#solution-pending-spin').hide();
-				/* 如果是编译错误还要显示编译错误信息 */
-				if (11 === d.data.result) {
-					$('#solution-compile-error').html(d.data.compile_info.error);
-					$('#solution-result').html(
-							'<span class="' + d.data.result_code + '"><a href="/solutions/' + solution_id + '/ceinfo" target="_blank">' + d.data.result_text + '</a></span>'
-					);
-					$('#compile-info-panel').show();
-				}
-				$('#solution-pending-spin').hide();
+                /* 如果是编译错误还要显示编译错误信息 */
+                if (11 === d.data.result) {
+                    $('#solution-compile-error').html(d.data.compile_info.error);
+                    $('#solution-result').html(
+                        '<span class="' + d.data.result_code + '"><a href="/solutions/' + solution_id + '/ceinfo" target="_blank">' + d.data.result_text + '</a></span>'
+                    );
+                    $('#compile-info-panel').show();
+                }
+                $('#solution-pending-spin').hide();
 
             }
-        },'json');
+        }, 'json');
     }
 
-    function submit_code(){
-		$('#submit-code-btn').text("Submitting");
-		$('#submit-code-btn').attr('disabled', true);
-    	let contest_id = "{$contest->contest_id}";
-    	let problem_num = "{$contest_problem->num}";
+    function submit_code() {
+        $('#submit-code-btn').text("Submitting");
+        $('#submit-code-btn').attr('disabled', true);
+        let contest_id = "{$contest->contest_id}";
+        let problem_num = "{$contest_problem->num}";
         let codeData = {
             'contest_id': contest_id,
             'problem_num': problem_num,
             'language': $('#submit-language').val(),
             'code': $('#submit-source').val()
         };
-        $.post('/api/Solution/submit_contest_problem_code',codeData,function(d){
-			$('#submit-code-btn').text("Submitted");
+        $.post('/api/Solution/submit_contest_problem_code', codeData, function (d) {
+            $('#submit-code-btn').text("Submitted");
             if ('success' === d.status) {
-				$('#solution-id').html(d.data.solution_id);
-				$('#solution-id').attr('href', '/solutions/' + d.data.solution_id);
-				$('#solution-result').html('{$lang.contest_code_pending}');
-				$('#solution-result').css('color', 'black');
-				$('#solution-pending-spin').show();
-				$('#solution-result-div').show();
+                $('#solution-id').html(d.data.solution_id);
+                $('#solution-id').attr('href', '/solutions/' + d.data.solution_id);
+                $('#solution-result').html('{$lang.contest_code_pending}');
+                $('#solution-result').css('color', 'black');
+                $('#solution-pending-spin').show();
+                $('#solution-result-div').show();
                 // 监控题目状态
                 status_monitor(d.data.solution_id);
-            }else{
-            	$('#submit-alert').html(d.msg);
-            	$('#submit-alert').show();
-			}
-        },'json');
+            } else {
+                $('#submit-alert').html(d.msg);
+                $('#submit-alert').show();
+            }
+        }, 'json');
     }
 
     /* 源代码语言切换 */
-    function language_change(){
+    function language_change() {
         let lang_val = document.getElementById('submit-language').value;
         localStorage.setItem("lang_val", lang_val);
     }
 
     function rejudge_problem(contest_id, pid) {
-		layer.confirm('确定重判此题目？', function(){
-			// layer.alert(contest_id + ' ' + pid);
-			$.post('/api/solution/rejudge_contest_problem', {'contest_id': contest_id, 'pid': pid}, function(d){
-				if ('success' === d.status) {
-					window.location.href = '/contest/Status?id='+contest_id+'&problem_id='+pid;
-				}else{
-					layer.alert(d.msg,function(){
-						window.location.href = '/contest/Status?id='+contest_id+'&problem_id='+pid;
-					});
-				}
-			}, 'json');
-		})
-	}
+        layer.confirm('确定重判此题目？', function () {
+            // layer.alert(contest_id + ' ' + pid);
+            $.post('/api/solution/rejudge_contest_problem', {'contest_id': contest_id, 'pid': pid}, function (d) {
+                if ('success' === d.status) {
+                    window.location.href = '/contest/Status?id=' + contest_id + '&problem_id=' + pid;
+                } else {
+                    layer.alert(d.msg, function () {
+                        window.location.href = '/contest/Status?id=' + contest_id + '&problem_id=' + pid;
+                    });
+                }
+            }, 'json');
+        })
+    }
 
-	function gotoSubmitFormGroup() {
-		$(window).scrollTop($("#submit-group").offset().top);
-	}
+    function gotoSubmitFormGroup() {
+        $(window).scrollTop($("#submit-group").offset().top);
+    }
 
-	function checkLogin(func) {
-		/* 先判断用户是否已经登录 */
-		$.get('/api/Login/islogin', function (d) {
-			if ('success' === d.status) {
-				func();
-			} else {
-				let loginData = {
-					'username': localStorage.getItem('username'),
-					'password': localStorage.getItem('password')
-				};
-				$.post('/api/Login/login', loginData, function (d) {
-					if ('success' === d.status) {
-						func();
-					} else {
-						location.href = '/login'
-					}
-				}, 'json');
-			}
-		}, 'json');
-	}
+    function checkLogin(func) {
+        /* 先判断用户是否已经登录 */
+        $.get('/api/Login/islogin', function (d) {
+            if ('success' === d.status) {
+                func();
+            } else {
+                let loginData = {
+                    'username': localStorage.getItem('username'),
+                    'password': localStorage.getItem('password')
+                };
+                $.post('/api/Login/login', loginData, function (d) {
+                    if ('success' === d.status) {
+                        func();
+                    } else {
+                        location.href = '/login'
+                    }
+                }, 'json');
+            }
+        }, 'json');
+    }
 
-	function checkLoginThenSubmitCode () {
-		$('#solution-result-div').hide();
-		$('#compile-info-panel').hide();
-		checkLogin(function(){
-			submit_code()
-		});
-	}
+    function checkLoginThenSubmitCode() {
+        $('#solution-result-div').hide();
+        $('#compile-info-panel').hide();
+        checkLogin(function () {
+            submit_code()
+        });
+    }
 
-    $(function(){
+    $(function () {
         // 自动初始化语言
         let lang_val = localStorage.getItem('lang_val');
         if (null == lang_val) {

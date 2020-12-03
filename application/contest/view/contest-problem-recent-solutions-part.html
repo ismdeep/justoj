@@ -1,0 +1,39 @@
+<!--			近期提交历史 begin-->
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">
+            <?php echo ['en' => 'Recent Submissions', 'cn' => '近期提交历史'][$show_ui_lang];?>
+        </h3>
+    </div>
+    {if $is_login}
+    {if sizeof($recent_solutions) > 0}
+    <ul class="list-group">
+        {volist name="recent_solutions" id="recent_solution"}
+        <li class="list-group-item">
+            <div>
+                <p>
+                    <a target="_blank" href="/solutions/{$recent_solution->solution_id}">#{$recent_solution->solution_id}</a>
+                    <span class="{$recent_solution->result_code}">{$recent_solution->result_text}</span>
+                </p>
+                <p>
+                    {$recent_solution->language_text} / {$recent_solution->memory} B / {$recent_solution->time} ms
+                </p>
+                <p>
+                    {$recent_solution->in_date}
+                </p>
+            </div>
+        </li>
+        {/volist}
+    </ul>
+    {else}
+    <div class="panel-body">
+        <p><?php echo ['en' => 'No submissions', 'cn' => '尚无提交记录'][$show_ui_lang];?></p>
+    </div>
+    {/if}
+    {else}
+    <div class="panel-body">
+        <p>尚未登录</p>
+    </div>
+    {/if}
+</div>
+<!--			近期提交历史 end-->
