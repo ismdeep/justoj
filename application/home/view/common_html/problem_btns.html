@@ -1,4 +1,4 @@
-<button type="button" class="btn btn-success" onclick="show_submit_code_modal()">{$lang.submit}</button>
+<button type="button" class="btn btn-success" onclick="gotoSubmitFormGroup();">{$lang.submit}</button>
 {if $login_user}
 <a href="/status?username={$login_user->user_id}&problem_id={$problem->problem_id}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 {/if}
@@ -12,3 +12,16 @@
 {if $is_root}
 <button class="btn btn-danger" onclick="rejudge_problem({$problem->problem_id})">{$lang.rejudge}</button>
 {/if}
+
+<script type="text/javascript">
+    function show_set_tag(problem_id) {
+        layer.open({
+            title: '选择题目标签',
+            type: 2,
+            area: ['600px', '400px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: '/admin/problem/set_tag?problem_id=' + problem_id
+        });
+    }
+</script>
