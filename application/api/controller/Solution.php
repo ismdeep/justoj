@@ -158,7 +158,10 @@ class Solution extends ApiBaseController {
         $solution->fk();
         $solution->result_text = $this->lang[$solution->result_code];
         $solution->compile_info = CompileInfoModel::get(['solution_id' => $solution->solution_id]);
-        $solution->compile_info->error = htmlspecialchars($solution->compile_info->error);
+        if ($solution->compile_info) {
+            $solution->compile_info->error = htmlspecialchars($solution->compile_info->error);
+        }
+
 
         return json(['status' => 'success', 'data' => $solution]);
     }
