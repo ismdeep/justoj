@@ -111,6 +111,21 @@ class Problem extends ContestBaseController {
             }
         }
 
+
+
+        $this->assign('contest_problems', $contest_problems);
+        $this->assign('allowed_langs', $allowed_langs);
+        return view('./contest-problem');
+    }
+
+    public function show_problem_recent_solutions_part($pid) {
+        /* 判断比赛是否开始 */
+        if (!$this->contest_started) {
+            $this->redirect("/contests/{$this->contest_id}");
+        }
+
+        $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
+
         /* 获取近期提交记录 */
         if ($this->is_login) {
             $recent_solutions = (new SolutionModel())
@@ -120,6 +135,7 @@ class Problem extends ContestBaseController {
                 ->order('create_time', 'desc')
                 ->select();
             foreach ($recent_solutions as $recent_solution) {
+                /* @var $recent_solution SolutionModel */
                 $recent_solution->fk();
                 $recent_solution->result_text = $this->lang[$recent_solution->result_code];
             }
@@ -127,9 +143,7 @@ class Problem extends ContestBaseController {
             $this->assign('recent_solutions', $recent_solutions);
         }
 
-        $this->assign('contest_problems', $contest_problems);
-        $this->assign('allowed_langs', $allowed_langs);
-        return view('./contest-problem');
+        return view('./contest-problem-recent-solutions-part');
     }
 
 }
