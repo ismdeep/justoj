@@ -2,10 +2,40 @@
 {block name="content"}
 <div class="x-body">
     <div class="layui-row">
-        <a class="layui-btn layui-btn-sm" href="javascript:" onclick="x_admin_show('添加比赛','/admin/contest/add');">添加比赛</a>
+        <a class="layui-btn layui-btn-sm" href="javascript:" onclick="add_contest();">添加比赛</a>
+        <button type="button" class="layui-btn layui-btn-sm"  href="javascript:" onclick="location.reload();"><i class="layui-icon layui-icon-refresh"></i>刷新</button>
     </div>
     <table class="layui-hide" id="contest-list"></table>
 </div>
+
+<script type="text/javascript">
+    function open_clone_contest_from_contest() {
+        layer.open({
+            type: 2,
+            title: '复制作业',
+            area: ['500px', '300px'],
+            content: '/admin/contest/filter_contests'
+        });
+    }
+
+    function add_contest() {
+        layer.open({
+            title: '创建比赛',
+            shadeClose: true,
+            content: '请选择创建比赛的方式',
+            btn: ['手动添加', '复制比赛'],
+            btn1: function (index, layero) {
+                layer.closeAll();
+                x_admin_show('添加比赛','/admin/contest/add');
+            },
+            btn2: function (index, layero) {
+                layer.closeAll();
+                open_clone_contest_from_contest();
+            },
+        });
+
+    }
+</script>
 
 <script type="text/html" id="idTpl">
     <a class="layui-table-link" href="/contests/{{d.contest_id}}" target="_blank">{{d.contest_id}}</a>
@@ -18,9 +48,7 @@
 
 <script type="text/html" id="operationTpl">
     <a href="javascript:" onclick="x_admin_show('编辑 - {{d.title}}', '/admin/contest/edit?contest_id={{d.contest_id}}');">编辑</a>
-    {if $is_root}
-    <a href="javascript:" onclick="set_as_homework({{d.contest_id}});">切换为作业</a>
-    {/if}
+    <a href="javascript:" onclick="x_admin_show('复制比赛', '/admin/contest/clone_contest?from_contest_id={{d.contest_id}}')">复制比赛</a>
 </script>
 
 <script type="text/html" id="privateTpl">
@@ -80,22 +108,5 @@
             },'json');
         });
     });
-
-    function set_as_homework(contest_id) {
-        layer.msg('正在操作', {
-            icon: 16
-            , shade: 0.01
-        });
-        $.post('/admin/contest/set_contest_type_json', {'contest_id': contest_id, 'type': 1}, function(d){
-            if ('success' === d.status) {
-                setTimeout(function(){
-                    layer.closeAll();
-                    table.reload('contest_list');
-                }, 300);
-            }else{
-                layer.alert(d.msg);
-            }
-        }, 'json');
-    }
 </script>
 {/block}
