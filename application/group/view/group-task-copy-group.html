@@ -1,5 +1,6 @@
 {extend name="admin@base" /}
 {block name="content"}
+{include file="common@snippets/greetings_css"}
 <div class="x-body">
     <form class="layui-form" id="homework-copy-from-group-form">
         <input type="text" value="{$group->id}" id="group-id" hidden>

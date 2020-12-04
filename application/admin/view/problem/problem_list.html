@@ -3,12 +3,14 @@
 <div class="x-body">
     <div class="layui-row">
         <form class="layui-form layui-col-md12 x-so" id="problemFilterForm">
-            <a class="layui-btn" href="/admin/problem/add" target="_blank">添加题目</a>
+            <a class="layui-btn layui-btn-sm" href="/admin/problem/add" target="_blank">添加题目</a>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <input class="layui-input" type="text" name="keyword" id="keyword" placeholder="关键字搜索" autocomplete="off">
-            <button type="submit" class="layui-btn" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+            <input class="layui-input" style="height: 30px;" type="text" name="keyword" id="keyword" placeholder="关键字搜索" autocomplete="off">
+            <button type="submit" class="layui-btn layui-btn-sm" lay-submit="" lay-filter="search"><i class="layui-icon"></i></button>
+            <button type="button" class="layui-btn layui-btn-sm"  href="javascript:" onclick="location.reload();"><i class="layui-icon layui-icon-refresh"></i>刷新</button>
         </form>
     </div>
+
     <table class="layui-hide" id="problem-list"></table>
 </div>
 
