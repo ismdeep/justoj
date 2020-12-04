@@ -83,6 +83,60 @@ class Contest extends AdminBaseController {
         return view('edit');
     }
 
+    public function filter_contests() {
+        return view('filter_contests');
+    }
+
+    /**
+     * Clone 比赛
+     *
+     * @param $from_contest_id
+     * @return \think\response\View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function clone_contest($from_contest_id = null) {
+        intercept(null == $from_contest_id, 'from_contest_id为空');
+        // 判断是否管理员
+        if (!$this->is_administrator) {
+            return view('admin@layout/error', ['error_msg' => $this->lang['do_not_have_privilege']]);
+        }
+
+        // 判断from_contest_id是否存在
+        $contest = ContestModel::get(['contest_id' => $from_contest_id]);
+        if (!$contest) {
+            return view('admin@layout/error', ['error_msg' => $this->lang['contest_not_exists']]);
+        }
+
+        // 获取题目列表
+        $contest_problems = ContestProblemModel::where('contest_id', $from_contest_id)->order('num', 'asc')->select();
+        $flag = false;
+        $problem_ids = '';
+        foreach ($contest_problems as $contest_problem) {
+            if ($flag) {
+                $problem_ids .= ',';
+            }
+            $flag = true;
+            $problem_ids .= $contest_problem->problem_id;
+        }
+        $contest->problem_ids = $problem_ids;
+
+        // 更改一下contest的标题
+        $contest->title = $contest->title . '(clone)';
+
+        // 更改一下contest的contest_id
+        $contest->contest_id = '';
+
+        $allowed_langs_all = $this->allowed_langs();
+        for ($i = 0; $i < sizeof($allowed_langs_all); ++$i) {
+            $allowed_langs_all[$i]['allowed'] = true;
+        }
+        $this->assign('allowed_langs_all', $allowed_langs_all);
+
+        return view('edit', ['contest' => $contest]);
+    }
+
     /**
      * @param string $contest_id
      * @throws \think\db\exception\DataNotFoundException

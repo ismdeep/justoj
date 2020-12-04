@@ -7,13 +7,13 @@
     <div class="layui-form">
         <input type="text" id="contest_id" value="{$contest->contest_id}" hidden />
         <div class="layui-form-item">
-            <label class="layui-form-label">{$lang.title}</label>
+            <label class="layui-form-label">标题</label>
             <div class="layui-input-block">
                 <input type="text" id="title" value="{$contest->title}" lay-verify="title" autocomplete="off" placeholder="{$lang.please_input_title}" class="layui-input">
             </div>
         </div>
 
-        <div class="layui-form-item" {if !$is_root}hidden{/if} >
+        <div class="layui-form-item" hidden>
             <label class="layui-form-label">类型</label>
             <div class="layui-input-block">
                 <input type="radio" name="type_flag" lay-filter="type_flag" value="0" title="比赛" {if '0' == $contest->type}checked=""{/if}>
@@ -102,7 +102,7 @@
         </div>
 
         <div class="layui-form-item layui-form-text">
-            <label class="layui-form-label">{$lang.description}</label>
+            <label class="layui-form-label">描述</label>
             <div class="layui-input-block">
                 <textarea name="description" id="description" placeholder="请输入内容" class="layui-textarea">{$contest->description}</textarea>
                 <script> var description = CKEDITOR.replace( 'description' ); </script>

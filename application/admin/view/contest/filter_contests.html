@@ -1,0 +1,67 @@
+{extend name="base" /}
+{block name="content"}
+
+{include file="common@snippets/greetings_css"}
+
+<body class="x-body">
+<input type="text" id="contest-id" hidden>
+
+<div>
+    <div class="layui-btn-fluid">
+        <input type="text" name="contest_search" list="contests" autocomplete="off"
+               placeholder="请输入名称搜索比赛" class="layui-input" id="contest_search">
+        <div class="greetings" id="contests">
+            <ul id="contestids"></ul>
+        </div>
+    </div>
+    <br>
+    <div class="layui-btn-fluid">
+        比赛原始地址：
+    </div>
+    <br>
+    <div class="layui-btn-fluid">
+        <button type="button" class="layui-btn layui-btn-normal" onclick="goto_clone_contest();">复制比赛</button>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript">
+    function goto_clone_contest() {
+        let contest_id = $('#contest-id').val();
+        if (contest_id == null || contest_id === "" || contest_id.length < 0) {
+            layer.alert('请输入比赛名称进行搜索并选择需要复制的比赛');
+        } else {
+            layer.closeAll();
+            parent.x_admin_show('克隆比赛', '/admin/contest/clone_contest?from_contest_id=' + contest_id);
+        }
+    }
+</script>
+
+<script type="text/javascript">
+    $("#contest_search").keyup(function () {
+        $("#contests").show();
+        let search_key = $("#contest_search").val();
+        if (search_key !== '') {
+            $.get('/api/homework/search_json?search_key=' + search_key, function (d) {
+                let agents = d.data;
+                $('#contestids li').remove();
+                for (let i in agents) {
+                    let li = $('<li value="' + agents[i].contest_id + '"></li>');
+                    $(li).html(agents[i].title);
+                    $('#contestids').append(li);
+                }
+            }, 'json');
+        }
+    });
+    $("#contestids").on("click", "li", function () {
+        let contests = $("#contests");
+        contests.show();
+        var contest_list = $("#contestids li");
+        var index = $(this).index();//获取li的下标
+        var Tresult = contest_list.eq(index).text();
+        $("#contest_search").val(Tresult);
+        contests.hide();
+        $('#contest-id').val(contest_list.eq(index).val());
+    });
+</script>
+{/block}
