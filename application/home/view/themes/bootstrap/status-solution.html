@@ -3,43 +3,19 @@
 {block name='title_block'}{$lang['status']}{/block}
 {block name="body"}
 <div class="container">
+
+    <div class="row">
+        {if $is_root}
+        {volist name="result_map" id="result_item"}
+        <span class="label">
+            <a href="javascript:" onclick="manual_set_result({$result_item['id']})">{$lang[$result_item['lang_id']]}</a>
+        </span>
+        {/volist}
+        {/if}
+    </div>
+
     <div id="info-panel">
-        <table class="table table-reflow">
-            <thead>
-            <tr>
-                <th>{$lang.run_id}</th>
-                <th>{$lang.status}</th>
-                {if $is_root}<th>{$lang.operation}</th>{/if}
-                <th>{$lang.code_length}</th>
-                <th>{$lang.memory}</th>
-                <th>{$lang.exe_time}</th>
-                <th>{$lang.language}</th>
-                <th>{$lang.submit_time}</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td><span id="solution_id_2">{$solution->solution_id}</span></td>
-                <td><span id="solution-result">{$solution->result_text}</span></td>
 
-                {if $is_root}
-                <td>
-                    <select name="manual-result" id="manual-result" onchange="manual_set_result();">
-                        {volist name="result_map" id="result_item"}
-                        <option value="{$result_item['id']}"{if $solution->result == $result_item['id']} selected {/if}>{$lang[$result_item['lang_id']]}</option>
-                        {/volist}
-                    </select>
-                </td>
-                {/if}
-
-                <td id="solution-code-length">{$solution->code_length}</td>
-                <td id="solution-memory">{$solution->memory}</td>
-                <td id="solution-exe-time">{$solution->time}</td>
-                <td id="solution-code-language">{$solution->language_text}</td>
-                <td id="solution-submit-time">{$solution->in_date}</td>
-            </tr>
-            </tbody>
-        </table>
     </div>
     <div id="code-panel">
         <pre id="solution-source-code" style="padding: 0px;tab-size: 4"><code class="c">{$source_code->source}</code></pre>
@@ -58,16 +34,19 @@
 </script>
 
 <script type="text/javascript">
-    $(function(){
-        setTimeout(function(){
-            location.reload();
-        }, 2000);
+    $(function () {
+        $("#info-panel").load("/solutions/" + solution_id + "/table-part");
+        setInterval(function () {
+            $("#info-panel").load("/solutions/" + solution_id + "/table-part");
+        }, 1000);
     });
+</script>
 
-    function manual_set_result() {
-        let manual_result_val = $('#manual-result').val();
-        $.post('/api/solution/manual_set_result', {'solution_id': solution_id, 'result': manual_result_val}, function(d){
-
+<script type="text/javascript">
+    function manual_set_result(result) {
+        let postData = {'solution_id': solution_id, 'result': result};
+        $.post('/api/solution/manual_set_result', postData, function(d){
+            console.log(d);
         }, 'json')
     }
 </script>
