@@ -13,8 +13,10 @@ Route::rule('/homework',                 'home/homework/index');
 Route::rule('/status/langs',             'home/status/show_languages');
 Route::rule('/status',                   'home/status/index');
 
-Route::rule('/solutions/:solution_id/ceinfo','home/solution/get_compile_error_info');
-Route::rule('/solutions/:solution_id',       'home/solution/show_detail');
+Route::rule('/solutions/:solution_id/ceinfo',     'home/solution/get_compile_error_info');
+Route::rule('/solutions/:solution_id/table-part', 'home/solution/show_table_part');
+Route::rule('/solutions/:solution_id',            'home/solution/show_detail');
+
 
 Route::rule('/pastes/:id',             'home/paste/show_paste_detail');
 Route::rule('/paste',                    'home/paste/index');

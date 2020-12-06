@@ -1,0 +1,24 @@
+<table class="table table-reflow">
+    <thead>
+    <tr>
+        <th>{$lang.run_id}</th>
+        <th>{$lang.status}</th>
+        <th>{$lang.code_length}</th>
+        <th>{$lang.memory}</th>
+        <th>{$lang.exe_time}</th>
+        <th>{$lang.language}</th>
+        <th>{$lang.submit_time}</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td><span id="solution_id_2">{$solution->solution_id}</span></td>
+        <td><span id="solution-result">{$solution->result_text}</span></td>
+        <td id="solution-code-length">{$solution->code_length}</td>
+        <td id="solution-memory">{$solution->memory}</td>
+        <td id="solution-exe-time">{$solution->time}</td>
+        <td id="solution-code-language">{$solution->language_text}</td>
+        <td id="solution-submit-time">{$solution->in_date}</td>
+    </tr>
+    </tbody>
+</table>
