@@ -42,6 +42,28 @@ class Solution extends UserBaseController {
         ]);
     }
 
+    /**
+     * 显示提交结果表哥部分
+     *
+     * @param $solution_id
+     */
+    public function show_table_part($solution_id) {
+        intercept('' == $solution_id, 'invalid');
+        $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
+        intercept(null == $solution, 'invalid');
+
+        // 检查是否有访问权限
+        if (!($this->is_administrator || ($this->login_user && $solution->user_id == $this->login_user->user_id))) {
+            return $this->lang['do_not_have_privilege'];
+        }
+
+        $solution->fk();
+        $solution->result_text = $this->lang[$solution->result_code];
+        return view($this->theme_root . '/status-solution-table-part', [
+            'solution' => $solution
+        ]);
+    }
+
     public function get_compile_error_info($solution_id) {
         // 获取solution信息
         $solution = SolutionModel::get(['solution_id' => $solution_id]);
