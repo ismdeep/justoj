@@ -173,7 +173,7 @@
         $("#recent-solutions-part").load("/contests/" + contest_id + "/problems/" + current_problem_num + "/recent_solutions");
         setInterval(function () {
             $("#recent-solutions-part").load("/contests/" + contest_id + "/problems/" + current_problem_num + "/recent_solutions");
-        }, 1000);
+        }, 5000);
     });
 </script>
 
@@ -185,7 +185,7 @@
                 $('#solution-result').html('<span class="' + d.data.result_code + '">' + d.data.result_text + '</span>');
                 setTimeout(function () {
                     status_monitor(solution_id)
-                }, 300);
+                }, 1000);
             } else {
                 $('#submit-code-btn').text("{$lang.submit}");
                 $('#submit-code-btn').attr('disabled', false);
