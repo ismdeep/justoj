@@ -30,7 +30,7 @@
 						</thead>
 						<tbody>
 						{volist name='problems' id='problem'}
-						{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $this->login_user && $this->login_user->is_admin)}
+						{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $login_user && $login_user->is_admin)}
 						<tr>
 							<td>
 								{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
