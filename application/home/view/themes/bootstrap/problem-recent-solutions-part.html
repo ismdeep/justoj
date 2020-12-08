@@ -5,7 +5,7 @@
             <?php echo ['en' => 'Recent Submissions', 'cn' => '近期提交历史'][$show_ui_lang];?>
         </h3>
     </div>
-    {if $is_login}
+    {if $login_user}
     {if sizeof($recent_solutions) > 0}
     <ul class="list-group">
         {volist name="recent_solutions" id="recent_solution"}

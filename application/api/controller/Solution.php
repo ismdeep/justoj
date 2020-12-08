@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/9
  * Time: 15:43
  */
@@ -172,8 +172,12 @@ class Solution extends ApiBaseController {
         // 检查solution是否存在
         if (!$solution) return json(['status' => 'error', 'msg' => $this->lang['solution_not_exists']]);
 
-        // 检查是否有访问权限
-        if (!($this->is_administrator || ($this->login_user && $solution->user_id == $this->login_user->user_id))) {
+        /* 检查是否有访问权限 */
+        $passed = false;
+        $passed = $this->login_user && $this->login_user->is_admin ? true : $passed;
+        $passed = $this->login_user && $this->login_user->is_root ? true : $passed;
+        $passed = $this->login_user && $this->login_user->user_id == $solution->user_id ? true : $passed;
+        if (!$passed) {
             return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
         }
 
@@ -206,7 +210,7 @@ class Solution extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function rejudge_problem($problem_id) {
-        if (!$this->is_root) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+        if (!$this->login_user || !$this->login_user->is_root) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
 
         $problem = (new ProblemModel())->find(['problem_id' => $problem_id]);
         if (!$problem) return json(['status' => 'error', 'msg' => $this->lang['no_such_problem']]);
@@ -241,7 +245,7 @@ class Solution extends ApiBaseController {
      * @throws Exception
      */
     public function rejudge_contest_problem($contest_id = '', $pid = '') {
-        intercept_json(!$this->is_root, $this->lang['do_not_have_privilege']);
+        intercept_json(!$this->login_user || !$this->login_user->is_root, $this->lang['do_not_have_privilege']);
         intercept_json('' == $contest_id, 'contest_id cannot be empty.');
         intercept_json('' == $pid, 'pid cannot be empty.');
         $contest_id = intval($contest_id);
@@ -287,7 +291,7 @@ class Solution extends ApiBaseController {
     public function manual_set_result($solution_id = '', $result = 0) {
         /* @var $solution SolutionModel */
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
-        intercept_json(!$this->is_root, 'Permission Denied.');
+        intercept_json(!$this->login_user || !$this->login_user->is_root, 'Permission Denied.');
         intercept_json($solution == null, 'Not found.');
 
         $solution->result = intval($result);

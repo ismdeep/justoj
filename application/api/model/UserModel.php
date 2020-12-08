@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/6
  * Time: 6:48 PM
  */
@@ -19,12 +19,30 @@ use think\Model;
 /**
  * Class UserModel
  * @package app\api\model
+ *
  * @property string user_id
+ * @property string email
+ * @property int email_verified
  * @property string password
  * @property int submit
  * @property int solved
- * @property string email
- * @property int email_verified
+ * @property string realname
+ * @property string nick
+ * @property string school
+ * @property string academy
+ * @property string class
+ * @property string phone
+ * @property \DateTime create_time
+ * @property \DateTime update_time
+ *
+ * -------------------------------------------
+ *
+ * @property boolean   is_admin
+ * @property boolean   is_root
+ * @property string    ui_lang
+ * @property boolean   need_complete_info_flag
+ *
+ *
  */
 class UserModel extends Model {
     protected $table = "users";
@@ -37,6 +55,20 @@ class UserModel extends Model {
         } else {
             $this->ac_rate = number_format($this->submit_ac * 100.00 / $this->submit_cnt, 3);
         }
+    }
+
+    public function fk_session_info() {
+        $privilege_admin = (new PrivilegeModel())->where(['user_id' => $this->user_id, 'rightstr' => 'administrator'])->find();
+        $this->is_admin = $privilege_admin ? true : false;
+
+        $privilege_root = (new PrivilegeModel())->where(['user_id' => $this->user_id, 'rightstr' => 'root'])->find();
+        $this->is_root = $privilege_root ? true : false;
+
+
+        $ui_language = (new UiLanuageModel())->where(['user_id' => $this->user_id])->find();
+        $this->ui_lang = $ui_language ? $ui_language->language : 'en';
+
+        $this->need_complete_info_flag = UserModel::need_complete_info($this);
     }
 
     /**
