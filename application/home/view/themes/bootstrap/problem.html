@@ -176,7 +176,7 @@
                 if (11 === d.data.result) {
                     $('#solution-compile-error').html(d.data.compile_info.error);
                     $('#solution-result').html(
-                        '<span class="' + d.data.result_code + '"><a href="/solutions/' + solution_id + '/ceinfo" target="_blank">' + d.data.result_text + '</a></span>'
+                        '<span class="' + d.data.result_code + '"><a href="/solutions/' + solution_id + '" target="_blank">' + d.data.result_text + '</a></span>'
                     );
                     $('#compile-info-panel').show();
                 }
