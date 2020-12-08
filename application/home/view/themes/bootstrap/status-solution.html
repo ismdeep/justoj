@@ -23,7 +23,11 @@
     <div id="compile-info-panel" hidden>
         <pre id="solution-compile-error" style="padding: 0px;tab-size: 4"></pre>
     </div>
-    <div class="alert alert-warning" role="alert" id="ce-info" style="display: none"></div>
+
+    {if $compile_info}
+    <pre>{$compile_info->error}</pre>
+    {/if}
+
 </div>
 
 
