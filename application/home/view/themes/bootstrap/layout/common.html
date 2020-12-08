@@ -60,19 +60,19 @@
         </div>
         <div class="collapse navbar-collapse" id="example-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li
-                {if $nav == 'problem'} class="active"{/if}><a href="/problems">{$lang.problem}</a></li>
-                <li
-                {if $nav == 'status'} class="active"{/if}><a href="/status">{$lang.status}</a></li>
-                <li
-                {if $nav == 'rank'} class="active"{/if}><a href="/rank">{$lang.rank}</a></li>
-                <li
-                {if $nav == 'groups'} class="active"{/if}><a href="/groups">{$lang.group}</a></li>
-                <li
-                {if $nav == 'contests'} class="active"{/if}><a href="/contests">{$lang.contest}</a></li>
-                <li
-                {if $nav == 'paste'} class="active"{/if}><a href="/paste">{$lang.paste_code}</a></li>
+                <li id="nav-li-problem"><a href="/problems">{$lang.problem}</a></li>
+                <li id="nav-li-status"><a href="/status">{$lang.status}</a></li>
+                <li id="nav-li-rank"><a href="/rank">{$lang.rank}</a></li>
+                <li id="nav-li-groups"><a href="/groups">{$lang.group}</a></li>
+                <li id="nav-li-contests"><a href="/contests">{$lang.contest}</a></li>
+                <li id="nav-li-paste"><a href="/paste">{$lang.paste_code}</a></li>
             </ul>
+            <script type="text/javascript">
+                $(function () {
+                    let nav_id = "{$nav}";
+                    $('#nav-li-' + nav_id).addClass('active');
+                });
+            </script>
             <ul class="nav navbar-nav navbar-right">
                 {if $login_user}
                 {if $login_user->is_admin}
@@ -128,30 +128,19 @@
     $(function () {
         if (localStorage.getItem('tip-already-know') == null) {
             layer.open({
-                type: 1
-                ,
-                title: false //不显示标题栏
-                ,
-                closeBtn: false
-                ,
-                area: '300px;'
-                ,
-                shade: 0.8
-                ,
-                id: 'LAY_layuipro' //设定一个id，防止重复弹出
-                ,
-                resize: false
-                ,
-                btn: ['我知道了，不再提示。', '关闭']
-                ,
-                btnAlign: 'c'
-                ,
-                moveType: 1 //拖拽模式，0或者1
-                ,
-                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站时发现任何问题或想提出任何建议都可直接发送邮件至 {$admin_email} ，此邮件地址也会出现在网站底部。谢谢。</div>'
-                ,
+                type: 1,
+                title: false,
+                closeBtn: false,
+                area: '300px;',
+                shade: 0.8,
+                id: 'LAY_layuipro',
+                resize: false,
+                btn: ['我知道了，不再提示。', '关闭'],
+                btnAlign: 'c',
+                moveType: 1,
+                content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">您在访问本站时发现任何问题或想提出任何建议都可直接发送邮件至 {$admin_email} ，此邮件地址也会出现在网站底部。谢谢。</div>',
                 yes: function () {
-                    localStorage.setItem('tip-already-know', true);
+                    localStorage.setItem('tip-already-know', 'true');
                     layer.closeAll();
                 }
             });

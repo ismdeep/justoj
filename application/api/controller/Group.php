@@ -17,7 +17,7 @@ use app\api\model\GroupModel;
 use app\api\model\GroupTaskModel;
 use app\api\model\PrivilegeModel;
 use app\api\model\ProblemModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 
 class Group extends ApiBaseController {
     /**

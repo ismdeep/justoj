@@ -7,10 +7,10 @@ namespace app\home\controller;
 use app\api\model\ProblemModel;
 use app\api\model\ProblemTagDictModel;
 use app\api\model\SolutionModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\Request;
 
-class Problem extends UserBaseController {
+class Problem extends HomeBaseController {
 
     public function __construct(Request $request = null) {
         parent::__construct($request);

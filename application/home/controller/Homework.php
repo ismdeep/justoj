@@ -5,10 +5,10 @@ namespace app\home\controller;
 
 
 use app\api\model\ContestModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\Request;
 
-class Homework extends UserBaseController {
+class Homework extends HomeBaseController {
 
     public function __construct(Request $request = null) {
         parent::__construct($request);

@@ -11,7 +11,7 @@ use app\api\model\GroupJoinModel;
 use app\api\model\GroupModel;
 use app\api\model\GroupTaskModel;
 use app\api\model\SolutionModel;
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 
 class Group extends AdminBaseController {
     public function group_list() {

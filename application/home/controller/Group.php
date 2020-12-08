@@ -5,10 +5,10 @@ namespace app\home\controller;
 
 use app\api\model\GroupJoinModel;
 use app\api\model\GroupModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\Request;
 
-class Group extends UserBaseController {
+class Group extends HomeBaseController {
 
     public function __construct(Request $request = null) {
         parent::__construct($request);

@@ -5,10 +5,11 @@ namespace app\group\common;
 
 
 use app\api\model\GroupModel;
-use app\extra\controller\UserBaseController;
+
+use app\common\controller\BaseController;
 use think\Request;
 
-class GroupBaseController extends UserBaseController {
+class GroupBaseController extends BaseController {
 
     /* @var $group GroupModel */
     public $group;

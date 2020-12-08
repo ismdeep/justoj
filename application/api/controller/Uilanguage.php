@@ -10,7 +10,7 @@ namespace app\api\controller;
 
 
 use app\api\model\UiLanuageModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 use think\Session;
 
 class Uilanguage extends ApiBaseController {
