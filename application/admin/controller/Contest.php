@@ -9,12 +9,13 @@
 namespace app\admin\controller;
 
 
+use app\admin\common\AdminBaseController;
 use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
 use app\api\model\ContestTouristModel;
 use app\api\model\ProblemModel;
 use app\api\model\UserModel;
-use app\extra\controller\AdminBaseController;
+
 use think\Db;
 
 class Contest extends AdminBaseController {

@@ -6,7 +6,7 @@ use app\api\model\ContestModel;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 use think\Db;
 use think\Env;
 use think\Exception;

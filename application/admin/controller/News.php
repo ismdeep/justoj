@@ -10,7 +10,7 @@ namespace app\admin\controller;
 
 
 use app\api\model\NewsModel;
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 
 class News extends AdminBaseController {
 

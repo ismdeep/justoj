@@ -6,9 +6,9 @@ namespace app\home\controller;
 
 use app\api\model\ContestModel;
 use app\api\model\NewsModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 
-class Index extends UserBaseController {
+class Index extends HomeBaseController {
 
     /***
      * JustOJ Home Page Controller

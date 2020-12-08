@@ -1,21 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: L. Jiang <l.jiang.1024@gmail.com>
- * Date: 2018/5/7
- * Time: 20:47
- */
-
-namespace app\extra\controller;
 
 
-use app\api\model\UiLanuageModel;
+namespace app\common\controller;
+
+
 use app\api\model\UserModel;
 use think\Config;
 use think\Controller;
 use think\Env;
 use think\Request;
-use think\Session;
 
 class BaseController extends Controller {
 
@@ -30,6 +23,7 @@ class BaseController extends Controller {
     public $show_browser_banner;
 
     public $theme_root = 'home@themes/bootstrap';
+
 
     /**
      * 获取可以使用的语言列表

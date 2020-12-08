@@ -5,7 +5,7 @@ namespace app\api\controller;
 
 
 use app\api\model\ContestModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 
 class Homework extends ApiBaseController {
 

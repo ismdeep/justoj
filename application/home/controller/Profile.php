@@ -6,7 +6,7 @@ namespace app\home\controller;
 
 use app\api\model\EmailCodeModel;
 use app\api\model\UserModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use app\extra\util\PasswordUtil;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
@@ -17,7 +17,7 @@ use think\exception\DbException;
 use think\Request;
 use think\response\Json;
 
-class Profile extends UserBaseController {
+class Profile extends HomeBaseController {
 
     public function index() {
         if (!$this->login_user) {

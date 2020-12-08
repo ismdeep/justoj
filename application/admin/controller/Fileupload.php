@@ -9,7 +9,7 @@
 namespace app\admin\controller;
 
 
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 use think\Request;
 
 class Fileupload extends AdminBaseController {

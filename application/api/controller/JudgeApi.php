@@ -9,7 +9,7 @@ use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
 use app\api\model\UserModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\DbException;

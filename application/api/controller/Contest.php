@@ -14,7 +14,7 @@ use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
 use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 
 class Contest extends ApiBaseController {
     /**

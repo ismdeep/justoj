@@ -7,7 +7,7 @@
 namespace app\api\controller;
 
 
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 
 class Theme extends ApiBaseController {
     public function select_theme($theme = 'bootstrap') {

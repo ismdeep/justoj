@@ -7,10 +7,10 @@ namespace app\home\controller;
 use app\api\model\CompileInfoModel;
 use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\Request;
 
-class Status extends UserBaseController {
+class Status extends HomeBaseController {
 
     public function __construct(Request $request = null) {
         parent::__construct($request);

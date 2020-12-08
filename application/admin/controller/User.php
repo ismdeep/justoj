@@ -11,7 +11,7 @@ namespace app\admin\controller;
 
 use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 use app\extra\util\PasswordUtil;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
