@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/6/1
  * Time: 22:39
  */
@@ -52,7 +52,7 @@ class Homework extends AdminBaseController {
     public function clone_homework($from_contest_id = null) {
         intercept(null == $from_contest_id, 'from_contest_id为空');
         // 判断是否管理员
-        if (!$this->is_administrator) {
+        if (!$this->login_user || !$this->login_user->is_admin) {
             return view('admin@layout/error', ['error_msg' => $this->lang['do_not_have_privilege']]);
         }
 

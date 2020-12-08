@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/9
  * Time: 8:19 PM
  */
@@ -57,10 +57,10 @@ class ContestBaseController extends UserBaseController {
 
         /* 判断是否是比赛管理员 */
         $this->is_contest_manager = false;
-        if ($this->is_login && PrivilegeModel::get(['user_id' => $this->login_user->user_id, 'rightstr' => 'm' . $this->contest_id])) {
+        if ($this->login_user && $this->login_user->is_root && PrivilegeModel::get(['user_id' => $this->login_user->user_id, 'rightstr' => 'm' . $this->contest_id])) {
             $this->is_contest_manager = true;
         }
-        if ($this->is_root) {
+        if ($this->login_user && $this->login_user->is_root) {
             $this->is_contest_manager = true;
         }
         $this->assign('is_contest_manager', $this->is_contest_manager);
@@ -74,7 +74,7 @@ class ContestBaseController extends UserBaseController {
         }
 
         /* 如果此比赛绑定了group，并且判断当前用户是否已经加入了这些班级 */
-        if ($this->is_login) {
+        if ($this->login_user && $this->login_user->is_root) {
             $group_tasks = GroupTaskModel::all(['contest_id' => $this->contest_id]);
             foreach ($group_tasks as $group_task) {
                 if (GroupJoinModel::get(['user_id' => $this->login_user->user_id, 'group_id' => $group_task->group_id, 'status' => 1])) {
@@ -84,7 +84,7 @@ class ContestBaseController extends UserBaseController {
         }
 
         /* 如果当前用户登录，判断当前用户在privilege中是否有此比赛的对应记录 */
-        if ($this->is_login) {
+        if ($this->login_user && $this->login_user->is_root) {
             if (PrivilegeModel::get(['user_id' => $this->login_user->user_id, 'rightstr' => 'c' . $this->contest_id, 'defunct' => 'N'])) {
                 $this->permitted = true;
             }

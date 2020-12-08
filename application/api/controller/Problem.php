@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/15
  * Time: 10:54 PM
  */
@@ -22,7 +22,7 @@ class Problem extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function disable($problem_id) {
-        if (!$this->is_administrator) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+        if (!$this->login_user || !$this->login_user->is_admin) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
         $problem = ProblemModel::get(['problem_id' => $problem_id]);
         $problem->defunct = 'Y';
         $problem->save();
@@ -36,7 +36,7 @@ class Problem extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function enable($problem_id) {
-        if (!$this->is_administrator) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
+        if (!$this->login_user || !$this->login_user->is_admin) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
         $problem = ProblemModel::get(['problem_id' => $problem_id]);
         $problem->defunct = 'N';
         $problem->save();
@@ -45,7 +45,7 @@ class Problem extends ApiBaseController {
 
     public function delete_files($problem_id, $file_names) {
         // 需要管理员权限
-        if (!$this->is_administrator) {
+        if (!$this->login_user || !$this->login_user->is_admin) {
             return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
         }
 
@@ -66,7 +66,7 @@ class Problem extends ApiBaseController {
         $problem = ProblemModel::get(['problem_id' => $problem_id]);
         if (null == $problem) return json(['status' => 'error', 'msg' => $this->lang['problem_not_exists']]);
 
-        if ('Y' == $problem->defunct && !$this->is_administrator) return json(['status' => 'error', 'msg' => $this->lang['problem_not_exists']]);
+        if ('Y' == $problem->defunct && (!$this->login_user || !$this->login_user->is_admin)) return json(['status' => 'error', 'msg' => $this->lang['problem_not_exists']]);
 
         return json(['status' => 'success', 'data' => $problem]);
     }

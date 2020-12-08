@@ -132,7 +132,6 @@ class Problem extends UserBaseController {
         }
 
         $this->assign('problems', $problems);
-        $this->assign('is_login', $this->is_login);
         return view($this->theme_root . '/problems');
 
     }
@@ -144,7 +143,7 @@ class Problem extends UserBaseController {
             $this->redirect('/problems');
         }
 
-        if ('Y' == $problem->defunct && !$this->is_administrator) {
+        if ('Y' == $problem->defunct && (!$this->login_user || !$this->login_user->is_admin)) {
             // TODO 后期加入无访问权限操作
             $this->redirect('/problems');
         }
@@ -194,7 +193,7 @@ class Problem extends UserBaseController {
         $problem = ProblemModel::get(['problem_id' => $id]);
 
         /* 获取近期提交记录 */
-        if ($this->is_login) {
+        if ($this->login_user) {
             $recent_solutions = (new SolutionModel())
                 ->where('contest_id', null)
                 ->where('user_id', $this->login_user->user_id)
@@ -202,6 +201,7 @@ class Problem extends UserBaseController {
                 ->order('create_time', 'desc')
                 ->limit(5)
                 ->select();
+
             foreach ($recent_solutions as $recent_solution) {
                 /* @var $recent_solution SolutionModel */
                 $recent_solution->fk();

@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/8
  * Time: 10:25
  */
@@ -40,6 +40,7 @@ class Login extends ApiBaseController {
 
         if (!$user) return json(['status' => 'error', 'msg' => $this->lang['user_not_exists']]);
         if (PasswordUtil::check_password($password, $user->password)) {
+            $user->fk_session_info();
             Session::set('user', $user);
             // 判断是否是管理员administrator
             if (PrivilegeModel::get(['user_id' => $username, 'rightstr' => 'administrator'])) {

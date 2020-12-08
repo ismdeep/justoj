@@ -28,7 +28,7 @@
         </div>
     </div>
 
-    {if $need_complete_info}
+    {if $login_user && $login_user->need_complete_info_flag}
     <div style="text-align: center">
         请 <a href="/profile/editmyprofile" target="_blank">前往完善个人信息</a> 后再进行报名。
     </div>

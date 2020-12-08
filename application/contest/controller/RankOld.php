@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/9
  * Time: 11:16 PM
  */
@@ -14,7 +14,8 @@ use app\api\model\ContestTouristModel;
 use app\api\model\GroupModel;
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
-use app\extra\controller\ContestBaseController;
+
+use app\contest\common\ContestBaseController;
 use app\extra\util\PenaltyUtil;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
@@ -28,7 +29,7 @@ class RankOld extends ContestBaseController {
     public function __construct(Request $request = null) {
         parent::__construct($request);
         $this->assign('nav', 'rank');
-        if (!(($this->permitted && $this->contest_started) || $this->is_administrator)) {
+        if (!(($this->permitted && $this->contest_started) || ($this->login_user && $this->login_user->is_admin))) {
             $this->redirect('/contest?id=' . $this->contest->contest_id);
         }
 

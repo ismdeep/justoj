@@ -52,13 +52,13 @@
                    target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
                 {/if}
 
-                {if $is_administrator}
+                {if $login_user && $login_user->is_admin}
                 <a href="/admin/Problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
                 <a href="/admin/Problem/files?problem_id={$problem->problem_id}" class="btn btn-primary"
                    target="_blank">{$lang.test_data}</a>
                 {/if}
 
-                {if $is_root}
+                {if $login_user && $login_user->is_root}
                 <button class="btn btn-danger"
                         onclick="rejudge_problem('{$contest_problem->contest_id}', '{$contest_problem->num}');">
                     {$lang.rejudge}
@@ -84,7 +84,7 @@
             <div class=content>
                 <p><a href='javascript:'>{$problem->source}</a></p>
             </div>
-            {if $is_administrator || $is_root}
+            {if $login_user && ($login_user->is_admin || $login_user->is_root)}
             <div class="content">
                 <a href="/problems/{$problem->problem_id}" target="_blank">Original Problem Link</a>
             </div>

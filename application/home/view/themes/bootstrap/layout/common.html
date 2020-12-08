@@ -30,7 +30,7 @@
 
 </head>
 <body>
-{if true == $need_edit_profile}
+{if $login_user && $login_user->need_complete_info_flag}
 <div style="padding:6px 0;text-align:center;background:#f8eca6;color:#847108;display:none;min-width:1020px;display: block;">
     温馨提示：请前往 <a href="/profile/editmyprofile">完善个人信息</a> 。
 </div>
@@ -74,8 +74,8 @@
                 {if $nav == 'paste'} class="active"{/if}><a href="/paste">{$lang.paste_code}</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                {if isset($login_user)}
-                {if $is_administrator}
+                {if $login_user}
+                {if $login_user->is_admin}
                 <li><a class="" href="/admin"><span class="glyphicon glyphicon-cog"></span> {$lang.admin_system}</a>
                 </li>
                 {/if}

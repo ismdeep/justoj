@@ -2,19 +2,14 @@
 {block name='title_block'}{$lang['welcome_to_justoj']}{/block}
 {block name="body"}
 <div class="container">
-
 	<div class="row">
 		<div class="col-md-9">
 			<?php $hr_flag = false;?>
 			{volist name="newsList" id="news"}
-			<?php $news->fk(); ?>
-
 			{if $hr_flag}<hr>{/if}<?php $hr_flag = true;?>
-
 			<div>
 				<h3>{$news->getTitle($show_ui_lang)}</h3>
 				<p>{$news->getContent($show_ui_lang)}</p>
-				<!--<p>{$news->user->nick}({$news->user_id})</p>-->
 			</div>
 			{/volist}
 		</div>
