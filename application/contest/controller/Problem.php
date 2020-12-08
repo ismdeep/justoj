@@ -127,7 +127,7 @@ class Problem extends ContestBaseController {
         $contest_problem = ContestProblemModel::get(['contest_id' => $this->contest->contest_id, 'num' => $pid]);
 
         /* 获取近期提交记录 */
-        if ($this->is_login) {
+        if ($this->login_user) {
             $recent_solutions = (new SolutionModel())
                 ->where('contest_id', $this->contest_id)
                 ->where('user_id', $this->login_user->user_id)

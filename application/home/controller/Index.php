@@ -24,14 +24,12 @@ class Index extends UserBaseController {
 
         // 近期比赛显示功能
         $recent_contests = (new ContestModel())
-            ->whereBetween('start_time', [strftime("%Y-%m-%d %H:%M:%S", time()), '2219-11-11 00:00:00'])
+            ->where('start_time', '>', strftime("%Y-%m-%d %H:%M:%S", time()))
             ->where('type', 0)
             ->order('start_time', 'asc')
             ->select();
 
         $this->assign('recent_contests', $recent_contests);
-
         return view($this->theme_root . '/index');
     }
-
 }

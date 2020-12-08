@@ -43,7 +43,7 @@ class Index extends BaseController {
 
         $users = $where->limit(($page - 1) * $limit, $limit)->select();
         foreach ($users as $user) {
-            if ($this->is_login && $this->login_user->user_id == $user->user_id) {
+            if ($this->login_user && $this->login_user->user_id == $user->user_id) {
                 $user->is_login = true;
             } else {
                 $user->is_login = false;
@@ -80,24 +80,14 @@ class Index extends BaseController {
      */
     function hack_login_json($user_id = '') {
         intercept_json('' == $user_id, '');
+        /* @var $user UserModel */
         $user = (new UserModel())->where('user_id', $user_id)->find();
         intercept_json(null == $user, '');
 
         Session::set('user', null);
-        Session::set('administrator', null);
-        Session::set('root', null);
 
+        $user->fk_session_info();
         Session::set('user', $user);
-
-        // 判断是否是管理员administrator
-        if (PrivilegeModel::get(['user_id' => $user_id, 'rightstr' => 'administrator'])) {
-            Session::set('administrator', $user);
-        }
-
-        // 判断是否是root账号
-        if (PrivilegeModel::get(['user_id' => $user_id, 'rightstr' => 'root'])) {
-            Session::set('root', $user);
-        }
 
         return json(['status' => 'success', 'msg' => '']);
 

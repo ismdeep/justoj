@@ -30,7 +30,7 @@
 						</thead>
 						<tbody>
 						{volist name='problems' id='problem'}
-						{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $is_administrator)}
+						{if 'N' == $problem->defunct || ('Y' == $problem->defunct && $this->login_user && $this->login_user->is_admin)}
 						<tr>
 							<td>
 								{if 1 == $problem->solve_status}<span class="glyphicon glyphicon-hand-right" style="color: red"></span>{/if}
@@ -77,7 +77,7 @@
 					</h3>
 				</div>
 				<div class="panel-body">
-					{if $is_login}
+					{if $login_user}
 					{volist name="unsolved_problem_ids" id="unsolved_problem_id"}
 					<a href="/problems/{$unsolved_problem_id}">{$unsolved_problem_id}</a>
 					{/volist}

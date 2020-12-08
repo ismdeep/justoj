@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/5/11
  * Time: 8:58 PM
  */
@@ -106,6 +106,7 @@ class Group extends ApiBaseController {
 
     /**
      * 创建班级
+     *
      * @param $group_id
      * @param $name
      * @param $privilege
@@ -115,7 +116,7 @@ class Group extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function save($group_id, $name, $privilege, $password, $description) {
-        if (!$this->is_administrator) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
+        if (!$this->login_user || !$this->login_user->is_admin) return json(['status' => 'error', 'msg' => $this->lang['dont_have_privilege']]);
 
         $group = null;
         if ('' != $group_id) {
@@ -156,7 +157,7 @@ class Group extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function remove_group_join($group_join_id) {
-        if (!$this->is_administrator) {
+        if (!$this->login_user || !$this->login_user->is_admin) {
             return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
         }
 

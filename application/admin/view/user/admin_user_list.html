@@ -9,7 +9,7 @@
 
 
 <script type="text/html" id="admin_user_op">
-    {if $is_root}
+    {if $login_user->is_root}
     <button type="button" class="layui-btn layui-btn-sm layui-btn-danger" onclick="remove_privilege('{{d.user_id}}');">踢出</button>
     {/if}
 </script>

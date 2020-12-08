@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/9/19
  * Time: 10:06 PM
  */
@@ -35,7 +35,7 @@ class Contest extends AdminBaseController {
         $page = max(1, intval($page));
         $limit = max(1, intval($limit));
         $where = ['type' => 0];
-        if (!$this->is_root) {
+        if (!$this->login_user->is_root) {
             $where['creator_id'] = $this->login_user->user_id;
         }
         $contests = (new ContestModel())->where($where)->order('contest_id', 'desc')->limit(($page - 1) * $limit, $limit)->select();
@@ -99,7 +99,7 @@ class Contest extends AdminBaseController {
     public function clone_contest($from_contest_id = null) {
         intercept(null == $from_contest_id, 'from_contest_id为空');
         // 判断是否管理员
-        if (!$this->is_administrator) {
+        if (!$this->login_user || !$this->login_user->is_admin) {
             return view('admin@layout/error', ['error_msg' => $this->lang['do_not_have_privilege']]);
         }
 

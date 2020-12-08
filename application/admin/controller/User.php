@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: ismdeep
+ * User: L. Jiang <l.jiang.1024@gmail.com>
  * Date: 2018/9/14
  * Time: 11:19 PM
  */
@@ -183,14 +183,14 @@ class User extends AdminBaseController {
      * @throws DbException
      */
     public function change_password_json($user_id = '', $newpassword = '', $newpassword2 = '') {
-        intercept_json(!$this->is_administrator, '没有操作权限');
+        intercept_json(!$this->login_user || !$this->login_user->is_admin, '没有操作权限');
         intercept_json('' == $user_id, 'user_id不可为空');
         intercept_json('' == $newpassword || $newpassword != $newpassword2, '密码不可为空且两次输入的密码必须相同。');
         $user = (new UserModel())->where('user_id', $user_id)->find();
         intercept_json(null == $user, '用户不存在');
 
         // 权限拦截（超级管理员可以修改任何人密码，管理员只能修改普通用户密码。）
-        intercept_json(!$this->is_root && $this->login_user->user_id != $user_id && null != (new PrivilegeModel())->where(['user_id' => $user_id, 'rightstr' => 'administrator'])->find(), '没有操作权限');
+        intercept_json((!$this->login_user || !$this->login_user->is_root) && $this->login_user->user_id != $user_id && null != (new PrivilegeModel())->where(['user_id' => $user_id, 'rightstr' => 'administrator'])->find(), '没有操作权限');
 
         $user->password = PasswordUtil::gen_password($newpassword);
         $user->save();

@@ -10,7 +10,7 @@
 <!--页面模板 begin-->
 <script type="text/html" id="operationTpl">
     <a href="javascript:" onclick="x_admin_show('编辑 - {{d.title}}', '/admin/contest/edit?contest_id={{d.contest_id}}');">编辑</a>
-    {if $is_root}
+    {if $login_user->is_root}
     <a href="javascript:" onclick="set_as_contest({{d.contest_id}});">切换为比赛</a>
     {/if}
 </script>

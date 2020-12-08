@@ -27,8 +27,12 @@ class Solution extends UserBaseController {
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, 'invalid');
 
-        // 检查是否有访问权限
-        if (!($this->is_administrator || ($this->login_user && $solution->user_id == $this->login_user->user_id))) {
+        /* 检查是否有访问权限 */
+        $passed = false;
+        $passed = $this->login_user && $this->login_user->is_admin ? true : $passed;
+        $passed = $this->login_user && $this->login_user->is_admin ? true : $passed;
+        $passed = $this->login_user && $this->login_user->user_id == $solution->user_id ? true : $passed;
+        if (!$passed) {
             return $this->lang['do_not_have_privilege'];
         }
 
@@ -57,14 +61,22 @@ class Solution extends UserBaseController {
      *
      * @param $solution_id
      * @return mixed|View
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
      */
     public function show_table_part($solution_id) {
         intercept('' == $solution_id, 'invalid');
+        /* @var $solution SolutionModel */
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, 'invalid');
 
-        // 检查是否有访问权限
-        if (!($this->is_administrator || ($this->login_user && $solution->user_id == $this->login_user->user_id))) {
+        /* 检查是否有访问权限 */
+        $passed = false;
+        $passed = $this->login_user && $this->login_user->is_admin ? true : $passed;
+        $passed = $this->login_user && $this->login_user->is_root ? true : $passed;
+        $passed = $this->login_user && $this->login_user->user_id == $solution->user_id ? true : $passed;
+        if (!$passed) {
             return $this->lang['do_not_have_privilege'];
         }
 

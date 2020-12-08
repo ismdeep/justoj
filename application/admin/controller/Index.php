@@ -7,12 +7,10 @@ use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
 use app\extra\controller\AdminBaseController;
-use think\App;
 use think\Db;
 use think\Env;
 use think\Exception;
-use think\Model;
-use function Sodium\version_string;
+
 
 class Index extends AdminBaseController {
     public function index() {

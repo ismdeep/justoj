@@ -68,7 +68,7 @@
 		?>
 		<tr>
 			<td width="10%">
-				{if $is_administrator || ($login_user && $solution->user_id == $login_user->user_id)}
+				{if ($login_user && $login_user->is_admin) || ($login_user && $solution->user_id == $login_user->user_id)}
 				<a target="_blank" href="/solutions/{$solution->solution_id}">{$solution->solution_id}</a>
 				{else}
 				{$solution->solution_id}
@@ -86,7 +86,7 @@
 			<td width="10%">{$solution->memory} B</td>
 			<td width="10%">{$solution->time} ms</td>
 			<td width="10%">
-				{if $is_administrator || ($login_user && $solution->user_id == $login_user->user_id)}
+				{if ($login_user && $login_user->is_admin) || ($login_user && $solution->user_id == $login_user->user_id)}
 				<a target="_blank" href="/solutions/{$solution->solution_id}">{$solution->language_text}</a>
 				{else}
 				{$solution->language_text}

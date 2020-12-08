@@ -3,13 +3,13 @@
 <a href="/status?username={$login_user->user_id}&problem_id={$problem->problem_id}" target="_blank" type="button" class="btn btn-default">{$lang.my_status}</a>
 {/if}
 
-{if $is_administrator}
+{if $login_user && $login_user->is_admin}
 <a href="/admin/problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
 <a href="/admin/problem/files?problem_id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.test_data}</a>
 <button class="btn btn-primary" onclick="show_set_tag({$problem->problem_id});">{$lang['tag']}</button>
 {/if}
 
-{if $is_root}
+{if $login_user && $login_user->is_root}
 <button class="btn btn-danger" onclick="rejudge_problem({$problem->problem_id})">{$lang.rejudge}</button>
 {/if}
 

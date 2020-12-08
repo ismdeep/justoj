@@ -5,7 +5,7 @@
 <div class="container">
 
     <div class="row">
-        {if $is_root}
+        {if $login_user && $login_user->is_root}
         {volist name="result_map" id="result_item"}
         <span class="label">
             <a href="javascript:" onclick="manual_set_result({$result_item['id']})">{$lang[$result_item['lang_id']]}</a>
