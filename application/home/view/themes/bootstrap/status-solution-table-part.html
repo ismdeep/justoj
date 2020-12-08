@@ -12,13 +12,13 @@
     </thead>
     <tbody>
     <tr>
-        <td><span id="solution_id_2">{$solution->solution_id}</span></td>
-        <td><span id="solution-result">{$solution->result_text}</span></td>
-        <td id="solution-code-length">{$solution->code_length}</td>
-        <td id="solution-memory">{$solution->memory}</td>
-        <td id="solution-exe-time">{$solution->time}</td>
-        <td id="solution-code-language">{$solution->language_text}</td>
-        <td id="solution-submit-time">{$solution->in_date}</td>
+        <td><span>{$solution->solution_id}</span></td>
+        <td><span class="{$solution->result_code}">{$solution->result_text}</span></td>
+        <td>{$solution->code_length}</td>
+        <td>{$solution->memory}</td>
+        <td>{$solution->time}</td>
+        <td>{$solution->language_text}</td>
+        <td>{$solution->in_date}</td>
     </tr>
     </tbody>
 </table>
