@@ -11,7 +11,7 @@ namespace app\api\controller;
 
 
 use app\api\model\NewsModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 
 class News extends ApiBaseController {
 

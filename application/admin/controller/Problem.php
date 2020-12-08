@@ -14,7 +14,7 @@ use app\api\model\ProblemModel;
 use app\api\model\ProblemTagDictModel;
 use app\api\model\ProblemTagModel;
 use app\api\model\TrainingProblemModel;
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 use app\extra\util\PasswordUtil;
 use think\Exception;
 use think\response\Json;

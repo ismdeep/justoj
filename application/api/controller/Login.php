@@ -12,7 +12,7 @@ namespace app\api\controller;
 use app\api\model\LoginLogModel;
 use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 use app\extra\util\PasswordUtil;
 use think\Request;
 use think\Session;

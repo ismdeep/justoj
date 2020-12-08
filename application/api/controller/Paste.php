@@ -10,7 +10,7 @@ namespace app\api\controller;
 
 
 use app\api\model\PasteModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 
 class Paste extends ApiBaseController {
 

@@ -5,9 +5,9 @@ namespace app\home\controller;
 
 
 use app\api\model\PasteModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 
-class Paste extends UserBaseController {
+class Paste extends HomeBaseController {
 
     public function index() {
         $this->assign('nav', 'paste');

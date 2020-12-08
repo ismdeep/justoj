@@ -6,9 +6,9 @@ namespace app\home\controller;
 
 use app\api\model\ContestEnrollModel;
 use app\api\model\ContestModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 
-class Contest extends UserBaseController {
+class Contest extends HomeBaseController {
 
     public function get_contest_list($keyword = '') {
         $this->assign('nav', 'contests');

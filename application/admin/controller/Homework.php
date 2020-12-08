@@ -10,8 +10,7 @@ namespace app\admin\controller;
 
 use app\api\model\ContestModel;
 use app\api\model\ContestProblemModel;
-use app\api\model\ProblemModel;
-use app\extra\controller\AdminBaseController;
+use app\admin\common\AdminBaseController;
 
 class Homework extends AdminBaseController {
 

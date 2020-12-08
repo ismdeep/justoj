@@ -5,11 +5,10 @@ namespace app\home\controller;
 
 use app\api\model\PasswordResetLinkModel;
 use app\api\model\UserModel;
-use app\extra\controller\BaseController;
+use app\common\controller\BaseController;
 use app\extra\util\PasswordUtil;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
-use think\Env;
 use think\exception\DbException;
 use think\response\Json;
 
@@ -82,6 +81,9 @@ class ForgotPassword extends BaseController {
     /**
      * @param string $uuid
      * @return mixed|string
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function reset_password($uuid = '') {
         intercept(!$uuid, 'Error Page');
@@ -105,6 +107,10 @@ class ForgotPassword extends BaseController {
      * @param string $uuid
      * @param string $password
      * @param string $password_again
+     * @return Json
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
      */
     public function set_password_json($uuid = '', $password = '', $password_again = '') {
         if (!$uuid) {

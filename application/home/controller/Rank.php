@@ -5,10 +5,10 @@ namespace app\home\controller;
 
 
 use app\api\model\UserModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\Request;
 
-class Rank extends UserBaseController {
+class Rank extends HomeBaseController {
 
     public function __construct(Request $request = null) {
         parent::__construct($request);

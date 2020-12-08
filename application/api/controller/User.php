@@ -11,7 +11,7 @@ namespace app\api\controller;
 
 
 use app\api\model\UserModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 use app\extra\util\PasswordUtil;
 use think\Exception;
 use think\exception\DbException;

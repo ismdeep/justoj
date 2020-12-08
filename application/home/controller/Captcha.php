@@ -4,10 +4,10 @@
 namespace app\home\controller;
 
 
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use Gregwar\Captcha\CaptchaBuilder;
 
-class Captcha extends UserBaseController {
+class Captcha extends HomeBaseController {
     public function index() {
         $builder = new CaptchaBuilder();
         $builder->build();

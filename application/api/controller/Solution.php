@@ -15,7 +15,7 @@ use app\api\model\ContestProblemModel;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 use think\Db;
 use think\Exception;
 

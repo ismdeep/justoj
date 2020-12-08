@@ -11,7 +11,7 @@ namespace app\api\controller;
 
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
-use app\extra\controller\ApiBaseController;
+use app\api\common\ApiBaseController;
 use think\Exception;
 
 class Problem extends ApiBaseController {

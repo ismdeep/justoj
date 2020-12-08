@@ -6,17 +6,18 @@ namespace app\home\controller;
 
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Exception;
 use think\exception\DbException;
 use think\response\View;
 
-class User extends UserBaseController {
+class User extends HomeBaseController {
 
     /**
      * 用户信息(Public)
+     *
      * @param $user_id
      * @return View
      * @throws Exception

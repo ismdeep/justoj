@@ -6,11 +6,11 @@ namespace app\home\controller;
 
 use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
-use app\extra\controller\UserBaseController;
 use app\extra\util\PasswordUtil;
+use app\home\common\HomeBaseController;
 use think\Session;
 
-class Auth extends UserBaseController {
+class Auth extends HomeBaseController {
 
     public function sign_in($redirect = '/') {
         $this->assign('redirect', $redirect);

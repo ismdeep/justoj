@@ -7,10 +7,10 @@ namespace app\home\controller;
 use app\api\model\CompileInfoModel;
 use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\response\View;
 
-class Solution extends UserBaseController {
+class Solution extends HomeBaseController {
 
     /**
      * 显示提交结果
