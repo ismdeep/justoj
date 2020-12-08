@@ -13,10 +13,10 @@ use app\api\model\ContestModel;
 use app\api\model\GroupJoinModel;
 use app\api\model\GroupTaskModel;
 use app\api\model\PrivilegeModel;
-use app\extra\controller\UserBaseController;
+use app\home\common\HomeBaseController;
 use think\Request;
 
-class ContestBaseController extends UserBaseController {
+class ContestBaseController extends HomeBaseController {
     public $contest_id;
     /* @var $contest ContestModel */
     public $contest;
