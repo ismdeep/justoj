@@ -98,7 +98,9 @@
 		{/volist}
 		</tbody>
 	</table>
+	{if $username != '' || ($login_user && $login_user->is_root)}
 	{$solutions->render()}
+	{/if}
 </div>
 
 {include file="common@snippets/highlight"}

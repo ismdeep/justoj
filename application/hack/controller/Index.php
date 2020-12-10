@@ -5,7 +5,7 @@ namespace app\hack\controller;
 
 use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
-use app\extra\controller\BaseController;
+use app\common\controller\BaseController;
 use think\Controller;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
