@@ -33,6 +33,11 @@ class Status extends HomeBaseController {
         $this->assign('result', htmlspecialchars($result));
         $this->assign('language', intval($language));
         $this->assign('allowed_langs', $this->allowed_langs());
+
+        if ($username == '' && (!$this->login_user || !$this->login_user->is_root) && $this->request->get('page') > 1) {
+            $this->redirect('/status');
+        }
+
         if ('' != $run_id) {
             $solutions = (new SolutionModel)->where('solution_id', $run_id)->paginate(10);
             $solutions->appends('run_id', $run_id);
@@ -45,6 +50,7 @@ class Status extends HomeBaseController {
         if ('' != $username) {
             $where = $where->where(['user_id' => $username]);
         }
+
         if ('' != $problem_id) {
             $where = $where->where(['problem_id' => $problem_id]);
         }
