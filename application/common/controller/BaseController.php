@@ -80,7 +80,12 @@ class BaseController extends Controller {
         // 设置用户UI语言
         $dicts = Config::get('lang_dict');
         $this->show_ui_lang = 'cn'; // 默认语言
-        $this->show_ui_lang = $this->login_user ? $this->login_user->ui_lang : 'cn'; /* 默认为 cn */
+        if (!$this->login_user && session('ui_language')) {
+            $this->show_ui_lang = session('ui_language');
+        }
+        if ($this->login_user) {
+            $this->show_ui_lang = $this->login_user ? $this->login_user->ui_lang : 'cn'; /* 默认为 cn */
+        }
         $this->assign('show_ui_lang', $this->show_ui_lang);
 
         $this->lang = [];
