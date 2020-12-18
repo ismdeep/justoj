@@ -12,22 +12,7 @@
     {include file="common@snippets/bootstrap"}
     {include file="common@snippets/layer"}
 
-    <style>
-        .navbar {
-            border-radius: 0px;
-        }
-
-        pre {
-            border-radius: 0px;
-        }
-
-        /*.btn {*/
-        /*border-radius: 0px;*/
-        /*}*/
-    </style>
-
-    {include file="common@snippets/solution_result"}
-
+    <link rel="stylesheet" href="/static/app.css">
 </head>
 <body>
 {if $login_user && $login_user->need_complete_info_flag}
