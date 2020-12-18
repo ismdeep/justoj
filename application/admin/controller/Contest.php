@@ -61,6 +61,28 @@ class Contest extends AdminBaseController {
         ]);
     }
 
+    /**
+     * @param string $contest_id
+     * @param string $is_need_enroll
+     * @return \think\response\Json
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\ModelNotFoundException
+     * @throws \think\exception\DbException
+     */
+    public function change_need_enroll_json($contest_id = '', $is_need_enroll = '') {
+        intercept_json('' == $contest_id, 'contest_id参数错误');
+        intercept_json('' == $is_need_enroll, 'defunct不可为空');
+        /* @var $contest ContestModel */
+        $contest = (new ContestModel())->where('contest_id', $contest_id)->find();
+        intercept_json(null == $contest, '比赛不存在');
+        $contest->is_need_enroll = $is_need_enroll;
+        $contest->save();
+        return json([
+            'status' => 'success',
+            'msg' => '操作成功'
+        ]);
+    }
+
     public function add() {
         $contest = new ContestModel();
         $contest->contest_id = '';
