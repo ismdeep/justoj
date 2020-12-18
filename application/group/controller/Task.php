@@ -120,6 +120,7 @@ class Task extends GroupBaseController {
         $homework->description = $description;
         $homework->private = ContestModel::PRIVATE_PUBLIC;
         $homework->type = ContestModel::TYPE_HOMEWORK;
+        $homework->creator_id = $this->login_user->user_id;
         $homework->save();
 
         $problem_id_arr = [];
