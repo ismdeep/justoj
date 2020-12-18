@@ -7,9 +7,9 @@ namespace app\contest\controller;
 use app\api\model\ContestEnrollModel;
 use app\api\model\ContestModel;
 use app\api\model\UserModel;
-use app\extra\controller\BaseController;
+use app\home\common\HomeBaseController;
 
-class Enroll extends BaseController {
+class Enroll extends HomeBaseController {
 
     /**
      * 注册比赛页面
