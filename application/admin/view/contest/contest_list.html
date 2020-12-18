@@ -45,12 +45,6 @@
     <a class="layui-table-link" href="/contests/{{d.contest_id}}" target="_blank">{{d.title}}</a>
 </script>
 
-
-<script type="text/html" id="operationTpl">
-    <a href="javascript:" onclick="x_admin_show('编辑 - {{d.title}}', '/admin/contest/edit?contest_id={{d.contest_id}}');">编辑</a>
-    <a href="javascript:" onclick="x_admin_show('复制比赛', '/admin/contest/clone_contest?from_contest_id={{d.contest_id}}')">复制比赛</a>
-</script>
-
 <script type="text/html" id="privateTpl">
     {{# if (0 == d.private) { }}
     <span style="color: green">Public</span>
@@ -60,7 +54,16 @@
 </script>
 
 <script type="text/html" id="defunctTpl">
-    <input type="checkbox" lay-skin="switch" lay-text="开|关" id="{{d.contest_id}}" lay-filter="switchTest" {{# if ('N' == d.defunct) { }}checked{{# } }}>
+    <input type="checkbox" lay-skin="switch" lay-text="开|关" contest-id="{{d.contest_id}}" lay-filter="switchTest" {{# if ('N' == d.defunct) { }}checked{{# } }}>
+</script>
+
+<script type="text/html" id="needEnrollTpl">
+    <input type="checkbox" lay-skin="switch" lay-text="开|关" contest-id="{{d.contest_id}}" lay-filter="switchNeedEnrollTest" {{# if ('1' == d.is_need_enroll) { }}checked{{# } }}>
+</script>
+
+<script type="text/html" id="operationTpl">
+    <a href="javascript:" onclick="x_admin_show('编辑 - {{d.title}}', '/admin/contest/edit?contest_id={{d.contest_id}}');">编辑</a>
+    <a href="javascript:" onclick="x_admin_show('复制比赛', '/admin/contest/clone_contest?from_contest_id={{d.contest_id}}')">复制比赛</a>
 </script>
 
 <script type="text/javascript">
@@ -82,21 +85,42 @@
                 {field: 'title', title: '标题', templet: '#titleTpl'},
                 {field: 'private', title: '权限', templet: '#privateTpl'},
                 {field: 'defunct', title: '状态', templet: '#defunctTpl'},
+                {field: 'is_need_enroll', title: '需注册', templet: '#needEnrollTpl'},
                 {field: 'contest_id', title: '操作', templet: '#operationTpl'}
             ]]
             , id: 'contest_list'
             , page: true
         });
 
-        //监听指定开关
+        // 监听状态开关
         form.on('switch(switchTest)', function(data){
             layer.msg('正在操作', {
                 icon: 16
                 , shade: 0.01
             });
-            let contest_id = data.elem.id;
+            let contest_id = data.elem.getAttribute('contest-id');
             let defunct = this.checked ? 'N' : 'Y';
             $.post('/admin/contest/change_defunct_json',{'contest_id': contest_id, 'defunct': defunct}, function(d){
+                if ('success' === d.status) {
+                    setTimeout(function(){
+                        layer.closeAll();
+                        table.reload('contest_list');
+                    }, 300);
+                }else{
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+
+        // 监听设置需要注册开关
+        form.on('switch(switchNeedEnrollTest)', function(data){
+            layer.msg('正在操作', {
+                icon: 16
+                , shade: 0.01
+            });
+            let contest_id = data.elem.getAttribute('contest-id');
+            let is_need_enroll = this.checked ? 1 : 0;
+            $.post('/admin/contest/change_need_enroll_json',{'contest_id': contest_id, 'is_need_enroll': is_need_enroll}, function(d){
                 if ('success' === d.status) {
                     setTimeout(function(){
                         layer.closeAll();
