@@ -6,7 +6,7 @@ pre {
     border-radius: 0px;
 }
 
-a:hover {
+a:hover,a:link,a:visited,a:active {
     text-decoration: none;
 }
 
