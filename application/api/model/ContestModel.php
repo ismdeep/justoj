@@ -127,10 +127,18 @@ class ContestModel extends Model {
      * 获取本场比赛的有效提交Solutions
      */
     public function get_significant_solutions() {
+        // 获取比赛题目列表
+        $contest_problems = $this->get_contest_problems();
+        $problem_ids = [];
+        foreach ($contest_problems as $contest_problem) {
+            $problem_ids []= $contest_problem->problem_id;
+        }
+
         return (new SolutionModel())
             ->where('in_date', '>=', $this->start_time)
             ->where('in_date', '<=', $this->end_time)
             ->where('contest_id', $this->contest_id)
+            ->where('problem_id', 'in', $problem_ids)
             ->order('in_date', 'asc')
             ->select();
     }
