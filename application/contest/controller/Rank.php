@@ -69,6 +69,7 @@ class Rank extends ContestBaseController {
             /* @var $user UserModel */
             $user['is_tourist'] = in_array($user->user_id, $tourist_user_ids);
             $user['ac_cnt'] = 0;
+            $user['wa_cnt'] = 0;
             $user['penalty'] = 0;
             $user['penalty_text'] = '';
             $user['problem'] = $problem_data;
