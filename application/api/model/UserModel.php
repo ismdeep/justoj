@@ -88,9 +88,11 @@ class UserModel extends Model {
             ->find();
         if ($user) {
             $user->submit = (new SolutionModel())
+                ->where('contest_id', null)
                 ->where('user_id', $user_id)
                 ->count();
             $user->solved = (new SolutionModel())
+                ->where('contest_id', null)
                 ->where('user_id', $user_id)
                 ->where('result', 4)
                 ->count('distinct problem_id');
