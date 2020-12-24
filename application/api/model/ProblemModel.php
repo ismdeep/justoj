@@ -65,8 +65,14 @@ class ProblemModel extends Model {
         /* @var $problem ProblemModel */
         $problem = (new ProblemModel())->where('problem_id', $problem_id)->find();
         if ($problem) {
-            $problem->submit = (new SolutionModel())->where('problem_id', $problem_id)->count();
-            $problem->accepted = (new SolutionModel())->where('problem_id', $problem_id)->where('result', 4)->count();
+            $problem->submit = (new SolutionModel())
+                ->where('contest_id', null)
+                ->where('problem_id', $problem_id)->count();
+
+            $problem->accepted = (new SolutionModel())
+                ->where('contest_id', null)
+                ->where('problem_id', $problem_id)
+                ->where('result', 4)->count();
             $problem->save();
         }
     }

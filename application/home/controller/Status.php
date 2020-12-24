@@ -61,7 +61,9 @@ class Status extends HomeBaseController {
             $where = $where->where(['language' => $language]);
         }
 
-        $solutions = $where->order('solution_id', 'desc')->paginate(10);
+        $solutions = $where
+            ->where('contest_id', null)
+            ->order('solution_id', 'desc')->paginate(10);
         $solutions->appends('run_id', '');
         $solutions->appends('username', $username);
         $solutions->appends('problem_id', $problem_id);
