@@ -43,6 +43,7 @@ class Problem extends HomeBaseController {
         if ($this->login_user) {
             $solved_problems = (new SolutionModel())
                 ->where('user_id', $this->login_user->user_id)
+                ->where('contest_id', null)
                 ->where('result', 4)
                 ->distinct('problem_id')
                 ->field('problem_id')
@@ -53,6 +54,7 @@ class Problem extends HomeBaseController {
 
             $submit_problems = (new SolutionModel())
                 ->where('user_id', $this->login_user->user_id)
+                ->where('contest_id', null)
                 ->distinct('problem_id')
                 ->field('problem_id')
                 ->select();
@@ -133,7 +135,6 @@ class Problem extends HomeBaseController {
 
         $this->assign('problems', $problems);
         return view($this->theme_root . '/problems');
-
     }
 
     public function get_problem_detail($id) {
