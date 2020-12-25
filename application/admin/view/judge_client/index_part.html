@@ -1,5 +1,12 @@
 <div style="padding: 20px; background-color: #F2F2F2;">
-    Local Hash: {$local_hash}
+    <p>
+        Local Hash: {$local_hash}
+    </p>
+    {if $local_changed}
+    <p>
+        <span style="color: red">Local Data Changed! Waiting for Upload.</span>
+    </p>
+    {/if}
 </div>
 
 <div style="padding: 20px; background-color: #F2F2F2;">
