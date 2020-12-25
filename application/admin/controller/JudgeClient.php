@@ -20,7 +20,7 @@ class JudgeClient extends AdminBaseController {
         $local_hash = exec("cd {$data_dir};git log -1 --pretty=format:%H");
 
         $judge_clients = (new JudgeClientModel())
-            ->order('client_name', 'desc')
+            ->order('client_name', 'asc')
             ->select();
 
         return view('index_part', [
