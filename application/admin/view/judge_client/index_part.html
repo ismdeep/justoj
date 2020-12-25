@@ -1,0 +1,36 @@
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <p>
+        Local Hash: {$local_hash}
+    </p>
+    {if $local_changed}
+    <p>
+        <span style="color: red">Local Data Changed! Waiting for Upload.</span>
+    </p>
+    {/if}
+</div>
+
+<div style="padding: 20px; background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        {volist name="clients" id="client"}
+        <div class="layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">{$client->client_name}</div>
+                <div class="layui-card-body">
+                    Git Hash:
+                    {if $client->data_git_hash == $local_hash}
+                    <span style="color: green">{$client->data_git_hash}</span>
+                    {else}
+                    <span style="color: red">{$client->data_git_hash}</span>
+                    {/if}
+                    <br>
+                    Last Update Time: {$client->update_time}
+                </div>
+            </div>
+        </div>
+        {/volist}
+    </div>
+</div>
+
+<div style="padding: 20px; background-color: #F2F2F2;">
+    Request Server Time: <?php echo date('Y-m-d H:i:s'); ?>
+</div>

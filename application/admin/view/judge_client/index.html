@@ -1,0 +1,16 @@
+{extend name="base" /}
+{block name="content"}
+<style>
+    body {
+        background-color: #F2F2F2;
+    }
+</style>
+<div id="ajax-part"></div>
+
+<script type="text/javascript">
+    $("#ajax-part").load("/admin/judge_client/index_part");
+    setInterval(function () {
+        $("#ajax-part").load("/admin/judge_client/index_part");
+    }, 1000);
+</script>
+{/block}
