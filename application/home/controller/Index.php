@@ -32,7 +32,7 @@ class Index extends HomeBaseController {
             ->select();
 
         foreach ($recent_contests as $contest) {
-            $contest->started = $contest->start_time > date('Y-m-d H:i:s', time());
+            $contest->started = $contest->start_time < date('Y-m-d H:i:s', time());
             $contest->rolled = $this->login_user && (new ContestEnrollModel())
                 ->where('user_id', $this->login_user->user_id)
                 ->where('contest_id', $contest->contest_id)
