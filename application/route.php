@@ -66,6 +66,13 @@ Route::rule('/forgot-password/send-email/json', 'home/forgot_password/send_email
 Route::rule('/forgot-password/set-password/json', 'home/forgot_password/set_password_json');
 Route::rule('/forgot-password',                 'home/forgot_password/index');
 
+Route::rule('/system-info',                  'home/system_info/index');
+Route::rule('/system-info/project-hash-part','home/system_info/project_hash_part');
+Route::rule('/system-info/data-hash-part','home/system_info/data_hash_part');
+Route::rule('/system-info/pending-cnt-part','home/system_info/pending_cnt_part');
+
+
+
 return [
     '__pattern__' => [
         'name' => '\w+',

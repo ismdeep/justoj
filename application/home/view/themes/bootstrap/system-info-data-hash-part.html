@@ -1,0 +1,35 @@
+<div class="panel panel-default">
+    <div class="panel-heading">JustOJ Data</div>
+    <div class="panel-body">
+        <p>Server HASH: {$local_hash}</p>
+        {if $local_changed}
+        <p>
+            <span style="color: red">Local Data Changed! Waiting for Upload.</span>
+        </p>
+        {/if}
+    </div>
+    <div class="panel-body">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Client Name</th>
+                <th>Hash</th>
+            </tr>
+            </thead>
+            <tbody>
+            {volist name="judge_clients" id="client"}
+            <tr>
+                <td>{$client->client_name}</td>
+                <td>
+                    {if $client->data_git_hash == $local_hash}
+                    <span style="color: green">{$client->data_git_hash}</span>
+                    {else}
+                    <span style="color: red">{$client->data_git_hash}</span>
+                    {/if}
+                </td>
+            </tr>
+            {/volist}
+            </tbody>
+        </table>
+    </div>
+</div>
