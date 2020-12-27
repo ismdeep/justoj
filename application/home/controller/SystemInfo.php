@@ -41,19 +41,19 @@ class SystemInfo extends HomeBaseController {
     }
 
     public function pending_cnt_part() {
-        $pending_cnt = (new SolutionModel())->where('result', 0)
+        $pending_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_PENDING)
             ->count('solution_id');
         $this->assign('pending_cnt', $pending_cnt);
 
-        $rejudging_cnt = (new SolutionModel())->where('result', 1)
+        $rejudging_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_REJUDING)
             ->count('solution_id');
         $this->assign('rejudging_cnt', $rejudging_cnt);
 
-        $compiling_cnt = (new SolutionModel())->where('result', 2)
+        $compiling_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_COMPILING)
             ->count('solution_id');
         $this->assign('compiling_cnt', $compiling_cnt);
 
-        $running_cnt = (new SolutionModel())->where('result', 4)
+        $running_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_RUNNING)
             ->count('solution_id');
         $this->assign('running_cnt', $running_cnt);
 
