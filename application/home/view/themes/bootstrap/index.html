@@ -29,7 +29,19 @@
 				<ul class="list-group">
 				{volist name="recent_contests" id="contest"}
 				<li class="list-group-item">
-					<p><a href="/contests/{$contest->contest_id}">{$contest->title}</a></p>
+					<p>
+						<a href="/contests/{$contest->contest_id}">{$contest->title}</a>
+						{if $contest->rolled}
+						<span class="label label-success"><?php echo ['en' => 'Enrolled', 'cn' => '已报名'][$show_ui_lang];?></span>
+						{/if}
+					</p>
+
+					{if $contest->started}
+					<p style="color: green">Started</p>
+					{else}
+					<p style="color: gray">Pending</p>
+					{/if}
+
 					<p><?php echo ['en' => 'Start at', 'cn' => '开始于'][$show_ui_lang];?>: {$contest->start_time}</p>
 				</li>
 				{/volist}
