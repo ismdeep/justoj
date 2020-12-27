@@ -1,0 +1,36 @@
+{extend name="home@themes/bootstrap/layout/user" /}
+{block name='title_block'}System Info{/block}
+
+{block name="nav_block"}
+{/block}
+
+{block name="footer"}
+{/block}
+
+{block name="body"}
+<br>
+<div class="container">
+    <div id="project-hash-part"></div>
+    <div id="data-hash-part"></div>
+    <div id="pending-cnt-part"></div>
+</div>
+
+<script type="text/javascript">
+
+    function load_all() {
+        $("#project-hash-part").load('/system-info/project-hash-part');
+        $('#data-hash-part').load('/system-info/data-hash-part');
+        $('#pending-cnt-part').load('/system-info/pending-cnt-part');
+    }
+
+    $(function () {
+        load_all();
+        setInterval(function () {
+            load_all();
+        }, 1000);
+    });
+</script>
+
+{/block}
+
+
