@@ -53,7 +53,7 @@ class SystemInfo extends HomeBaseController {
             ->count('solution_id');
         $this->assign('compiling_cnt', $compiling_cnt);
 
-        $running_cnt = (new SolutionModel())->where('result', 4)
+        $running_cnt = (new SolutionModel())->where('result', 3)
             ->count('solution_id');
         $this->assign('running_cnt', $running_cnt);
 
