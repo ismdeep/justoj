@@ -33,12 +33,11 @@
 
     $(function () {
         load_all();
+        setInterval(function(){
+            load_all();
+        }, 5000);
 
         $('#solution-statistics-part').load('/system-info/solution-statistics-part');
-
-        setInterval(function () {
-            load_all();
-        }, 1000);
     });
 </script>
 

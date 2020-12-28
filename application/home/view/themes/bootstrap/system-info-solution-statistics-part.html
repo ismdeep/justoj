@@ -1,12 +1,10 @@
-
 <div id="solution-language-statistics-part" style="height: 350px"></div>
 <div id="solution-result-statistics-part" style="height: 350px"></div>
 
 <script type="text/javascript">
     let dom = document.getElementById("solution-language-statistics-part");
     let langStatChart = echarts.init(dom);
-
-    option = {
+    let langOption = {
         title: {
             text: 'Languages',
             left: 'center'
@@ -40,17 +38,23 @@
         ]
     };
 
-    $.get('/api/langs/statistics', function(d){
-        console.log(d);
-        let data = [];
-        for (let i = 0; i < d.data.length; i++) {
-            console.log(i);
-            data.push({value: d.data[i].value, name: d.data[i].name});
-        }
-        console.log(data);
-        option.series[0].data = data;
-        langStatChart.setOption(option, true);
-    }, 'json');
+
+
+    let func1 = function() {
+        $.get('/api/langs/statistics', function (d) {
+            let data = [];
+            for (let i = 0; i < d.data.length; i++) {
+                data.push({value: d.data[i].value, name: d.data[i].name});
+            }
+            langOption.series[0].data = data;
+            langStatChart.setOption(langOption, true);
+        }, 'json');
+    }
+
+    func1();
+    setInterval(function(){
+        func1();
+    }, 30 * 1000);
 
 </script>
 
@@ -58,8 +62,7 @@
 <script type="text/javascript">
     let domResult = document.getElementById("solution-result-statistics-part");
     let resultStatChart = echarts.init(domResult);
-
-    resultOption = {
+    let resultOption = {
         title: {
             text: 'Results',
             left: 'center'
@@ -93,17 +96,21 @@
         ]
     };
 
-    $.get('/api/solution/statistics', function(d){
-        console.log(d);
-        let data = [];
-        for (let i = 0; i < d.data.length; i++) {
-            console.log(i);
-            data.push({value: d.data[i].value, name: d.data[i].name});
-        }
-        console.log(data);
-        resultOption.series[0].data = data;
-        resultStatChart.setOption(resultOption, true);
-    }, 'json');
+    let func2 = function () {
+        $.get('/api/solution/statistics', function (d) {
+            let data = [];
+            for (let i = 0; i < d.data.length; i++) {
+                data.push({value: d.data[i].value, name: d.data[i].name});
+            }
+            resultOption.series[0].data = data;
+            resultStatChart.setOption(resultOption, true);
+        }, 'json');
+    }
+
+    func2();
+    setInterval(function(){
+        func2();
+    }, 30 * 1000);
 
 </script>
 
