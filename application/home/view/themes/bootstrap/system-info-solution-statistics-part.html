@@ -1,5 +1,6 @@
 
-<div id="solution-language-statistics-part" style="height: 400px"></div>
+<div id="solution-language-statistics-part" style="height: 350px"></div>
+<div id="solution-result-statistics-part" style="height: 350px"></div>
 
 <script type="text/javascript">
     let dom = document.getElementById("solution-language-statistics-part");
@@ -52,3 +53,57 @@
     }, 'json');
 
 </script>
+
+
+<script type="text/javascript">
+    let domResult = document.getElementById("solution-result-statistics-part");
+    let resultStatChart = echarts.init(domResult);
+
+    resultOption = {
+        title: {
+            text: 'Results',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['AC', 'WA', 'RE', 'CE', 'TLE', 'OTHER']
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '65%',
+                center: ['50%', '50%'],
+                selectedMode: 'single',
+                data: [],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    $.get('/api/solution/statistics', function(d){
+        console.log(d);
+        let data = [];
+        for (let i = 0; i < d.data.length; i++) {
+            console.log(i);
+            data.push({value: d.data[i].value, name: d.data[i].name});
+        }
+        console.log(data);
+        resultOption.series[0].data = data;
+        resultStatChart.setOption(resultOption, true);
+    }, 'json');
+
+</script>
+
