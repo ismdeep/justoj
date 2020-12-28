@@ -70,6 +70,7 @@ Route::rule('/system-info',                  'home/system_info/index');
 Route::rule('/system-info/project-hash-part','home/system_info/project_hash_part');
 Route::rule('/system-info/data-hash-part','home/system_info/data_hash_part');
 Route::rule('/system-info/pending-cnt-part','home/system_info/pending_cnt_part');
+Route::rule('/system-info/solution-statistics-part', 'home/system_info/solution_statistics_part');
 
 
 

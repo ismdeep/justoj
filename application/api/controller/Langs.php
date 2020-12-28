@@ -19,24 +19,32 @@ class Langs extends ApiBaseController {
      * @return \think\response\Json
      */
     public function statistics() {
-        $c_cnt = SolutionModel::where('language', 0)->count();
-        $cpp_cnt = SolutionModel::where('language', 1)->count();
-        $java_cnt = SolutionModel::where('language', 3)->count();
-        $python_cnt = SolutionModel::where('language', 6)->count();
+        $c_cnt = (new SolutionModel())->whereIn('language', [0, 13])->count();
+        $cpp_cnt = (new SolutionModel())->whereIn('language', [1, 14])->count();
+        $java_cnt = (new SolutionModel())->where('language', 3)->count();
+        $python_cnt = (new SolutionModel())->whereIn('language', [6, 18])->count();
+        $other_cnt = (new SolutionModel())->whereNotIn('language', [0, 1, 3, 6, 13, 14, 18])->count();
         return json([
             'data' => [
                 [
                     'name' => 'C',
                     'value' => $c_cnt
-                ], [
+                ],
+                [
                     'name' => 'C++',
                     'value' => $cpp_cnt
-                ], [
+                ],
+                [
                     'name' => 'Java',
                     'value' => $java_cnt
-                ], [
+                ],
+                [
                     'name' => 'Python',
                     'value' => $python_cnt
+                ],
+                [
+                    'name' => 'Other',
+                    'value' => $other_cnt
                 ]
             ]
         ]);
