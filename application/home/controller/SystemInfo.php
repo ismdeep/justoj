@@ -80,4 +80,8 @@ class SystemInfo extends HomeBaseController {
         return view($this->theme_root . '/system-info-pending-cnt-part');
     }
 
+    public function solution_statistics_part() {
+        return view($this->theme_root . '/system-info-solution-statistics-part');
+    }
+
 }

@@ -1,0 +1,116 @@
+<div id="solution-language-statistics-part" style="height: 350px"></div>
+<div id="solution-result-statistics-part" style="height: 350px"></div>
+
+<script type="text/javascript">
+    let dom = document.getElementById("solution-language-statistics-part");
+    let langStatChart = echarts.init(dom);
+    let langOption = {
+        title: {
+            text: 'Languages',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['C', 'C++', 'Java', 'Python', 'Other']
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '65%',
+                center: ['50%', '50%'],
+                selectedMode: 'single',
+                data: [],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+
+
+    let func1 = function() {
+        $.get('/api/langs/statistics', function (d) {
+            let data = [];
+            for (let i = 0; i < d.data.length; i++) {
+                data.push({value: d.data[i].value, name: d.data[i].name});
+            }
+            langOption.series[0].data = data;
+            langStatChart.setOption(langOption, true);
+        }, 'json');
+    }
+
+    func1();
+    setInterval(function(){
+        func1();
+    }, 30 * 1000);
+
+</script>
+
+
+<script type="text/javascript">
+    let domResult = document.getElementById("solution-result-statistics-part");
+    let resultStatChart = echarts.init(domResult);
+    let resultOption = {
+        title: {
+            text: 'Results',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item',
+            formatter: '{a} <br/>{b} : {c} ({d}%)'
+        },
+        legend: {
+            // orient: 'vertical',
+            // top: 'middle',
+            bottom: 10,
+            left: 'center',
+            data: ['AC', 'WA', 'RE', 'CE', 'TLE', 'OTHER']
+        },
+        series: [
+            {
+                type: 'pie',
+                radius: '65%',
+                center: ['50%', '50%'],
+                selectedMode: 'single',
+                data: [],
+                emphasis: {
+                    itemStyle: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    let func2 = function () {
+        $.get('/api/solution/statistics', function (d) {
+            let data = [];
+            for (let i = 0; i < d.data.length; i++) {
+                data.push({value: d.data[i].value, name: d.data[i].name});
+            }
+            resultOption.series[0].data = data;
+            resultStatChart.setOption(resultOption, true);
+        }, 'json');
+    }
+
+    func2();
+    setInterval(function(){
+        func2();
+    }, 30 * 1000);
+
+</script>
+

@@ -298,4 +298,43 @@ class Solution extends ApiBaseController {
         $solution->save();
         return json(['status' => 'success']);
     }
+
+    public function statistics() {
+        $ac_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_AC)->count();
+        $wa_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_WA)->count();
+        $re_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_RE)->count();
+        $tle_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_TLE)->count();
+        $ce_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_CE)->count();
+        $other_cnt = (new SolutionModel())->whereNotIn('result', [
+            SolutionModel::RESULT_AC, SolutionModel::RESULT_WA, SolutionModel::RESULT_RE, SolutionModel::RESULT_TLE, SolutionModel::RESULT_CE
+        ])->count();
+        return json([
+            'data' => [
+                [
+                    'name' => 'AC',
+                    'value' => $ac_cnt
+                ],
+                [
+                    'name' => 'WA',
+                    'value' => $wa_cnt
+                ],
+                [
+                    'name' => 'RE',
+                    'value' => $re_cnt
+                ],
+                [
+                    'name' => 'TLE',
+                    'value' => $tle_cnt
+                ],
+                [
+                    'name' => 'CE',
+                    'value' => $ce_cnt
+                ],
+                [
+                    'name' => 'Other',
+                    'value' => $other_cnt
+                ]
+            ]
+        ]);
+    }
 }
