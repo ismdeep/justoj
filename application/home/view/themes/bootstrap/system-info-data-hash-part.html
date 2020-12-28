@@ -1,7 +1,9 @@
 <div class="panel panel-default">
     <div class="panel-heading">JustOJ Data</div>
     <div class="panel-body">
-        <p>Server HASH: {$local_hash}</p>
+        <p>Branch: {$branch_name}</p>
+        <p>Release Date: {$release_date}</p>
+        <p>Commit: {$local_hash}</p>
         {if $local_changed}
         <p>
             <span style="color: red">Local Data Changed! Waiting for Upload.</span>
