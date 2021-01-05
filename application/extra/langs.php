@@ -114,7 +114,7 @@ return [
     [
         'id'      => 10,
         'code'    => 'objc',
-        'name'    => 'Object C',
+        'name'    => 'Objective C',
         'suffix'  => 'm',
         'version' => '',
         'allowed' => false
