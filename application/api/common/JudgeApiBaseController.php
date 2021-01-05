@@ -15,7 +15,7 @@ class JudgeApiBaseController extends ApiBaseController {
         parent::__construct($request);
 
         $secure_code = $request->param('secure_code');
-        $this->client_name = $request->param('client_name', 'unknown');
+//        $this->client_name = $request->param('client_name', 'unknown');
 
         intercept(Env::get('config.secure_code') != $secure_code, '0');
     }
