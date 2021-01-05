@@ -26,6 +26,7 @@ use think\Model;
  * @property string ip
  * @property int contest_id
  * @property int code_length
+ * @property string judger
  *
  */
 class SolutionModel extends Model {
