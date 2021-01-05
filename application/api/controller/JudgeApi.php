@@ -4,26 +4,21 @@
 namespace app\api\controller;
 
 
+use app\api\common\JudgeApiBaseController;
 use app\api\model\CompileInfoModel;
 use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
 use app\api\model\UserModel;
-use app\api\common\ApiBaseController;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
+use think\Exception;
 use think\exception\DbException;
-use think\Request;
 
-class JudgeApi extends ApiBaseController {
-    public function __construct(Request $request = null) {
-        parent::__construct($request);
-        $secure_code = $request->param('secure_code');
-        intercept(config('secure_code') != $secure_code, '0');
-    }
+class JudgeApi extends JudgeApiBaseController {
 
     /**
-     * Judge secure_code is valid
+     * 验证 secure_code
      *
      * /api/judge_api/check_secure_code
      *
@@ -59,11 +54,14 @@ class JudgeApi extends ApiBaseController {
         $solution_ids = [];
         foreach ($solutions as $solution) {
             echo $solution->solution_id . "\n";
-            $solution_ids []= $solution->solution_id;
+            $solution_ids [] = $solution->solution_id;
         }
 
         if (sizeof($solution_ids) > 0) {
-            (new SolutionModel())->where('solution_id', 'in', $solution_ids)->update(['result' => 2]);
+            (new SolutionModel())->where('solution_id', 'in', $solution_ids)->update([
+                'result' => 2,
+                'judger' => $this->client_name
+            ]);
         }
     }
 
@@ -86,6 +84,7 @@ class JudgeApi extends ApiBaseController {
         $solution = (new SolutionModel())->where('solution_id', $solution_id)->find();
         intercept(null == $solution, "SOLUTION NOT FOUND. [solution_id:$solution_id]");
         $solution->result = $result;
+        $solution->judger = $this->client_name;
         $solution->save();
         return '1';
     }
@@ -101,7 +100,7 @@ class JudgeApi extends ApiBaseController {
      * @param string $time
      * @param string $memory
      * @return string
-     * @throws \think\Exception
+     * @throws Exception
      * @throws DataNotFoundException
      * @throws ModelNotFoundException
      * @throws DbException
@@ -118,6 +117,7 @@ class JudgeApi extends ApiBaseController {
         $solution->result = $result;
         $solution->memory = $memory;
         $solution->time = $time;
+        $solution->judger = $this->client_name;
         $solution->save();
 
         /* update user info */
@@ -152,7 +152,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Get solution info
      *
-     * /admin/judge_solution_api/get_solution_info?sid=2394
+     * /api/judge_api/get_solution_info?sid=2394
      *
      * @param string $sid
      * @throws DataNotFoundException
@@ -174,7 +174,7 @@ class JudgeApi extends ApiBaseController {
     /**
      * Add Compile Error to Solution
      *
-     * /admin/judge_solution_api/add_ce_info?sid=2394&ceinfo=CCC
+     * /api/judge_api/add_ce_info?sid=2394&ceinfo=CCC
      *
      * @param string $sid
      * @param string $ceinfo
@@ -195,6 +195,14 @@ class JudgeApi extends ApiBaseController {
         return "1";
     }
 
+    /**
+     * Get problem info
+     *
+     * @param string $pid
+     * @throws DataNotFoundException
+     * @throws DbException
+     * @throws ModelNotFoundException
+     */
     public function get_problem_info($pid = '') {
         $pid = intval($pid);
         /* @var $problem ProblemModel */

@@ -3,6 +3,7 @@
     <tr>
         <th>{$lang.run_id}</th>
         <th>{$lang.status}</th>
+        <th>{$lang.client}</th>
         <th>{$lang.code_length}</th>
         <th>{$lang.memory}</th>
         <th>{$lang.exe_time}</th>
@@ -14,6 +15,7 @@
     <tr>
         <td><span>{$solution->solution_id}</span></td>
         <td><span class="{$solution->result_code}">{$solution->result_text}</span></td>
+        <td>{$solution->judger}</td>
         <td>{$solution->code_length}</td>
         <td>{$solution->memory}</td>
         <td>{$solution->time}</td>

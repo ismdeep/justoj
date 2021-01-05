@@ -29,6 +29,7 @@ return [
     'cancel' => ['en' => 'Cancel', 'cn' => '取消'],
     'change_password' => ['en' => 'Change Password', 'cn' => '修改密码'],
     'class' => ['en' => 'Class', 'cn' => '班级'],
+    'client' => ['en' => 'Client', 'cn' => '客户端'],
     'clone' => ['en' => 'Clone', 'cn' => '复制'],
     'code_length' => ['en' => 'Code Length', 'cn' => '代码长度'],
     'content' => ['en' => 'Content', 'cn' => '内容'],
