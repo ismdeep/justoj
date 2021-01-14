@@ -16,7 +16,7 @@
                     <span class="{$recent_solution->result_code}">{$recent_solution->result_text}</span>
                 </p>
                 <p>
-                    {$recent_solution->language_text} / {$recent_solution->memory} B / {$recent_solution->time} ms
+                    {$recent_solution->language_text} / {$recent_solution->get_memory_h()} / {$recent_solution->time} ms
                 </p>
                 <p>
                     {$recent_solution->in_date}
