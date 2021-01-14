@@ -81,7 +81,7 @@
 			<td width="10%" class="{$solution->result_code}">{$solution->result_text} {if $solution->sim != null}
 				<a href="/sim?id={$solution->sim->s_id}" target="_blank">{$solution->sim->sim}</a> {/if} </td>
 			{/if}
-			<td width="10%">{$solution->memory} B</td>
+			<td width="10%">{$solution->get_memory_h()}</td>
 			<td width="10%">{$solution->time} ms</td>
 			<td width="10%">
 				{if ($login_user && $login_user->is_admin) || ($login_user && $solution->user_id == $login_user->user_id)}

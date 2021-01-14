@@ -82,6 +82,7 @@ class Solution extends HomeBaseController {
 
         $solution->fk();
         $solution->result_text = $this->lang[$solution->result_code];
+
         return view($this->theme_root . '/status-solution-table-part', [
             'solution' => $solution
         ]);

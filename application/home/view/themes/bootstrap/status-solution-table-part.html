@@ -17,8 +17,8 @@
         <td><span class="{$solution->result_code}">{$solution->result_text}</span></td>
         <td>{$solution->judger}</td>
         <td>{$solution->code_length}</td>
-        <td>{$solution->memory}</td>
-        <td>{$solution->time}</td>
+        <td>{$solution->get_memory_h()}</td>
+        <td>{$solution->time} ms</td>
         <td>{$solution->language_text}</td>
         <td>{$solution->in_date}</td>
     </tr>

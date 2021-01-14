@@ -158,4 +158,15 @@ class SolutionModel extends Model {
             }
         }
     }
+
+    public function get_memory_h() {
+        $m = $this->memory;
+        if ($m < 1024) {
+            return "{$m} KB";
+        }
+
+        $m /= 1024.0;
+        $m = number_format($m, 2);
+        return "{$m} MB";
+    }
 }

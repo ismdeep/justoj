@@ -69,6 +69,7 @@ class Status extends HomeBaseController {
         $solutions->appends('problem_id', $problem_id);
         $solutions->appends('result', $result);
         $solutions->appends('language', $language);
+
         $this->assign('solutions', $solutions);
         return view($this->theme_root . '/status');
     }
