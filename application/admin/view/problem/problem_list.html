@@ -83,20 +83,6 @@
             },'json');
         });
     }
-    
-    function add_to_training(problem_id) {
-        layer.confirm('确定加入训练场？', function(){
-            $.post('/admin/problem/add_to_training_json', {'problem_id': problem_id}, function (d) {
-                layer.closeAll();
-                if ('success' == d.status) {
-                    var table = layui.table;
-                    table.reload('problem_list');
-                } else {
-                    layer.alert(d.msg);
-                }
-            }, 'json')
-        });
-    }
 
     $('#problemFilterForm').on('submit',function(){
         let keyword = $('#keyword').val();
