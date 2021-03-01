@@ -43,7 +43,7 @@ class GroupModel extends Model
         }
     }
 
-    public function copy_task_from_homework($homework_id, $start_time, $end_time) {
+    public function copy_task_from_homework($homework_id, $start_time, $end_time, $creator_id) {
         /* 获取作业信息 */
         /* @var $homework_from ContestModel */
         $homework_from = (new ContestModel())->where('contest_id', $homework_id)->find();
@@ -60,6 +60,7 @@ class GroupModel extends Model
         $homework->description = $homework_from->description;
         $homework->private = 0;
         $homework->type = ContestModel::TYPE_HOMEWORK;
+        $homework->creator_id = $creator_id;
         $homework->save();
 
         /* 获取作业题目列表 */
@@ -87,7 +88,7 @@ class GroupModel extends Model
         $group_task->save();
     }
 
-    public function copy_tasks_from_group($group_id, $start_time, $end_time) {
+    public function copy_tasks_from_group($group_id, $start_time, $end_time, $creator_id) {
         /* @var $group_from GroupModel */
         $group_from = (new GroupModel())->where('id', $group_id)->find();
         if (!$group_from) {
@@ -97,7 +98,7 @@ class GroupModel extends Model
         $group_tasks = (new GroupTaskModel())->where(['group_id' => $group_from->id])->select();
         foreach ($group_tasks as $group_task) {
             /* @var $group_task GroupTaskModel */
-            $this->copy_task_from_homework($group_task->contest_id, $start_time, $end_time);
+            $this->copy_task_from_homework($group_task->contest_id, $start_time, $end_time, $creator_id);
         }
     }
 
