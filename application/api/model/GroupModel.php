@@ -60,6 +60,7 @@ class GroupModel extends Model
         $homework->description = $homework_from->description;
         $homework->private = 0;
         $homework->type = ContestModel::TYPE_HOMEWORK;
+        $homework->creator_id = session('user')['user_id'];
         $homework->save();
 
         /* 获取作业题目列表 */
