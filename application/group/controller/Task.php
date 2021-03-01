@@ -169,7 +169,7 @@ class Task extends GroupBaseController {
         if (!datetime_human_valid($end_time)) return json(['code' => 500, 'msg' => '请选择结束时间']);
 
         try {
-            $this->group->copy_tasks_from_group($group_id, $start_time, $end_time);
+            $this->group->copy_tasks_from_group($group_id, $start_time, $end_time, $this->login_user->user_id);
         } catch (Exception $e) {
             return json(['code' => 404, 'msg' => $e->getMessage()]);
         }
@@ -188,6 +188,7 @@ class Task extends GroupBaseController {
      * @param string $homework_id
      * @param string $start_time
      * @param string $end_time
+     * @param string $creator_id
      * @return \think\response\Json
      */
     public function copy_homework_from_homework_json($homework_id = '', $start_time = '', $end_time = '') {
@@ -199,7 +200,7 @@ class Task extends GroupBaseController {
         if (!datetime_human_valid($end_time)) return json(['code' => 500, 'msg' => '请选择结束时间']);
 
         try {
-            $this->group->copy_task_from_homework($homework_id, $start_time, $end_time);
+            $this->group->copy_task_from_homework($homework_id, $start_time, $end_time, $this->login_user->user_id);
         } catch (Exception $e) {
             return json(['code' => 404, 'msg' => $e->getMessage()]);
         }
