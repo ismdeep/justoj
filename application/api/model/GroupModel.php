@@ -64,7 +64,10 @@ class GroupModel extends Model
         $homework->save();
 
         /* 获取作业题目列表 */
-        $homework_from_problems = (new ContestProblemModel())->where('contest_id', $homework_from->contest_id)->select();
+        $homework_from_problems = (new ContestProblemModel())
+            ->where('contest_id', $homework_from->contest_id)
+            ->order('num', 'asc')
+            ->select();
         $problem_ids = [];
         foreach ($homework_from_problems as $homework_from_problem) {
             /* @var $homework_from_problem ContestProblemModel */
