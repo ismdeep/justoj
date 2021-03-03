@@ -65,7 +65,7 @@
                 </a>
                 {if $is_group_manager}
                 <a class="btn btn-sm btn-success" href="javascript:" onclick="open_edit_contest('{$task->contest_id}');"><span class="glyphicon glyphicon-edit"></span> {$lang.edit}</a>
-                <a class="btn btn-sm btn-danger" href="javascript:" onclick="layer.alert('暂不支持');">
+                <a class="btn btn-sm btn-danger"  href="javascript:" onclick="delete_task('{$task->id}');">
                     <span class="glyphicon glyphicon-trash"></span> {$lang.delete}
                 </a>
                 {/if}
@@ -132,6 +132,21 @@
             area: ['800px', '600px'],
             content: '/admin/contest/edit?contest_id=' + contest_id
         });
+    }
+
+    function delete_task(task_id) {
+        layer.confirm('删除作业？', function() {
+            layer.closeAll();
+            layer.load();
+            $.get('/groups/{$group->id}/tasks/'+task_id+'/delete/json',function(d){
+                if (d.code === 0) {
+                    location.reload();
+                } else {
+                    layer.alert(d.msg);
+                }
+            },'json');
+        });
+
     }
 </script>
 {/block}
