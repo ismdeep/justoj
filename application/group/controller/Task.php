@@ -11,6 +11,7 @@ use app\api\model\PrivilegeModel;
 use app\api\model\ProblemModel;
 use app\group\common\GroupBaseController;
 use think\Exception;
+use think\response\Json;
 
 class Task extends GroupBaseController {
 
@@ -24,7 +25,7 @@ class Task extends GroupBaseController {
     public function show_group_tasks() {
         $this->assign('nav', 'tasks');
 
-        $tasks = GroupTaskModel::all(['group_id' => $this->group->id]);
+        $tasks = GroupTaskModel::all(['group_id' => $this->group->id, 'deleted' => 0]);
 
         /* 获取总人数和完成作业的人数 */
         $user_ids = [];
@@ -209,6 +210,32 @@ class Task extends GroupBaseController {
             'code' => 0,
             'msg' => 'success'
         ]);
+    }
+
+
+    public function delete_task($task_id) {
+        if (!$this->is_group_manager) {
+            return json(['code' => 500, 'msg' => 'Access Denied']);
+        }
+
+        /* @var $group_task GroupTaskModel */
+        $group_task = (new GroupTaskModel())->where('id', $task_id)->find();
+        if (!$group_task) {
+            return json(['code' => 404, 'msg' => '作业不存在']);
+        }
+
+        if ($group_task->group_id != $this->group->id) {
+            return json(['code' => 501, 'msg' => '作业不属于此班级']);
+        }
+
+        if ($group_task->deleted == 1) {
+            return json(['code' => 501, 'msg' => '作业已经删除']);
+        }
+
+        $group_task->deleted = 1;
+        $group_task->save();
+
+        return json(['code' => 0, 'msg' => 'success',]);
     }
 
 }

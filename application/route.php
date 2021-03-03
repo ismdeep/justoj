@@ -41,6 +41,7 @@ Route::rule('/groups/:id/members/:user_id/source_codes/download', 'group/member/
 Route::rule('/groups/:id/members',                  'group/member/show_group_members');
 Route::rule('/groups/:id/tasks/create/json',        'group/task/create_homework_page_json');
 Route::rule('/groups/:id/tasks/create',             'group/task/create_homework_page');
+Route::rule('/groups/:id/tasks/:task_id/delete/json', 'group/task/delete_task');
 Route::rule('/groups/:id/tasks/copy/group/json',    'group/task/copy_homeworks_from_group_json');
 Route::rule('/groups/:id/tasks/copy/group',         'group/task/copy_homeworks_from_group');
 Route::rule('/groups/:id/tasks/copy/homework/json', 'group/task/copy_homework_from_homework_json');
