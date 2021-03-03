@@ -23,6 +23,7 @@ use think\Model;
  * @property \DateTime create_time
  * @property \DateTime update_time
  * @property int contest_id
+ * @property int deleted
  */
 class GroupTaskModel extends Model {
     protected $table = 'group_task';
