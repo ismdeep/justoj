@@ -39,8 +39,9 @@ class Status extends HomeBaseController {
         }
 
         if ('' != $run_id) {
-            $solutions = (new SolutionModel)->where('solution_id', $run_id)->paginate(10);
-            $solutions->appends('run_id', $run_id);
+            $solutions = (new SolutionModel)
+                ->field('solution_id,user_id,problem_id,result,memory,time,language,code_length,in_date')
+                ->where('solution_id', $run_id)->limit(20)->select();
             $this->assign('solutions', $solutions);
             return view($this->theme_root . '/status');
         }
@@ -62,13 +63,9 @@ class Status extends HomeBaseController {
         }
 
         $solutions = $where
+            ->field('solution_id,user_id,problem_id,result,memory,time,language,code_length,in_date')
             ->where('contest_id', null)
-            ->order('solution_id', 'desc')->paginate(10);
-        $solutions->appends('run_id', '');
-        $solutions->appends('username', $username);
-        $solutions->appends('problem_id', $problem_id);
-        $solutions->appends('result', $result);
-        $solutions->appends('language', $language);
+            ->order('solution_id', 'desc')->limit(20)->select();
 
         $this->assign('solutions', $solutions);
         return view($this->theme_root . '/status');
