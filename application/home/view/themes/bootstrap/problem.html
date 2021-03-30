@@ -27,13 +27,13 @@
                             href="/status?problem_id={$problem->problem_id}&result=4"
                             target="_blank">{$problem->accepted}</a> &nbsp;&nbsp;&nbsp;&nbsp;
                         <span class=green>{$lang.submit}: </span><a href="/status?problem_id={$problem->problem_id}"
-                                                                    target="_blank">{$problem->submit}</a>
+                                                                    target="_blank">{$problem->submit}</a> &nbsp;&nbsp;&nbsp;&nbsp;
+                        {if $login_user}
+                        <a href="/status?username={$login_user->user_id}&problem_id={$problem->problem_id}" target="_blank">{$lang.my}</a>
+                        {/if}
                     </div>
                 </div>
 
-                <!--功能按钮组 begin-->
-                {include file="home@common_html/problem_btns"}
-                <!--功能按钮组 end-->
             </div>
             <h3>{$lang.problem_description}</h3>
             <div class="content">
@@ -116,6 +116,11 @@
                 </div>
             </div>
             <!--	提交代码表单组 end-->
+
+            <!--功能按钮组 begin-->
+            {include file="home@common_html/problem_btns"}
+            <!--功能按钮组 end-->
+
 
         </div>
 
