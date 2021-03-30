@@ -170,6 +170,8 @@ class Problem extends HomeBaseController {
         // 如果当前用户登录了，判断AC状态
         $problem->ac = false;
         $problem->pending = false;
+        $login_user_ac_cnt = 0;
+        $login_user_submit_cnt = 0;
         if ($this->login_user) {
             if (SolutionModel::where('user_id', $this->login_user->user_id)
                 ->where('problem_id', $problem->problem_id)
@@ -183,8 +185,20 @@ class Problem extends HomeBaseController {
                     $problem->pending = true;
                 }
             }
+            // 查询登录用户ac和submit数量
+            $login_user_ac_cnt = (new SolutionModel())->where('user_id', $this->login_user->user_id)
+                ->where('problem_id', $problem->problem_id)
+                ->where('result', 4)
+                ->where('contest_id', null)
+                ->count();
+            $login_user_submit_cnt = (new SolutionModel())->where('user_id', $this->login_user->user_id)
+                ->where('problem_id', $problem->problem_id)
+                ->where('contest_id', null)
+                ->count();
         }
 
+        $this->assign('login_user_ac_cnt', $login_user_ac_cnt);
+        $this->assign('login_user_submit_cnt', $login_user_submit_cnt);
         $this->assign('problem', $problem);
         $this->assign('allowed_langs', $this->allowed_langs());
         return view($this->theme_root . '/problem');
