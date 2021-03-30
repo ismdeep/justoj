@@ -85,6 +85,7 @@ return [
     'members' => ['en' => 'Members', 'cn' => '成员'],
     'memory' => ['en' => 'Memory', 'cn' => '内存'],
     'memory_limit' => ['en' => 'Memory Limit', 'cn' => '内存限制'],
+    'my' => ['en' => 'My', 'cn' => '我的'],
     'mygroup' => ['en' => 'My Group', 'cn' => '我的班级'],
     'my_creation' => ['en' => 'My Creation', 'cn' => '我创建的'],
     'my_join' => ['en' => 'My Join', 'cn' => '我加入的'],
