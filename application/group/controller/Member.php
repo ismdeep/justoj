@@ -92,7 +92,7 @@ class Member extends GroupBaseController {
 
         $cache_id = PasswordUtil::random_string("0123456789abcdef", 32);
 
-        $cache_file_path = '/opt/justoj-data-cache/' . $cache_id . ".zip";
+        $cache_file_path = config('cache_dir') . '/' . $cache_id . ".zip";
         $octet_file_name = $user_id . "_" . $user->realname . "_" . $this->group->name . ".zip";
 
         $zip = new \ZipArchive();
