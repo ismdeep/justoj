@@ -246,5 +246,6 @@ return [
         'list_rows' => 15,
     ],
     'data_dir' => $config['data_dir'],
+    'cache_dir' => $config['cache_dir'],
     'secure_code' => $config['secure_code'],
 ];
