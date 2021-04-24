@@ -1,4 +1,4 @@
-FROM nginx-php
+FROM ismdeep/nginx-php:ubuntu-20-04
 
 MAINTAINER L. Jiang <l.jiang.1024@gmail.com>
 
