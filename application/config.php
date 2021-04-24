@@ -9,7 +9,8 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-use think\Env;
+$config = include("../configs/config.php");
+$log_config = include("../configs/log.php");
 
 return [
     // +----------------------------------------------------------------------
@@ -17,9 +18,9 @@ return [
     // +----------------------------------------------------------------------
 
     // 应用调试模式
-    'app_debug'              => Env::get('config.app_debug'),
+    'app_debug'              => $config['app_debug'],
     // 应用Trace
-    'app_trace'              => Env::get('config.app_trace'),
+    'app_trace'              => $config['app_trace'],
     // 应用模式状态
     'app_status'             => '',
     // 是否支持多模块
@@ -153,7 +154,7 @@ return [
     // +----------------------------------------------------------------------
 
     // 异常页面的模板文件
-    'exception_tmpl'         => Env::get('config.app_debug')
+    'exception_tmpl'         => $config['app_debug']
         ? THINK_PATH . 'tpl' . DS . 'think_exception.tpl'
         : APP_PATH . DS . 'extra'.DS.'view' . DS . 'tpl' . DS . 'think_exception.tpl',
 
@@ -170,7 +171,7 @@ return [
 
     'log'                    => [
         // 日志记录方式，内置 file socket 支持扩展
-        'type'  => Env::get('log.type'),
+        'type'  => $log_config['type'],
         // 日志保存目录
         'path'  => LOG_PATH,
         // 日志记录级别
@@ -244,6 +245,6 @@ return [
         'var_page'  => 'page',
         'list_rows' => 15,
     ],
-    'data_dir' => Env::get('config.data_dir'),
-    'secure_code' => Env::get('config.secure_code')
+    'data_dir' => $config['data_dir'],
+    'secure_code' => $config['secure_code'],
 ];
