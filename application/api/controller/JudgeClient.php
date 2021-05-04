@@ -6,7 +6,7 @@ namespace app\api\controller;
 
 use app\api\common\ApiBaseController;
 use app\api\model\JudgeClientModel;
-use think\Env;
+use think\Config;
 
 class JudgeClient extends ApiBaseController {
 
@@ -23,7 +23,7 @@ class JudgeClient extends ApiBaseController {
      * @throws \think\exception\DbException
      */
     public function push_data_info($secure_code = '', $client_name = '', $data_git_hash = '') {
-        if ($secure_code != Env::get('config.secure_code')) {
+        if ($secure_code != Config::get('secure_code')) {
             return json(['code' => 500, 'msg' => 'Invalid secure code.']);
         }
 

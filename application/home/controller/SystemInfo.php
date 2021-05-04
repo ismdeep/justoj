@@ -30,8 +30,7 @@ class SystemInfo extends HomeBaseController {
     }
 
     public function data_hash_part() {
-
-        $data_dir = Env::get('config.data_dir');
+        $data_dir = config('data_dir');
 
         $branch_name = exec("cd {$data_dir};git symbolic-ref --short -q HEAD");
         $this->assign('branch_name', $branch_name);

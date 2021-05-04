@@ -3,7 +3,7 @@
 // 应用公共文件
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\PHPMailer;
-use think\Env;
+use think\Config;
 
 /**
  * intercept while $flag is true
@@ -11,7 +11,7 @@ use think\Env;
  * @param $flag
  * @param $msg
  */
-function intercept ($flag, $msg) {
+function intercept($flag, $msg) {
     if ($flag) {
         echo $msg;
         die();
@@ -24,7 +24,7 @@ function intercept ($flag, $msg) {
  * @param $flag
  * @param $msg
  */
-function intercept_json ($flag, $msg) {
+function intercept_json($flag, $msg) {
     if ($flag) {
         header('Content-Type: application/json');
         echo json_encode(['status' => 'error', 'msg' => $msg]);
@@ -33,10 +33,9 @@ function intercept_json ($flag, $msg) {
 }
 
 
-function subtext($text, $length)
-{
-    if(mb_strlen($text, 'utf8') > $length) {
-        return mb_substr($text, 0, $length, 'utf8').'...';
+function subtext($text, $length) {
+    if (mb_strlen($text, 'utf8') > $length) {
+        return mb_substr($text, 0, $length, 'utf8') . '...';
     } else {
         return $text;
     }
@@ -72,21 +71,21 @@ function send_email($to_email, $to_nick, $title, $content, $is_html) {
         $mail->SMTPDebug = 0;
         $mail->isSMTP();
         $mail->CharSet = 'utf-8';
-        $mail->Host = Env::get('email.host');
+        $mail->Host = Config::get('email.host');
         $mail->SMTPAuth = true;
-        $mail->Username = Env::get('email.username');
-        $mail->Password = Env::get('email.password');
+        $mail->Username = Config::get('email.username');
+        $mail->Password = Config::get('email.password');
         $mail->SMTPSecure = 'ssl';
-        $mail->Port = Env::get('email.port');
+        $mail->Port = Config::get('email.port');
 
         //Recipients
-        $mail->setFrom(Env::get('email.username'), 'JustOJ 管理员');
+        $mail->setFrom(Config::get('email.username'), 'JustOJ 管理员');
         $mail->addAddress($to_email, $to_nick);
 
         //Content
         $mail->isHTML($is_html);
         $mail->Subject = $title;
-        $mail->Body    = $content;
+        $mail->Body = $content;
         $mail->send();
         return true;
     } catch (Exception $e) {
