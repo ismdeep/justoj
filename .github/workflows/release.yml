@@ -1,0 +1,19 @@
+name: Release
+on:
+  create:
+    tags:
+      - v*
+
+jobs:
+  phpreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v1
+      - name: Docker release
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: ismdeep/justoj-web
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          tag_semver: true
