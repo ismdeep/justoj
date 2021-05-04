@@ -16,8 +16,9 @@ use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\SourceCodeModel;
 use app\api\common\ApiBaseController;
-use think\Db;
 use think\Exception;
+use think\exception\DbException;
+use think\response\Json;
 
 class Solution extends ApiBaseController {
     /**
@@ -25,11 +26,11 @@ class Solution extends ApiBaseController {
      * @param $problem_id
      * @param $language
      * @param $code
-     * @return \think\response\Json
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DbException
      */
     public function submit_problem_code($problem_id = '', $language = '', $code = '') {
-        $this->need_login('json');
+        $this->need_login();
         intercept_json('' == $problem_id, 'problem_id cannot be empty');
         intercept_json('' == $language, 'language cannot be empty');
         intercept_json('' == $code, 'source code cannot be empty.');
@@ -40,9 +41,6 @@ class Solution extends ApiBaseController {
                     'in_date' => ['>', date('Y-m-d H:i:s', time() - 3)]
                 ]
             )->find(), '提交过于频繁');
-
-
-//        intercept_json((new SolutionModel())->where('result', 0)->count() > 4, '服务器繁忙');
 
         $solution = new SolutionModel();
         $solution->result = 14;
@@ -78,8 +76,8 @@ class Solution extends ApiBaseController {
      * @param $problem_num
      * @param $language
      * @param $code
-     * @return \think\response\Json
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DbException
      */
     public function submit_contest_problem_code($contest_id = '', $problem_num = '', $language = '', $code = '') {
 
@@ -145,8 +143,8 @@ class Solution extends ApiBaseController {
      * solution状态
      *
      * @param $solution_id
-     * @return \think\response\Json
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DbException
      */
     public function status($solution_id) {
         $solution = SolutionModel::get(['solution_id' => $solution_id]);
@@ -203,11 +201,11 @@ class Solution extends ApiBaseController {
     /**
      * 重判题目
      * @param $problem_id
-     * @return \think\response\Json
+     * @return Json
      * @throws Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DbException
      */
     public function rejudge_problem($problem_id) {
         if (!$this->login_user || !$this->login_user->is_root) return json(['status' => 'error', 'msg' => $this->lang['do_not_have_privilege']]);
@@ -229,7 +227,7 @@ class Solution extends ApiBaseController {
             [
                 'problem_id' => intval($problem_id),
                 'contest_id' => null,
-            ], 'result' );
+            ], 'result');
 
         return json(['status' => 'success', 'msg' => 'rejudge success', 'problem_id' => $problem_id]);
     }
@@ -238,10 +236,10 @@ class Solution extends ApiBaseController {
      * 重判比赛题目
      * @param string $contest_id
      * @param string $pid
-     * @return \think\response\Json
+     * @return Json
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DbException
      * @throws Exception
      */
     public function rejudge_contest_problem($contest_id = '', $pid = '') {
@@ -283,10 +281,10 @@ class Solution extends ApiBaseController {
      *
      * @param string $solution_id
      * @param int $result
-     * @return \think\response\Json
+     * @return Json
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @throws DbException
      */
     public function manual_set_result($solution_id = '', $result = 0) {
         /* @var $solution SolutionModel */
