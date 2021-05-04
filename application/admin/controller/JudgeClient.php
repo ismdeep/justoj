@@ -6,6 +6,7 @@ namespace app\admin\controller;
 
 use app\admin\common\AdminBaseController;
 use app\api\model\JudgeClientModel;
+use think\Config;
 use think\Env;
 
 class JudgeClient extends AdminBaseController {
@@ -16,7 +17,7 @@ class JudgeClient extends AdminBaseController {
 
     public function index_part() {
         // 获取服务器上数据git hash
-        $data_dir = Env::get('config.data_dir');
+        $data_dir = Config::get('data_dir');
         $local_hash = exec("cd {$data_dir};git log -1 --pretty=format:%H");
 
         // 判断服务器是否有数据未同步

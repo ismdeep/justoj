@@ -7,6 +7,7 @@ use app\api\model\ProblemModel;
 use app\api\model\SolutionModel;
 use app\api\model\UserModel;
 use app\admin\common\AdminBaseController;
+use think\Config;
 use think\Db;
 use think\Env;
 use think\Exception;
@@ -90,7 +91,7 @@ class Index extends AdminBaseController {
         $this->assign('mysql_version', $mysql_version);
         $this->assign('php_version', PHP_VERSION);
         $this->assign('thinkphp_version', THINK_VERSION);
-        $this->assign('admin_email', Env::get('config.admin_email'));
+        $this->assign('admin_email', Config::get('admin_email'));
 
         return view();
     }

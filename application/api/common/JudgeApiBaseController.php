@@ -4,7 +4,7 @@
 namespace app\api\common;
 
 
-use think\Env;
+use think\Config;
 use think\Request;
 
 class JudgeApiBaseController extends ApiBaseController {
@@ -20,6 +20,6 @@ class JudgeApiBaseController extends ApiBaseController {
             $this->client_name = $request->param('client_name');
         }
 
-        intercept(Env::get('config.secure_code') != $secure_code, '0');
+        intercept(Config::get('secure_code') != $secure_code, '0');
     }
 }

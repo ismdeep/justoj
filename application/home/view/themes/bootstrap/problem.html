@@ -69,16 +69,16 @@
             <!--	提交代码表单组 begin-->
             <div class="form-group" id="submit-group">
                 <div class="row">
-                    <label class="col-md-1 col-form-label"></label>
-                    <div class="col-md-11">
+                    <label class="col-md-2 col-form-label"></label>
+                    <div class="col-md-10">
                         <h3>{$lang.submit_code}</h3>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <label for="submit-language" class="col-md-1 col-form-label"
+                    <label for="submit-language" class="col-md-2 col-form-label"
                            style="text-align: right">{$lang.language}:</label>
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                         <select class="form-control custom-select" name="language" id="submit-language"
                                 onchange="language_change()">
                             {volist name="allowed_langs" id="item"}
@@ -89,17 +89,17 @@
                 </div>
                 <br>
                 <div class="row">
-                    <label for="submit-source" class="col-md-1 col-form-label"
+                    <label for="submit-source" class="col-md-2 col-form-label"
                            style="text-align: right">{$lang.source_code}:</label>
-                    <div class="col-md-11">
+                    <div class="col-md-10">
                 <textarea class="form-control" style="font-family: Consolas,Courier,monospace;" name="submit-source"
                           id="submit-source" rows="19"></textarea>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <label class="col-md-1 col-form-label"></label>
-                    <div class="col-md-11">
+                    <label class="col-md-2 col-form-label"></label>
+                    <div class="col-md-10">
                         <button class="btn btn-success" type="button" onclick="checkLoginThenSubmitCode();"
                                 id="submit-code-btn">{$lang.submit}
                         </button>
@@ -122,15 +122,24 @@
                 </div>
             </div>
             <!--	提交代码表单组 end-->
-
-            <!--功能按钮组 begin-->
-            {include file="home@common_html/problem_btns"}
-            <!--功能按钮组 end-->
-
-
         </div>
 
         <div class="col-md-3" id="recent-solutions-part"></div>
+
+        <!--功能按钮组 begin-->
+        {if $login_user && $login_user->is_admin}
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        <?php echo ['en' => 'Admin Tools', 'cn' => '管理员工具'][$show_ui_lang];?>
+                    </h3>
+                </div>
+                {include file="home@common_html/problem_btns"}
+            </div>
+        </div>
+        {/if}
+        <!--功能按钮组 end-->
 
     </div>
 

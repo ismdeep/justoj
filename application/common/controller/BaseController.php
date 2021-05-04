@@ -7,7 +7,6 @@ namespace app\common\controller;
 use app\api\model\UserModel;
 use think\Config;
 use think\Controller;
-use think\Env;
 use think\Request;
 
 class BaseController extends Controller {
@@ -42,19 +41,16 @@ class BaseController extends Controller {
     /**
      * BaseController constructor.
      * @param Request|null $request
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
      */
     public function __construct(Request $request = null) {
         parent::__construct($request);
 
-        $this->site_name = Env::get('config.site_name', 'JustOJ');
+        $this->site_name = Config::get('site_name');
         $this->assign('site_name', $this->site_name);
 
         $this->theme_root = 'home@themes/bootstrap';
 
-        $this->assign('admin_email', Env::get('config.admin_email'));
+        $this->assign('admin_email', Config::get('admin_email'));
         $this->assign('theme_root', $this->theme_root);
 
         // 判断User-Agent
