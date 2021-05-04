@@ -7,7 +7,6 @@ namespace app\home\controller;
 use app\api\model\JudgeClientModel;
 use app\api\model\SolutionModel;
 use app\home\common\HomeBaseController;
-use think\Env;
 
 class SystemInfo extends HomeBaseController {
     public function index() {
@@ -15,17 +14,7 @@ class SystemInfo extends HomeBaseController {
     }
 
     public function project_hash_part() {
-        $branch_name = exec("git symbolic-ref --short -q HEAD");
-        $this->assign('branch_name', $branch_name);
-
-        $release_date = exec("git log -1 --pretty=format:%at");
-        $release_date = date('Y-m-d H:i:s', $release_date);
-        $this->assign('release_date', $release_date);
-
-        $source_code_hash = exec("git log -1 --pretty=format:%H");
-        $source_code_hash = substr($source_code_hash, 0, 7);
-        $this->assign('source_code_hash', $source_code_hash);
-
+        $this->assign('project_version', "0.0.4");
         return view($this->theme_root . '/system-info-project-hash-part');
     }
 
