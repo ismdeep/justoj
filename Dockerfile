@@ -2,10 +2,15 @@ FROM ismdeep/nginx-php:ubuntu-20-04
 
 MAINTAINER L. Jiang <l.jiang.1024@gmail.com>
 
-RUN mkdir -p       /var/www/justoj
-COPY application   /var/www/justoj/
-COPY extend        /var/www/justoj/
-COPY public        /var/www/justoj/
+RUN  mkdir -p      /var/www/justoj/application/
+COPY application   /var/www/justoj/application/
+
+RUN  mkdir -p      /var/www/justoj/extend/
+COPY extend        /var/www/justoj/extend/
+
+RUN  mkdir -p      /var/www/justoj/public/
+COPY public        /var/www/justoj/public/
+
 COPY composer.json /var/www/justoj/
 COPY composer.lock /var/www/justoj/
 COPY think         /var/www/justoj/
