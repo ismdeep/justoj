@@ -4,6 +4,7 @@ MAINTAINER L. Jiang <l.jiang.1024@gmail.com>
 
 RUN  mkdir -p      /var/www/justoj/application/
 COPY application   /var/www/justoj/application/
+RUN  rm -rfv       /var/www/justoj/application/hack
 
 RUN  mkdir -p      /var/www/justoj/extend/
 COPY extend        /var/www/justoj/extend/
