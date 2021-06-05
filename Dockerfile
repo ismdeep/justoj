@@ -12,9 +12,15 @@ COPY extend        /var/www/justoj/extend/
 RUN  mkdir -p      /var/www/justoj/public/
 COPY public        /var/www/justoj/public/
 
+RUN  mkdir -p      /var/www/justoj/.git/
+COPY .git          /var/www/justoj/.git/
+
 COPY composer.json /var/www/justoj/
 COPY composer.lock /var/www/justoj/
 COPY think         /var/www/justoj/
+
+RUN cd /var/www/justoj;git describe --abbrev=0 --tags > /justoj-version
+RUN cd /var/www/justoj;rm -rfv .git
 
 COPY nginx-config /etc/nginx/sites-enabled/justoj
 RUN cd /var/www/justoj; mkdir runtime; chmod -R 777 runtime
