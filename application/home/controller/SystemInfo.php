@@ -7,6 +7,8 @@ namespace app\home\controller;
 use app\api\model\JudgeClientModel;
 use app\api\model\SolutionModel;
 use app\home\common\HomeBaseController;
+use think\Exception;
+use think\response\Json;
 
 class SystemInfo extends HomeBaseController {
     public function index() {
