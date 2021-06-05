@@ -19,7 +19,14 @@ class SystemInfo extends HomeBaseController {
     }
 
     public function project_hash_part() {
-        $this->assign('project_version', "0.0.4");
+        // Read From /justoj-version
+        $str = "unknown";
+        $version_file_path = '/justoj-version';
+        if (file_exists($version_file_path)) {
+            $str = file_get_contents($version_file_path);
+        }
+
+        $this->assign('project_version', $str);
         return view($this->theme_root . '/system-info-project-hash-part');
     }
 
@@ -87,5 +94,4 @@ class SystemInfo extends HomeBaseController {
     public function solution_statistics_part() {
         return view($this->theme_root . '/system-info-solution-statistics-part');
     }
-
 }
