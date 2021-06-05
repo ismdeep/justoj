@@ -19,7 +19,7 @@ COPY composer.json /var/www/justoj/
 COPY composer.lock /var/www/justoj/
 COPY think         /var/www/justoj/
 
-RUN cd /var/www/justoj;git tag | tail -n 1 > /justoj-version
+RUN cd /var/www/justoj;git describe --abbrev=0 --tags > /justoj-version
 RUN cd /var/www/justoj;rm -rfv .git
 
 COPY nginx-config /etc/nginx/sites-enabled/justoj
