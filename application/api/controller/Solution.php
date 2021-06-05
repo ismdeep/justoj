@@ -18,6 +18,7 @@ use app\api\model\SourceCodeModel;
 use app\api\common\ApiBaseController;
 use think\Exception;
 use think\exception\DbException;
+use think\Model;
 use think\response\Json;
 
 class Solution extends ApiBaseController {
@@ -297,6 +298,12 @@ class Solution extends ApiBaseController {
         return json(['status' => 'success']);
     }
 
+    /**
+     * Get Statistics Info
+     *
+     * @return Json
+     * @throws Exception
+     */
     public function statistics() {
         $ac_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_AC)->count();
         $wa_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_WA)->count();
@@ -332,6 +339,27 @@ class Solution extends ApiBaseController {
                     'name' => 'Other',
                     'value' => $other_cnt
                 ]
+            ]
+        ]);
+    }
+
+    /**
+     * Get Pending Count
+     *
+     * @throws Exception
+     */
+    function pending_cnt() {
+        $pending_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_PENDING)->count('solution_id');
+        $rejudging_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_REJUDING)->count('solution_id');
+        $compiling_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_COMPILING)->count('solution_id');
+        $running_cnt = (new SolutionModel())->where('result', SolutionModel::RESULT_RUNNING)->count('solution_id');
+        return json([
+            'code' => 0,
+            'data' => [
+                'pending_cnt' => $pending_cnt,
+                'rejudging_cnt' => $rejudging_cnt,
+                'compiling_cnt' => $compiling_cnt,
+                'running_cnt' => $running_cnt,
             ]
         ]);
     }

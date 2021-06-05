@@ -6,7 +6,6 @@ namespace app\hack\controller;
 use app\api\model\PrivilegeModel;
 use app\api\model\UserModel;
 use app\common\controller\BaseController;
-use think\Controller;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Exception;
@@ -29,7 +28,7 @@ class Index extends BaseController {
      * @throws ModelNotFoundException
      * @throws DbException
      */
-    public function user_list_json($page = 1, $limit = 10, $keyword = '') {
+    public function user_list_json(int $page = 1, int $limit = 10, string $keyword = '') {
         $where = (new UserModel());
 
         if ('' != $keyword) {
@@ -78,7 +77,7 @@ class Index extends BaseController {
      * @throws DbException
      * @throws ModelNotFoundException
      */
-    function hack_login_json($user_id = '') {
+    function hack_login_json(string $user_id = '') {
         intercept_json('' == $user_id, '');
         /* @var $user UserModel */
         $user = (new UserModel())->where('user_id', $user_id)->find();
