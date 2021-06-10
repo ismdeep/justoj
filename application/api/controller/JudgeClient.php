@@ -6,7 +6,12 @@ namespace app\api\controller;
 
 use app\api\common\ApiBaseController;
 use app\api\model\JudgeClientModel;
+use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use think\Config;
+use think\db\exception\DataNotFoundException;
+use think\db\exception\ModelNotFoundException;
+use think\exception\DbException;
+use think\response\Json;
 
 class JudgeClient extends ApiBaseController {
 
@@ -17,10 +22,10 @@ class JudgeClient extends ApiBaseController {
      * @param string $client_name
      * @param string $data_git_hash
      *
-     * @return \think\response\Json
-     * @throws \think\db\exception\DataNotFoundException
-     * @throws \think\db\exception\ModelNotFoundException
-     * @throws \think\exception\DbException
+     * @return Json
+     * @throws DataNotFoundException
+     * @throws ModelNotFoundException
+     * @throws DbException
      */
     public function push_data_info($secure_code = '', $client_name = '', $data_git_hash = '') {
         if ($secure_code != Config::get('secure_code')) {
@@ -43,6 +48,7 @@ class JudgeClient extends ApiBaseController {
         }
 
         $judge_client->data_git_hash = $data_git_hash;
+        $judge_client->update_time = DateTime::DATENOW();
         $judge_client->save();
 
         return json(['code' => 0, 'msg' => 'ok']);
