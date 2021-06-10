@@ -48,7 +48,7 @@ class JudgeClient extends ApiBaseController {
         }
 
         $judge_client->data_git_hash = $data_git_hash;
-        $judge_client->update_time = DateTime::DATENOW();
+        $judge_client->isUpdate(true);
         $judge_client->save();
 
         return json(['code' => 0, 'msg' => 'ok']);
