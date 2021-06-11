@@ -6,7 +6,6 @@ namespace app\api\controller;
 
 use app\api\common\ApiBaseController;
 use app\api\model\JudgeClientModel;
-use PhpOffice\PhpSpreadsheet\Calculation\DateTime;
 use think\Config;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
@@ -48,7 +47,8 @@ class JudgeClient extends ApiBaseController {
         }
 
         $judge_client->data_git_hash = $data_git_hash;
-        $judge_client->isAutoWriteTimestamp(true)->save();
+        $judge_client->update_time = date('Y-m-d H:i:s', time());
+        $judge_client->save();
 
         return json(['code' => 0, 'msg' => 'ok']);
     }
