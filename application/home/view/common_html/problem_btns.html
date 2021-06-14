@@ -1,10 +1,10 @@
 {if $login_user && $login_user->is_admin}
-<a href="/admin/problem/edit?id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.edit}</a>
-<a href="/admin/problem/files?problem_id={$problem->problem_id}" class="btn btn-primary" target="_blank">{$lang.test_data}</a>
-<button class="btn btn-primary" onclick="show_set_tag({$problem->problem_id});">{$lang['tag']}</button>
+<a href="/admin/problem/edit?id={$problem->problem_id}" class="btn btn-sm btn-primary" target="_blank">{$lang.edit}</a>
+<a href="/admin/problem/files?problem_id={$problem->problem_id}" class="btn btn-sm btn-primary" target="_blank">{$lang.test_data}</a>
+<button class="btn btn-sm btn-primary" onclick="show_set_tag({$problem->problem_id});">{$lang['tag']}</button>
 
 {if $login_user && $login_user->is_root}
-<button class="btn btn-danger" onclick="rejudge_problem({$problem->problem_id})">{$lang.rejudge}</button>
+<button class="btn btn-sm btn-danger" onclick="rejudge_problem({$problem->problem_id})">{$lang.rejudge}</button>
 {/if}
 
 <script type="text/javascript">

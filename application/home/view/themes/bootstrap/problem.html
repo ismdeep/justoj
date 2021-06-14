@@ -64,21 +64,19 @@
                 {volist name="problem->tag_list" id="tag"}<a
                     href="/problems?tag={$tag}">#{$problem_tag_dict_map[$tag]}</a>&nbsp;&nbsp;{/volist}
             </div>
-            <br>
+
+            <hr>
 
             <!--	提交代码表单组 begin-->
             <div class="form-group" id="submit-group">
                 <div class="row">
-                    <label class="col-md-2 col-form-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <h3>{$lang.submit_code}</h3>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <label for="submit-language" class="col-md-2 col-form-label"
-                           style="text-align: right">{$lang.language}:</label>
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <select class="form-control custom-select" name="language" id="submit-language"
                                 onchange="language_change()">
                             {volist name="allowed_langs" id="item"}
@@ -89,17 +87,14 @@
                 </div>
                 <br>
                 <div class="row">
-                    <label for="submit-source" class="col-md-2 col-form-label"
-                           style="text-align: right">{$lang.source_code}:</label>
-                    <div class="col-md-10">
-                <textarea class="form-control" style="font-family: Consolas,Courier,monospace;" name="submit-source"
+                    <div class="col-md-12">
+                        <textarea placeholder="Input your source code." class="form-control" style="font-family: Consolas,Courier,monospace;" name="submit-source"
                           id="submit-source" rows="19"></textarea>
                     </div>
                 </div>
                 <br>
                 <div class="row">
-                    <label class="col-md-2 col-form-label"></label>
-                    <div class="col-md-10">
+                    <div class="col-md-12">
                         <button class="btn btn-success" type="button" onclick="checkLoginThenSubmitCode();"
                                 id="submit-code-btn">{$lang.submit}
                         </button>
@@ -135,7 +130,9 @@
                         <?php echo ['en' => 'Admin Tools', 'cn' => '管理员工具'][$show_ui_lang];?>
                     </h3>
                 </div>
-                {include file="home@common_html/problem_btns"}
+                <div style="margin: 6px">
+                    {include file="home@common_html/problem_btns"}
+                </div>
             </div>
         </div>
         {/if}
