@@ -2,29 +2,35 @@
 {block name='title_block'}{$lang['rank']}{/block}
 {block name="body"}
 <div class="container">
-	<table class="table table-hover">
-		<thead>
-		<tr>
-			<td><b>{$lang.rank}</b></td>
-			<td><b>{$lang.username}</b></td>
-			<td><b>{$lang.nickname}</b></td>
-			<td><b>{$lang.accepted}</b></td>
-			<td><b>{$lang.submit}</b></td>
-		</tr>
-		</thead>
-		<tbody>
-		{volist name='users' id='user'}
-		<tr>
-			<td>{$cur_rank}</td>
-			<td><div class="center"><a href="/users/{$user->user_id}">{$user->user_id}</a></div></td>
-			<td><div class="center">{$user->nick}</div></td>
-			<td><div class="center"><a href="/status?username={$user->user_id}&amp;result=4">{$user->solved}</a></div></td>
-			<td><div class="center"><a href="/status?username={$user->user_id}">{$user->submit}</a></div></td>
-		</tr>
-		<?php $cur_rank++;?>
-		{/volist}
-		</tbody>
-	</table>
-	{$users->render()}
+	<div class="row">
+		<div class="panel panel-default">
+			<div class="panel-body">
+				<table class="table table-hover">
+					<thead>
+					<tr>
+						<td><b>{$lang.rank}</b></td>
+						<td><b>{$lang.username}</b></td>
+						<td><b>{$lang.nickname}</b></td>
+						<td><b>{$lang.accepted}</b></td>
+						<td><b>{$lang.submit}</b></td>
+					</tr>
+					</thead>
+					<tbody>
+					{volist name='users' id='user'}
+					<tr>
+						<td>{$cur_rank}</td>
+						<td><div class="center"><a href="/users/{$user->user_id}">{$user->user_id}</a></div></td>
+						<td><div class="center">{$user->nick}</div></td>
+						<td><div class="center"><a href="/status?username={$user->user_id}&amp;result=4">{$user->solved}</a></div></td>
+						<td><div class="center"><a href="/status?username={$user->user_id}">{$user->submit}</a></div></td>
+					</tr>
+					<?php $cur_rank++;?>
+					{/volist}
+					</tbody>
+				</table>
+				{$users->render()}
+			</div>
+		</div>
+	</div>
 </div>
 {/block}
