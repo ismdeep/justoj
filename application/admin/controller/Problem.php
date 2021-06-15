@@ -375,6 +375,14 @@ class Problem extends AdminBaseController {
         }
 
         try {
+            $gitkeep_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/.gitkeep', 'w') or dir('Unable to open file');
+            fclose($gitkeep_file);
+        } catch (Exception $e) {
+        }
+
+        try {
+
+
             $sample_input_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/sample.in', 'w') or die("Unable to open file");
             $sample_output_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/sample.out', 'w') or die("Unable to open file");
             fwrite($sample_input_file, $sample_input);
