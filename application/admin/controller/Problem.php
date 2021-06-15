@@ -295,7 +295,6 @@ class Problem extends AdminBaseController {
         $problem->sample_output = $sample_output;
         $problem->hint = $hint;
         $problem->source = $source;
-//        $problem->tags = '';
         $problem->save();
 
         ProblemLogModel::pushByProblemObj($problem, $this->login_user->user_id);
@@ -303,7 +302,13 @@ class Problem extends AdminBaseController {
         if ($create_folder_flag) {
             // 新建题目目录并写入样例数据
             try {
-                mkdir('/home/judge/data/' . $problem->problem_id);
+                mkdir(config('data_dir') . '/' . $problem->problem_id);
+            } catch (Exception $e) {
+            }
+
+            try {
+                $gitkeep_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/.gitkeep', 'w') or dir('Unable to open file');
+                fclose($gitkeep_file);
             } catch (Exception $e) {
             }
 
@@ -316,12 +321,6 @@ class Problem extends AdminBaseController {
 //                fwrite($sample_output_file, $sample_output);
 //                fclose($sample_output_file);
 //            }catch (Exception $e){}
-
-            try {
-                $gitkeep_file = fopen(config('data_dir') . '/' . $problem->problem_id . '/.gitkeep', 'w') or dir('Unable to open file');
-                fclose($gitkeep_file);
-            } catch (Exception $e) {
-            }
         }
 
         return json([
