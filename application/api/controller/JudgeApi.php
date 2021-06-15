@@ -14,6 +14,7 @@ use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\Exception;
 use think\exception\DbException;
+use think\Model;
 
 class JudgeApi extends JudgeApiBaseController {
 
@@ -49,10 +50,25 @@ class JudgeApi extends JudgeApiBaseController {
             ->order('solution_id', 'asc')
             ->limit($query_size)
             ->select();
+
+        $blocked_solutions = (new SolutionModel())
+            ->where('result', 'in', [2,3])
+            ->where('update_time', '<', date('Y-m-d H:i:s', time() - 60 * 5))
+            ->where('language', 'in', $oj_lang_list)
+            ->order('result', 'asc')
+            ->order('solution_id', 'asc')
+            ->limit($query_size)
+            ->select();
+
         echo "solution_ids\n";
 
         $solution_ids = [];
         foreach ($solutions as $solution) {
+            echo $solution->solution_id . "\n";
+            $solution_ids [] = $solution->solution_id;
+        }
+
+        foreach ($blocked_solutions as $solution) {
             echo $solution->solution_id . "\n";
             $solution_ids [] = $solution->solution_id;
         }
