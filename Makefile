@@ -7,16 +7,17 @@ test-create:
 	    --character-set-server=utf8mb4 \
 	    --collation-server=utf8mb4_0900_ai_ci
 	docker cp install.sql justoj-db:/install.sql
-	docker cp install.sh  justoj-db:/install.sh
+	docker cp install-db.sh  justoj-db:/install-db.sh
 	sleep 50
-	docker exec -d justoj-db bash /install.sh
+	docker exec -d justoj-db bash /install-db.sh
 	docker run --name justoj-web \
 		--link justoj-db:justoj-db \
 		-p 80:80 \
 		-v $(CURDIR):/var/www/justoj \
-		-v $(CURDIR)/test-env:/var/www/justoj/.env \
 		-d ismdeep/nginx-php:ubuntu-20-04
 	docker cp nginx-config justoj-web:/etc/nginx/sites-enabled/justoj
+	docker cp install-web.sh justoj-web:/install-web.sh
+	docker exec -d justoj-web bash /install-web.sh
 	docker exec -d justoj-web nginx -s reload
 
 test-up:
