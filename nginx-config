@@ -1,8 +1,8 @@
 server {
 	listen 80;
-	root /var/www/justoj/public;
+	root /var/www/public;
 	index index.php;
-	server_name justoj.local oj.ismdeep.com oj.jxust.edu.cn;
+	server_name _;
 
 	location / {
 		try_files $uri $uri/ =404;

@@ -17,9 +17,9 @@ test-create:
 	docker run --name justoj-web \
 		--link justoj-db:justoj-db \
 		-p 80:80 \
-		-v $(CURDIR):/var/www/justoj \
+		-v $(CURDIR):/var/www \
 		-d ismdeep/nginx-php:ubuntu-20-04
-	docker cp nginx-config justoj-web:/etc/nginx/sites-enabled/justoj
+	docker cp nginx-config justoj-web:/etc/nginx/sites-enabled/default
 	docker cp install-web.sh justoj-web:/install-web.sh
 	docker exec -d justoj-web bash /install-web.sh
 	docker exec -d justoj-web nginx -s reload
