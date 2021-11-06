@@ -1,9 +1,13 @@
+help:
+	@sleep 1
+
 test-create:
+	@make test-clean >/dev/null 2>&1
 	docker run --name justoj-db \
 	    -e MYSQL_ROOT_PASSWORD=123456 \
 	    -e MYSQL_DATABASE=justoj \
 	    -p 3306:3306 \
-	    -d mysql:8 \
+	    -d hub.deepin.com/library/mysql:8 \
 	    --character-set-server=utf8mb4 \
 	    --collation-server=utf8mb4_0900_ai_ci
 	docker cp install.sql justoj-db:/install.sql
@@ -20,14 +24,8 @@ test-create:
 	docker exec -d justoj-web bash /install-web.sh
 	docker exec -d justoj-web nginx -s reload
 
-test-up:
-	docker start justoj-db
-	docker start justoj-web
-
-test-down:
+test-clean:
 	-docker stop justoj-web
 	-docker stop justoj-db
-
-test-clean: test-down
 	-docker rm justoj-web
 	-docker rm justoj-db
