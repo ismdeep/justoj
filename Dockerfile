@@ -9,4 +9,7 @@ RUN git describe --abbrev=0 --tags > /justoj-version && \
     rm -rfv .git && \
     mkdir runtime && \
     chmod -R 777 runtime && \
-    composer install
+    composer install && \
+    apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y php-redis
