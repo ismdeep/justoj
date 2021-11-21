@@ -10,9 +10,12 @@ test-create:
 	    -d hub.deepin.com/library/mysql:8 \
 	    --character-set-server=utf8mb4 \
 	    --collation-server=utf8mb4_0900_ai_ci
+	docker run --name justoj-redis \
+		-p 6379:6379 \
+		-d redis:latest
 	docker cp install.sql justoj-db:/install.sql
 	docker cp install-db.sh  justoj-db:/install-db.sh
-	sleep 50
+	waitdb -dialect mysql -dsn 'root:123456@tcp(127.0.0.1:3306)/justoj?parseTime=true&loc=Local&charset=utf8mb4,utf8'
 	docker exec -d justoj-db bash /install-db.sh
 	docker run --name justoj-web \
 		--link justoj-db:justoj-db \
@@ -27,5 +30,7 @@ test-create:
 test-clean:
 	-docker stop justoj-web
 	-docker stop justoj-db
+	-docker stop justoj-redis
 	-docker rm justoj-web
 	-docker rm justoj-db
+	-docker rm justoj-redis
