@@ -32,6 +32,6 @@ RUN git describe --abbrev=0 --tags > /justoj-version && \
     rm -rfv .git && \
     mkdir runtime && \
     chmod -R 777 runtime && \
-    composer install \
+    composer install
 EXPOSE 80
 CMD ["/usr/bin/supervisord"]
