@@ -8,10 +8,10 @@ secure_code = 1234567890
 admin_email = l.jiang.1024@gmail.com
 
 [database]
-hostname = justoj-db
+hostname = db
 database = justoj
 username = root
-password = 123456
+password = justoj123456
 
 [session]
 type     = 'redis'

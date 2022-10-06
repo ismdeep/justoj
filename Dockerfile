@@ -27,7 +27,7 @@ command=nginx" > /etc/supervisord.conf
 
 WORKDIR /var/www
 COPY . .
-COPY nginx-config /etc/nginx/sites-enabled/default
+COPY .data/nginx-config /etc/nginx/sites-enabled/default
 RUN set -eux; \
     rm -rfv .git; \
     mkdir runtime; \

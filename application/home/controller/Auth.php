@@ -18,7 +18,7 @@ class Auth extends HomeBaseController {
     }
 
     public function sign_out($redirect = '/') {
-        Session::destroy();
+        Session::clear();
         $this->redirect($redirect);
     }
 
