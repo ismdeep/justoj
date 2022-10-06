@@ -218,6 +218,7 @@ return [
         'auto_start' => true,
         'host' => Env::get('session.host'),
         'port' => Env::get('session.port'),
+        'select' => Env::get('session.db'),
     ],
 
     // +----------------------------------------------------------------------
