@@ -1,19 +1,35 @@
 name: Release
+
 on:
   push:
   workflow_dispatch:
 
 jobs:
-  phpreleaser:
+  publish:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_PLATFORMS: linux/amd64
+      IMAGE_TAG: latest
+      BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
     steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        with:
+          username: ismdeep
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Check out code
         uses: actions/checkout@v1
+      - name: Set Env
+        if: env.BRANCH_NAME != 'main'
+        run: |
+          echo "IMAGE_TAG=$(echo ${BRANCH_NAME} | tr / - | tr \# - )" >> $GITHUB_ENV
       - name: Docker release
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          name: ismdeep/justoj-web
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          tag_semver: true
-          tags: "latest"
+        run: |
+          docker buildx build --platform ${IMAGE_PLATFORMS} --pull --push \
+            -t ismdeep/justoj-web:${IMAGE_TAG} \
+            -f Dockerfile .
