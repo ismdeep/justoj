@@ -28,10 +28,10 @@ command=nginx" > /etc/supervisord.conf
 WORKDIR /var/www
 COPY . .
 COPY nginx-config /etc/nginx/sites-enabled/default
-RUN git describe --abbrev=0 --tags > /justoj-version && \
-    rm -rfv .git && \
-    mkdir runtime && \
-    chmod -R 777 runtime && \
+RUN set -eux; \
+    rm -rfv .git; \
+    mkdir runtime; \
+    chmod -R 777 runtime; \
     composer install
 EXPOSE 80
 CMD ["/usr/bin/supervisord"]
